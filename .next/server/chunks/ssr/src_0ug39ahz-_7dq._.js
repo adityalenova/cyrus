@@ -1,3 +1,0 @@
-module.exports=[[3363,a=>{var b=a.i(7997),c=a.i(25492);a.s(["default",0,function(){return(0,b.jsx)(c.default,{})}])},86999,a=>{let b=(0,a.i(11857).registerClientReference)(function(){throw Error("Attempted to call the default export of [project]/src/views/NotFound.tsx from the server, but it's on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/src/views/NotFound.tsx","default");a.s(["default",0,b])},25492,a=>{var b=a.i(86999);a.n(b)}],17537,function(a){a.n(a.i(3363))}];
-
-//# sourceMappingURL=src_0ug39ahz-_7dq._.js.map
