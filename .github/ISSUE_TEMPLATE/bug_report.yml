@@ -1,0 +1,46 @@
+name: Bug report
+description: Something on the site is broken or wrong
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Data corrections are welcome here too, and they are the most useful
+        reports we get. If a star count, deadline, prize or eligibility line is
+        wrong, link the primary source.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected and what you saw instead.
+      placeholder: The hackathon filter returns nothing for "AI".
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: The page or endpoint involved.
+      placeholder: https://cyrus-agent.vercel.app/hackathons
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open /hackathons
+        2. Type "AI" in search
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: Browser and OS, and whether it also happens locally.
+      placeholder: Chrome 141 on macOS, also reproduces on npm run dev
+  - type: checkboxes
+    id: policy
+    attributes:
+      label: Before you start work
+      options:
+        - label: I have read CONTRIBUTING.md and will not write code until a maintainer assigns this issue to me
+          required: true

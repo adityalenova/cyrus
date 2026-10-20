@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contribution policy
+    url: https://github.com/adityalenova/cyrus-ai/blob/main/CONTRIBUTING.md
+    about: Read this first. Code before assignment gets closed.
+  - name: Security report
+    url: https://github.com/adityalenova/cyrus-ai/security/advisories/new
+    about: Private vulnerability report. Never open a public issue for these.

@@ -1,0 +1,37 @@
+name: Enhancement
+description: A new capability, or a sharper version of something that exists
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is missing today
+      description: Describe the gap from the side of the person using the site.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would add
+      description: Concrete behaviour, not a category. "The hero search should accept a stack and rank hackathons by overlap" beats "better search".
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Counts, file paths, command output or links that show the current state.
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: The checks that prove it shipped.
+    validations:
+      required: true
+  - type: checkboxes
+    id: policy
+    attributes:
+      label: Before you start work
+      options:
+        - label: I have read CONTRIBUTING.md and will not write code until a maintainer assigns this issue to me
+          required: true
