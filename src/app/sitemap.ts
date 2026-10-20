@@ -11,12 +11,11 @@ import { PROGRAMS } from "@/data/orgs";
 import { RESOURCES } from "@/data/resources";
 import { ALL_TOOLS } from "@/lib/tools/data";
 import { ALL_HACKS } from "@/lib/siteStats";
+import { SITE_ORIGIN } from "@/lib/seo";
 
 /** same union the site resolves /repo/:id against, without pulling in the
  *  client-side helpers in lib/util (they import React hooks). */
 const CATALOG = [...REPOS, ...PROGRAM_REPOS];
-
-export const SITE_ORIGIN = "https://cyrus-agent.vercel.app";
 
 const HUBS: [string, number][] = [
   ["", 1],

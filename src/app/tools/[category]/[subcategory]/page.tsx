@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ToolsSubcategory from "@/views/Tools/ToolsSubcategory";
 import { TOOL_CATEGORIES } from "@/lib/tools/types";
 import { countOfSub } from "@/lib/tools/data";
+import { canonical } from "@/lib/seo";
 
 export function generateStaticParams() {
   return TOOL_CATEGORIES.flatMap((c) => c.subcategories.map((s) => ({ category: c.id, subcategory: s.id })));
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   return {
     title: `${sub.label} artifacts`,
     description: `${sub.blurb} ${countOfSub(cat.id, sub.id)} plain-English guides with live demos, copy-paste code and AI prompts.`,
+    alternates: { canonical: canonical(`/tools/${cat.id}/${sub.id}`) },
   };
 }
 

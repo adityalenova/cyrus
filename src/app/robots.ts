@@ -4,7 +4,7 @@
    they are throwaway build artifacts, and indexing them would split the
    ranking signal across a hundred subdomains.                    ══ */
 import type { MetadataRoute } from "next";
-import { SITE_ORIGIN } from "./sitemap";
+import { SITE_ORIGIN } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   const env = process.env.VERCEL_ENV;

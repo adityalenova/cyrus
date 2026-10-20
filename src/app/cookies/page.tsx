@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Legal from "@/views/Legal";
+import { canonical } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Cookies" };
+export const metadata: Metadata = { title: "Cookies", alternates: { canonical: canonical("/cookies") } };
 
 export default function Page() {
   return <Legal kind="cookies" />;

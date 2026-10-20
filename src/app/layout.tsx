@@ -2,9 +2,10 @@
 import type { Metadata, Viewport } from "next";
 import Shell from "@/components/Shell";
 import { fmt, statsLine, STATS } from "@/lib/siteStats";
+import { SITE_ORIGIN } from "@/lib/seo";
 import "./globals.css";
 
-const SITE = "https://cyrus-agent.vercel.app";
+const SITE = SITE_ORIGIN;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
