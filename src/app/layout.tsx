@@ -1,6 +1,7 @@
 /* ══ layout.tsx — root server layout: metadata, fonts, shell ═══════════ */
 import type { Metadata, Viewport } from "next";
 import Shell from "@/components/Shell";
+import { fmt, statsLine, STATS } from "@/lib/siteStats";
 import "./globals.css";
 
 const SITE = "https://cyrus-agent.vercel.app";
@@ -12,13 +13,13 @@ export const metadata: Metadata = {
     template: "%s · cyrus.ai",
   },
   description:
-    "Developer programs, organizations and 1,528 GitHub projects for AI coding agents - skills, Cursor rules, AGENTS.md configs and MCP servers, ranked by stars, with a timeline of every contribution window.",
-  keywords: ["open source", "GSoC", "hackathons", "AI agents", "MCP servers", "Cursor rules", "AGENTS.md", "agent skills"],
+    `${statsLine()} - skills, Cursor rules, AGENTS.md configs and MCP servers ranked by stars, ${STATS.programs} tracked open-source programs with a timeline of every contribution window, and ${fmt(STATS.orgs)} organization profiles.`,
+  keywords: ["open source", "GSoC", "NSOC", "hackathons", "AI agents", "MCP servers", "Cursor rules", "AGENTS.md", "agent skills"],
   openGraph: {
     type: "website",
     siteName: "cyrus.ai",
     title: "cyrus.ai - the developer-program platform",
-    description: "1,528 AI-agent repos, 6,682 open-source program projects and 161 live hackathons in one self-refreshing catalog.",
+    description: `${statsLine(new Date())} in one self-refreshing catalog.`,
     url: SITE,
   },
   twitter: { card: "summary_large_image", title: "cyrus.ai", description: "The developer-program platform." },

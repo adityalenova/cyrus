@@ -2,9 +2,13 @@
 /* ══ Footer.tsx — dark coffee footer ════════════════════════ */
 import { Link } from "@/lib/router";
 import { Logo, Brand } from "./ui";
+import { STATS, fmt, statsLine } from "@/lib/siteStats";
+
+const YEAR = new Date().getFullYear();
 
 const COLS: [string, [string, string][]][] = [
   ["Explore", [["Organizations", "/organizations"], ["Agent skills", "/projects"], ["Artifacts", "/tools"], ["Hackathons", "/hackathons"], ["Resources", "/resources"]]],
+  ["Programs", [["Nexus Spring of Code", "/programs/nsoc"], ["Google Summer of Code", "/programs/gsoc"], ["Hacktoberfest", "/programs/oct"], ["Outreachy", "/programs/outreachy"], ["LFX Mentorship", "/programs/lfx"], ["All programs", "/opensource"]]],
   ["Platform", [["Features", "/platform/features"], ["Co-pilot", "/platform/nova"], ["Trust centre", "/platform/trust"], ["How it works", "/platform/how"]]],
   ["Your space", [["Dashboard", "/dashboard"], ["Saved projects", "/dashboard"], ["Activity", "/dashboard"]]],
   ["About", [["About us", "/about"], ["Data & methodology", "/about#data"], ["FAQ", "/about#faq"]]],
@@ -32,11 +36,14 @@ export default function Footer() {
     <footer className="mt-[110px] bg-coffee text-steam">
       <div className="footer-arc" aria-hidden="true" />
       <div className="max-w-[1240px] mx-auto px-6">
-        <div className="grid grid-cols-[1.4fr_repeat(5,1fr)] max-[1020px]:grid-cols-2 gap-10 pt-16 pb-11">
+        <div className="grid grid-cols-[1.4fr_repeat(6,1fr)] max-[1020px]:grid-cols-2 gap-10 pt-16 pb-11">
           <div>
             <Link to="/" className="flex items-center gap-2.5 text-foam"><Logo /><Brand /></Link>
             <p className="text-[13.5px] leading-[1.7] mt-3.5 max-w-[300px]">
-              The catalog of top company hackathons and the skills, rules, configs and MCP servers that power AI coding agents - with a prep plan for every deadline.
+              The catalog of open-source programs, company hackathons and the skills, rules, configs and MCP servers that power AI coding agents - with a prep plan for every deadline.
+            </p>
+            <p className="font-mono text-[11px] leading-[1.7] mt-3.5 max-w-[300px] text-dimdk">
+              {statsLine()} · {fmt(STATS.orgs)} organization profiles · {STATS.programs} tracked programs
             </p>
           </div>
           {COLS.map(([title, links]) => (
@@ -49,7 +56,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="border-t border-bean py-5.5 flex justify-between items-center gap-3 flex-wrap text-dimdk text-[12.5px]">
-          <span className="flex items-center gap-1.5">Made with <HeartIcon /> by <b className="text-steam font-semibold">Aditya</b> · © 2026 cyrus.ai</span>
+          <span className="flex items-center gap-1.5">Made with <HeartIcon /> by <b className="text-steam font-semibold">Aditya</b> · © {YEAR} cyrus.ai</span>
           <div className="flex items-center gap-4">
             <a className="text-steam hover:text-white flex items-center gap-1.5" href="https://github.com/adityalenova" target="_blank" rel="noopener"><GhIcon /> GitHub</a>
             <a className="text-steam hover:text-white flex items-center gap-1.5" href="https://www.linkedin.com/in/iadityaoffl" target="_blank" rel="noopener"><InIcon /> LinkedIn</a>
