@@ -7,7 +7,7 @@ import type { CSSProperties, FormEvent } from "react";
 import { useNavigate } from "@/lib/router";
 import { useStore } from "../lib/store";
 import { fmt, LANG_COLORS } from "../lib/util";
-import { googleConfigured, promptGoogle } from "../lib/google";
+import { googleConfigured, isProtectedPath, promptGoogle } from "../lib/google";
 import { githubCanFinish, promptGitHub } from "../lib/github";
 import { api } from "../lib/api";
 import { mountTurnstile, turnstileConfigured } from "../lib/turnstile";
@@ -105,7 +105,9 @@ export default function AuthModal() {
     toast(msg);
     /* if a server session cookie exists (real GitHub/Google exchange), merge it now */
     void refreshSession();
-    setTimeout(() => nav("/dashboard"), 450);
+    const cur = typeof window !== "undefined" ? window.location.pathname + window.location.search : "";
+    const target = isProtectedPath(cur) ? cur : "/dashboard";
+    setTimeout(() => nav(target), 450);
   };
 
   const isEmail = (m: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m);
