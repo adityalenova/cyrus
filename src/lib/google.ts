@@ -21,13 +21,22 @@ export type GoogleProfile = { name: string; email: string; picture: string; sub:
 const NONCE_KEY = "cyrus.google.nonce";
 const RETURN_KEY = "cyrus.google.return";
 
-/** where to drop someone once the redirect has finished: the page they were
-   on when they clicked, because Google always returns to the site root */
+/** true only for protected routes that require a session; public catalog pages
+   always redirect to the dashboard overview instead */
+export function isProtectedPath(path: string): boolean {
+  if (!path || !path.startsWith("/") || path.startsWith("//")) return false;
+  const p = path.split("?")[0].split("#")[0];
+  return p === "/dashboard" || p.startsWith("/dashboard/");
+}
+
+/** where to drop someone once the redirect has finished: defaults to
+   /dashboard, preserving the return URL only when the user was trying
+   to reach a protected route */
 export function takeGoogleReturn(): string {
   try {
     const v = sessionStorage.getItem(RETURN_KEY);
     sessionStorage.removeItem(RETURN_KEY);
-    return v && v.startsWith("/") && !v.startsWith("//") ? v : "/dashboard";
+    return v && isProtectedPath(v) ? v : "/dashboard";
   } catch {
     return "/dashboard";
   }
@@ -60,7 +69,12 @@ export function startGoogleSignIn(): void {
   const nonce = rand(16);
   try {
     sessionStorage.setItem(NONCE_KEY, nonce);
-    sessionStorage.setItem(RETURN_KEY, window.location.pathname + window.location.search);
+    const cur = window.location.pathname + window.location.search;
+    if (isProtectedPath(cur)) {
+      sessionStorage.setItem(RETURN_KEY, cur);
+    } else {
+      sessionStorage.removeItem(RETURN_KEY);
+    }
   } catch { /* private mode - proceed anyway */ }
   const p = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,

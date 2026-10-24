@@ -106,8 +106,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
      Google always returns to the site root with the id_token in the URL
      fragment, on a brand-new document. Finishing the sign-in in the
      component every page is mounted inside means the board is already
-     unlocked before a gate can ask, and the visitor lands back on the page
-     they left rather than on a sign-in door. */
+     unlocked before a gate can ask, and the visitor lands on the
+     dashboard (or back on the protected route they were trying to reach). */
   const nav = useNavigate();
   const navRef = useRef(nav); navRef.current = nav;
   /* Dev's StrictMode mounts, unmounts and remounts every component, and the
