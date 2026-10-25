@@ -1,6 +1,7 @@
 "use client"
 /* ══ Organizations.tsx — searchable org directory + programs ═ */
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { Link, useSearchParams } from "@/lib/router";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { avatarOf, byStars, fmt } from "../lib/util";
@@ -87,7 +88,7 @@ function ProgramCard({ p }: { p: Program }) {
   return (
     <article className="bg-card border border-line rounded-[20px] overflow-hidden flex flex-col shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift hover:border-accent/40">
       <div className="relative h-40">
-        <img src={p.img} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+        <Image src={p.img} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 400px" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-coffee/95 via-coffee/35 to-transparent" />
         <span className={`absolute top-3.5 right-3.5 font-mono text-[10px] font-bold uppercase tracking-[.1em] px-2.5 py-1 rounded-full border backdrop-blur-sm ${STATUS_CLS[p.status]}`}>
           {p.status}

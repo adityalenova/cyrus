@@ -1,5 +1,6 @@
 "use client"
 /* ══ Hackathons.tsx — cover art, shelf cards, list + full prep-plan detail ═ */
+import Image from "next/image";
 import { Link, useParams, useNavigate, useSearchParams } from "@/lib/router";
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
@@ -285,7 +286,7 @@ export function HackCard({ h }: { h: Hack }) {
   return (
     <div className="group relative rounded-[22px] overflow-hidden flex flex-col min-h-[430px] text-foam isolate bg-coffee border border-bean transition-all duration-300 hover:-translate-y-[7px] hover:shadow-[0_34px_66px_-22px_rgba(34, 26, 19,.55)]">
       {art
-        ? <img src={art} alt="" aria-hidden loading="lazy" className={`${coverCls} object-cover`} />
+        ? <Image src={art} alt="" aria-hidden width={660} height={440} sizes="(max-width: 768px) 100vw, 420px" className={`${coverCls} object-cover`} />
         : <HackCover h={h} className={coverCls} />}
       <span className={`absolute inset-0 -z-10 bg-gradient-to-b ${art ? "from-white/30 via-coffee/55 to-[#0f1012]/95" : "from-coffee/25 via-coffee/55 to-[#0f1012]/95"}`} />
       <div className="flex items-center justify-between gap-2 px-5 pt-[18px]">

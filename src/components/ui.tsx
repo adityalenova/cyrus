@@ -1,7 +1,8 @@
 "use client"
 /* ══ ui.tsx — small shared primitives ═══════════════════════ */
 import { useState } from "react";
-import type { ReactNode, ImgHTMLAttributes } from "react";
+import type { ReactNode, CSSProperties } from "react";
+import Image from "next/image";
 import { tileBG, initials, hash, LEVEL_LABEL } from "../lib/util";
 import type { Level } from "../lib/types";
 
@@ -53,7 +54,8 @@ export function btn(variant = "outline", size = "md", extra = "") {
 }
 
 /* avatar with graceful fallback */
-export function OrgImg({ src, name, className = "", ...rest }: { src: string; name: string } & ImgHTMLAttributes<HTMLImageElement>) {
+export function OrgImg({ src, name, className = "", size = 96, title, style }:
+  { src: string; name: string; className?: string; size?: number; title?: string; style?: CSSProperties }) {
   const [broken, setBroken] = useState(false);
   if (broken) {
     return (
@@ -62,7 +64,7 @@ export function OrgImg({ src, name, className = "", ...rest }: { src: string; na
       </span>
     );
   }
-  return <img src={src} alt={name} loading="lazy" onError={() => setBroken(true)} {...rest} className={className} />;
+  return <Image src={src} alt={name} title={title} width={size} height={size} onError={() => setBroken(true)} className={className} style={style} />;
 }
 
 export function Avatar({ name, size = 30, src }: { name: string; size?: number; src?: string }) {

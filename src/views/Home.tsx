@@ -1,6 +1,7 @@
 "use client"
 /* ══ Home.tsx — hero, hackathons, programs, timeline, roadmap, calendar, orgs ═ */
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "@/lib/router";
 import { ORGS, PROGRAMS } from "../data/orgs";
@@ -104,11 +105,11 @@ function ProgCard({ p }: { p: Program }) {
   return (
     <a href={p.url} target="_blank" rel="noopener"
       className="group relative rounded-[22px] overflow-hidden flex flex-col min-h-[460px] text-foam isolate bg-coffee border border-bean transition-all duration-300 hover:-translate-y-[7px] hover:shadow-[0_34px_66px_-22px_rgba(34, 26, 19,.5)]">
-      <img src={p.img} alt="" loading="lazy" className="absolute inset-0 -z-20 w-full h-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-95" />
+      <Image src={p.img} alt="" width={1200} height={800} sizes="(max-width: 768px) 100vw, 420px" className="absolute inset-0 -z-20 w-full h-full object-cover opacity-80 transition-opacity duration-500 group-hover:opacity-95" />
       <span className="absolute inset-0 -z-10 bg-gradient-to-b from-coffee/30 via-coffee/60 to-[#0f1012]/95" />
       <div className="flex items-center justify-between px-5 pt-[18px]">
         <span className="w-11 h-11 rounded-xl bg-white grid place-items-center overflow-hidden shadow-[0_8px_18px_-6px_rgba(0,0,0,.5)]">
-          <img src={avatarOf(p.owner, 64)} alt={p.owner} className="w-[30px] h-[30px] object-contain" loading="lazy" />
+          <Image src={avatarOf(p.owner, 64)} alt={p.owner} width={64} height={64} className="w-[30px] h-[30px] object-contain" />
         </span>
         <span className={`font-mono text-[9.5px] font-bold tracking-[.1em] uppercase px-3 py-[5px] rounded-full border backdrop-blur-sm ${PSTATUS[p.status][1]}`}>{PSTATUS[p.status][0]}</span>
       </div>
@@ -177,7 +178,7 @@ function Timeline() {
           {PROGRAMS.map((p) => (
             <div key={p.id} className="grid grid-cols-[230px_1fr] gap-4 items-center py-3 border-b border-liness last:border-0">
               <span className="flex items-center gap-2.5 min-w-0">
-                <img src={avatarOf(p.owner, 48)} alt="" loading="lazy" className="w-[24px] h-[24px] rounded-[7px] bg-sand object-cover shrink-0" />
+                <Image src={avatarOf(p.owner, 48)} alt="" width={48} height={48} className="w-[24px] h-[24px] rounded-[7px] bg-sand object-cover shrink-0" />
                 <b className="card-title text-[13.5px] truncate">{p.name}</b>
               </span>
               <div className="relative h-[30px]">

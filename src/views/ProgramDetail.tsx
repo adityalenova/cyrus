@@ -1,6 +1,7 @@
 "use client"
 /* ══ ProgramDetail.tsx — one open source program, deep ══════ */
 import { useMemo } from "react";
+import Image from "next/image";
 import { Link, useParams } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
 import { PROGRAM_META, PROGRAM_REPOS } from "../data/programRepos";
@@ -98,7 +99,7 @@ export default function ProgramDetail() {
     <>
       {/* ── cover banner ── */}
       <header className="relative overflow-hidden bg-coffee">
-        <img src={p.img} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />
+        <Image src={p.img} alt="" width={1920} height={1280} sizes="100vw" priority className="absolute inset-0 w-full h-full object-cover opacity-30" />
         <span aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#0f1012]/55 via-[#0f1012]/75 to-[#0f1012]/95" />
         <div className={`${W} py-14 relative z-[1]`}>
           <p className="font-mono text-[10.5px] tracking-[.14em] uppercase text-foam/55 mb-5">

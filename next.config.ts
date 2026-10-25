@@ -6,6 +6,13 @@ const root = fileURLToPath(new URL(".", import.meta.url));
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   turbopack: { root },
+  images: {
+    // explicit allowlist, no wildcards: github.com/{owner}.png redirects to avatars.githubusercontent.com
+    remotePatterns: [
+      { protocol: "https", hostname: "github.com", pathname: "/*.png" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+    ],
+  },
   async redirects() {
     return [
       // close the bare-route dead end: /platform lands on Features
