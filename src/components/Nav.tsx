@@ -1,8 +1,5 @@
 "use client"
-/* ══ Nav.tsx — floating pill header + clean circle theme toggle + user menu
-   Desktop (lg+) keeps a single tightened row with primary links + More dropdown.
-   Phone/tablet get a proper hamburger to the RIGHT of the Sign in button that
-   opens a warm slide-in sheet with every page and the full Platform section. ═ */
+
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "@/lib/router";
 import { Logo, Brand, Avatar, btn } from "./ui";
