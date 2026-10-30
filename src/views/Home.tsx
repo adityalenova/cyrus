@@ -509,31 +509,41 @@ function Band() {
    Each one is *about* a single organization, and that organization's own mark
    sits on the card so a reader knows which program the words concern. The mark
    is attribution of subject, never endorsement - the intro and the tag on
-   every card both say so. */
-type Voice = { name: string; role: string; quote: string; org: string; login: string };
+   every card both say so.
+   The faces are AI-generated headshots (public/text-to-image endpoint, then
+   cropped square), so nobody's likeness is being put in our words. They are
+   files in public/portraits, not hot-linked, and every card still carries the
+   Illustrative tag. */
+type Voice = { name: string; role: string; quote: string; org: string; login: string; face: string };
 const QUOTES: Voice[] = [
   {
     name: "Priya N.", role: "ML engineer, Bengaluru", org: "LFX", login: "linuxfoundation",
+    face: "/portraits/priya.png",
     quote: "The program calendar told me LFX Term 3 was open the week I had capacity. I applied with a documentation fix as my proof of work.",
   },
   {
     name: "Marcus D.", role: "CS undergraduate", org: "GitHub", login: "github",
+    face: "/portraits/marcus.png",
     quote: "I used to skim a dozen GitHub organization pages. One view of open issues, review latency and stack is enough to decide.",
   },
   {
     name: "Sana K.", role: "Frontend developer", org: "Google Summer of Code", login: "google",
+    face: "/portraits/sana.png",
     quote: "GSoC felt like a black hole until every participating organization's open issues were on one page. I shortlisted nine in an evening.",
   },
   {
     name: "Arjun R.", role: "Backend developer, Pune", org: "Vercel Open Source", login: "vercel",
+    face: "/portraits/arjun.png",
     quote: "Watching what changed on the issues I had saved is the part I did not know I needed. Two of them were Vercel's.",
   },
   {
     name: "Wei L.", role: "Data scientist", org: "Kubernetes", login: "kubernetes",
+    face: "/portraits/wei.png",
     quote: "Before I opened a pull request into a void, I checked how long that Kubernetes working group had gone without reviewing one.",
   },
   {
     name: "Fatima Z.", role: "Second-year student", org: "Outreachy", login: "outreachy",
+    face: "/portraits/fatima.png",
     quote: "Outreachy felt impossible until the prep window was on the same page as the communities actually doing it.",
   },
 ];
@@ -552,6 +562,17 @@ const Arrow = ({ dir }: { dir: -1 | 1 }) => (
   </svg>
 );
 
+/* The AI-generated headshots are local files, so a card never depends on an
+   image host at render time. If a file goes missing the drawn avatar is still
+   there underneath - the section degrades to obviously-made-up rather than a
+   broken icon. */
+function Face({ src, name }: { src: string; name: string }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) return <Portrait name={name} size={46} className="ring-1 ring-line" />;
+  return <img src={src} alt="" width={46} height={46} loading="lazy" onError={() => setBroken(true)}
+    className="h-[46px] w-[46px] shrink-0 rounded-full object-cover ring-1 ring-line" />;
+}
+
 function Voices() {
   const rail = useRef<HTMLDivElement | null>(null);
   const nudge = (dir: -1 | 1) => {
@@ -566,7 +587,7 @@ function Voices() {
       className="group/card shrink-0 snap-start w-[376px] max-[700px]:w-[292px] bg-card border border-line rounded-[18px] p-[24px] flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-lift">
       {/* the face on the left, the organization it is about on the right */}
       <div className="flex items-start justify-between gap-3">
-        <Portrait name={v.name} size={46} className="ring-1 ring-line" />
+        <Face src={v.face} name={v.name} />
         <span className="grid h-[40px] w-[40px] shrink-0 place-items-center rounded-[12px] bg-foam ring-1 ring-line transition-shadow duration-300 group-hover/card:ring-accent/45"
           title={`About ${v.org}`}>
           <OrgImg src={avatarOf(v.login, 80)} name={v.org} alt={v.org} width={26} height={26} className="h-[26px] w-[26px] object-contain" />
@@ -591,7 +612,7 @@ function Voices() {
         <div>
           <SectionTag>Early feedback</SectionTag>
           <h2 className="font-display font-extrabold tracking-[-.022em] text-[clamp(28px,3.6vw,42px)] mt-3 text-foam">What builders <Word>tell us</Word>.</h2>
-          <p className="text-steam text-[13.5px] max-w-[540px] leading-[1.65] mt-3">These cards are layout placeholders until we have quotes we can attribute. The faces are drawn, not photographed, and the mark beside each one is the organization that quote is about - not an endorsement from it.</p>
+          <p className="text-steam text-[13.5px] max-w-[540px] leading-[1.65] mt-3">These cards are layout placeholders until we have quotes we can attribute. The faces are AI-generated portraits, not photographs of anyone real, and the mark beside each one is the organization that quote is about - not an endorsement from it.</p>
         </div>
         <div className="flex items-center gap-2.5">
           <button type="button" onClick={() => nudge(-1)} aria-label="Previous quotes"
