@@ -4,44 +4,64 @@ import { useState } from "react";
 import type { ReactNode, ImgHTMLAttributes } from "react";
 import { motion } from "framer-motion";
 import { tileBG, initials, hash, LEVEL_LABEL } from "../lib/util";
-import { STRIPES, ANGLE } from "../lib/mark";
+import { PETALS, PETAL_OUT } from "../lib/mark";
+import type { CSSProperties } from "react";
 import type { Level } from "../lib/types";
 
-/* A hatched globe: ten parallel bands laid across a circle and trimmed to its
-   rim, fitted against the reference artwork (src/lib/mark.ts keeps the numbers
-   and how they were measured). No plate and no black field - the mark sits
-   directly on whatever page it is on, in currentColor, so one component is
-   correct on a cream page and on a near-black one.
+/* Seven petals around one centre, traced from the brand artwork (src/lib/mark.ts
+   keeps the paths and how they were measured: IoU 0.983 against the reference).
+   No plate and no black field - the mark sits directly on whatever page it is
+   on, in currentColor, so one component is correct on a cream page and on a
+   near-black one. `tone="steel"` swaps that for a brushed-metal gradient, which
+   is how the mark appears inside the dark tile on the sign-in canvas.
 
-   `draw` is the entrance: the bands comb in from one side of the disc to the
-   other, each one growing along its own length, so the hatch is laid down the
-   way it would be drawn. The hover does the same thing in the CSS at the bottom
-   of globals.css. There is deliberately no idle rotation - a hatch has no
-   quarter-turn symmetry to hide behind, and spinning it turns the whole mark
-   into a flicker. Reduced-motion visitors get the finished, still mark, as
-   everywhere else on this site. */
-export function Logo({ size = 30, draw = false }: { size?: number; draw?: boolean }) {
+   `draw` is the entrance: the rosette opens from a bud - each petal scales out
+   from the centre in ring order while the whole flower unwinds a few degrees,
+   so it arrives the way it would be drawn. The hover answers with the same
+   language in reverse: every petal pushes along its own outward axis and
+   settles (globals.css owns that one). There is no idle spin - the petals are
+   deliberately uneven, so a rotation would never land back on itself.
+   Reduced-motion visitors get the finished, still mark, as everywhere else. */
+export function Logo({ size = 30, draw = false, tone = "ink" }:
+  { size?: number; draw?: boolean; tone?: "ink" | "steel" }) {
   /* The mark never asks here whether the visitor wants motion: that is
      MotionConfig's `reducedMotion="user"` in Shell, and the CSS media query
-     in globals.css for the hover comb. Asking here used to make the server's
-     HTML and the client's first render disagree about the logo's own
-     transform - a hydration mismatch on every page, for every reduced-motion
-     visitor. */
+     in globals.css for the hover. Asking here used to make the server's HTML
+     and the client's first render disagree about the logo's own transform - a
+     hydration mismatch on every page, for every reduced-motion visitor. */
   const anim = draw;
   const easeSilk = [0.22, 1, 0.36, 1] as const;
+  const steel = "cyrus-mark-steel";
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
-      <g transform={`rotate(${-ANGLE} 50 50)`}>
-        <g className="mark-turn">
-          {STRIPES.map((d, i) => (
-            <motion.path key={i} d={d} fill="currentColor"
-              initial={anim ? { scaleX: 0, opacity: 0 } : false}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ delay: 0.14 + i * 0.058, duration: 0.6, ease: easeSilk }}
-              style={{ transformBox: "view-box", transformOrigin: "50px 50px" }} />
-          ))}
-        </g>
-      </g>
+      {tone === "steel" && (
+        <defs>
+          <linearGradient id={steel} x1="16" y1="4" x2="84" y2="98" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#fbfcfd" />
+            <stop offset=".4" stopColor="#c9cfd7" />
+            <stop offset=".7" stopColor="#8d959e" />
+            <stop offset="1" stopColor="#e8ebef" />
+          </linearGradient>
+        </defs>
+      )}
+      <motion.g className="mark-petals"
+        initial={anim ? { rotate: -30 } : false}
+        animate={{ rotate: 0 }}
+        transition={{ duration: 0.86, ease: easeSilk }}
+        style={{ transformBox: "view-box", transformOrigin: "50px 50px" }}>
+        {PETALS.map((d, i) => (
+          <motion.path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"}
+            initial={anim ? { scale: 0.16, opacity: 0 } : false}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1 + i * 0.062, duration: 0.62, ease: easeSilk }}
+            style={{
+              transformBox: "view-box",
+              transformOrigin: "50px 50px",
+              "--ox": PETAL_OUT[i][0],
+              "--oy": PETAL_OUT[i][1],
+            } as CSSProperties} />
+        ))}
+      </motion.g>
     </svg>
   );
 }

@@ -1,6 +1,7 @@
 "use client"
 /* ══ AuthModal.tsx — full-screen split sign-in sheet ═
-   left: the "orgs around the world" globe hero (see UserGlobe.tsx) · right:
+   left: the graphite plate - dashed grid, crosshairs, the mark in a lit tile
+   (see AuthCanvas.tsx) · right:
    LOGIN/SIGN UP tabs, email + 6-digit verification code (server-issued), OAuth row */
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
@@ -12,7 +13,7 @@ import { api } from "../lib/api";
 import { mountTurnstile, turnstileConfigured } from "../lib/turnstile";
 import type { TurnstileHandle } from "../lib/turnstile";
 import { Word } from "./ui";
-import UserGlobe from "./UserGlobe";
+import AuthCanvas from "./AuthCanvas";
 
 const GH_ICON = <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.55v-2.1c-3.2.7-3.87-1.36-3.87-1.36-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.26 5.66.41.36.78 1.06.78 2.14v3.17c0 .31.2.66.8.55A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" /></svg>;
 const G_ICON = <svg width="17" height="17" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.26c0-.85-.08-1.67-.22-2.45H12v4.64h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.87c2.27-2.09 3.58-5.17 3.58-8.81Z" /><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.95-2.93l-3.87-3c-1.08.72-2.45 1.15-4.08 1.15-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09A11.99 11.99 0 0 0 12 24Z" /><path fill="#FBBC05" d="M5.27 14.26A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.55.38-2.26V6.65H1.29a12 12 0 0 0 0 10.7l3.98-3.09Z" /><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.61 4.6 1.8l3.42-3.42A11.97 11.97 0 0 0 12 0 11.99 11.99 0 0 0 1.29 6.65l3.98 3.09C6.22 6.88 8.87 4.77 12 4.77Z" /></svg>;
@@ -221,14 +222,11 @@ export default function AuthModal() {
         {ARROW} Back to Home
       </button>
       <div className="min-h-full grid grid-cols-2 max-[900px]:grid-cols-1">
-        {/* ── left: orgs-around-the-world globe hero — dotted Earth rising
-            from the panel's bottom edge, a pet travelling country to country,
-            one arrival pill at a time (UserGlobe.tsx owns all of it) ── */}
-        <div className="relative flex items-stretch justify-center overflow-hidden p-12 pt-9 max-[900px]:hidden"
-          style={{ background: "radial-gradient(120% 90% at 50% 115%, rgba(255,255,255,0.05), transparent 60%)" }}>
-          <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, transparent 55%, rgba(255,255,255,0.045))" }} />
-          <UserGlobe />
-        </div>
+        {/* ── left: the graphite plate — a dashed hairline grid with a crosshair
+            every four cells, and the mark in a dark tile with a bloom behind it
+            (AuthCanvas.tsx owns all of it, and its numbers come from the
+            reference) ── */}
+        <AuthCanvas />
 
         {/* ── right: the form column - the single "Back to Home" button lives
             at the screen's top-left corner above (see fixed button), so this

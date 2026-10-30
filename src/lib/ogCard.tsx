@@ -9,9 +9,10 @@ import { ImageResponse } from "next/og";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { OgCard as OgCardData } from "@/lib/ogContent";
-/* the brand mark - the same banded globe Logo() draws, with the tilt already
-   in the coordinates because satori does not lay out an SVG group transform */
-import { STRIPES_LEANED as OG_BANDS } from "@/lib/mark";
+/* the brand mark - the same seven-petal rosette Logo() draws; the petal paths
+   are already in their final positions, which suits satori, since it does not
+   lay out an SVG group transform */
+import { PETALS as OG_PETALS } from "@/lib/mark";
 
 const PAPER = "#0e0f10";
 const CREAM = "#17191b";
@@ -70,8 +71,8 @@ function layoutTitle(title: string[]): { lines: string[]; size: number } {
 }
 
 /** The mark from components/ui.tsx, watermarked into the corner. Sized so the
- *  globe still reads as a globe - a full disc of bands, not a sweep - with
- *  only its outer edge cut by the card's border. */
+ *  rosette still reads as a rosette - all seven petals, not a crop - with only
+ *  its outer edge cut by the card's border. */
 function Stamp() {
   return (
     <div
@@ -85,7 +86,7 @@ function Stamp() {
       }}
     >
       <svg width={400} height={400} viewBox="0 0 100 100">
-        {OG_BANDS.map((d) => (
+        {OG_PETALS.map((d) => (
           <path key={d} d={d} fill={FOAM} opacity={0.13} />
         ))}
       </svg>
@@ -97,7 +98,7 @@ function Mark() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
       <svg width={54} height={54} viewBox="0 0 100 100">
-        {OG_BANDS.map((d) => (
+        {OG_PETALS.map((d) => (
           <path key={d} d={d} fill={FOAM} />
         ))}
       </svg>

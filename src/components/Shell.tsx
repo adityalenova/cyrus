@@ -23,9 +23,10 @@ function ScrollManager() {
 /* one-time intro curtain: marketing pages only, decided after mount so
    server HTML never carries it.
 
-   The sequence is the brand, not a spinner. The mark is a hatched globe, so the
-   intro lays it down: the disc fades up, its ten bands comb in one after
-   another along their own length (Logo's own `draw` pass), a bloom swells
+   The sequence is the brand, not a spinner. The mark is a seven-petal rosette,
+   so the intro opens it: the tile of the mark fades up, its petals scale out
+   from the centre in ring order while the flower unwinds a few degrees (Logo's
+   own `draw` pass), a bloom swells
    behind it, three hairline circles start on the mark's rim and widen outward,
    the wordmark rises letter by letter, a hairline rule grows under it, and the
    line of what the site is fades in last.

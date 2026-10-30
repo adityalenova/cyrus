@@ -593,42 +593,72 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
   will-change: transform;
 }
 
-/* the header mark: it sits still - a hatch has no quarter-turn symmetry to
-   spin through, and rotating one just flickers. What it does instead is answer
-   a hover by re-laying itself: each band collapses along its own length and
-   grows back, one after another from the same side the entrance starts on.
-   Entrance is framer-motion's, in Logo(); this is the hover. */
-.mark-turn > path {
+/* the header mark: seven petals that answer a hover by breathing. Each one
+   pushes outward along its own axis (--ox/--oy, the vectors measured from the
+   artwork in src/lib/mark.ts) and settles back, staggered round the ring so the
+   gesture travels instead of the whole mark jumping. Entrance is framer-motion's
+   in Logo(); this is the hover. */
+.mark-petals > path {
   transform-box: view-box;
   transform-origin: 50px 50px;
 }
-a:hover .mark-turn > path, button:hover .mark-turn > path {
-  animation: bandComb .58s cubic-bezier(.22, 1, .36, 1) both;
+a:hover .mark-petals > path, button:hover .mark-petals > path, .mark-tile:hover .mark-petals > path {
+  animation: petalBreath .66s cubic-bezier(.22, 1, .36, 1) both;
 }
-a:hover .mark-turn > path:nth-child(2), button:hover .mark-turn > path:nth-child(2) { animation-delay: .05s; }
-a:hover .mark-turn > path:nth-child(3), button:hover .mark-turn > path:nth-child(3) { animation-delay: .1s; }
-a:hover .mark-turn > path:nth-child(4), button:hover .mark-turn > path:nth-child(4) { animation-delay: .15s; }
-a:hover .mark-turn > path:nth-child(5), button:hover .mark-turn > path:nth-child(5) { animation-delay: .2s; }
-a:hover .mark-turn > path:nth-child(6), button:hover .mark-turn > path:nth-child(6) { animation-delay: .25s; }
-a:hover .mark-turn > path:nth-child(7), button:hover .mark-turn > path:nth-child(7) { animation-delay: .3s; }
-a:hover .mark-turn > path:nth-child(8), button:hover .mark-turn > path:nth-child(8) { animation-delay: .35s; }
-a:hover .mark-turn > path:nth-child(9), button:hover .mark-turn > path:nth-child(9) { animation-delay: .4s; }
-a:hover .mark-turn > path:nth-child(10), button:hover .mark-turn > path:nth-child(10) { animation-delay: .45s; }
-@keyframes bandComb {
-  0% { transform: scaleX(1); }
-  34% { transform: scaleX(.05); }
-  100% { transform: scaleX(1); }
+a:hover .mark-petals > path:nth-child(2), button:hover .mark-petals > path:nth-child(2), .mark-tile:hover .mark-petals > path:nth-child(2) { animation-delay: .045s; }
+a:hover .mark-petals > path:nth-child(3), button:hover .mark-petals > path:nth-child(3), .mark-tile:hover .mark-petals > path:nth-child(3) { animation-delay: .09s; }
+a:hover .mark-petals > path:nth-child(4), button:hover .mark-petals > path:nth-child(4), .mark-tile:hover .mark-petals > path:nth-child(4) { animation-delay: .135s; }
+a:hover .mark-petals > path:nth-child(5), button:hover .mark-petals > path:nth-child(5), .mark-tile:hover .mark-petals > path:nth-child(5) { animation-delay: .18s; }
+a:hover .mark-petals > path:nth-child(6), button:hover .mark-petals > path:nth-child(6), .mark-tile:hover .mark-petals > path:nth-child(6) { animation-delay: .225s; }
+a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-child(7), .mark-tile:hover .mark-petals > path:nth-child(7) { animation-delay: .27s; }
+@keyframes petalBreath {
+  0% { transform: translate(0, 0) scale(1); }
+  38% { transform: translate(calc(var(--ox) * 5.2px), calc(var(--oy) * 5.2px)) scale(1.04); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  a:hover .mark-turn > path, button:hover .mark-turn > path { animation: none; }
+  a:hover .mark-petals > path, button:hover .mark-petals > path, .mark-tile:hover .mark-petals > path { animation: none; }
 }
 
+/* ── the sign-in plate (components/AuthCanvas.tsx) ──────────────────
+   Numbers come from the reference screenshot, not from eye - see the header
+   comment in that file. The plate is deliberately fixed to graphite in both
+   themes: it is a lit object on a dark ground, and the form column beside it
+   keeps the visitor's theme. */
+.auth-plate {
+  --tile: clamp(150px, 20vh, 188px);
+  background:
+    radial-gradient(115% 78% at 50% 45%, #1d1d18 0%, #161612 46%, #101010 100%);
+}
+.mark-tile {
+  width: var(--tile);
+  height: var(--tile);
+  border-radius: calc(var(--tile) * .17);
+  background: #0f0d0c;
+  border: 1px solid rgba(255, 255, 255, .05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .055),
+    0 26px 60px -22px rgba(0, 0, 0, .9);
+  color: #fff;
+  transition: border-color .4s ease;
+}
+.mark-tile:hover { border-color: rgba(255, 255, 255, .1); }
+.mark-tile svg { filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .55)); }
+.auth-halo {
+  position: absolute;
+  inset: -70%;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side circle at 50% 50%, rgba(255, 255, 255, .07), rgba(255, 255, 255, .022) 46%, transparent 72%),
+    radial-gradient(closest-side circle at 50% 52%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 62%);
+}
+.auth-caption { color: rgba(255, 255, 255, .3); }
+
 /* ── the intro ──────────────────────────────────────────────────────
-   The curtain opens the way the mark is built: the disc arrives, its bands
-   comb in along their own length (Logo's `draw`), three hairline circles
-   start on the mark's own rim and widen outward,
-   a soft green bloom swells behind it once, and a hairline rule grows under
-   the wordmark before the whole thing lifts.
+   The curtain opens the way the mark is built: the rosette unfurls petal by
+   petal (Logo's `draw`), three hairline circles start on the mark's own rim and
+   widen outward, a soft green bloom swells behind it once, and a hairline rule
+   grows under the wordmark before the whole thing lifts.
 
    The rings animate with a scale transform rather than the CSS `r` geometry
    property, which not every engine animates; each circle scales about the
