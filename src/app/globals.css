@@ -621,33 +621,95 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
    themes: it is a lit object on a dark ground, and the form column beside it
    keeps the visitor's theme. */
 .auth-plate {
-  --tile: clamp(150px, 20vh, 188px);
+  --tile: clamp(154px, 21vh, 194px);
   background:
+    radial-gradient(54% 40% at 50% 50%, rgba(255, 255, 255, .05), transparent 72%),
     radial-gradient(115% 78% at 50% 45%, #1d1d18 0%, #161612 46%, #101010 100%);
 }
+/* the field fades at the plate borders: a grid that runs to the very edge turns
+   the panel into graph paper, while a grid that dissolves turns it into a
+   lit surface with an instrument on it */
+.auth-field {
+  -webkit-mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
+  mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
+}
+/* the optical axis, one hairline each way. Both are phased by the same
+   measurement that phases the grid, so they cross where the tile sits and the
+   tile's own opacity ends each line at its edge. */
+.auth-axis { position: absolute; pointer-events: none; background: rgba(255, 255, 255, .085); }
+.auth-axis-h {
+  left: 0; right: 0; top: 50%; height: 1px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+}
+.auth-axis-v {
+  top: 0; bottom: 0; left: 50%; width: 1px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+}
+/* four corner brackets, one fixed measure off the tile at every size. They are
+   static while the tile blooms up into them, which is what makes the centring
+   read as deliberate rather than as a coincidence of flexbox. */
+.auth-brackets {
+  --arm: 15px;
+  --th: 1px;
+  --brk: rgba(255, 255, 255, .22);
+  position: absolute;
+  inset: -17px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--arm) var(--th),
+    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--th) var(--arm),
+    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--arm) var(--th),
+    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--th) var(--arm),
+    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--arm) var(--th),
+    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--th) var(--arm),
+    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--arm) var(--th),
+    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--th) var(--arm);
+  background-repeat: no-repeat;
+}
+/* the tile is the object on the plate, so it is the one thing here built as a
+   lit solid: top edge catching light, bottom edge falling away, the inside
+   darkening toward its own walls, and two shadows - a tight contact one and a
+   wide throw that lifts it off the grid */
 .mark-tile {
   width: var(--tile);
   height: var(--tile);
   border-radius: calc(var(--tile) * .17);
-  background: #0f0d0c;
-  border: 1px solid rgba(255, 255, 255, .05);
+  background:
+    radial-gradient(120% 92% at 30% 10%, rgba(255, 255, 255, .055), transparent 58%),
+    linear-gradient(178deg, #1a1816 0%, #100e0d 40%, #0a0908 100%);
+  border: 1px solid rgba(255, 255, 255, .075);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .055),
-    0 26px 60px -22px rgba(0, 0, 0, .9);
+    inset 0 1px 0 rgba(255, 255, 255, .1),
+    inset 0 -1px 0 rgba(0, 0, 0, .55),
+    inset 0 0 46px rgba(0, 0, 0, .5),
+    0 2px 3px rgba(0, 0, 0, .45),
+    0 12px 26px -14px rgba(0, 0, 0, .8),
+    0 34px 66px -26px rgba(0, 0, 0, .95);
   color: #fff;
   transition: border-color .4s ease;
 }
-.mark-tile:hover { border-color: rgba(255, 255, 255, .1); }
-.mark-tile svg { filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .55)); }
+.mark-tile:hover { border-color: rgba(255, 255, 255, .13); }
+/* 60% of the tile, sized from the tile rather than passed in px, so the mark
+   keeps the reference's proportion at every viewport */
+.mark-tile > svg { width: 60%; height: 60%; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .6)); }
 .auth-halo {
   position: absolute;
-  inset: -70%;
+  inset: -58%;
   pointer-events: none;
   background:
-    radial-gradient(closest-side circle at 50% 50%, rgba(255, 255, 255, .07), rgba(255, 255, 255, .022) 46%, transparent 72%),
+    radial-gradient(closest-side circle at 50% 50%, rgba(255, 255, 255, .08), rgba(255, 255, 255, .022) 46%, transparent 72%),
     radial-gradient(closest-side circle at 50% 52%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 62%);
 }
-.auth-caption { color: rgba(255, 255, 255, .3); }
+/* out of the centring flow and pinned under the tile's own bottom edge - past
+   the brackets, so the label never crowds the frame it names. Centred on the
+   plate's centre line, so it can never drag the mark off the middle again. */
+.auth-caption {
+  top: calc(50% + var(--tile) / 2 + 42px);
+  color: rgba(255, 255, 255, .32);
+  white-space: nowrap;
+}
 
 /* ── the intro ──────────────────────────────────────────────────────
    The mark in the curtain does only what it does everywhere else: it turns
