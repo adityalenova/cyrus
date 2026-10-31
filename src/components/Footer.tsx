@@ -54,18 +54,23 @@ export default function Footer() {
                 <XIcon />
               </a>
             </div>
-            {/* Product Hunt. The embed arrives as its own white plate with a
-                red hairline and a 10px corner radius - the same radius the
-                icon tiles above use - so it belongs to this cluster without
-                a frame of ours. It scales inside its column: at two columns
-                on a phone the brand block is ~150px wide, and a fixed 250px
-                image would push the footer sideways. */}
-            <a className="block mt-4 max-w-[250px] leading-none"
+            {/* Product Hunt, and the one place on the site allowed to wear
+                coral. Two choices here: the embed is asked for in its dark
+                theme, because the light one arrives as a 250×54 white slab
+                and a white slab is the loudest object in a graphite footer;
+                and the colour goes in the mat around it instead - Product
+                Hunt's own #FF6154, graded down to a deeper red so the frame
+                has a top light and a bottom weight rather than reading as a
+                flat outline. Bold frame, quiet centre. The 7px mat keeps the
+                plate's 10px corner concentric inside our 16px one, and the
+                whole thing is capped at 200px wide - it shrinks again inside
+                the two-column mobile footer instead of pushing it sideways. */}
+            <a className="mt-3.5 inline-flex items-center rounded-[16px] bg-[linear-gradient(150deg,#ff6154_0%,#d8362d_100%)] p-[7px] leading-none shadow-[0_10px_26px_-14px_rgba(255,97,84,.75)] transition-[filter,box-shadow] duration-200 hover:brightness-110 hover:shadow-[0_12px_30px_-12px_rgba(255,97,84,.85)]"
               href={"https://www.producthunt.com/products/cyrus-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-cyrus-ai"}
               target="_blank" rel="noopener noreferrer">
-              <img className="block w-full h-auto" width={250} height={54}
+              <img className="block h-auto w-[200px] max-w-full" width={250} height={54}
                 alt="cyrus.ai - The developer-program platform | Product Hunt"
-                src={"https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1299626&theme=light&t=1793457900516"} />
+                src={"https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1299626&theme=dark&t=1793457900516"} />
             </a>
           </div>
           {COLS.map(([title, links]) => (
