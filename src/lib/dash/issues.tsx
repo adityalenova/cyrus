@@ -16,6 +16,7 @@ import {
   daysAgo, isStale, type IssueStage, type TrackedIssue,
 } from "./shared";
 import type { Dash } from "./useDash";
+import { trackedIssuesToCsv } from "./csvExport";
 
 const ROW = "flex items-start gap-3.5 px-4 py-3.5 rounded-[14px] border transition-colors";
 
@@ -149,7 +150,36 @@ export function IssuesSection({ d }: { d: Dash }) {
   const shown = stage === "all" ? d.issues : d.byStage(stage);
   const offered = ISSUE_SIGNALS.filter((s) => !d.ledger[s.url]).slice(0, 6);
 
+  const exportCsv = () => {
+    if (!d.issues.length) return;
+    const payload = d.issues.map((i) => ({
+      repo: i.repo,
+      number: i.number,
+      title: i.title,
+      url: i.url,
+      stage: STAGE_LABEL[d.stageOf(i.url)],
+      lang: i.lang ?? null,
+      stars: i.stars ?? 0,
+      labels: i.labels ?? [],
+      beginner: Boolean(i.beginner),
+      added: i.added,
+      updated: i.updated ?? null,
+    }));
+    const csvData = trackedIssuesToCsv(payload);
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = `cyrus-tracked-issues-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    d.toast(`Exported ${payload.length} tracked issues as CSV`);
+  };
+
   const exportJson = () => {
+    if (!d.issues.length) return;
     const payload = d.issues.map((i) => ({
       repo: i.repo,
       number: i.number,
@@ -173,7 +203,7 @@ export function IssuesSection({ d }: { d: Dash }) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(u);
-    d.toast(`Exported ${payload.length} tracked issues`);
+    d.toast(`Exported ${payload.length} tracked issues as JSON`);
   };
 
   return (
@@ -211,10 +241,16 @@ export function IssuesSection({ d }: { d: Dash }) {
           </button>
         ))}
         {d.issues.length > 0 && (
-          <button onClick={exportJson}
-            className="ml-auto px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
-            Export JSON
-          </button>
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={exportCsv}
+              className="px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
+              Export CSV
+            </button>
+            <button onClick={exportJson}
+              className="px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
+              Export JSON
+            </button>
+          </div>
         )}
       </div>
 
