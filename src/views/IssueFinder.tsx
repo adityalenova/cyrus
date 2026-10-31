@@ -117,6 +117,7 @@ export default function IssueFinder() {
   const [more, setMore] = useState(false);
   const [appending, setAppending] = useState(false);
   const [taken, setTaken] = useState(1);
+  const [retryCount, setRetryCount] = useState(0);
   const typing = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* the page number is deliberately not in the URL: Show more is a local
@@ -156,7 +157,7 @@ export default function IssueFinder() {
       })
       .catch(() => { if (live) setStatus("error"); });
     return () => { live = false; };
-  }, [query]);
+  }, [query, retryCount]);
 
   /* keep the text box honest when the URL changes from a link or the back button */
   useEffect(() => { setTerm(params.get("q") ?? ""); }, [params]);
@@ -317,7 +318,7 @@ export default function IssueFinder() {
                 It is a static snapshot, so this is a delivery problem rather than a data one. Reload, or browse the{" "}
                 <Link to="/organizations" className="text-accent font-semibold hover:underline">organizations</Link> while you wait.
               </p>
-              <button className={`${btn("outline", "sm")} mt-5`} onClick={() => setParams(new URLSearchParams(query))}>Try again</button>
+              <button className={`${btn("outline", "sm")} mt-5`} onClick={() => setRetryCount((c) => c + 1)}>Try again</button>
             </div>
           )}
 
