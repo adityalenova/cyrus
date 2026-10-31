@@ -149,6 +149,33 @@ export function IssuesSection({ d }: { d: Dash }) {
   const shown = stage === "all" ? d.issues : d.byStage(stage);
   const offered = ISSUE_SIGNALS.filter((s) => !d.ledger[s.url]).slice(0, 6);
 
+  const exportJson = () => {
+    const payload = d.issues.map((i) => ({
+      repo: i.repo,
+      number: i.number,
+      title: i.title,
+      url: i.url,
+      stage: d.stageOf(i.url),
+      stageLabel: STAGE_LABEL[d.stageOf(i.url)],
+      lang: i.lang ?? null,
+      stars: i.stars ?? 0,
+      labels: i.labels ?? [],
+      beginner: Boolean(i.beginner),
+      added: i.added,
+      updated: i.updated ?? null,
+    }));
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = `cyrus-tracked-issues-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    d.toast(`Exported ${payload.length} tracked issues`);
+  };
+
   return (
     <>
       <DashHead title="My Issues"
@@ -183,6 +210,12 @@ export function IssuesSection({ d }: { d: Dash }) {
             </span>
           </button>
         ))}
+        {d.issues.length > 0 && (
+          <button onClick={exportJson}
+            className="ml-auto px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
+            Export JSON
+          </button>
+        )}
       </div>
 
       {shown.length ? (
