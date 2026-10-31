@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { snapshotLabel, updateSnapshotBadge } from "../../scripts/readme-snapshot.mjs";
 
@@ -59,7 +60,7 @@ globalThis.fetch = async () => ({ ok: true, json: async () => ({ hackathons: [] 
 const setTimeout = globalThis.setTimeout;
 globalThis.setTimeout = (callback) => setTimeout(callback, 0);
 `);
-    execFileSync(process.execPath, ["--import", hook, join(fixture, "scripts", script), "gsoc"], {
+    execFileSync(process.execPath, ["--import", pathToFileURL(hook).href, join(fixture, "scripts", script), "gsoc"], {
       cwd: fixture, stdio: "pipe", timeout: 10000,
     });
     expect(readFileSync(join(fixture, "README.md"), "utf8")).toBe(badge.replace("12_Oct_2026", "1_Jan_2027"));

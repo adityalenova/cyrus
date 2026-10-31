@@ -9,9 +9,11 @@
    Cron example (daily 06:00): 0 6 * * * cd ~/Desktop/agent-skills && npm run refresh -- gsoc
    ═════════════════════════════════════════════════════════════════════ */
 import { writeFileSync, mkdirSync } from "fs";
+import { fileURLToPath } from "url";
+import { join } from "path";
 import { updateReadmeSnapshot } from "./readme-snapshot.mjs";
 
-const ROOT = new URL("..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const EMOJI = /[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]/gu;
 const clean = (s) => (s || "").replace(EMOJI, "").replace(/[—–]/g, "-").replace(/\s+/g, " ").trim();
 const today = new Date().toISOString().slice(0, 10);
@@ -69,8 +71,8 @@ async function refreshGsoc() {
     console.log(`gsoc ${year}: ${kept}/${done} accepted kept`);
   }
   if (projects.length < 5000) { console.log(`gsoc: only ${projects.length} projects - archive looks degraded, keeping the existing file`); return; }
-  mkdirSync(`${ROOT}public/data`, { recursive: true });
-  writeFileSync(`${ROOT}public/data/gsoc-projects.json`, JSON.stringify({ projects, orgs }));
+  mkdirSync(join(ROOT, "public/data"), { recursive: true });
+  writeFileSync(join(ROOT, "public/data/gsoc-projects.json"), JSON.stringify({ projects, orgs }));
   console.log(`gsoc: ${projects.length} projects, ${Object.keys(orgs).length} orgs → public/data/gsoc-projects.json`);
 }
 
