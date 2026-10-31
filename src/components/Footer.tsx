@@ -54,6 +54,19 @@ export default function Footer() {
                 <XIcon />
               </a>
             </div>
+            {/* Product Hunt. The embed arrives as its own white plate with a
+                red hairline and a 10px corner radius - the same radius the
+                icon tiles above use - so it belongs to this cluster without
+                a frame of ours. It scales inside its column: at two columns
+                on a phone the brand block is ~150px wide, and a fixed 250px
+                image would push the footer sideways. */}
+            <a className="block mt-4 max-w-[250px] leading-none"
+              href={"https://www.producthunt.com/products/cyrus-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-cyrus-ai"}
+              target="_blank" rel="noopener noreferrer">
+              <img className="block w-full h-auto" width={250} height={54}
+                alt="cyrus.ai - The developer-program platform | Product Hunt"
+                src={"https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1299626&theme=light&t=1793457900516"} />
+            </a>
           </div>
           {COLS.map(([title, links]) => (
             <div key={title}>

@@ -18,6 +18,10 @@
 </p>
 
 <p align="center">
+  <a href="https://www.producthunt.com/products/cyrus-ai?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-cyrus-ai" target="_blank" rel="noopener noreferrer"><img alt="cyrus.ai - The developer-program platform | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1299626&amp;theme=light&amp;t=1793457900516"/></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/React%2019-149eca?style=flat-square&logo=react&logoColor=white" alt="React 19"/>
   <img src="https://img.shields.io/badge/Next.js%2016-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16"/>
   <img src="https://img.shields.io/badge/TypeScript%20strict-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript"/>
