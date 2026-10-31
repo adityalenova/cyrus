@@ -12,7 +12,7 @@
    Sort, search and the automation toggle all live in the URL, so the
    view you are looking at is a link you can send someone.
    ═══════════════════════════════════════════════════════════════════ */
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
 import { BOTS, BOARD_META, LEADERS } from "../data/leaderboard";
 import { CRAWL } from "../data/crawlStats";
@@ -103,6 +103,7 @@ export default function Leaderboard() {
   const [params, setParams] = useSearchParams();
   const [term, setTerm] = useState(params.get("q") ?? "");
   const typing = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => { setTerm(params.get("q") ?? ""); }, [params]);
 
   const metric: Metric = isMetric(params.get("by")) ? (params.get("by") as Metric) : "merged_total";
   const withBots = params.get("bots") === "1";
