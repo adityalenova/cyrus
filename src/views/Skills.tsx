@@ -121,22 +121,56 @@ function PCard({ r }: { r: Repo }) {
 }
 
 export default function Skills() {
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
   const { downloads } = useStore();
   const [q, setQ] = useState(params.get("q") ?? "");
-  /* the router's search only lands one effect after mount - mirror it
-     so a shared /skills?q=linkedin link actually prefills */
-  useEffect(() => { setQ(params.get("q") ?? ""); }, [params]);
-  const [level, setLevel] = useState<"all" | Level>("all");
-  const [cat, setCat] = useState("all");
-  const [org, setOrg] = useState("all");
+  const [level, setLevel] = useState<"all" | Level>((params.get("level") as Level) ?? "all");
+  const [cat, setCat] = useState(params.get("cat") ?? "all");
+  const [org, setOrg] = useState(params.get("org") ?? "all");
   const [langs, setLangs] = useState<string[]>([]);
   const [fw, setFw] = useState<string[]>([]);
-  const [domain, setDomain] = useState("all");
-  const [tool, setTool] = useState("all");
-  const [kind, setKind] = useState("all");
-  const [sort, setSort] = useState<Sort>("stars");
+  const [domain, setDomain] = useState(params.get("domain") ?? "all");
+  const [tool, setTool] = useState(params.get("tool") ?? "all");
+  const [kind, setKind] = useState(params.get("kind") ?? "all");
+  const [sort, setSort] = useState<Sort>((params.get("sort") as Sort) ?? "stars");
   const [shown, setShown] = useState(48);
+
+  const write = (over: Partial<{ q: string; level: string; cat: string; org: string; domain: string; tool: string; kind: string; sort: string }>) => {
+    const m = { q, level, cat, org, domain, tool, kind, sort, ...over };
+    const rec: Record<string, string> = {};
+    if (m.q) rec.q = m.q;
+    if (m.level !== "all") rec.level = m.level;
+    if (m.cat !== "all") rec.cat = m.cat;
+    if (m.org !== "all") rec.org = m.org;
+    if (m.domain !== "all") rec.domain = m.domain;
+    if (m.tool !== "all") rec.tool = m.tool;
+    if (m.kind !== "all") rec.kind = m.kind;
+    if (m.sort !== "stars") rec.sort = m.sort;
+    setParams(rec);
+  };
+
+  const setQUrl = (v: string) => { setQ(v); write({ q: v }); setShown(48); };
+  const setLevelUrl = (v: "all" | Level) => { setLevel(v); write({ level: v }); setShown(48); };
+  const setCatUrl = (v: string) => { setCat(v); write({ cat: v }); setShown(48); };
+  const setOrgUrl = (v: string) => { setOrg(v); write({ org: v }); setShown(48); };
+  const setSortUrl = (v: Sort) => { setSort(v); write({ sort: v }); };
+  const clearAll = () => {
+    setQ(""); setLevel("all"); setCat("all"); setOrg("all");
+    setLangs([]); setFw([]); setDomain("all"); setTool("all"); setKind("all"); setSort("stars");
+    setParams({});
+    setShown(48);
+  };
+
+  useEffect(() => {
+    setQ(params.get("q") ?? "");
+    setLevel((params.get("level") as Level) ?? "all");
+    setCat(params.get("cat") ?? "all");
+    setOrg(params.get("org") ?? "all");
+    setDomain(params.get("domain") ?? "all");
+    setTool(params.get("tool") ?? "all");
+    setKind(params.get("kind") ?? "all");
+    setSort((params.get("sort") as Sort) ?? "stars");
+  }, [params]);
 
   const list = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -165,7 +199,12 @@ export default function Skills() {
   const fin = "w-full bg-paper border border-line rounded-xl px-3.5 py-2.5 text-[14px] outline-none transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(34, 197, 94,.12)]";
   const label = "block font-mono text-[10.5px] tracking-[.12em] uppercase text-dim mb-2.5";
   const rchip = (on: boolean) => `text-[12px] font-semibold rounded-full px-3 py-1.5 border transition-all cursor-pointer ${on ? "bg-coffee border-coffee text-foam shadow-soft" : "bg-paper border-line text-cocoa hover:border-accent hover:text-rust"}`;
-  const tog = (cur: string, id: string, set: (v: string) => void) => { set(cur === id ? "all" : id); setShown(48); };
+  const tog = (cur: string, id: string, set: (v: string) => void, key: "domain" | "tool" | "kind") => {
+    const next = cur === id ? "all" : id;
+    set(next);
+    write({ [key]: next });
+    setShown(48);
+  };
 
   return (
     <>
@@ -187,13 +226,13 @@ export default function Skills() {
         <aside className="sticky top-[86px] max-[980px]:static max-h-[calc(100vh-110px)] overflow-y-auto max-[980px]:max-h-none bg-card border border-line rounded-[22px] p-[22px] shadow-soft grid gap-5">
           <div>
             <label htmlFor="skills-search" className={label}>Search</label>
-            <input id="skills-search" className={fin} placeholder="name, tag, description…" value={q} onChange={(e) => { setQ(e.target.value); setShown(48); }} />
+            <input id="skills-search" className={fin} placeholder="name, tag, description…" value={q} onChange={(e) => setQUrl(e.target.value)} />
           </div>
           <div>
             <span className={label}>What do you want to do</span>
             <div className="flex flex-wrap gap-[7px]">
               {DOMAINS.map((d) => (
-                <button key={d.id} onClick={() => tog(domain, d.id, setDomain)} className={rchip(domain === d.id)}>{d.label}</button>
+                <button key={d.id} onClick={() => tog(domain, d.id, setDomain, "domain")} className={rchip(domain === d.id)}>{d.label}</button>
               ))}
             </div>
           </div>
@@ -201,7 +240,7 @@ export default function Skills() {
             <span className={label}>Works with</span>
             <div className="flex flex-wrap gap-[7px]">
               {TOOLS.map((t) => (
-                <button key={t.id} onClick={() => tog(tool, t.id, setTool)} className={rchip(tool === t.id)}>{t.label}</button>
+                <button key={t.id} onClick={() => tog(tool, t.id, setTool, "tool")} className={rchip(tool === t.id)}>{t.label}</button>
               ))}
             </div>
           </div>
@@ -209,7 +248,7 @@ export default function Skills() {
             <span className={label}>Format</span>
             <div className="flex flex-wrap gap-[7px]">
               {KINDS.map((k) => (
-                <button key={k.id} onClick={() => tog(kind, k.id, setKind)} className={rchip(kind === k.id)}>{k.label}</button>
+                <button key={k.id} onClick={() => tog(kind, k.id, setKind, "kind")} className={rchip(kind === k.id)}>{k.label}</button>
               ))}
             </div>
           </div>
@@ -230,7 +269,7 @@ export default function Skills() {
           </div>
           <div>
             <span className={label}>Difficulty</span>
-            <select className={`${fin} select-warm pr-8`} value={level} onChange={(e) => { setLevel(e.target.value as typeof level); setShown(48); }}>
+            <select className={`${fin} select-warm pr-8`} value={level} onChange={(e) => setLevelUrl(e.target.value as typeof level)}>
               <option value="all">Any difficulty</option>
               <option value="beginner">Beginner · under 10k★</option>
               <option value="intermediate">Intermediate · 10–50k★</option>
@@ -239,19 +278,19 @@ export default function Skills() {
           </div>
           <div>
             <span className={label}>Program / org</span>
-            <select className={`${fin} select-warm pr-8`} value={org} onChange={(e) => { setOrg(e.target.value); setShown(48); }}>
+            <select className={`${fin} select-warm pr-8`} value={org} onChange={(e) => setOrgUrl(e.target.value)}>
               <option value="all">Any organization</option>
               {orgLogins.map(([l, n]) => <option key={l} value={l}>{n}</option>)}
             </select>
           </div>
           <div>
             <span className={label}>Shelf</span>
-            <select className={`${fin} select-warm pr-8`} value={cat} onChange={(e) => { setCat(e.target.value); setShown(48); }}>
+            <select className={`${fin} select-warm pr-8`} value={cat} onChange={(e) => setCatUrl(e.target.value)}>
               <option value="all">All shelves</option>
               {CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
           </div>
-          <button className={btn("primary", "md", "w-full")} onClick={() => { setQ(""); setLevel("all"); setCat("all"); setOrg("all"); setLangs([]); setFw([]); setDomain("all"); setTool("all"); setKind("all"); setSort("stars"); setShown(48); }}>
+          <button className={btn("primary", "md", "w-full")} onClick={clearAll}>
             Reset filters
           </button>
         </aside>
@@ -263,7 +302,7 @@ export default function Skills() {
               <b className="text-accent">{list.length}</b> projects found
             </span>
             <span className="ml-auto text-[12px] text-dim">Sort by</span>
-            <select className={`${fin} select-warm !w-auto rounded-full pr-8 py-2 text-[13px] font-semibold`} value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
+            <select className={`${fin} select-warm !w-auto rounded-full pr-8 py-2 text-[13px] font-semibold`} value={sort} onChange={(e) => setSortUrl(e.target.value as Sort)}>
               <option value="stars">Most stars</option>
               <option value="dl">Most downloaded on cyrus</option>
               <option value="forks">Most forks</option>
