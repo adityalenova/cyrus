@@ -331,7 +331,7 @@ export default function Organizations() {
       <section className={`${W} pt-10 pb-4`}>
         <p className="font-mono text-[11.5px] tracking-[.1em] uppercase text-cocoa mb-5">
           Showing <b className="text-accent">{Math.min(shown, list.length)}</b> of {fmt(list.length)} organization{list.length === 1 ? "" : "s"}
-          {(sector !== "all" || tech !== "all" || prog !== "all") && <span className="text-dim"> · <button className="hover:text-brick cursor-pointer" onClick={clearUrl}>clear filters</button></span>}
+          {(sector !== "all" || tech !== "all" || prog !== "all" || Boolean(q.trim())) && <span className="text-dim"> · <button className="hover:text-brick cursor-pointer" onClick={clearUrl}>clear filters</button></span>}
         </p>
         {list.length ? (
           <>
