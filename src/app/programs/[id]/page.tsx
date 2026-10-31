@@ -4,6 +4,10 @@ import { PROGRAMS } from "@/data/orgs";
 import { canonical, clip } from "@/lib/seo";
 import { jsonLdScript, programEntity } from "@/lib/jsonLd";
 
+export function generateStaticParams() {
+  return PROGRAMS.map((p) => ({ id: p.id }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const p = PROGRAMS.find((x) => x.id === decodeURIComponent(id ?? "").toLowerCase());

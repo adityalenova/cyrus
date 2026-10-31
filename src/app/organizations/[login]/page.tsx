@@ -5,6 +5,10 @@ import { canonical, clip } from "@/lib/seo";
 import { jsonLdScript, organizationEntity } from "@/lib/jsonLd";
 import { fmt } from "@/lib/siteStats";
 
+export function generateStaticParams() {
+  return ORGS.map((o) => ({ login: encodeURIComponent(o.login) }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ login: string }> }): Promise<Metadata> {
   const { login } = await params;
   const slug = decodeURIComponent(login ?? "").toLowerCase();
