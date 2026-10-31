@@ -594,56 +594,25 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 }
 
 /* ── the brand mark: a rosette that is always turning ────────────────
-   Two rotations, deliberately separated so they can compose.
-
-   `.mark-spin` is the standing one: one revolution every 14s, linear, forever.
-   The rosette is deliberately uneven - seven petals, gaps from 43.5° to 55°,
-   the bottom pair a fifth smaller - so the turn never lands on itself and the
-   eye keeps reading the same seven petals rather than a spinner. That
-   irregularity is why a constant revolution is legible here and was not worth
-   it for a symmetric mark.
-
-   `.mark-wind` is the arrival, on the instances that draw themselves: it opens
-   300° behind the spin and decelerates to zero, so the entrance bleeds into the
-   standing turn instead of stopping dead. Both live on ancestor groups, so the
-   petals' own unfurl and the hover breath underneath them are untouched. */
-.mark-spin, .mark-wind {
+   One motion, on purpose. `.mark-spin` is a single revolution every 14s,
+   linear, forever. The rosette is deliberately uneven - seven petals, gaps from
+   43.5° to 55°, the bottom pair a fifth smaller - so the turn never lands on
+   itself and the eye keeps reading the same seven petals rather than a spinner.
+   That irregularity is why a constant revolution is legible here and was not
+   worth it for a symmetric mark. There is no entrance wind and no hover breath
+   on top of it any more: the mark's whole personality is that it is always
+   moving, and two one-shot gestures stacked on it only made it busy. */
+.mark-spin {
   transform-box: view-box;
   transform-origin: 50px 50px;
+  animation: markSpin 14s linear infinite;
 }
-.mark-spin { animation: markSpin 14s linear infinite; }
-.mark-wind { animation: markWind 1.7s cubic-bezier(.16, .84, .24, 1) both; }
 @keyframes markSpin { to { transform: rotate(360deg); } }
-@keyframes markWind { from { transform: rotate(-300deg); } to { transform: rotate(0deg); } }
 
-/* The header mark: seven petals that answer a hover by breathing. Each one
-   pushes outward along its own axis (--ox/--oy, the vectors measured from the
-   artwork in src/lib/mark.ts) and settles back, staggered round the ring so the
-   gesture travels instead of the whole mark jumping. Entrance is framer-motion's
-   in Logo(); this is the hover. */
-.mark-petals > path {
-  transform-box: view-box;
-  transform-origin: 50px 50px;
-}
-a:hover .mark-petals > path, button:hover .mark-petals > path, .mark-tile:hover .mark-petals > path {
-  animation: petalBreath .66s cubic-bezier(.22, 1, .36, 1) both;
-}
-a:hover .mark-petals > path:nth-child(2), button:hover .mark-petals > path:nth-child(2), .mark-tile:hover .mark-petals > path:nth-child(2) { animation-delay: .045s; }
-a:hover .mark-petals > path:nth-child(3), button:hover .mark-petals > path:nth-child(3), .mark-tile:hover .mark-petals > path:nth-child(3) { animation-delay: .09s; }
-a:hover .mark-petals > path:nth-child(4), button:hover .mark-petals > path:nth-child(4), .mark-tile:hover .mark-petals > path:nth-child(4) { animation-delay: .135s; }
-a:hover .mark-petals > path:nth-child(5), button:hover .mark-petals > path:nth-child(5), .mark-tile:hover .mark-petals > path:nth-child(5) { animation-delay: .18s; }
-a:hover .mark-petals > path:nth-child(6), button:hover .mark-petals > path:nth-child(6), .mark-tile:hover .mark-petals > path:nth-child(6) { animation-delay: .225s; }
-a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-child(7), .mark-tile:hover .mark-petals > path:nth-child(7) { animation-delay: .27s; }
-@keyframes petalBreath {
-  0% { transform: translate(0, 0) scale(1); }
-  38% { transform: translate(calc(var(--ox) * 5.2px), calc(var(--oy) * 5.2px)) scale(1.04); }
-  100% { transform: translate(0, 0) scale(1); }
-}
 @media (prefers-reduced-motion: reduce) {
   /* a mark that turns forever is exactly the animation a reduced-motion
      visitor is asking not to have: it stops, and sits at its drawn angle. */
-  .mark-spin, .mark-wind { animation: none; }
-  a:hover .mark-petals > path, button:hover .mark-petals > path, .mark-tile:hover .mark-petals > path { animation: none; }
+  .mark-spin { animation: none; }
 }
 
 /* ── the sign-in plate (components/AuthCanvas.tsx) ──────────────────
@@ -681,11 +650,11 @@ a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-c
 .auth-caption { color: rgba(255, 255, 255, .3); }
 
 /* ── the intro ──────────────────────────────────────────────────────
-   The curtain opens by winding the mark up, not by decorating around it: the
-   rosette turns in from 300° behind and decelerates into the same revolution it
-   keeps forever, its petals unfurl outward in ring order, and one soft green
-   bloom swells behind it. A hairline rule grows under the wordmark before the
-   whole thing lifts.
+   The mark in the curtain does only what it does everywhere else: it turns
+   (`.mark-spin` above). The intro is built around it rather than on top of it -
+   the rosette fades up already mid-revolution, one soft green bloom swells once
+   behind it, the wordmark rises letter by letter, and a hairline rule grows
+   under that before the whole thing lifts.
 
    The bloom is a fixed-size circle scaling about its own centre, and the rule
    scales on the axis it grows along; both are stopped for reduced-motion

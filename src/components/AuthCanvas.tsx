@@ -54,7 +54,7 @@ export default function AuthCanvas() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: easeSilk, delay: 0.05 }}>
           <span aria-hidden className="auth-halo" />
-          <Logo size={112} tone="steel" draw />
+          <Logo size={112} tone="steel" />
         </motion.div>
         {/* the reference's tile is not labelled; this one says what it is, in
             the same hairline voice as the grid */}

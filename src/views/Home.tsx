@@ -413,14 +413,15 @@ function OrgMarquee() {
      the 46s token while carrying 182 cards per row, roughly 1,000px a second,
      which read as a blur rather than a shelf you can browse.
 
-     The row is full-bleed and has no edge mask: the shelf now runs the whole
-     width of the screen, so a card travels from one edge to the other instead
-     of fading out in the middle of the page. */
+     The row stays inside the section column and fades at both ends with
+     .marq-mask, the same as the organizations explorer: the shelf is a band of
+     cards with a beginning and an end, not something that runs edge to edge
+     past the rest of the page. */
   const CARD = 264;
   const SPEED = 52; /* px per second */
   const top = [...ORGS].sort(byStars);
   const track = (row: ReactNode[], reverse = false) => (
-    <div className="overflow-hidden mx-[calc(50%_-_50vw)]">
+    <div className="marq-mask overflow-hidden">
       <div className={`marq-track animate-marq ${reverse ? "[animation-direction:reverse]" : ""}`}
         style={{
           animationDuration: `${Math.round((row.length * CARD) / SPEED)}s`,

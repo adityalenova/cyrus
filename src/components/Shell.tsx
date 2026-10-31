@@ -24,16 +24,15 @@ function ScrollManager() {
    server HTML never carries it.
 
    The sequence is the brand, not a spinner. The mark is a seven-petal rosette
-   that never stops turning, so the intro does not introduce a second idea - it
-   winds the same one up. The mark arrives 300° behind where it will sit and
-   decelerates into its standing revolution (`.mark-wind` + `.mark-spin` in
-   globals.css) while its petals unfurl outward in ring order, so the entrance
-   bleeds into the loop rather than stopping. Behind it a single soft bloom
-   swells once. Then the wordmark rises letter by letter, a hairline rule grows
-   under it, and the line of what the site is fades in last.
-   Everything resolves at about two seconds, and then the curtain lifts - timed
-   to read as an arrival and not a wait. Skipped outright for reduced-motion
-   visitors and for every route inside the application shell. */
+   that never stops turning - `.mark-spin` in globals.css is its only motion, on
+   the splash and everywhere else - so the intro does not stage a second idea
+   around it. The curtain opens on the mark already mid-turn, fading up over half
+   a second with a single soft bloom swelling once behind it. Then the wordmark
+   rises letter by letter, a hairline rule grows under it, and the line of what
+   the site is fades in last. Everything resolves at about two seconds, and then
+   the curtain lifts - timed to read as an arrival and not a wait. Skipped
+   outright for reduced-motion visitors and for every route inside the
+   application shell. */
 const CURSOR = 2050;                        /* curtain comes down at */
 const WORD = "cyrus";
 /* the same two curves the rest of the site moves on: settle, then leave */
@@ -81,13 +80,14 @@ function Splash({ app }: { app: boolean }) {
           initial={{ y: 0 }} animate={{ y: lift ? "-100%" : 0 }}
           transition={{ duration: .62, ease: EASE_LIFT }}>
           <div className="flex flex-col items-center gap-[18px]">
-            {/* the mark is laid down: one bloom behind it, then it winds into
-                its own permanent turn while the petals unfurl (Logo's `draw`) */}
+            {/* the mark is laid down: one bloom behind it, then it fades in
+                already turning - the turn is the mark's only motion, and the
+                wordmark rising under it is what makes this an entrance */}
             <div className="relative grid place-items-center">
               <span className="bloom" />
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 transition={{ duration: .5, ease: EASE_SILK }}>
-                <Logo size={104} draw />
+                <Logo size={104} />
               </motion.div>
             </div>
             <motion.div className="flex font-display font-extrabold tracking-[-.03em] text-[38px] leading-none"

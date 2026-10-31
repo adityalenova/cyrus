@@ -17,8 +17,10 @@
 
    Geometry is in a viewBox of 0 0 100 100 with the rosette centred at 50,50 and
    its outermost point on the rim. PETAL_OUT is each petal's outward unit vector,
-   used for the entrance and the hover, so both move along the petals' own axes
-   instead of around a circle the mark does not actually have.
+   measured from the same trace; the mark's only motion today is a plain
+   revolution, so nothing consumes it, but it is the other half of what was
+   measured off the artwork and any gesture that moves a petal should move it
+   along its own axis rather than around a circle the mark does not have.
 
    No plate and no field. The colour is currentColor, so the same component
    reads correctly on paper and on graphite.

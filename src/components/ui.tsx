@@ -2,10 +2,8 @@
 /* ══ ui.tsx — small shared primitives ═══════════════════════ */
 import { useState } from "react";
 import type { ReactNode, ImgHTMLAttributes } from "react";
-import { motion } from "framer-motion";
 import { tileBG, initials, hash, LEVEL_LABEL } from "../lib/util";
-import { PETALS, PETAL_OUT } from "../lib/mark";
-import type { CSSProperties } from "react";
+import { PETALS } from "../lib/mark";
 import type { Level } from "../lib/types";
 
 /* Seven petals around one centre, traced from the brand artwork (src/lib/mark.ts
@@ -15,22 +13,18 @@ import type { Level } from "../lib/types";
    near-black one. `tone="steel"` swaps that for a brushed-metal gradient, which
    is how the mark appears inside the dark tile on the sign-in canvas.
 
-   `draw` is the entrance: the rosette opens from a bud - each petal scales out
-   from the centre in ring order while the whole flower unwinds a few degrees,
-   so it arrives the way it would be drawn. The hover answers with the same
-   language in reverse: every petal pushes along its own outward axis and
-   settles (globals.css owns that one). There is no idle spin - the petals are
-   deliberately uneven, so a rotation would never land back on itself.
-   Reduced-motion visitors get the finished, still mark, as everywhere else. */
-export function Logo({ size = 30, draw = false, tone = "ink" }:
-  { size?: number; draw?: boolean; tone?: "ink" | "steel" }) {
+   The mark does exactly one thing: it turns. `.mark-spin` (globals.css) revolves
+   it slowly and forever, and there is no entrance, no hover breath and no
+   per-petal unfurl on top of that - the earlier batch had three gestures stacked
+   and the turn got lost among them. Reduced motion is a CSS media query, so
+   nothing here needs to know about it. */
+export function Logo({ size = 30, tone = "ink" }:
+  { size?: number; tone?: "ink" | "steel" }) {
   /* The mark never asks here whether the visitor wants motion: that is
      MotionConfig's `reducedMotion="user"` in Shell, and the CSS media query
-     in globals.css for the hover. Asking here used to make the server's HTML
+     in globals.css for the turn. Asking here used to make the server's HTML
      and the client's first render disagree about the logo's own transform - a
      hydration mismatch on every page, for every reduced-motion visitor. */
-  const anim = draw;
-  const easeSilk = [0.22, 1, 0.36, 1] as const;
   const steel = "cyrus-mark-steel";
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
@@ -44,27 +38,11 @@ export function Logo({ size = 30, draw = false, tone = "ink" }:
           </linearGradient>
         </defs>
       )}
-      {/* Two nested turns. `.mark-spin` is the perpetual one - the rosette
-          always revolves, slowly and clockwise, in CSS. `.mark-wind` is added
-          only where the mark draws itself in: it starts 300° behind and
-          decelerates to nothing, so the arrival and the standing spin are one
-          continuous motion instead of an animation that stops. The petals then
-          unfurl inside both, each along its own measured axis. */}
+      {/* One turn, one group: the petals are static inside it. */}
       <g className="mark-spin">
-        <g className={anim ? "mark-wind mark-petals" : "mark-petals"}>
-          {PETALS.map((d, i) => (
-            <motion.path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"}
-              initial={anim ? { scale: 0.34, opacity: 0 } : false}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.08 + i * 0.05, duration: 0.55, ease: easeSilk }}
-              style={{
-                transformBox: "view-box",
-                transformOrigin: "50px 50px",
-                "--ox": PETAL_OUT[i][0],
-                "--oy": PETAL_OUT[i][1],
-              } as CSSProperties} />
-          ))}
-        </g>
+        {PETALS.map((d, i) => (
+          <path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"} />
+        ))}
       </g>
     </svg>
   );
