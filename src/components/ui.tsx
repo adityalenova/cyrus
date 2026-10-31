@@ -44,24 +44,28 @@ export function Logo({ size = 30, draw = false, tone = "ink" }:
           </linearGradient>
         </defs>
       )}
-      <motion.g className="mark-petals"
-        initial={anim ? { rotate: -30 } : false}
-        animate={{ rotate: 0 }}
-        transition={{ duration: 0.86, ease: easeSilk }}
-        style={{ transformBox: "view-box", transformOrigin: "50px 50px" }}>
-        {PETALS.map((d, i) => (
-          <motion.path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"}
-            initial={anim ? { scale: 0.16, opacity: 0 } : false}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.1 + i * 0.062, duration: 0.62, ease: easeSilk }}
-            style={{
-              transformBox: "view-box",
-              transformOrigin: "50px 50px",
-              "--ox": PETAL_OUT[i][0],
-              "--oy": PETAL_OUT[i][1],
-            } as CSSProperties} />
-        ))}
-      </motion.g>
+      {/* Two nested turns. `.mark-spin` is the perpetual one - the rosette
+          always revolves, slowly and clockwise, in CSS. `.mark-wind` is added
+          only where the mark draws itself in: it starts 300° behind and
+          decelerates to nothing, so the arrival and the standing spin are one
+          continuous motion instead of an animation that stops. The petals then
+          unfurl inside both, each along its own measured axis. */}
+      <g className="mark-spin">
+        <g className={anim ? "mark-wind mark-petals" : "mark-petals"}>
+          {PETALS.map((d, i) => (
+            <motion.path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"}
+              initial={anim ? { scale: 0.34, opacity: 0 } : false}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.08 + i * 0.05, duration: 0.55, ease: easeSilk }}
+              style={{
+                transformBox: "view-box",
+                transformOrigin: "50px 50px",
+                "--ox": PETAL_OUT[i][0],
+                "--oy": PETAL_OUT[i][1],
+              } as CSSProperties} />
+          ))}
+        </g>
+      </g>
     </svg>
   );
 }

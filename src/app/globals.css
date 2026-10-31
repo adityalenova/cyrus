@@ -593,7 +593,30 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
   will-change: transform;
 }
 
-/* the header mark: seven petals that answer a hover by breathing. Each one
+/* ── the brand mark: a rosette that is always turning ────────────────
+   Two rotations, deliberately separated so they can compose.
+
+   `.mark-spin` is the standing one: one revolution every 14s, linear, forever.
+   The rosette is deliberately uneven - seven petals, gaps from 43.5° to 55°,
+   the bottom pair a fifth smaller - so the turn never lands on itself and the
+   eye keeps reading the same seven petals rather than a spinner. That
+   irregularity is why a constant revolution is legible here and was not worth
+   it for a symmetric mark.
+
+   `.mark-wind` is the arrival, on the instances that draw themselves: it opens
+   300° behind the spin and decelerates to zero, so the entrance bleeds into the
+   standing turn instead of stopping dead. Both live on ancestor groups, so the
+   petals' own unfurl and the hover breath underneath them are untouched. */
+.mark-spin, .mark-wind {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+.mark-spin { animation: markSpin 14s linear infinite; }
+.mark-wind { animation: markWind 1.7s cubic-bezier(.16, .84, .24, 1) both; }
+@keyframes markSpin { to { transform: rotate(360deg); } }
+@keyframes markWind { from { transform: rotate(-300deg); } to { transform: rotate(0deg); } }
+
+/* The header mark: seven petals that answer a hover by breathing. Each one
    pushes outward along its own axis (--ox/--oy, the vectors measured from the
    artwork in src/lib/mark.ts) and settles back, staggered round the ring so the
    gesture travels instead of the whole mark jumping. Entrance is framer-motion's
@@ -617,6 +640,9 @@ a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-c
   100% { transform: translate(0, 0) scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
+  /* a mark that turns forever is exactly the animation a reduced-motion
+     visitor is asking not to have: it stops, and sits at its drawn angle. */
+  .mark-spin, .mark-wind { animation: none; }
   a:hover .mark-petals > path, button:hover .mark-petals > path, .mark-tile:hover .mark-petals > path { animation: none; }
 }
 
@@ -655,46 +681,27 @@ a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-c
 .auth-caption { color: rgba(255, 255, 255, .3); }
 
 /* ── the intro ──────────────────────────────────────────────────────
-   The curtain opens the way the mark is built: the rosette unfurls petal by
-   petal (Logo's `draw`), three hairline circles start on the mark's own rim and
-   widen outward, a soft green bloom swells behind it once, and a hairline rule
-   grows under the wordmark before the whole thing lifts.
+   The curtain opens by winding the mark up, not by decorating around it: the
+   rosette turns in from 300° behind and decelerates into the same revolution it
+   keeps forever, its petals unfurl outward in ring order, and one soft green
+   bloom swells behind it. A hairline rule grows under the wordmark before the
+   whole thing lifts.
 
-   The rings animate with a scale transform rather than the CSS `r` geometry
-   property, which not every engine animates; each circle scales about the
-   viewBox centre, which is also its own centre. The rule below is what stops
-   all of it for reduced-motion visitors, and the curtain is skipped outright
-   for them in Shell.tsx. */
-.iris { overflow: visible; }
-.iris circle {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 1.4;
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: irisOpen 1.35s cubic-bezier(.22, 1, .36, 1) both;
-  animation-delay: .28s;
-}
-.iris circle:nth-child(2) { animation-delay: .44s; }
-.iris circle:nth-child(3) { animation-delay: .6s; }
-@keyframes irisOpen {
-  0% { transform: scale(1); opacity: 0; stroke-width: 2.4; }
-  22% { opacity: .46; }
-  100% { transform: scale(2.12); opacity: 0; stroke-width: .25; }
-}
+   The bloom is a fixed-size circle scaling about its own centre, and the rule
+   scales on the axis it grows along; both are stopped for reduced-motion
+   visitors below, and the curtain is skipped outright for them in Shell.tsx. */
 
 /* one bloom, swelling behind the mark while it arrives */
 .bloom {
   position: absolute;
-  width: 320px; height: 320px; border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 26%, transparent), transparent 68%);
-  animation: bloom 1.8s cubic-bezier(.22, 1, .36, 1) both;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 62%);
+  animation: bloom 2.1s cubic-bezier(.22, 1, .36, 1) .1s both;
 }
 @keyframes bloom {
-  0% { transform: scale(.35); opacity: 0; }
-  38% { opacity: .6; }
-  100% { transform: scale(1.15); opacity: 0; }
+  0% { transform: scale(.3); opacity: 0; }
+  30% { opacity: .48; }
+  100% { transform: scale(1.18); opacity: 0; }
 }
 
 /* the rule that grows between the wordmark and what the site is */
@@ -707,7 +714,8 @@ a:hover .mark-petals > path:nth-child(7), button:hover .mark-petals > path:nth-c
 @keyframes ruleGrow { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: .5; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .iris circle, .bloom, .splash-rule { animation: none; }
+  .bloom, .splash-rule { animation: none; }
+  .bloom { opacity: 0; }
   .splash-rule { opacity: .35; }
 }
 .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

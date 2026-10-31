@@ -23,13 +23,14 @@ function ScrollManager() {
 /* one-time intro curtain: marketing pages only, decided after mount so
    server HTML never carries it.
 
-   The sequence is the brand, not a spinner. The mark is a seven-petal rosette,
-   so the intro opens it: the tile of the mark fades up, its petals scale out
-   from the centre in ring order while the flower unwinds a few degrees (Logo's
-   own `draw` pass), a bloom swells
-   behind it, three hairline circles start on the mark's rim and widen outward,
-   the wordmark rises letter by letter, a hairline rule grows under it, and the
-   line of what the site is fades in last.
+   The sequence is the brand, not a spinner. The mark is a seven-petal rosette
+   that never stops turning, so the intro does not introduce a second idea - it
+   winds the same one up. The mark arrives 300° behind where it will sit and
+   decelerates into its standing revolution (`.mark-wind` + `.mark-spin` in
+   globals.css) while its petals unfurl outward in ring order, so the entrance
+   bleeds into the loop rather than stopping. Behind it a single soft bloom
+   swells once. Then the wordmark rises letter by letter, a hairline rule grows
+   under it, and the line of what the site is fades in last.
    Everything resolves at about two seconds, and then the curtain lifts - timed
    to read as an arrival and not a wait. Skipped outright for reduced-motion
    visitors and for every route inside the application shell. */
@@ -38,19 +39,6 @@ const WORD = "cyrus";
 /* the same two curves the rest of the site moves on: settle, then leave */
 const EASE_SILK = [0.22, 1, 0.36, 1] as const;
 const EASE_LIFT = [0.76, 0, 0.24, 1] as const;
-
-/* The rings: three circles that begin on the mark's own rim and travel
-   outward. They are centred in the same 100x100 box the disc is drawn in, so
-   r=49 is the rim itself; only the stroke widens, never the shape. */
-function Iris({ size }: { size: number }) {
-  return (
-    <svg className="iris pointer-events-none absolute" width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="49" />
-      <circle cx="50" cy="50" r="49" />
-      <circle cx="50" cy="50" r="49" />
-    </svg>
-  );
-}
 
 function Splash({ app }: { app: boolean }) {
   const [show, setShow] = useState(false);
@@ -93,13 +81,12 @@ function Splash({ app }: { app: boolean }) {
           initial={{ y: 0 }} animate={{ y: lift ? "-100%" : 0 }}
           transition={{ duration: .62, ease: EASE_LIFT }}>
           <div className="flex flex-col items-center gap-[18px]">
-            {/* the mark is laid down: bloom, then the bands comb in (Logo's
-                `draw`), then the rings travel out from the disc's own rim */}
+            {/* the mark is laid down: one bloom behind it, then it winds into
+                its own permanent turn while the petals unfurl (Logo's `draw`) */}
             <div className="relative grid place-items-center">
               <span className="bloom" />
-              <Iris size={104} />
-              <motion.div initial={{ opacity: 0, scale: 0.68 }} animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: .78, ease: EASE_SILK }}>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                transition={{ duration: .5, ease: EASE_SILK }}>
                 <Logo size={104} draw />
               </motion.div>
             </div>
