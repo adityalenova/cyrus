@@ -114,7 +114,7 @@ describe("trackedIssuesCsvBlob", () => {
       },
     ];
 
-    const bytes = new Uint8Array(await trackedIssuesCsvBlob([sample]).arrayBuffer());
+    const bytes = new Uint8Array(await trackedIssuesCsvBlob(sample).arrayBuffer());
     expect(Array.from(bytes.slice(0, 3))).toEqual([0xef, 0xbb, 0xbf]);
 
     const csv = new TextDecoder().decode(bytes.slice(3));
