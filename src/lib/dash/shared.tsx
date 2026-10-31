@@ -46,7 +46,11 @@ export interface TrackedIssue {
    Everything else about an issue comes from the crawl. */
 export function parseIssueUrl(raw: string): { url: string; repo: string; number: number } | null {
   try {
-    const u = new URL(raw.trim());
+    let s = raw.trim();
+    if (!s) return null;
+    if (s.startsWith("//")) s = "https:" + s;
+    else if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(s)) s = "https://" + s;
+    const u = new URL(s);
     if (u.hostname !== "github.com") return null;
     const m = u.pathname.match(/^\/([^/]+)\/([^/]+)\/issues\/(\d+)\/?$/);
     if (!m) return null;
