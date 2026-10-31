@@ -67,3 +67,15 @@ export function trackedIssuesToCsv(issues: TrackedIssueCsvRow[]): string {
 
   return [headers.join(","), ...rows].join("\r\n");
 }
+
+/** Media type for the CSV download; the charset parameter is what Excel reads. */
+export const CSV_MEDIA_TYPE = "text/csv;charset=utf-8";
+
+/**
+ * Builds the CSV download blob. A leading U+FEFF byte-order mark tells Excel
+ * the file is UTF-8; without it Windows decodes in the local codepage and
+ * non-ASCII titles (en dashes, CJK, accented names) turn into mojibake.
+ */
+export function trackedIssuesCsvBlob(issues: TrackedIssueCsvRow[]): Blob {
+  return new Blob(["\uFEFF" + trackedIssuesToCsv(issues)], { type: CSV_MEDIA_TYPE });
+}

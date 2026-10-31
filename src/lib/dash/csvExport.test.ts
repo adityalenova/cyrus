@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { escapeCsvCell, trackedIssuesToCsv, type TrackedIssueCsvRow } from "./csvExport";
+import {
+  CSV_MEDIA_TYPE,
+  escapeCsvCell,
+  trackedIssuesCsvBlob,
+  trackedIssuesToCsv,
+  type TrackedIssueCsvRow,
+} from "./csvExport";
 
 describe("escapeCsvCell", () => {
   it("converts null and undefined to empty strings", () => {
@@ -72,5 +78,47 @@ describe("trackedIssuesToCsv", () => {
     expect(lines[2]).toBe(
       "vercel/next.js,404,Clean route cache,https://github.com/vercel/next.js/issues/404,Saved,,0,,yes,2026-10-29,"
     );
+  });
+});
+
+describe("trackedIssuesCsvBlob", () => {
+  it("declares a UTF-8 media type without a trailing semicolon", () => {
+    expect(CSV_MEDIA_TYPE).toBe("text/csv;charset=utf-8");
+    expect(trackedIssuesCsvBlob([]).type).toBe(CSV_MEDIA_TYPE);
+  });
+
+  it("prefixes the payload with a byte-order mark", async () => {
+    // Blob.text() decodes with the UTF-8 decoder, which drops a leading BOM;
+    // read the bytes to see what actually lands in the downloaded file.
+    const bytes = new Uint8Array(await trackedIssuesCsvBlob([]).arrayBuffer());
+    expect(Array.from(bytes.slice(0, 3))).toEqual([0xef, 0xbb, 0xbf]);
+    expect(new TextDecoder().decode(bytes.slice(3))).toBe(
+      "Repo,Number,Title,URL,Stage,Language,Stars,Labels,Beginner,Added,Updated"
+    );
+  });
+
+  it("keeps a non-ASCII title intact behind the BOM", async () => {
+    const sample: TrackedIssueCsvRow[] = [
+      {
+        repo: "adityalenova/cyrus",
+        number: 90,
+        title: "Lab – Data Sanitizer Sweep",
+        url: "https://github.com/adityalenova/cyrus/issues/90",
+        stage: "Saved",
+        lang: "TypeScript",
+        stars: 1,
+        labels: ["bug"],
+        beginner: false,
+        added: "2026-10-31",
+        updated: null,
+      },
+    ];
+
+    const bytes = new Uint8Array(await trackedIssuesCsvBlob([sample]).arrayBuffer());
+    expect(Array.from(bytes.slice(0, 3))).toEqual([0xef, 0xbb, 0xbf]);
+
+    const csv = new TextDecoder().decode(bytes.slice(3));
+    expect(csv.split("\r\n")).toHaveLength(2);
+    expect(csv).toContain("Lab – Data Sanitizer Sweep");
   });
 });
