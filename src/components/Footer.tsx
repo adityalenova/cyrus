@@ -58,8 +58,11 @@ export default function Footer() {
             </p>
             {/* logo only, per the brief: the marks are the label */}
             <div className="flex items-center gap-2.5 mt-4">
+              {/* the repository itself, not the author's profile: this tile is
+                  where a visitor who likes what they just read goes to star and
+                  read the source. */}
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
-                href="https://github.com/adityalenova" target="_blank" rel="noopener" aria-label="cyrus.ai on GitHub">
+                href="https://github.com/adityalenova/cyrus" target="_blank" rel="noopener" aria-label="cyrus.ai source repository on GitHub">
                 <GhIcon />
               </a>
               {/* The community server. This invite was regenerated with "Expire
@@ -69,8 +72,11 @@ export default function Footer() {
                 href="https://discord.gg/8S6z2Thczd" target="_blank" rel="noopener" aria-label="cyrus.ai community Discord server">
                 <DcIcon />
               </a>
+              {/* Zenin Enterprise's own LinkedIn page. The vanity URL is under
+                  /company/, not /in/, and the bare /zenin-enterprise form 404s,
+                  so the full path is what the tile links to. */}
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
-                href="https://www.linkedin.com/in/iadityaoffl" target="_blank" rel="noopener" aria-label="cyrus.ai on LinkedIn">
+                href="https://www.linkedin.com/company/zenin-enterprise" target="_blank" rel="noopener" aria-label="Zenin Enterprise on LinkedIn">
                 <InIcon />
               </a>
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
