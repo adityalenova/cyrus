@@ -23,6 +23,13 @@ describe("escapeCsvCell", () => {
   it("wraps strings with newlines in quotes", () => {
     expect(escapeCsvCell("Line 1\nLine 2")).toBe('"Line 1\nLine 2"');
   });
+
+  it("prefixes spreadsheet formula triggers with a single quote", () => {
+    expect(escapeCsvCell("=SUM(A1:A2)")).toBe("'=SUM(A1:A2)");
+    expect(escapeCsvCell(" +1")).toBe("' +1");
+    expect(escapeCsvCell("-1")).toBe("'-1");
+    expect(escapeCsvCell("@mention")).toBe("'@mention");
+  });
 });
 
 describe("trackedIssuesToCsv", () => {
