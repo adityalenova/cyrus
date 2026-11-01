@@ -1,6 +1,7 @@
 /* ══ layout.tsx — root server layout: metadata, fonts, shell ═══════════ */
 import type { Metadata, Viewport } from "next";
 import { Dancing_Script, Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Shell from "@/components/Shell";
 import { statsLine } from "@/lib/siteStats";
 import { SITE_ORIGIN } from "@/lib/seo";
@@ -82,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Shell>{children}</Shell>
+        <Analytics />
       </body>
     </html>
   );
