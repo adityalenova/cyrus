@@ -128,6 +128,9 @@ Found a problem with how the repo is run?
 [SECURITY.md](SECURITY.md) covers vulnerabilities; anything else can go to the
 maintainer through GitHub.
 
+Program question, or an idea you want to talk through before it becomes an
+issue? Open a thread on [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/).
+
 
 ## Workflow quick reference
 
