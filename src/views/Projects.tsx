@@ -350,7 +350,7 @@ export default function Projects() {
             </p>
           )}
           <div className="flex gap-2 flex-wrap pb-4">
-            {[["all", "All Years"], ...years.map((y) => [String(y), String(y)] as [string, string])].map(([v, l]) => (
+            {[["all", "All Years"], ...years.map((y) => [String(y), y === 0 ? "All" : String(y)] as [string, string])].map(([v, l]) => (
               <button key={v} onClick={() => { setYearUrl(v); setShown(60); }}
                 className={`font-mono text-[11.5px] font-bold tracking-[.05em] rounded-full px-4 py-2 border transition-all cursor-pointer ${year === v ? "bg-coffee border-coffee text-foam" : "bg-card border-line text-cocoa hover:border-accent hover:text-rust"}`}>
                 {l}
