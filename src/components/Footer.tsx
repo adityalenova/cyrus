@@ -54,18 +54,17 @@ export default function Footer() {
                 <XIcon />
               </a>
             </div>
-            {/* Product Hunt, and the one place on the site allowed to wear
-                coral. Two choices here: the embed is asked for in its dark
-                theme, because the light one arrives as a 250×54 white slab
-                and a white slab is the loudest object in a graphite footer;
-                and the colour goes in the mat around it instead - Product
-                Hunt's own #FF6154, graded down to a deeper red so the frame
-                has a top light and a bottom weight rather than reading as a
-                flat outline. Bold frame, quiet centre. The 7px mat keeps the
-                plate's 10px corner concentric inside our 16px one, and the
-                whole thing is capped at 200px wide - it shrinks again inside
+            {/* Product Hunt. The embed is asked for in its dark theme, because
+                the light one arrives as a 250×54 white slab and a white slab
+                is the loudest object in a graphite footer. The frame is a 1px
+                grey hairline off --color-roast, the same grey the icon tiles
+                above already reach for on hover, over a 2.5% white wash - the
+                badge should look like it is sitting on the footer, not like
+                it was stapled to it. Padding is 5px, which makes our 15px
+                corner exactly concentric with the plate's own 10px one
+                (10 + 5 = 15). Capped at 200px, and it shrinks again inside
                 the two-column mobile footer instead of pushing it sideways. */}
-            <a className="mt-3.5 inline-flex items-center rounded-[16px] bg-[linear-gradient(150deg,#ff6154_0%,#d8362d_100%)] p-[7px] leading-none shadow-[0_10px_26px_-14px_rgba(255,97,84,.75)] transition-[filter,box-shadow] duration-200 hover:brightness-110 hover:shadow-[0_12px_30px_-12px_rgba(255,97,84,.85)]"
+            <a className="mt-3.5 inline-flex items-center rounded-[15px] border border-roast/80 bg-white/[0.025] p-[5px] leading-none transition-colors duration-200 hover:border-steam/40 hover:bg-white/[0.05]"
               href={"https://www.producthunt.com/products/cyrus-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-cyrus-ai"}
               target="_blank" rel="noopener noreferrer">
               <img className="block h-auto w-[200px] max-w-full" width={250} height={54}
