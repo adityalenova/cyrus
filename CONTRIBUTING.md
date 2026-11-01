@@ -129,7 +129,9 @@ Found a problem with how the repo is run?
 maintainer through GitHub.
 
 Program question, or an idea you want to talk through before it becomes an
-issue? Open a thread on [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/).
+issue? Open a thread on [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/),
+or ask in the [Discord server](https://discord.gg/8S6z2Thczd) if you want an
+answer sooner.
 
 
 ## Workflow quick reference

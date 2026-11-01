@@ -140,7 +140,22 @@ export function loadArchiveIndex(): Promise<ArchiveIndex | null> {
   return indexPromise;
 }
 
+/* Just the index, as a hook: which programs have an archive and what the
+   /projects listing calls each one. A page that only needs to build a
+   ?prog= link uses this instead of useProjectArchives(), which pulls every
+   shard on disk to hand back rows it will not read. */
+export function useArchiveIndex(): ArchiveIndex | null {
+  const [idx, setIdx] = useState<ArchiveIndex | null>(null);
+  useEffect(() => {
+    let go = true;
+    loadArchiveIndex().then((d) => { if (go) setIdx(d); });
+    return () => { go = false; };
+  }, []);
+  return idx;
+}
+
 const shardCache = new Map<string, Promise<ArchiveShard | null>>();
+
 export function loadShard(id: string): Promise<ArchiveShard | null> {
   if (!shardCache.has(id)) {
     shardCache.set(id, fetch(`/data/program-projects/${id}.json`)

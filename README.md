@@ -511,6 +511,7 @@ This is a solo build that grew into a platform - and it gets better every time s
   <a href="https://github.com/adityalenova/cyrus-ai/issues"><img src="https://img.shields.io/badge/IDEAS_WELCOME-3e7d4f?style=for-the-badge" alt="Ideas welcome"/></a>
   <a href="https://x.com/iaditya_offical"><img src="https://img.shields.io/badge/FOLLOW_ON_X-181717?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X"/></a>
   <a href="https://www.reddit.com/r/Cyrusagent/"><img src="https://img.shields.io/badge/JOIN_ON_REDDIT-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Join r/Cyrusagent on Reddit"/></a>
+  <a href="https://discord.gg/8S6z2Thczd"><img src="https://img.shields.io/badge/JOIN_ON_DISCORD-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join the cyrus.ai Discord server"/></a>
 </p>
 
 ## Support cyrus.ai
@@ -520,7 +521,8 @@ Not a code person? The cheapest support with the biggest impact:
 1. **Star the repository** - it helps the catalog get discovered by the people who need it.
 2. **Share a screenshot** of your dashboard or your favourite organization page.
 3. **Send one link** to a builder who is hunting their first good issue or picking a program.
-4. **Join [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/)** - program questions and project ideas start there.
+4. **Join the [Discord](https://discord.gg/8S6z2Thczd)** - quickest place to ask a program question and get an answer the same day.
+5. **Join [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/)** - program questions and project ideas start there.
 
 ## Thanks to the data neighbors
 
@@ -528,4 +530,4 @@ Every number on this site belongs to the teams who produced it: Google Summer of
 
 ## License & credits
 
-Private project, built by [Aditya Duggirala](https://github.com/adityalenova) · [@iaditya_offical on X](https://x.com/iaditya_offical) · the community lives on [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/). All catalog data belongs to its respective sources and is republished with attribution and links. Made with too much coffee, in the site's own palette.
+Private project, built by [Aditya Duggirala](https://github.com/adityalenova) · [@iaditya_offical on X](https://x.com/iaditya_offical) · the community lives on [Discord](https://discord.gg/8S6z2Thczd) and [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/). All catalog data belongs to its respective sources and is republished with attribution and links. Made with too much coffee, in the site's own palette.

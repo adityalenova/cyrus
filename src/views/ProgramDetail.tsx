@@ -8,6 +8,7 @@ import { publishesAreas, useProgramOrgs } from "../lib/contriboOrgs";
 import { PROGRAM_META, PROGRAM_REPOS } from "../data/programRepos";
 import type { ProgramName } from "../data/programRepos";
 import { PROGRAM_DETAILS, programLink } from "../data/programDetails";
+import { filterNameOf, useArchiveIndex } from "../lib/programProjects";
 import { byStars, fmt, avatarOf, inkOn } from "../lib/util";
 import type { Program } from "../lib/types";
 import { btn, Chip, OrgImg, SectionHead, Tag, Word } from "../components/ui";
@@ -151,6 +152,20 @@ export default function ProgramDetail() {
     shelfName ? PROGRAM_REPOS.filter((r) => r.programs.includes(shelfName)).sort(byStars).slice(0, 6) : [],
     [shelfName]);
 
+  /* The label /projects matches ?prog= against for this program. It is the
+     archive index's own word, not the marketing name - "GSoC" rather than
+     "Google Summer of Code" - because that is the string the rows carry, and a
+     link built from anything else opens an empty listing. */
+  const arcIdx = useArchiveIndex();
+  const arcEntry = p ? arcIdx?.programs?.[p.id] : undefined;
+  const toArchive = (extra: Record<string, string> = {}) => {
+    const q = new URLSearchParams(extra);
+    const f = arcEntry ? filterNameOf(p!.id, arcEntry.label) : "";
+    if (f) q.set("prog", f);
+    const s = q.toString();
+    return `/projects${s ? `?${s}` : ""}`;
+  };
+
   if (!p || !d) return <NotFound />;
   const others = PROGRAMS.filter((x) => x.id !== p.id);
 
@@ -266,7 +281,7 @@ export default function ProgramDetail() {
           {shelf.length > 0 && (            <section>
               <div className="flex items-end justify-between gap-4 flex-wrap mb-4">
                 <h2 className="font-display font-extrabold text-[22px] tracking-[-.02em]">Flagship <Word>{p.name}</Word> projects</h2>
-                <Link to="/projects" className={btn("ghost", "sm")}>Browse all program projects</Link>
+                <Link to={toArchive()} className={btn("ghost", "sm")}>Browse all program projects</Link>
               </div>
               <div className="grid grid-cols-3 gap-4 max-[980px]:grid-cols-2 max-[640px]:grid-cols-1">
                 {shelf.map((r) => (
@@ -297,7 +312,7 @@ export default function ProgramDetail() {
             <MetaRow k="Difficulty" v={d.difficulty} />
             <MetaRow k="Eligibility" v={d.eligibility} />
             <div className="grid gap-2.5 mt-4">
-              {shelf.length > 0 && <Link to="/projects" className={btn("primary", "md", "w-full")}>Browse {PROGRAM_META[shelfName as ProgramName].label} projects</Link>}
+              {shelf.length > 0 && <Link to={toArchive()} className={btn("primary", "md", "w-full")}>Browse {PROGRAM_META[shelfName as ProgramName].label} projects</Link>}
               <Link to="/organizations" className={btn("outline", "md", "w-full")}>View organizations</Link>
               <a href={p.url} target="_blank" rel="noopener" className={btn("dark", "md", "w-full")}>Official website</a>
             </div>
