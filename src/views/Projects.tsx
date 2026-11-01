@@ -182,7 +182,9 @@ export default function Projects() {
     setParams(rec);
   };
   const setQUrl = (v: string) => { setQ(v); write({ q: v }); };
-  const setProgUrl = (v: string) => { setProg(v); write({ prog: v }); };
+  /* programs are chosen from the sidebar; a /programs link can still arrive
+     with ?prog=…, so that facet stays honoured - this only clears it */
+  const clearProg = () => { setProg("all"); write({ prog: "all" }); };
   const setDiffUrl = (v: string) => { setDiff(v); write({ diff: v }); };
   const setYearUrl = (v: string) => { setYear(v); write({ year: v }); };
   const setTechUrl = (v: string) => { setTech(v); write({ tech: v }); };
@@ -249,12 +251,6 @@ export default function Projects() {
 
   /* filter option lists derived from what actually loaded */
   const years = useMemo(() => [...new Set(all.map((p) => p.year))].sort((a, b) => b - a), [all]);
-  const progs = useMemo(() => [...new Set([
-    "GSoC",
-    ...flagships.map((f) => f.program),
-    ...(other?.projects ?? []).map((p) => (p as { program?: string }).program ?? "LFX"),
-    ...arc.rows.map((r) => r.program),
-  ])], [other, arc.rows]);
 
   const stacks = useMemo(() => {
     const c = new Map<string, number>();
@@ -277,16 +273,6 @@ export default function Projects() {
     return r.map((p) => Object.assign({}, p, orgTarget(p)));
   }, [all, q, prog, diff, year, tech, sort]);
 
-  const counts = useMemo(() => {
-    const c = new Map<string, number>();
-    for (const p of all) c.set(p.program, (c.get(p.program) ?? 0) + 1);
-    return c;
-  }, [all]);
-  const archiveChips = useMemo(
-    () => progs.filter((p) => (counts.get(p) ?? 0) > 0).sort((a, b) => (counts.get(b) ?? 0) - (counts.get(a) ?? 0)),
-    [progs, counts],
-  );
-
   const visible = list.slice(0, shown);
 
   const fin = "w-full bg-paper border border-line rounded-xl px-3.5 py-2.5 text-[14px] outline-none transition-all focus:border-accent focus:shadow-[0_0_0_3px_rgba(34, 197, 94,.12)]";
@@ -304,7 +290,7 @@ export default function Projects() {
         Explore <Word>Projects</Word>
       </h1>
       <p className="text-ink font-medium max-w-[720px] text-[16.5px] leading-[1.6]">
-        Find open source projects actively accepting contributors. Search repositories, filter by program, difficulty tags, or tech stack.
+        Find open source projects actively accepting contributors. Search repositories, then filter by difficulty tag, year, or tech stack.
       </p>
 
       {/* how to work the archive */}
@@ -312,7 +298,7 @@ export default function Projects() {
         <div className="min-w-[280px] flex-1">
           <h2 className="card-title-xl">Not sure which project to take?</h2>
           <p className="text-cocoa text-[13.5px] leading-[1.6] mt-2 max-w-[600px]">
-            Narrow the archive with the filters on the left - program, difficulty, language - then track the issues
+            Narrow the archive with the filters on the left - difficulty, year, language - then track the issues
             worth your week on your own board. cyrus shows the public record; the choice stays yours.
           </p>
         </div>
@@ -340,13 +326,6 @@ export default function Projects() {
             </select>
           </div>
           <div>
-            <span className={lbl}>Program</span>
-            <select className={`${fin} select-warm pr-8`} value={prog} onChange={(e) => { setProgUrl(e.target.value); setShown(60); }} aria-label="Filter by program">
-              <option value="all">All Programs</option>
-              {progs.map((p) => <option key={p} value={p}>{p === "GSoC" ? "Google Summer of Code" : PROGRAM_META[p as ProgramName]?.label ?? p}</option>)}
-            </select>
-          </div>
-          <div>
             <span className={lbl}>Popular stacks</span>
             <div className="flex flex-wrap gap-[7px]">
               {stacks.map((l) => (
@@ -362,21 +341,14 @@ export default function Projects() {
         </aside>
 
         <section id="results" className="scroll-mt-24">
-          {/* one chip per program that actually publishes a project record */}
-          <div className="flex gap-2 flex-wrap pb-4">
-            <button onClick={() => { setProgUrl("all"); setShown(60); }}
-              className={`font-mono text-[11px] font-bold tracking-[.05em] rounded-full px-3.5 py-2 border transition-all cursor-pointer ${prog === "all" ? "bg-coffee border-coffee text-foam" : "bg-card border-line text-cocoa hover:border-accent hover:text-rust"}`}>
-              All programs
-            </button>
-            {archiveChips.map((p) => (
-              <button key={p} onClick={() => { setProgUrl(prog === p ? "all" : p); setShown(60); }}
-                title={`${fmt(counts.get(p) ?? 0)} projects from ${p}'s own record`}
-                className={`font-mono text-[11px] font-bold tracking-[.05em] rounded-full px-3.5 py-2 border transition-all cursor-pointer ${prog === p ? "bg-coffee border-coffee text-foam" : "bg-card border-line text-cocoa hover:border-accent hover:text-rust"}`}>
-                {p === "GSoC" ? "Google Summer of Code" : PROGRAM_META[p as ProgramName]?.label ?? p}
-                <span className="text-dim ml-1.5">{fmt(counts.get(p) ?? 0)}</span>
-              </button>
-            ))}
-          </div>
+          {prog !== "all" && (
+            <p className="font-mono text-[11px] font-bold tracking-[.05em] text-cocoa pb-4">
+              <span className="rounded-full border border-line bg-card px-3.5 py-2">
+                {prog === "GSoC" ? "Google Summer of Code" : PROGRAM_META[prog as ProgramName]?.label ?? prog}
+                <button onClick={clearProg} className="ml-2.5 text-accent font-bold hover:underline cursor-pointer">Show every program</button>
+              </span>
+            </p>
+          )}
           <div className="flex gap-2 flex-wrap pb-4">
             {[["all", "All Years"], ...years.map((y) => [String(y), String(y)] as [string, string])].map(([v, l]) => (
               <button key={v} onClick={() => { setYearUrl(v); setShown(60); }}
@@ -432,7 +404,7 @@ export default function Projects() {
 
           <div className="flex justify-center gap-3 mt-12 flex-wrap">
             <Link to="/#timeline" className={btn("dark", "md")}>See the 12-month program timeline</Link>
-            <Link to="/organizations" className={btn("outline", "md")}>Browse the {PROGRAMS.length} program orgs</Link>
+            <Link to="/organizations" className={btn("outline", "md")}>Browse the program orgs</Link>
           </div>
         </section>
       </div>
