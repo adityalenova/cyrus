@@ -27,6 +27,21 @@ const XIcon = () => (
     <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.96 6.82H1.6l7.73-8.84L1.25 2.25H8.1l4.71 6.23 5.43-6.23Zm-1.16 17.6h1.83L7.08 4.13H5.12l11.96 15.72Z" />
   </svg>
 );
+/* Reddit's Snoo drawn from primitives rather than a copied brand path, so it
+   sits at 15px on the same optical weight as the three marks beside it: an
+   outlined head, filled eyes, ears and antenna ball, and a smile. */
+const RdIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+    <ellipse cx="12" cy="14" rx="7.6" ry="5.6" />
+    <circle cx="9.4" cy="13.1" r="1" fill="currentColor" stroke="none" />
+    <circle cx="14.6" cy="13.1" r="1" fill="currentColor" stroke="none" />
+    <path d="M9.2 16.6c1.7 1.4 3.9 1.4 5.6 0" strokeLinecap="round" />
+    <path d="M12 8.4 14.5 5.1" strokeLinecap="round" />
+    <circle cx="15.6" cy="4.1" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="4.4" cy="14" r="1.5" fill="currentColor" stroke="none" />
+    <circle cx="19.6" cy="14" r="1.5" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 export default function Footer() {
   return (
@@ -52,6 +67,10 @@ export default function Footer() {
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
                 href="https://x.com/iaditya_offical" target="_blank" rel="noopener" aria-label="Aditya Duggirala on X">
                 <XIcon />
+              </a>
+              <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
+                href="https://www.reddit.com/r/Cyrusagent/" target="_blank" rel="noopener" aria-label="The cyrus.ai community on Reddit">
+                <RdIcon />
               </a>
             </div>
             {/* Product Hunt. The embed is asked for in its dark theme, because
