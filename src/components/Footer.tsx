@@ -72,11 +72,8 @@ export default function Footer() {
                 href="https://discord.gg/8S6z2Thczd" target="_blank" rel="noopener" aria-label="cyrus.ai community Discord server">
                 <DcIcon />
               </a>
-              {/* Zenin Enterprise's own LinkedIn page. The vanity URL is under
-                  /company/, not /in/, and the bare /zenin-enterprise form 404s,
-                  so the full path is what the tile links to. */}
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
-                href="https://www.linkedin.com/company/zenin-enterprise" target="_blank" rel="noopener" aria-label="Zenin Enterprise on LinkedIn">
+                href="https://www.linkedin.com/in/iadityaoffl" target="_blank" rel="noopener" aria-label="cyrus.ai on LinkedIn">
                 <InIcon />
               </a>
               <a className="w-[32px] h-[32px] grid place-items-center rounded-[10px] border border-bean bg-bean/60 text-steam transition-colors duration-200 hover:text-foam hover:border-roast"
