@@ -526,7 +526,7 @@ Not a code person? The cheapest support with the biggest impact:
 
 ## Thanks to the data neighbors
 
-Every number on this site belongs to the teams who produced it: Google Summer of Code and its mentoring organizations, the Linux Foundation, Outreachy, MLH, GSSoC, KDE, Summer of Bitcoin, 24 Pull Requests, FOSSEE, Vercel, nsoc.in, Contribo, and the 1,528 open-source repositories indexed from GitHub. Each listing links out to its official page.
+Every number on this site belongs to the teams who produced it: Google Summer of Code and its mentoring organizations, the Linux Foundation, Outreachy, MLH, GSSoC, KDE, Summer of Bitcoin, 24 Pull Requests, FOSSEE, Vercel, nsoc.in and the 1,528 open-source repositories indexed from GitHub. Each listing links out to its official page.
 
 ## License & credits
 
