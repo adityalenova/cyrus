@@ -12,7 +12,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { btn } from "../../components/ui";
-import { fmt } from "../util";
+import { fmtCompact } from "../util";
 import { repoById } from "../util";
 import { Card, DashHead, Ic } from "./shell";
 import { ArtScope } from "./art";
@@ -221,7 +221,7 @@ export function AnalyserSection({ d }: { d: Dash }) {
         )}
         {catalog && !res && (
           <p className="font-mono text-[10.5px] text-dim mt-3">
-            That one is in our catalog ({catalog.lang}, ★ {fmt(catalog.stars)} as of the 2026-10-02 crawl) - the analyser ignores the snapshot and asks GitHub instead.
+            That one is in our catalog ({catalog.lang}, ★ {fmtCompact(catalog.stars)} as of the 2026-10-02 crawl) - the analyser ignores the snapshot and asks GitHub instead.
           </p>
         )}
       </Card>
@@ -264,13 +264,13 @@ export function AnalyserSection({ d }: { d: Dash }) {
             </div>
             <p className="text-[13px] text-cocoa leading-[1.65] mt-4 max-w-[720px]">{score.bandNote}</p>
             <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2.5 mt-5">
-              <Stat k="Stars" v={fmt(m.stargazers_count)} />
-              <Stat k="Forks" v={fmt(m.forks_count)} />
-              <Stat k="Open issues + PRs" v={fmt(m.open_issues_count)} sub="GitHub counts both" />
+              <Stat k="Stars" v={fmtCompact(m.stargazers_count)} />
+              <Stat k="Forks" v={fmtCompact(m.forks_count)} />
+              <Stat k="Open issues + PRs" v={fmtCompact(m.open_issues_count)} sub="GitHub counts both" />
               <Stat k="Last push" v={ago(m.pushed_at)} />
               <Stat k="Commits / 30 days" v={res.recentCommits === null ? "?" : String(res.recentCommits)} sub="capped at 100" />
               <Stat k="Contributors" v={res.contributors === null ? "?" : String(res.contributors)} sub="first page, capped at 100" />
-              <Stat k="Good first issues" v={res.goodFirst === null ? "?" : fmt(res.goodFirst)} sub="live label search" />
+              <Stat k="Good first issues" v={res.goodFirst === null ? "?" : fmtCompact(res.goodFirst)} sub="live label search" />
             </div>
             <StatRow2 created={m.created_at} size={m.size} archived={m.archived} hasIssues={m.has_issues} health={res.community?.health_percentage ?? null} />
           </Card>

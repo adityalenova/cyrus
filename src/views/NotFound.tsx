@@ -1,7 +1,7 @@
 "use client"
 /* ══ NotFound.tsx ═══════════════════════════════════════════ */
 import { Link } from "@/lib/router";
-import { STATS, fmt } from "../lib/siteStats";
+import { STATS, fmtFull } from "../lib/siteStats";
 import { btn, Word } from "../components/ui";
 
 export default function NotFound() {
@@ -12,7 +12,7 @@ export default function NotFound() {
         This page <Word>moved</Word> - or never shipped.
       </h1>
       <p className="text-cocoa max-w-[440px] mx-auto text-[15.5px] leading-[1.65] mb-8">
-        The URL you followed isn't part of the catalog. The {fmt(STATS.repos)} repos that are, all live one click away.
+        The URL you followed isn't part of the catalog. The {fmtFull(STATS.repos)} repos that are, all live one click away.
       </p>
       <div className="flex gap-3 justify-center flex-wrap">
         <Link to="/" className={btn("primary", "lg")}>Back to the home page</Link>

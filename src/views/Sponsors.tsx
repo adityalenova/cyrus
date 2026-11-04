@@ -9,7 +9,7 @@
    ═══════════════════════════════════════════════════════════════ */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
-import { avatarOf, fmt } from "../lib/util";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { btn, OrgImg, Word } from "../components/ui";
 
 type Funded = { repo: string; stars: number; lang: string; desc: string; url: string; platforms: Record<string, string[]> };
@@ -70,7 +70,7 @@ function FundCard({ f }: { f: Funded }) {
           </a>
           <span className="flex items-center gap-2 font-mono text-[10px] text-dim mt-[3px]">
             <span className="truncate">{f.lang}</span>
-            <span className="shrink-0 text-honey font-bold">★ {fmt(f.stars)}</span>
+            <span className="shrink-0 text-honey font-bold">★ {fmtCompact(f.stars)}</span>
           </span>
         </span>
       </div>
@@ -178,7 +178,7 @@ export default function Sponsors() {
           </div>
         </div>
         <p className="font-mono text-[10.5px] uppercase tracking-[.14em] text-dim mt-4">
-          <b className="text-accent">{fmt(shown.length)}</b> {shown.length === 1 ? "project" : "projects"} {plat === "all" ? "with funding" : `on ${platOf(plat)?.label.toLowerCase()}`}
+          <b className="text-accent">{fmtCompact(shown.length)}</b> {shown.length === 1 ? "project" : "projects"} {plat === "all" ? "with funding" : `on ${platOf(plat)?.label.toLowerCase()}`}
           {data?.crawledAt && <span className="normal-case tracking-normal"> · read from GitHub {data.crawledAt}</span>}
         </p>
       </div>
@@ -193,7 +193,7 @@ export default function Sponsors() {
           <div className="frame bg-card/50 p-10 text-center relative">
             <span className="mark tr" aria-hidden>+</span>
             <p className="font-display font-bold text-[17px] text-ink">Nothing matches that yet.</p>
-            <p className="text-[13.5px] text-dim mt-1.5">Clear the search{plat !== "all" ? " or the platform filter" : ""} to see all {fmt(items.length)} funded projects again.</p>
+            <p className="text-[13.5px] text-dim mt-1.5">Clear the search{plat !== "all" ? " or the platform filter" : ""} to see all {fmtCompact(items.length)} funded projects again.</p>
             <button type="button" onClick={() => { setQ(""); setPlat("all"); write({ q: "", plat: "all" }); }} className={btn("outline", "sm", "mt-4")}>Show everything</button>
           </div>
         ) : (

@@ -14,7 +14,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
 import { CRAWL } from "../data/crawlStats";
-import { avatarOf, fmt, levelOf, LANG_COLORS } from "../lib/util";
+import { avatarOf, fmtCompact, levelOf, LANG_COLORS } from "../lib/util";
 import { useStore } from "../lib/store";
 import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
 import type { Sort } from "../lib/server/issueIndex";
@@ -68,7 +68,7 @@ function IssueCard({ i, onTrack, tracked }: { i: Found; onTrack: (i: Found) => v
       </div>
 
       <div className="flex gap-[7px] flex-wrap">
-        <Chip tone="stars">★ {fmt(i.stars)}</Chip>
+        <Chip tone="stars">★ {fmtCompact(i.stars)}</Chip>
         {i.lang && (
           <Chip tone="lang">
             <i className="w-2 h-2 rounded-full shrink-0" style={{ background: LANG_COLORS[i.lang] ?? "currentColor" }} aria-hidden />
@@ -251,7 +251,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.langs.map((f) => (
                     <button key={f.value} className={fchip(langs.has(f.value))} aria-pressed={langs.has(f.value)} onClick={() => toggleLang(f.value)}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>
@@ -264,7 +264,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.orgs.map((f) => (
                     <button key={f.value} className={fchip(org === f.value)} aria-pressed={org === f.value} onClick={() => push({ org: org === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>
@@ -277,7 +277,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.labels.map((f) => (
                     <button key={f.value} className={fchip(label === f.value)} aria-pressed={label === f.value} onClick={() => push({ label: label === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>

@@ -5,7 +5,7 @@ import { useNavigate } from "@/lib/router";
 import { useStore } from "../lib/store";
 import { REPOS } from "../data/repos";
 import { ORGS } from "../data/orgs";
-import { byStars, fmt, CAT_META, avatarOf } from "../lib/util";
+import { byStars, fmtCompact, CAT_META, avatarOf } from "../lib/util";
 import { OrgImg } from "./ui";
 import { SearchIcon } from "./Nav";
 
@@ -64,7 +64,7 @@ export default function Palette() {
                     <small className="text-dim font-medium text-[11px]">{h.sub}</small></span>
                   <span className="block text-[12px] text-cocoa truncate">{h.desc}</span>
                 </span>
-                <span className="font-mono text-[11.5px] font-bold text-honey shrink-0">★ {fmt(h.stars)}</span>
+                <span className="font-mono text-[11.5px] font-bold text-honey shrink-0">★ {fmtCompact(h.stars)}</span>
               </button>
             </li>
           ))}

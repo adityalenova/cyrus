@@ -20,7 +20,7 @@ import {
   METRICS, RANKABLE, humans, num, ordinal, rank, search, total,
 } from "../lib/leaderboard";
 import type { Metric, Ranked } from "../lib/leaderboard";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
 import { btn, Word } from "../components/ui";
 
 const W = "max-w-[1240px] mx-auto px-6";
@@ -78,7 +78,7 @@ function Podium({ rows }: { rows: Ranked[] }) {
             {([["reviews", r.reviews_total], ["open", r.open_total], ["followers", r.followers]] as [string, number | null][]).map(([l, v]) => (
               <span key={l} className="flex items-baseline gap-1">
                 <span className="text-dim">{l}</span>
-                <b className="text-cocoa font-semibold">{v === null ? "n/a" : fmt(num(v))}</b>
+                <b className="text-cocoa font-semibold">{v === null ? "n/a" : fmtCompact(num(v))}</b>
               </span>
             ))}
           </div>
@@ -146,9 +146,9 @@ export default function Leaderboard() {
 
       <div className={`${W} mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 border-y border-line py-6`}>
         <Stat v={num_(BOARD_META.humans)} l="people ranked" />
-        <Stat v={fmt(humanMerged)} l="merged PRs between them" />
+        <Stat v={fmtCompact(humanMerged)} l="merged PRs between them" />
         <Stat v={num_(BOARD_META.bots)} l="automation accounts held back" />
-        <Stat v={fmt(botMerged)} l="merges those accounts made" />
+        <Stat v={fmtCompact(botMerged)} l="merges those accounts made" />
       </div>
 
       <div className={W}>
@@ -236,7 +236,7 @@ export default function Leaderboard() {
                     <span key={m.key} className="flex md:block items-baseline justify-between gap-2 md:text-right">
                       <span className="md:hidden font-mono text-[10px] uppercase tracking-[.1em] text-dim">{m.unit}</span>
                       <b className={`font-mono text-[13px] ${isThis ? "text-accent font-bold" : "text-cocoa font-semibold"}`}>
-                        {raw === null ? "n/a" : fmt(num(raw))}
+                        {raw === null ? "n/a" : fmtCompact(num(raw))}
                       </b>
                     </span>
                   );
@@ -271,7 +271,7 @@ export default function Leaderboard() {
             {[
               ["The pool", `We asked GitHub for pull requests merged since ${BOARD_META.since} in ${CRAWL.languages} languages, sorted by recent activity, and counted the authors. The ${num_(BOARD_META.pool)} most-merged authors in that sample became the pool.`],
               ["The numbers", "For each author we ran three author-scoped searches - merged, open, and reviewed-by - and took GitHub's total_count. Those are exact all-time figures, not estimates and not our own tally."],
-              ["The bots", `${num_(BOARD_META.bots)} of the ${num_(BOARD_META.pool)} accounts are automation: a handle ending in [bot], a handle ending in bot, or a GitHub App avatar. They are held back by default because ${fmt(botMerged)} of their merges would otherwise outrank every person on the list.`],
+              ["The bots", `${num_(BOARD_META.bots)} of the ${num_(BOARD_META.pool)} accounts are automation: a handle ending in [bot], a handle ending in bot, or a GitHub App avatar. They are held back by default because ${fmtCompact(botMerged)} of their merges would otherwise outrank every person on the list.`],
               ["The limit", `This is a ranking of the people we read, not of GitHub. Someone who merges a lot in languages we did not sample, or whose work landed before ${BOARD_META.since.slice(0, 4)} and stopped showing up in the recent feed, is simply not here.`],
             ].map(([t, d], i) => (
               <li key={t} className="grid md:grid-cols-[190px_minmax(0,1fr)] gap-2 md:gap-6 items-baseline">

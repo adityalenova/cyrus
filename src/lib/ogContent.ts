@@ -6,7 +6,7 @@
 import { REPOS } from "@/data/repos";
 import type { Program } from "@/lib/types";
 import { ORGS } from "@/data/orgs";
-import { fmt, STATS } from "@/lib/siteStats";
+import { fmtFull, STATS } from "@/lib/siteStats";
 
 export type OgRow = { k: string; v: string };
 
@@ -43,9 +43,9 @@ export function homeCard(): OgCard {
     eyebrow: "Open source, indexed",
     title: ["Find your", "next contribution"],
     rows: [
-      { k: "Open issues", v: `${fmt(STATS.issues)} across ${fmt(STATS.issueRepos)} repositories` },
+      { k: "Open issues", v: `${fmtFull(STATS.issues)} across ${fmtFull(STATS.issueRepos)} repositories` },
       { k: "Programs", v: `${STATS.programs} tracked, all on the 2026 calendar` },
-      { k: "Projects", v: `${fmt(STATS.archive)} program projects, ${STATS.archivePrograms} archives` },
+      { k: "Projects", v: `${fmtFull(STATS.archive)} program projects, ${STATS.archivePrograms} archives` },
       { k: "Organizations", v: `${ORGS.length} profiles, each named by a program` },
     ],
     foot: SNAPSHOT,

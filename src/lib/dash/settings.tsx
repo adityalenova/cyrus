@@ -4,7 +4,7 @@
    No notification toggles: nothing sends them, so nothing pretends to. == */
 import { Link } from "@/lib/router";
 import { Avatar, btn } from "../../components/ui";
-import { fmt } from "../util";
+import { fmtCompact } from "../util";
 import { Card, DashHead, Ic, Toggle } from "./shell";
 import { DP } from "./shared";
 import type { Dash } from "./useDash";
@@ -30,9 +30,9 @@ export function SettingsSection({ d }: { d: Dash }) {
   };
 
   const sources: [string, string, string][] = [
-    ["Open issues", `${fmt(d.index.issues)} crawled from ${fmt(d.index.issueRepos)} repositories on ${d.index.crawledAt}`, "GitHub search API"],
-    ["Beginner signal", `${fmt(d.index.beginner)} of them carry a good-first-issue label`, "label text"],
-    ["Catalog", `${fmt(d.index.catalog)} repositories · ${d.index.orgs} tracked organizations`, "GitHub repository API"],
+    ["Open issues", `${fmtCompact(d.index.issues)} crawled from ${fmtCompact(d.index.issueRepos)} repositories on ${d.index.crawledAt}`, "GitHub search API"],
+    ["Beginner signal", `${fmtCompact(d.index.beginner)} of them carry a good-first-issue label`, "label text"],
+    ["Catalog", `${fmtCompact(d.index.catalog)} repositories · ${d.index.orgs} tracked organizations`, "GitHub repository API"],
     ["Archive", "accepted program projects from the last five years", "program result pages"],
   ];
 

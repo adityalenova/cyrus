@@ -13,7 +13,7 @@ import { REPOS } from "../../data/repos";
 import { ORGS } from "../../data/orgs";
 import { programsOf } from "../../data/programAssoc";
 import { ArtBranch, ArtPeople, ArtScales } from "./art";
-import { avatarOf, fmt } from "../../lib/util";
+import { avatarOf, fmtCompact } from "../../lib/util";
 import { btn, OrgImg } from "../../components/ui";
 import { Card, DashHead, Ic } from "./shell";
 import { DP, parseIssueUrl } from "./shared";
@@ -104,7 +104,7 @@ function MentorsSection() {
 
   return (
     <Card>
-      <DashHead title="Mentor finder" sub={rows ? `${shown.length} of ${fmt(mentors?.length ?? 0)} people named as a mentor on an accepted ${MENTOR_PROGRAMS.join(", ")} project, searchable by name or organization.` : "Reading the mentor names out of the project archives."} />
+      <DashHead title="Mentor finder" sub={rows ? `${shown.length} of ${fmtCompact(mentors?.length ?? 0)} people named as a mentor on an accepted ${MENTOR_PROGRAMS.join(", ")} project, searchable by name or organization.` : "Reading the mentor names out of the project archives."} />
       <div className="grid md:grid-cols-[1fr_190px_170px] gap-3 mt-6 [&>*]:min-w-0">
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-dim"><Ic d={DP.search} size={14} /></span>
@@ -144,7 +144,7 @@ function MentorsSection() {
         <div className="mt-6 flex items-center gap-6 flex-wrap">
           <div className="text-dim shrink-0 w-[190px]"><ArtPeople /></div>
           <p className="text-[13.5px] text-dim max-w-[420px] leading-[1.7]">
-            No mentor by that name in the archive. The {fmt(rows?.length ?? 0)} projects we read
+            No mentor by that name in the archive. The {fmtCompact(rows?.length ?? 0)} projects we read
             cover 2022 through 2026, and only the mentors the program itself published on the
             project record are here - a person can mentor without ever being named on one.
           </p>
@@ -209,9 +209,9 @@ function CompareSection() {
           </div>
         ) : (
           <>
-            <Bar label="Stars" va={oa.stars} vb={ob.stars} fmtv={fmt} />
+            <Bar label="Stars" va={oa.stars} vb={ob.stars} fmtv={fmtCompact} />
             <Bar label="Repositories" va={oa.repos} vb={ob.repos} fmtv={(n) => String(n)} />
-            <Bar label="Open issues" va={oa.issues} vb={ob.issues} fmtv={fmt} />
+            <Bar label="Open issues" va={oa.issues} vb={ob.issues} fmtv={fmtCompact} />
           </>
         )}
       </div>
@@ -283,7 +283,7 @@ function GitStartSection({ d }: { d: Dash }) {
           <div className="flex items-center gap-2.5 mt-5 flex-wrap">
             <span className="font-mono text-[11px] text-cocoa bg-cream border border-line rounded-full px-3 py-1">{target.repo}</span>
             {target.number > 0 && <span className="font-mono text-[11px] text-accent bg-peach border border-accent/35 rounded-full px-3 py-1">#{target.number}</span>}
-            {repoMeta && <span className="font-mono text-[10px] text-dim">{repoMeta.lang} · {fmt(repoMeta.issues)} open issues · ★ {fmt(repoMeta.stars)}</span>}
+            {repoMeta && <span className="font-mono text-[10px] text-dim">{repoMeta.lang} · {fmtCompact(repoMeta.issues)} open issues · ★ {fmtCompact(repoMeta.stars)}</span>}
             {target.number > 0 && (
               <button type="button" onClick={() => d.trackIssue(`https://github.com/${target.repo}/issues/${target.number}`)} className={btn("outline", "sm", "ml-auto")}>Track it on the board</button>
             )}

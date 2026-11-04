@@ -5,7 +5,7 @@
    "collect once, satisfy all three" program table, and a day-by-day
    timeline - all in the cyrus.ai coffee/honey theme.            ═ */
 import { Link } from "@/lib/router";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
 import { btn, Word } from "../components/ui";
 import { REPOS, CATEGORIES } from "../data/repos";
 import { PROGRAMS } from "../data/orgs";
@@ -235,8 +235,8 @@ function Timeline() {
 
 /* ── section 6: the full shelf grid ── */
 const SHELVES: [string, string, string, string, string][] = [
-  ["Skill catalog", "/skills", "grid", "rust", `${fmt(REPOS.length)} agent skills, Cursor rules, config packs and MCP servers across ${CATEGORIES.length} curated shelves.`],
-  ["Open issues", "/dashboard/issues", "bookmark", "denim", `${fmt(CRAWL.issues)} issues crawled live from GitHub on ${CRAWL.crawledAt}, with their labels and age.`],
+  ["Skill catalog", "/skills", "grid", "rust", `${fmtCompact(REPOS.length)} agent skills, Cursor rules, config packs and MCP servers across ${CATEGORIES.length} curated shelves.`],
+  ["Open issues", "/dashboard/issues", "bookmark", "denim", `${fmtCompact(CRAWL.issues)} issues crawled live from GitHub on ${CRAWL.crawledAt}, with their labels and age.`],
   ["Organization profiles", "/organizations", "building", "plum", "Live GitHub signals plus five years of accepted projects, per org."],
   ["Program calendar", "/projects", "calendar", "honey", `${PROGRAMS.length} mentored programs and contribution seasons, each in its published phase.`],
   ["Project archive", "/projects", "layers", "leaf", "6,600+ accepted program projects, filterable by year, stack and difficulty."],

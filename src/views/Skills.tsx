@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
 import { REPOS, CATEGORIES } from "../data/repos";
 import { ORGS } from "../data/orgs";
-import { avatarOf, byStars, CAT_META, fmt, levelOf, LANG_COLORS } from "../lib/util";
+import { avatarOf, byStars, CAT_META, fmtCompact, levelOf, LANG_COLORS } from "../lib/util";
 import type { Level, Repo } from "../lib/types";
 import { useStore } from "../lib/store";
 import { btn, Chip, LevelChip, OrgImg, Tag, Word } from "../components/ui";
@@ -91,10 +91,10 @@ function PCard({ r }: { r: Repo }) {
         <span className="ml-auto shrink-0"><LevelChip level={levelOf(r.stars)} /></span>
       </div>
       <div className="flex gap-[7px] flex-wrap">
-        <Chip tone="stars">★ {fmt(r.stars)}</Chip>
+        <Chip tone="stars">★ {fmtCompact(r.stars)}</Chip>
         <Chip tone="cat">{CAT_META[r.cat]?.label?.split(" ")[0] ?? r.cat}</Chip>
         <Chip tone="lang"><i className="w-2 h-2 rounded-full shrink-0" style={{ background: LANG_COLORS[r.lang] ?? "currentColor" }} aria-hidden />{r.lang}</Chip>
-        <Chip>⎇ {fmt(r.forks)}</Chip>
+        <Chip>⎇ {fmtCompact(r.forks)}</Chip>
       </div>
       <p className="card-desc line-clamp-2">{r.desc}</p>
       <div className="flex gap-1.5 flex-wrap">{r.tags.slice(0, 4).map((t) => <Tag key={t}>{t}</Tag>)}</div>

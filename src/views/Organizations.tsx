@@ -8,7 +8,7 @@ import { REAL_ORGS } from "../data/realOrgs";
 import { ROSTER, ROSTER_LABEL, ROSTER_STATS } from "../data/rosterOrgs";
 import { sectorOf } from "../lib/orgTaxonomy";
 import { CLASSIFIED, SECTOR_FACETS, TECH_COUNTS, TECH_FACETS } from "../lib/orgClasses";
-import { avatarOf, byStars, fmt } from "../lib/util";
+import { avatarOf, byStars, fmtCompact } from "../lib/util";
 import type { Org } from "../lib/types";
 import { useStore } from "../lib/store";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
@@ -50,7 +50,7 @@ function PillRail() {
       className="flex none shrink-0 inline-flex items-center gap-2.5 py-2 pl-2.5 pr-4 bg-card border border-line rounded-full text-[13px] font-semibold text-cocoa transition-all hover:border-accent hover:text-rust hover:-translate-y-0.5">
       <OrgImg src={avatarOf(o.login, 52)} name={o.login} className="w-[26px] h-[26px] rounded-full object-cover bg-clay" />
       {o.login}
-      <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmt(o.stars)}</span>
+      <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmtCompact(o.stars)}</span>
     </Link>
   );
   return (
@@ -98,16 +98,16 @@ function OrgCard({ org, sector, techs }: { org: Org; sector: string; techs: stri
       <p className="text-cocoa text-[12.5px] leading-[1.6] mt-3 line-clamp-3 min-h-[58px]">{org.tagline}</p>
 
       <div className="flex items-center gap-2.5 flex-wrap mt-3 font-mono text-[10px] text-dim">
-        <span className="text-honey font-bold">★ {fmt(org.stars)}</span>
-        <span>{fmt(org.repos)} repos</span>
-        <span>{fmt(org.issues)} open issues</span>
+        <span className="text-honey font-bold">★ {fmtCompact(org.stars)}</span>
+        <span>{fmtCompact(org.repos)} repos</span>
+        <span>{fmtCompact(org.issues)} open issues</span>
       </div>
 
       {progs.length > 0 && (
         <div className="flex gap-1.5 flex-wrap items-center mt-3" aria-label="Programs this organization runs">
           <span className="font-mono text-[9px] uppercase tracking-[.11em] text-dim">runs</span>
           {progs.map((a) => (
-            <Link key={a.id} to={`/programs/${a.id}`} title={`${fmt(a.n)} ${a.unit === "project" ? "accepted projects" : "tracked repos"} recorded`}>
+            <Link key={a.id} to={`/programs/${a.id}`} title={`${fmtCompact(a.n)} ${a.unit === "project" ? "accepted projects" : "tracked repos"} recorded`}>
               <Chip tone={a.tone}>{a.label}</Chip>
             </Link>
           ))}
@@ -176,17 +176,17 @@ function RosterBand() {
 
         <div className="flex gap-1.5 flex-wrap mt-3">
           {r.programs.map((p) => (
-            <Link key={p.program} to={`/programs/${p.program}/organizations`} title={`${fmt(p.projects)} accepted ${ROSTER_LABEL[p.program] ?? p.program} project${p.projects === 1 ? "" : "s"} (${span(p)})`}>
+            <Link key={p.program} to={`/programs/${p.program}/organizations`} title={`${fmtCompact(p.projects)} accepted ${ROSTER_LABEL[p.program] ?? p.program} project${p.projects === 1 ? "" : "s"} (${span(p)})`}>
               <Chip tone={ROSTER_TONE[p.program] ?? "cat"}>{ROSTER_LABEL[p.program] ?? p.program}</Chip>
             </Link>
           ))}
         </div>
 
         <div className="flex items-center gap-2.5 flex-wrap mt-3 font-mono text-[10px] text-dim">
-          <b className="text-accent font-bold">{fmt(r.projects)}</b>
+          <b className="text-accent font-bold">{fmtCompact(r.projects)}</b>
           <span>accepted project{r.projects === 1 ? "" : "s"}</span>
-          {gh && <span className="text-honey font-bold">★ {fmt(gh.stars)}</span>}
-          {gh && <span>{fmt(gh.repos)} repos</span>}
+          {gh && <span className="text-honey font-bold">★ {fmtCompact(gh.stars)}</span>}
+          {gh && <span>{fmtCompact(gh.repos)} repos</span>}
         </div>
 
         <div className="mt-auto pt-3.5 flex items-center justify-between gap-3">
@@ -220,9 +220,9 @@ function RosterBand() {
               The rest of the <Word>program roster</Word>
             </h2>
             <p className="text-cocoa text-[13px] leading-[1.6] mt-1.5 max-w-[720px]">
-              {fmt(ROSTER_STATS.orgs)} organizations ran a mentored project across{" "}
-              {fmt(ROSTER_STATS.projects)} accepted projects in the four archives that publish one.{" "}
-              {fmt(rest.length)} of them have no profile above - either no GitHub account could be
+              {fmtCompact(ROSTER_STATS.orgs)} organizations ran a mentored project across{" "}
+              {fmtCompact(ROSTER_STATS.projects)} accepted projects in the four archives that publish one.{" "}
+              {fmtCompact(rest.length)} of them have no profile above - either no GitHub account could be
               confirmed, or the account runs no program we track. Each card shows exactly what the
               program recorded, and links to that program's full organization list.
             </p>
@@ -241,7 +241,7 @@ function RosterBand() {
         {hits.length > shown && (
           <div className="flex justify-center mt-6">
             <button type="button" onClick={() => setShown((s) => s + BAND * 2)} className={btn("outline", "sm")}>
-              Show more · {fmt(hits.length - shown)} left
+              Show more · {fmtCompact(hits.length - shown)} left
             </button>
           </div>
         )}
@@ -330,7 +330,7 @@ export default function Organizations() {
 
       <section className={`${W} pt-10 pb-4`}>
         <p className="font-mono text-[11.5px] tracking-[.1em] uppercase text-cocoa mb-5">
-          Showing <b className="text-accent">{Math.min(shown, list.length)}</b> of {fmt(list.length)} organization{list.length === 1 ? "" : "s"}
+          Showing <b className="text-accent">{Math.min(shown, list.length)}</b> of {fmtCompact(list.length)} organization{list.length === 1 ? "" : "s"}
           {(sector !== "all" || tech !== "all" || prog !== "all" || Boolean(q.trim())) && <span className="text-dim"> · <button className="hover:text-brick cursor-pointer" onClick={clearUrl}>clear filters</button></span>}
         </p>
         {list.length ? (
@@ -341,7 +341,7 @@ export default function Organizations() {
             {list.length > shown && (
               <div className="flex justify-center mt-8">
                 <button type="button" onClick={() => setShown((s) => s + PAGE * 2)} className={btn("outline", "md")}>
-                  Show more organizations · {fmt(list.length - shown)} left
+                  Show more organizations · {fmtCompact(list.length - shown)} left
                 </button>
               </div>
             )}

@@ -6,7 +6,7 @@ import { CATALOG } from "../lib/util";
 import type { ProgramRepo } from "../data/programRepos";
 import { PROGRAM_META } from "../data/programRepos";
 import { programLink } from "../data/programDetails";
-import { avatarOf, byStars, CAT_META, fmt, hash, LANG_COLORS, repoById, rnd } from "../lib/util";
+import { avatarOf, byStars, CAT_META, fmtCompact, hash, LANG_COLORS, repoById, rnd } from "../lib/util";
 import type { Repo } from "../lib/types";
 import { useStore } from "../lib/store";
 import { Avatar, btn, Chip, OrgImg, Tag, Word } from "../components/ui";
@@ -183,7 +183,7 @@ export default function RepoDetail() {
           <p className="text-cocoa mt-4 max-w-[720px] text-[15.5px] leading-[1.65]">{repo.desc}</p>
 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3 mt-7">
-            {[[fmt(repo.stars), "stars"], [fmt(repo.forks), "forks"], [fmt(repo.issues), "open issues"], [repo.updated, "last pushed"], [repo.license, "license"]].map(([v, l]) => (
+            {[[fmtCompact(repo.stars), "stars"], [fmtCompact(repo.forks), "forks"], [fmtCompact(repo.issues), "open issues"], [repo.updated, "last pushed"], [repo.license, "license"]].map(([v, l]) => (
               <div key={l} className="bg-card border border-line rounded-[14px] px-4 py-3.5 shadow-soft">
                 <b className="block font-mono text-[20px]">{v}</b>
                 <span className="text-[11px] text-dim uppercase tracking-[.06em]">{l}</span>
@@ -240,7 +240,7 @@ export default function RepoDetail() {
                   {c.avatar_url
                     ? <img src={c.avatar_url} alt="" loading="lazy" className="w-[26px] h-[26px] rounded-full bg-clay" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     : <Avatar name={c.login} size={26} />}
-                  {c.login}<small className="font-mono text-[10.5px] text-dim">{fmt(c.contributions)}</small>
+                  {c.login}<small className="font-mono text-[10.5px] text-dim">{fmtCompact(c.contributions)}</small>
                 </a>
               ))}
             </div>
@@ -283,7 +283,7 @@ export default function RepoDetail() {
                   <b className="text-[13.5px] block mb-1.5 font-display">{r.repo.split("/")[1]}</b>
                   <p className="text-[11.5px] text-cocoa leading-[1.5] line-clamp-2">{r.desc}</p>
                   <div className="flex items-center gap-3 mt-2 font-mono text-[10.5px] text-dim">
-                    <span className="text-honey font-bold">★ {fmt(r.stars)}</span>
+                    <span className="text-honey font-bold">★ {fmtCompact(r.stars)}</span>
                     <span className="inline-flex items-center gap-1"><i className="w-2 h-2 rounded-full not-italic" style={{ background: LANG_COLORS[r.lang] ?? "#a09282" }} />{r.lang}</span>
                   </div>
                 </Link>

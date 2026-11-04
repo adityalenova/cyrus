@@ -3,7 +3,7 @@ import RepoDetail from "@/views/RepoDetail";
 import { REPOS } from "@/data/repos";
 import { PROGRAM_REPOS } from "@/data/programRepos";
 import { canonical, clip } from "@/lib/seo";
-import { fmt } from "@/lib/siteStats";
+import { fmtFull } from "@/lib/siteStats";
 
 /** the same union the client view resolves /repo/:id against */
 const CATALOG = [...REPOS, ...PROGRAM_REPOS];
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const url = canonical(`/repo/${encodeURIComponent(r.repo)}`);
   // stats first: clip() trims the tail, and the description is the part that can spare it
   const description = clip(
-    `${fmt(r.stars)} stars, ${fmt(r.forks)} forks, ${fmt(r.issues)} open issues in ${r.lang}, ${r.license} license. ${r.desc}`,
+    `${fmtFull(r.stars)} stars, ${fmtFull(r.forks)} forks, ${fmtFull(r.issues)} open issues in ${r.lang}, ${r.license} license. ${r.desc}`,
   );
   return {
     title: `${r.repo.split("/")[0]}/${r.repo.split("/")[1]}`,
