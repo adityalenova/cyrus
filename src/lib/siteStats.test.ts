@@ -1,5 +1,5 @@
 /* ══ siteStats.test.ts — the chrome cannot drift from the data ════════ */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { REPOS } from "@/data/repos";
 import { PROGRAMS } from "@/data/orgs";
@@ -73,6 +73,25 @@ describe("stats the footer and metadata quote", () => {
   it("never claims more issue-bearing repos than the crawl covered", () => {
     expect(STATS.issueRepos).toBeLessThanOrEqual(CRAWL.catalogRepos);
     expect(STATS.beginnerIssues).toBeLessThanOrEqual(STATS.issues);
+  });
+});
+
+/* The 404 once said "The 1,528 repos that are..." as plain text, so a refresh would have made it a lie with every test green. */
+const VIEWS = new URL("../views/", import.meta.url);
+const stripComments = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'`])\/\/.*$/gm, "$1");
+/* "1,528": thousands separators. The lookbehind skips CSS lists such as rgba(255,255,255,.05). */
+const COUNT_LITERAL = /(?<![\w(,.$#-])\d{1,3}(?:,\d{3})+(?![\d,])/g;
+/* Trust.tsx quotes figures from other programs' own APIs; Features.tsx's "6,600+" waits for fmtFull (#92). */
+const ALLOWED = ["Trust.tsx", "Features.tsx"];
+
+describe("view copy", () => {
+  it("has no thousands-separated count literal outside the allowed views", () => {
+    const files = readdirSync(VIEWS).filter(f => f.endsWith(".tsx") && !ALLOWED.includes(f));
+    expect(files).toContain("NotFound.tsx");
+    for (const f of files) {
+      const found = stripComments(readFileSync(new URL(f, VIEWS), "utf8")).match(COUNT_LITERAL);
+      expect(found, `${f} hard-codes a count - derive it from STATS in src/lib/siteStats.ts`).toBeNull();
+    }
   });
 });
 
