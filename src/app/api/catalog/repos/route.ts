@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   const per = Math.min(60, Math.max(1, Number(p.get("per") ?? 24) || 24));
   const word = (k: string) => (p.get(k) ?? "").replace(/[^a-z0-9+#._-]/gi, "").slice(0, 40) || undefined;
   try {
-    const rows = await queryRepos({
+    const { rows, total } = await queryRepos({
       cat,
       q: word("q")?.replace(/[%_]/g, ""),
       domain: word("domain"),
@@ -29,7 +29,8 @@ export async function GET(req: Request) {
       page,
       perPage: per,
     });
-    return Response.json({ count: rows.length, page, per, repos: rows });
+    const pages = Math.max(1, Math.ceil(total / per));
+    return Response.json({ total, page, per, pages, repos: rows });
   } catch (e) {
     return Response.json({ error: `query failed: ${(e as Error).message}` }, { status: 500 });
   }
