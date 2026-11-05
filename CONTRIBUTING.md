@@ -74,7 +74,15 @@ npm ci
 npm run dev        # http://localhost:5330
 ```
 
-Node 20.9 or newer is required; CI runs on 20.x and 22.x.
+Node 20.9 or newer is required (`engines` in `package.json`), and `.nvmrc` pins
+22 for `nvm use`. CI builds and tests on 20.x and 22.x but does not run the data
+scripts.
+
+The data scripts that import TypeScript (`build-org-class.mjs`,
+`contribo-summary.mjs`, `org-stats.mjs`) run through tsx, for example
+`npx tsx scripts/org-stats.mjs`. Plain `node` fails on Node 20 through 24 with
+`ERR_MODULE_NOT_FOUND` (`ERR_UNKNOWN_FILE_EXTENSION` before Node 22.18), and
+neither error mentions tsx.
 
 Optional local services, only when your issue needs them:
 

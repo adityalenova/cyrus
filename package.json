@@ -4,6 +4,9 @@
   "version": "2.0.0",
   "type": "module",
   "description": "cyrus.ai — developer programs, organizations and AI-agent projects catalog",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev -p 5330",
     "build": "next build",
