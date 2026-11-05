@@ -17,7 +17,7 @@ import { Link, useParams, useSearchParams } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
 import { useProgramOrgs, type ProgramOrg } from "../lib/contriboOrgs";
 import { useOverlaps } from "../lib/programRoster";
-import { avatarOf, fmt } from "../lib/util";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { useStore } from "../lib/store";
 import { btn, OrgImg, Word } from "../components/ui";
 import NotFound from "./NotFound";
@@ -59,7 +59,7 @@ function YearChip({ y, on, toggle }: { y: number; on: boolean; toggle: () => voi
 function OrgCard({ o, pid, areas }: { o: ProgramOrg; pid: string; areas: boolean }) {
   const { savedOrgs, toggleSavedOrg, toast } = useStore();
   const on = !!o.login && savedOrgs.includes(o.login);
-  const label = `${fmt(o.projects)} project${o.projects === 1 ? "" : "s"}`;
+  const label = `${fmtCompact(o.projects)} project${o.projects === 1 ? "" : "s"}`;
 
   const share = () => {
     const url = `${window.location.origin}/programs/${pid}/organizations?q=${encodeURIComponent(o.name)}`;
@@ -108,9 +108,9 @@ function OrgCard({ o, pid, areas }: { o: ProgramOrg; pid: string; areas: boolean
       </p>
 
       <div className="flex items-center gap-2.5 flex-wrap mt-3 font-mono text-[10px] text-dim">
-        <span><b className="text-accent font-bold">{fmt(o.projects)}</b> {o.projects === 1 ? "project" : "projects"}</span>
-        {o.inSite && <span className="text-honey font-bold">★ {fmt(o.stars)}</span>}
-        {o.inSite && <span>{fmt(o.repos)} repos</span>}
+        <span><b className="text-accent font-bold">{fmtCompact(o.projects)}</b> {o.projects === 1 ? "project" : "projects"}</span>
+        {o.inSite && <span className="text-honey font-bold">★ {fmtCompact(o.stars)}</span>}
+        {o.inSite && <span>{fmtCompact(o.repos)} repos</span>}
         {o.site && <a href={o.site} target="_blank" rel="noopener" className="truncate max-w-[150px] hover:text-accent underline underline-offset-2 decoration-line">website</a>}
       </div>
 
@@ -209,7 +209,7 @@ export default function ProgramOrgs() {
                 <Word>{p.name}</Word> {units}
               </h1>
               <p className="text-foam/75 mt-1.5 text-[14px]">
-                {r.ready ? `${fmt(r.rows.length)} ${units}` : "Reading the participation record..."}
+                {r.ready ? `${fmtCompact(r.rows.length)} ${units}` : "Reading the participation record..."}
               </p>
             </div>
             <div className="ml-auto flex gap-2.5 items-center flex-wrap">
@@ -258,7 +258,7 @@ export default function ProgramOrgs() {
               chip rail buried most of them under "All stacks". ── */}
           {r.techs.length > 0 && (
             <Select label="Stack" value={tech} onChange={setTech}
-              options={[["", `All stacks (${fmt(r.techs.length)})`], ...r.techs.map(([t, n]) => [t, `${t} (${fmt(n)})`] as [string, string])]} />
+              options={[["", `All stacks (${fmtCompact(r.techs.length)})`], ...r.techs.map(([t, n]) => [t, `${t} (${fmtCompact(n)})`] as [string, string])]} />
           )}
 
           {r.years.length > 1 && (
@@ -270,8 +270,8 @@ export default function ProgramOrgs() {
         </div>
 
         <p className="font-mono text-[10.5px] uppercase tracking-[.12em] text-dim mt-5 mb-4" aria-live="polite">
-          Showing {fmt(Math.min(shown, hits.length))} of {fmt(hits.length)} {units}
-          {dirty ? " · filtered" : ` · ${fmt(r.rows.length)} in total`}
+          Showing {fmtCompact(Math.min(shown, hits.length))} of {fmtCompact(hits.length)} {units}
+          {dirty ? " · filtered" : ` · ${fmtCompact(r.rows.length)} in total`}
         </p>
         </>)}
 
@@ -294,7 +294,7 @@ export default function ProgramOrgs() {
           <div className="bg-card border border-line rounded-[18px] p-7 shadow-soft max-w-[620px]">
             <h2 className="panel-h text-[17px] mb-2">{areas ? "No project area matches those filters" : "No organization matches those filters"}</h2>
             <p className="text-cocoa text-[13.5px] leading-[1.7]">
-              {fmt(r.rows.length)} {units} {areas ? "group the projects in" : "took part in"} {p.name}.{" "}
+              {fmtCompact(r.rows.length)} {units} {areas ? "group the projects in" : "took part in"} {p.name}.{" "}
               <button type="button" onClick={clear} className="text-accent font-semibold underline underline-offset-2">Clear the filters</button>
               {" "}to see all of them.
             </p>
@@ -307,13 +307,13 @@ export default function ProgramOrgs() {
 
         {hits.length > shown && (
           <button type="button" onClick={() => setShown((s) => s + PAGE * 2)} className={btn("outline", "md", "mt-6")}>
-            Show more {units} · {fmt(hits.length - shown)} left
+            Show more {units} · {fmtCompact(hits.length - shown)} left
           </button>
         )}
 
         {r.ready && r.rows.length > 0 && (
           <p className="text-dim text-[11.5px] leading-[1.65] mt-6 max-w-[860px]">
-            {fmt(withLogo)} of these {units} show their own logo - the image from their GitHub account
+            {fmtCompact(withLogo)} of these {units} show their own logo - the image from their GitHub account
             where they have one, otherwise the mark their program publishes.
           </p>
         )}
@@ -335,7 +335,7 @@ export default function ProgramOrgs() {
                     <OrgImg src={avatarOf(PROGRAMS.find((x) => x.id === ov.other)?.owner ?? ov.other, 48)} name={ov.label} className="w-full h-full object-cover" />
                   </span>
                   <span className="text-[12.5px] font-semibold text-ink group-hover:text-accent transition-colors">{ov.label}</span>
-                  <span className="font-mono text-[11px] font-bold text-accent tabular-nums">{fmt(ov.mine)}</span>
+                  <span className="font-mono text-[11px] font-bold text-accent tabular-nums">{fmtCompact(ov.mine)}</span>
                 </Link>
               ))}
             </div>

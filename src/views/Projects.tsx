@@ -11,7 +11,8 @@ import { ORGS, PROGRAMS } from "../data/orgs";
 import { PROGRAM_REPOS, PROGRAM_META } from "../data/programRepos";
 import type { ProgramName } from "../data/programRepos";
 import { useProjectArchives } from "../lib/programProjects";
-import { fmt } from "../lib/util";
+import { fmtFull } from "../lib/siteStats";
+import { fmtCompact } from "../lib/util";
 import { useStore } from "../lib/store";
 import { btn, Chip, Word } from "../components/ui";
 
@@ -109,7 +110,7 @@ function ProjCard({ p }: { p: Proj }) {
           above is what the source actually publishes. */}
       <div className="flex gap-1.5 flex-wrap mt-3">
         <Chip tone="cat">{progLabel(p.program)}</Chip>
-        {p.stars > 0 && <Chip tone="stars">★ {fmt(p.stars)}</Chip>}
+        {p.stars > 0 && <Chip tone="stars">★ {fmtCompact(p.stars)}</Chip>}
       </div>
       <p className="text-cocoa text-[12.5px] leading-[1.55] mt-2.5 line-clamp-3">{p.body}</p>
       <div className="flex gap-1.5 flex-wrap mt-3 items-center">
@@ -407,7 +408,7 @@ export default function Projects() {
           </div>
           <div className="flex items-center gap-3.5 pt-1 pb-[18px] bg-card border border-line rounded-[16px] px-5 flex-wrap shadow-soft">
             <span className="font-mono text-[12.5px] tracking-[.1em] uppercase text-cocoa">
-              <b className="text-ink">{fmt(list.length)}</b>&nbsp; projects found
+              <b className="text-ink">{fmtFull(list.length)}</b>&nbsp; projects found
               {loadErr && <span className="normal-case tracking-normal text-brick ml-3">Archive file missing - run npm run refresh</span>}
             </span>
             <span className="ml-auto font-mono text-[10.5px] tracking-[.12em] uppercase text-dim">Sort by</span>
@@ -426,7 +427,7 @@ export default function Projects() {
               {shown < list.length && (
                 <div className="flex justify-center mt-8">
                   <button onClick={() => setShown(shown + 60)} className={btn("outline", "lg") + " cursor-pointer"}>
-                    Show {Math.min(60, list.length - shown)} of {fmt(list.length - shown)} more
+                    Show {Math.min(60, list.length - shown)} of {fmtFull(list.length - shown)} more
                   </button>
                 </div>
               )}
@@ -446,7 +447,7 @@ export default function Projects() {
 
           {anyFilter && list.length > 0 && (
             <p className="font-mono text-[10.5px] text-dim mt-5">
-              Showing {visible.length} of {fmt(list.length)} · <button className="text-accent font-semibold hover:underline cursor-pointer" onClick={clearAll}>Clear filters</button>
+              Showing {visible.length} of {fmtFull(list.length)} · <button className="text-accent font-semibold hover:underline cursor-pointer" onClick={clearAll}>Clear filters</button>
             </p>
           )}
 

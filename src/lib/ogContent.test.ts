@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { PROGRAMS, ORGS } from "@/data/orgs";
 import { REPOS } from "@/data/repos";
-import { fmt, STATS } from "@/lib/siteStats";
+import { fmtFull, STATS } from "@/lib/siteStats";
 import { catalogSnapshot, homeCard, programCard } from "@/lib/ogContent";
 
 describe("catalog snapshot", () => {
@@ -33,9 +33,9 @@ describe("home card", () => {
 
   it("quotes the live counts, not literals", () => {
     const said = card.rows.map((r) => r.v).join(" | ");
-    expect(said).toContain(`${fmt(STATS.issues)} across`);
+    expect(said).toContain(`${fmtFull(STATS.issues)} across`);
     expect(said).toContain(`${PROGRAMS.length} tracked`);
-    expect(said).toContain(`${fmt(STATS.archive)} program projects`);
+    expect(said).toContain(`${fmtFull(STATS.archive)} program projects`);
     expect(said).toContain(`${STATS.archivePrograms} archives`);
     expect(said).toContain(`${ORGS.length} profiles`);
     expect(card.rows).toHaveLength(4);

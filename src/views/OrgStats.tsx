@@ -18,14 +18,14 @@ import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
 import { useOrgStats, type OrgStatRow } from "../lib/orgStats";
-import { avatarOf, fmt } from "../lib/util";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
 
 const W = "max-w-[1240px] mx-auto px-6";
 const PAGE = 60;
 
 /** the headline figures are exact counts of a generated file, so they are
- *  printed as exact numbers; `fmt`'s rounding is for table cells. */
+ *  printed as exact numbers; `fmtCompact`'s rounding is for table cells. */
 const exact = (n: number) => n.toLocaleString("en-US");
 
 const LABEL: Record<string, string> = Object.fromEntries(PROGRAMS.map((p) => [p.id, p.name]));
@@ -61,7 +61,7 @@ function Bars({ rows, unit }: { rows: [string, number][]; unit: string }) {
             <i className="grow-x block h-full rounded-full"
               style={{ width: `${Math.max(2, (n / max) * 100)}%`, background: i === 0 ? "linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 55%, var(--color-denim)))" : "var(--color-denim)", opacity: 1 - i * 0.035, animationDelay: `${i * 40}ms` }} />
           </span>
-          <b className="font-mono text-[11.5px] font-bold text-ink text-right tabular-nums">{fmt(n)}</b>
+          <b className="font-mono text-[11.5px] font-bold text-ink text-right tabular-nums">{fmtCompact(n)}</b>
         </li>
       ))}
       <li className="font-mono text-[10px] uppercase tracking-[.1em] text-dim pt-1">{unit}</li>
@@ -75,8 +75,8 @@ function YearBars({ rows }: { rows: [string, number][] }) {
   return (
     <div className="flex items-end gap-1.5 h-[132px]">
       {rows.map(([y, n], i) => (
-        <div key={y} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full min-w-0" title={`${y}: ${fmt(n)} organizations in the record`}>
-          <span className="font-mono text-[9.5px] font-bold text-cocoa tabular-nums">{fmt(n)}</span>
+        <div key={y} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full min-w-0" title={`${y}: ${fmtCompact(n)} organizations in the record`}>
+          <span className="font-mono text-[9.5px] font-bold text-cocoa tabular-nums">{fmtCompact(n)}</span>
           <i className="w-full rounded-t-[5px] pulse-bar block"
             style={{ height: `${Math.max(5, (n / max) * 100)}%`, background: i === rows.length - 1 ? "linear-gradient(180deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 16%, var(--color-card)))" : "linear-gradient(180deg, var(--color-denim), color-mix(in srgb, var(--color-denim) 14%, var(--color-card)))", animationDelay: `${i * 45}ms` }} />
           <span className="font-mono text-[9.5px] text-dim">{y}</span>
@@ -117,15 +117,15 @@ function Leader({ rows }: { rows: OrgStatRow[] }) {
               <td className="py-3 px-3.5">
                 <span className="flex gap-1.5 flex-wrap">
                   {o.programs.slice(0, 3).map((p) => (
-                    <Link key={p.id} to={`/programs/${p.id}/organizations`} title={`${fmt(p.projects)} accepted projects in ${LABEL[p.id] ?? p.id}`}>
+                    <Link key={p.id} to={`/programs/${p.id}/organizations`} title={`${fmtCompact(p.projects)} accepted projects in ${LABEL[p.id] ?? p.id}`}>
                       <Chip tone={TONE[p.id] ?? "cat"}>{SHORT[p.id] ?? p.id}</Chip>
                     </Link>
                   ))}
                   {o.programs.length > 3 && <span className="font-mono text-[9.5px] text-dim self-center">+{o.programs.length - 3}</span>}
                 </span>
               </td>
-              <td className="py-3 px-3.5 text-right font-mono text-[12.5px] font-bold text-ink tabular-nums">{fmt(o.projects)}</td>
-              <td className="py-3 px-3.5 text-right font-mono text-[12px] text-honey font-bold tabular-nums">{o.stars ? fmt(o.stars) : "—"}</td>
+              <td className="py-3 px-3.5 text-right font-mono text-[12.5px] font-bold text-ink tabular-nums">{fmtCompact(o.projects)}</td>
+              <td className="py-3 px-3.5 text-right font-mono text-[12px] text-honey font-bold tabular-nums">{o.stars ? fmtCompact(o.stars) : "—"}</td>
             </tr>
           ))}
         </tbody>
@@ -156,10 +156,10 @@ function Card({ o }: { o: OrgStatRow }) {
       <p className="text-cocoa text-[12px] leading-[1.55] mt-2.5 line-clamp-2 min-h-[38px]">{o.desc || "No blurb in the record - counted here by what its programs published."}</p>
 
       <div className="flex items-center gap-2.5 flex-wrap mt-2.5 font-mono text-[10px] text-dim">
-        <b className="text-accent font-bold">{fmt(o.projects)}</b>
+        <b className="text-accent font-bold">{fmtCompact(o.projects)}</b>
         <span>project{o.projects === 1 ? "" : "s"}</span>
-        {o.stars > 0 && <span className="text-honey font-bold">★ {fmt(o.stars)}</span>}
-        {o.repos > 0 && <span>{fmt(o.repos)} repos</span>}
+        {o.stars > 0 && <span className="text-honey font-bold">★ {fmtCompact(o.stars)}</span>}
+        {o.repos > 0 && <span>{fmtCompact(o.repos)} repos</span>}
       </div>
 
       <div className="flex gap-1.5 flex-wrap mt-2.5">
@@ -267,7 +267,7 @@ export default function OrgStats() {
                 <div className="flex items-end gap-2 mt-4">
                   {s.spread.filter(([n]) => n !== "0").map(([n, c]) => (
                     <div key={n} className="flex-1 bg-cream border border-line rounded-[14px] px-3 py-3.5 text-center">
-                      <p className="font-display font-extrabold text-[22px] tracking-[-.02em] text-ink tabular-nums">{fmt(c)}</p>
+                      <p className="font-display font-extrabold text-[22px] tracking-[-.02em] text-ink tabular-nums">{fmtCompact(c)}</p>
                       <p className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim mt-1">
                         {n === "1" ? "one program" : `${n} programs`}
                       </p>
@@ -295,12 +295,12 @@ export default function OrgStats() {
           <section className="mt-10">
             <h2 className="panel-h-lg mb-1.5">The <Word>marks</Word></h2>
             <p className="text-cocoa text-[12.5px] mb-5 max-w-[640px] leading-[1.6]">
-              The first {fmt(wall.length)} organizations by accepted projects that run a GitHub account - each image is
+              The first {fmtCompact(wall.length)} organizations by accepted projects that run a GitHub account - each image is
               the avatar that account publishes.
             </p>
             <div className="grid grid-cols-10 gap-2.5 max-[1100px]:grid-cols-8 max-[860px]:grid-cols-6 max-[560px]:grid-cols-4">
               {wall.map((o) => (
-                <Link key={o.key} to={`/organizations/${o.login}`} title={`${o.name} - ${fmt(o.projects)} projects`}
+                <Link key={o.key} to={`/organizations/${o.login}`} title={`${o.name} - ${fmtCompact(o.projects)} projects`}
                   className="aspect-square bg-card border border-line rounded-[14px] grid place-items-center p-2.5 transition-all hover:-translate-y-1 hover:border-accent/50 hover:shadow-soft">
                   <OrgImg src={o.logo} name={o.login ?? o.name} className="w-full h-full object-contain" />
                 </Link>
@@ -318,7 +318,7 @@ export default function OrgStats() {
               <div className="flex flex-wrap gap-1.5">
                 {s.techs.slice(0, 34).map(([t, n]) => (
                   <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-denim/25 bg-denim/6 text-denim px-2.5 py-[5px] font-mono text-[10.5px]">
-                    {t}<b className="text-[9.5px] tabular-nums opacity-70">{fmt(n)}</b>
+                    {t}<b className="text-[9.5px] tabular-nums opacity-70">{fmtCompact(n)}</b>
                   </span>
                 ))}
               </div>
@@ -345,8 +345,8 @@ export default function OrgStats() {
                           {LABEL[id] ?? SHORT[id] ?? id}
                         </Link>
                       </td>
-                      <td className="py-2.5 px-3.5 text-right font-mono text-[12.5px] font-bold text-accent tabular-nums">{fmt(v.orgs)}</td>
-                      <td className="py-2.5 px-3.5 text-right font-mono text-[12px] text-cocoa tabular-nums">{fmt(v.projects)}</td>
+                      <td className="py-2.5 px-3.5 text-right font-mono text-[12.5px] font-bold text-accent tabular-nums">{fmtCompact(v.orgs)}</td>
+                      <td className="py-2.5 px-3.5 text-right font-mono text-[12px] text-cocoa tabular-nums">{fmtCompact(v.projects)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -366,11 +366,11 @@ export default function OrgStats() {
                   aria-label="Search organizations" className="bg-card border border-line rounded-xl px-3.5 py-2.5 text-[13px] outline-none transition-all focus:border-accent w-[220px]" />
                 <select className={fin} value={sector} onChange={(e) => { setSector(e.target.value); setShown(PAGE); }} aria-label="Field">
                   <option value="all">All fields</option>
-                  {s.sectors.map(([k, n]) => <option key={k} value={k}>{k} ({fmt(n)})</option>)}
+                  {s.sectors.map(([k, n]) => <option key={k} value={k}>{k} ({fmtCompact(n)})</option>)}
                 </select>
                 <select className={fin} value={prog} onChange={(e) => { setProg(e.target.value); setShown(PAGE); }} aria-label="Program">
                   <option value="all">Any program</option>
-                  {Object.entries(s.programCounts).map(([id, n]) => <option key={id} value={id}>{LABEL[id] ?? id} ({fmt(n)})</option>)}
+                  {Object.entries(s.programCounts).map(([id, n]) => <option key={id} value={id}>{LABEL[id] ?? id} ({fmtCompact(n)})</option>)}
                 </select>
                 <select className={fin} value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} aria-label="Sort">
                   <option value="projects">Most projects</option>
@@ -381,7 +381,7 @@ export default function OrgStats() {
             </div>
 
             <p className="font-mono text-[10.5px] uppercase tracking-[.12em] text-dim mb-4" aria-live="polite">
-              Showing {fmt(Math.min(shown, rows.length))} of {fmt(rows.length)} organizations
+              Showing {fmtCompact(Math.min(shown, rows.length))} of {fmtCompact(rows.length)} organizations
             </p>
 
             {rows.length ? (
@@ -392,7 +392,7 @@ export default function OrgStats() {
                 {rows.length > shown && (
                   <div className="flex justify-center mt-7">
                     <button type="button" onClick={() => setShown((n) => n + PAGE * 2)} className={btn("outline", "md")}>
-                      Show more organizations · {fmt(rows.length - shown)} left
+                      Show more organizations · {fmtCompact(rows.length - shown)} left
                     </button>
                   </div>
                 )}

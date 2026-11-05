@@ -6,7 +6,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { btn, Tag } from "../../components/ui";
-import { CAT_META, avatarOf, fmt } from "../util";
+import { CAT_META, avatarOf, fmtCompact } from "../util";
 import { ORGS } from "../../data/orgs";
 import { Card, DashHead, Ic, StatRow } from "./shell";
 import { ArtShelf } from "./art";
@@ -21,9 +21,9 @@ export function ReposSection({ d }: { d: Dash }) {
   }, [d.savedRepos, q]);
 
   const tiles: [string, string][] = [
-    [fmt(d.savedRepos.length), "followed"],
-    [fmt(d.stars), "combined stars"],
-    [fmt(d.openIssues), "open issues in them"],
+    [fmtCompact(d.savedRepos.length), "followed"],
+    [fmtCompact(d.stars), "combined stars"],
+    [fmtCompact(d.openIssues), "open issues in them"],
     [String(d.langs.length), "languages"],
   ];
 
@@ -78,9 +78,9 @@ export function ReposSection({ d }: { d: Dash }) {
                 {r.tags.slice(0, 3).map((t) => <Tag key={t}>{t}</Tag>)}
               </div>
               <StatRow items={[
-                ["Stars", fmt(r.stars)],
-                ["Open issues", fmt(r.issues)],
-                ["Forks", fmt(r.forks)],
+                ["Stars", fmtCompact(r.stars)],
+                ["Open issues", fmtCompact(r.issues)],
+                ["Forks", fmtCompact(r.forks)],
                 ["Last update", r.updated],
               ]} />
             </article>
@@ -99,7 +99,7 @@ export function ReposSection({ d }: { d: Dash }) {
             stars, open issues and last update.
           </p>
           <Link to="/skills" className={btn("primary", "md") + " mt-5"}>
-            Browse {fmt(d.index.catalog)} repositories
+            Browse {fmtCompact(d.index.catalog)} repositories
           </Link>
         </Card>
       )}
@@ -125,7 +125,7 @@ export function ReposSection({ d }: { d: Dash }) {
                   <span className="text-cocoa text-[12px] truncate block">{o.tagline}</span>
                 </div>
                 <span className="flex items-baseline gap-2.5 font-mono text-[10.5px] text-dim shrink-0 max-[680px]:hidden">
-                  <span><b className="text-ink font-semibold">{fmt(o.stars)}</b> stars</span>
+                  <span><b className="text-ink font-semibold">{fmtCompact(o.stars)}</b> stars</span>
                   <span><b className="text-ink font-semibold">{String(o.repos)}</b> repos</span>
                 </span>
                 <button onClick={() => d.toggleSavedOrg(o.login)} aria-label={"Unfollow " + o.login}

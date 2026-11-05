@@ -4,7 +4,8 @@ import { describe, expect, it } from "vitest";
 import { REPOS } from "@/data/repos";
 import { PROGRAMS } from "@/data/orgs";
 import { CRAWL } from "@/data/crawlStats";
-import { ARCHIVE_PROGRAMS, ARCHIVE_PROJECTS, ARCHIVE_ROWS, STATS, fmt, statsLine } from "./siteStats";
+import { ARCHIVE_PROGRAMS, ARCHIVE_PROJECTS, ARCHIVE_ROWS, STATS, fmtFull, statsLine } from "./siteStats";
+import { fmtCompact } from "./util";
 
 const archiveLength = (file: string): number => {
   const json = JSON.parse(readFileSync(new URL(`../../public/data/${file}`, import.meta.url), "utf8"));
@@ -97,12 +98,25 @@ describe("view copy", () => {
 
 describe("copy helpers", () => {
   it("formats with thousands separators", () => {
-    expect(fmt(1528)).toBe("1,528");
+    expect(fmtFull(1528)).toBe("1,528");
+  });
+
+  it("keeps the rounded formatter for star counts", () => {
+    expect(fmtCompact(1500)).toBe("1.5k");
+  });
+
+  it("writes the archive total in full on /projects and in every metadata line that quotes it", () => {
+    const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+    expect(read("../views/Projects.tsx")).toContain("fmtFull(list.length)");
+    expect(read("../views/Projects.tsx")).not.toContain("fmtCompact(list.length");
+    for (const file of ["./ogContent.ts", "../app/llms.txt/route.ts"]) {
+      expect(read(file), file).toContain("fmtFull(STATS.archive)");
+    }
   });
 
   it("writes a summary line made only of live numbers", () => {
     const line = statsLine();
-    expect(line).toContain(`${fmt(STATS.issues)} open issues`);
+    expect(line).toContain(`${fmtFull(STATS.issues)} open issues`);
     expect(line).toContain(`${STATS.programs} tracked open-source programs`);
     expect(line).not.toMatch(/NaN|undefined|hackathon/i);
   });

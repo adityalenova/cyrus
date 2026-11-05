@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "@/lib/router";
 import { btn, Chip, Tag } from "../../components/ui";
-import { avatarOf, fmt } from "../util";
+import { avatarOf, fmtCompact } from "../util";
 import { ISSUE_SIGNALS } from "../../data/issueSignals";
 import { Card, DashHead, Ic, StatRow } from "./shell";
 import { ArtLedger } from "./art";
@@ -87,7 +87,7 @@ function IssueRow({ d, issue }: { d: Dash; issue: TrackedIssue }) {
   const stats: [string, ReactNode][] = [
     ["issue", "#" + issue.number],
     ...(issue.lang ? [["lang", issue.lang] as [string, ReactNode]] : []),
-    ...(issue.stars ? [["stars", fmt(issue.stars)] as [string, ReactNode]] : []),
+    ...(issue.stars ? [["stars", fmtCompact(issue.stars)] as [string, ReactNode]] : []),
     ...(issue.updated ? [["touched", daysAgo(issue.updated) + "d ago"] as [string, ReactNode]] : []),
     ["on board", daysAgo(issue.added) === 0 ? "today" : daysAgo(issue.added) + "d ago"],
   ];
@@ -291,7 +291,7 @@ export function IssuesSection({ d }: { d: Dash }) {
                   </a>
                   <StatRow items={[
                     ["lang", s.lang ?? "-"],
-                    ["stars", fmt(s.stars)],
+                    ["stars", fmtCompact(s.stars)],
                     ["updated", daysAgo(s.updated) + "d ago"],
                     ...(s.beginner ? [["signal", "good first issue"] as [string, ReactNode]] : []),
                   ]} />
@@ -304,8 +304,8 @@ export function IssuesSection({ d }: { d: Dash }) {
             ))}
           </div>
           <p className="text-dim text-[12px] mt-4">
-            A sample of the {fmt(d.index.issues)} open issues read from{" "}
-            {fmt(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
+            A sample of the {fmtCompact(d.index.issues)} open issues read from{" "}
+            {fmtCompact(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
             snapshot is searchable on the{" "}
             <Link to="/issues" className="text-accent font-semibold hover:underline">issue finder</Link>.
           </p>

@@ -9,7 +9,8 @@ import { ORGS } from "../data/orgs";
 /** full catalog: the 528-repo agent catalog + program projects */
 export const CATALOG: Repo[] = [...REPOS, ...PROGRAM_REPOS];
 
-export const fmt = (n: number): string =>
+/** 1500 -> "1.5k": rounded, for star counts and table cells (siteStats.ts fmtFull is exact) */
+export const fmtCompact = (n: number): string =>
   n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M"
   : n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
 

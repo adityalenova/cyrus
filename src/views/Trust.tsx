@@ -5,7 +5,7 @@
    populated with cyrus's real snapshot numbers.                  ═ */
 import { Link } from "@/lib/router";
 import { btn, Word } from "../components/ui";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
 import { STATS } from "../lib/siteStats";
 import { REPOS } from "../data/repos";
 import { ORGS, PROGRAMS } from "../data/orgs";
@@ -44,9 +44,9 @@ const FOUNDATIONS: [string, string, string][] = [
 ];
 
 const SOURCES: [string, string, string][] = [
-  ["GitHub REST API", "Every 14 days", "Stars, forks, open issues, language, license and last push for all " + fmt(REPOS.length) + " catalog repos and " + fmt(ORGS.length) + " org profiles."],
+  ["GitHub REST API", "Every 14 days", "Stars, forks, open issues, language, license and last push for all " + fmtCompact(REPOS.length) + " catalog repos and " + fmtCompact(ORGS.length) + " org profiles."],
   ["Program archives and open APIs", "Each season window", "Accepted-project records for GSoC, LFX, Outreachy and Summer of Bitcoin - titles, orgs, stacks, sizes, mentors - plus the live boards GSSoC, 24 Pull Requests and MLH publish themselves, and the Linux Foundation's member directory."],
-  ["GitHub search API (issues)", `Crawled ${CRAWL.crawledAt}`, fmt(CRAWL.issues) + " open issues read live out of " + fmt(CRAWL.reposWithIssues) + " catalog repositories - title, labels, age and the thread URL. Only issues GitHub still reports open make the cut."],
+  ["GitHub search API (issues)", `Crawled ${CRAWL.crawledAt}`, fmtCompact(CRAWL.issues) + " open issues read live out of " + fmtCompact(CRAWL.reposWithIssues) + " catalog repositories - title, labels, age and the thread URL. Only issues GitHub still reports open make the cut."],
   ["Program organizer pages", "Each season window", "Application and coding windows for all " + PROGRAMS.length + " tracked programs are re-read from the organizer's own site; anything unpublished is marked as an estimate."],
 ];
 
@@ -80,7 +80,7 @@ export default function Trust() {
         <section className={`${W} mt-[54px]`}>
           <div className="flex items-baseline gap-3 flex-wrap mb-7">
             <h2 className="font-display font-extrabold tracking-[-.02em] text-[clamp(24px,3vw,34px)]">Active snapshot verifications</h2>
-            <span className="font-mono text-[11px] tracking-[.12em] uppercase text-dim">running now · {fmt(STATS.archive)} archived program projects · {fmt(STATS.orgRoster)} organizations named by a program archive</span>
+            <span className="font-mono text-[11px] tracking-[.12em] uppercase text-dim">running now · {fmtCompact(STATS.archive)} archived program projects · {fmtCompact(STATS.orgRoster)} organizations named by a program archive</span>
           </div>
           <div className="grid grid-cols-3 gap-5 max-[900px]:grid-cols-1">
             {VERIFIED.map(([b, src, sub, n, tone, badge]) => (
@@ -89,7 +89,7 @@ export default function Trust() {
                   <span className="flex items-center gap-1.5 font-mono text-[9.5px] font-bold tracking-[.14em] uppercase text-leaf bg-leaf/10 border border-leaf/25 rounded-full px-3 py-1.5"><Check /> Verified</span>
                   <span className={`ml-auto font-mono text-[9.5px] font-bold tracking-[.12em] uppercase ${tone === "leaf" ? "text-leaf" : tone === "denim" ? "text-denim" : "text-plum"}`}>{badge}</span>
                 </div>
-                <b className="font-mono font-bold text-[34px] tracking-[-.02em] block text-ink">{fmt(n)}</b>
+                <b className="font-mono font-bold text-[34px] tracking-[-.02em] block text-ink">{fmtCompact(n)}</b>
                 <span className="block font-display font-bold text-[15px] mt-1.5 mb-1">{b}</span>
                 <p className="text-cocoa text-[12.5px] leading-[1.6]">{sub}</p>
                 <p className="font-mono text-[10.5px] text-dim mt-4 pt-4 border-t border-liness break-words">Source: {src}</p>
@@ -141,9 +141,9 @@ export default function Trust() {
             <p className="text-center font-mono text-[10.5px] font-bold tracking-[.18em] uppercase text-ember mb-8">The current snapshot, in plain numbers</p>
             <div className="grid grid-cols-5 gap-6 text-center max-[900px]:grid-cols-2 max-[520px]:grid-cols-1">
               {[
-                [fmt(REPOS.length), "catalog repos"],
-                [fmt(CRAWL.issues), "open issues crawled"],
-                [fmt(STATS.archive), "archive projects"],
+                [fmtCompact(REPOS.length), "catalog repos"],
+                [fmtCompact(CRAWL.issues), "open issues crawled"],
+                [fmtCompact(STATS.archive), "archive projects"],
                 [String(ORGS.length), "org profiles"],
                 [String(PROGRAMS.length), "programs tracked"],
               ].map(([v, l]) => (

@@ -15,7 +15,7 @@ import { REPOS } from "../data/repos";
 import { CRAWL } from "../data/crawlStats";
 import { STATS } from "../lib/siteStats";
 import type { Program } from "../lib/types";
-import { avatarOf, fmt, byStars, CAT_META, reduceMotion } from "../lib/util";
+import { avatarOf, fmtCompact, byStars, CAT_META, reduceMotion } from "../lib/util";
 import { Word, SectionTag, btn, OrgImg, Portrait } from "../components/ui";
 import { useStore } from "../lib/store";
 
@@ -402,7 +402,7 @@ function OrgMarquee() {
       <span className="min-w-0">
         <b className="block card-title text-[14px] truncate">{o.name}</b>
         <span className="block text-[11.5px] text-cocoa truncate">{o.tagline}</span>
-        <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmt(o.stars)} · {o.repos} repos</span>
+        <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmtCompact(o.stars)} · {o.repos} repos</span>
       </span>
     </Link>
   );
@@ -450,7 +450,7 @@ function Skills () {
   return (
     <Section id="skills">
       <Head tag="Browse good open source projects" title={<>Most-starred in the <Word>catalog</Word>.</>}
-        sub={`${fmt(STATS.catalog)} repositories indexed by language, topic and stars, refreshed from the GitHub API.`}
+        sub={`${fmtCompact(STATS.catalog)} repositories indexed by language, topic and stars, refreshed from the GitHub API.`}
         side={<Link className={btn("outline", "md")} to="/skills">All skills</Link>} />
       <div className="grid grid-cols-4 gap-[14px] max-[1100px]:grid-cols-2 max-[700px]:grid-cols-1">
         {cards.map((r) => {
@@ -466,7 +466,7 @@ function Skills () {
               <p className="text-cocoa text-[13px] leading-[1.6] flex-1 line-clamp-3">{r.desc}</p>
               <div className="flex items-center justify-between gap-2.5">
                 <span className="font-mono text-[10.5px] font-bold rounded-full px-2.5 py-1 border border-accent/30 bg-peach text-accent">{CAT_META[r.cat]?.label ?? r.cat}</span>
-                <span className="font-mono text-[11.5px] font-bold text-honey">★ {fmt(r.stars)}</span>
+                <span className="font-mono text-[11.5px] font-bold text-honey">★ {fmtCompact(r.stars)}</span>
               </div>
             </Link>
           );
@@ -480,9 +480,9 @@ function Skills () {
 const ARCHIVE_AS_OF = "2026-10-25";
 function Band() {
   const cells: [string, string][] = [
-    [fmt(STATS.issues), "open issues indexed"],
-    [fmt(STATS.archive), "program projects archived"],
-    [fmt(STATS.orgs), "organizations profiled"],
+    [fmtCompact(STATS.issues), "open issues indexed"],
+    [fmtCompact(STATS.archive), "program projects archived"],
+    [fmtCompact(STATS.orgs), "organizations profiled"],
     [String(STATS.programs), "programs on the calendar"],
   ];
   return (

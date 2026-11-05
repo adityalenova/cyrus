@@ -26,8 +26,8 @@ export const ARCHIVE_ROWS = 8_731;
 /** how many programs those rows come from */
 export const ARCHIVE_PROGRAMS = 12;
 
-/** 1528 -> "1,528" */
-export const fmt = (n: number): string => n.toLocaleString("en-US");
+/** 1528 -> "1,528": exact, for counts of our own catalog (util.ts fmtCompact is for star counts) */
+export const fmtFull = (n: number): string => n.toLocaleString("en-US");
 
 export const STATS = {
   /** program-project repos in the browsable catalog */
@@ -64,5 +64,5 @@ export const STATS = {
 
 /** One-line summary for metadata descriptions and the footer stat strip. */
 export function statsLine(): string {
-  return `${fmt(STATS.issues)} open issues in ${fmt(STATS.issueRepos)} repositories, ${fmt(STATS.archive)} program projects from ${STATS.archivePrograms} archives and ${STATS.programs} tracked open-source programs`;
+  return `${fmtFull(STATS.issues)} open issues in ${fmtFull(STATS.issueRepos)} repositories, ${fmtFull(STATS.archive)} program projects from ${STATS.archivePrograms} archives and ${STATS.programs} tracked open-source programs`;
 }

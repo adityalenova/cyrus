@@ -19,7 +19,7 @@ import type { RosterOrg } from "../programRoster";
 import { SECTOR_FACETS, sectorOfOrg } from "../orgClasses";
 import { CRAWL } from "../../data/crawlStats";
 import type { Repo } from "../types";
-import { avatarOf, fmt } from "../util";
+import { avatarOf, fmtCompact } from "../util";
 import { btn, OrgImg } from "../../components/ui";
 import { Card, DashHead, Ic } from "./shell";
 import { DP } from "./shared";
@@ -438,7 +438,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
                   {program === "all"
                     ? "No filter: organizations are ranked purely on the languages and repositories they match."
                     : rst.byId[program]
-                      ? `The record for ${PROGRAMS.find((p) => p.id === program)?.name} names ${fmt(rst.byId[program].orgs)} organizations and ${fmt(rst.byId[program].projects)} ${rosterUnit(program, rst.byId[program].source)}. Only profiles we hold live GitHub numbers for get a language reason.`
+                      ? `The record for ${PROGRAMS.find((p) => p.id === program)?.name} names ${fmtCompact(rst.byId[program].orgs)} organizations and ${fmtCompact(rst.byId[program].projects)} ${rosterUnit(program, rst.byId[program].source)}. Only profiles we hold live GitHub numbers for get a language reason.`
                       : `${PROGRAMS.find((p) => p.id === program)?.name} publishes no participant list, so this filter can only use the organizations whose own repositories advertise it. The program page says so too.`}
                 </p>
               </div>
@@ -479,7 +479,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
                 <input value={orgScope} onChange={(e) => setOrgScope(e.target.value)} placeholder="kubernetes, google, sentry &hellip;"
                   aria-label="Limit issues to one GitHub organization" className={SEL} />
                 <p className="text-[12.5px] text-dim mt-2 leading-[1.6]">
-                  Optional. Left blank, the whole {fmt(CRAWL.issues)}-issue snapshot is in scope. Typed in, only repositories owned by
+                  Optional. Left blank, the whole {fmtCompact(CRAWL.issues)}-issue snapshot is in scope. Typed in, only repositories owned by
                   that account answer - &ldquo;google&rdquo; also covers google-gemini and google-research.
                 </p>
               </div>
@@ -513,8 +513,8 @@ export function CoPilotSection({ d }: { d: Dash }) {
                 <span>
                   <b className="block text-[13.5px] font-semibold text-ink">Only beginner-labelled issues</b>
                   <span className="block text-cocoa text-[12px] leading-[1.55] mt-0.5">
-                    GitHub puts a beginner label - good first issue, help wanted, easy, starter - on {fmt(CRAWL.beginnerLabelled)} of
-                    the {fmt(CRAWL.issues)} indexed issues. This asks for those, and for nothing anyone already holds.
+                    GitHub puts a beginner label - good first issue, help wanted, easy, starter - on {fmtCompact(CRAWL.beginnerLabelled)} of
+                    the {fmtCompact(CRAWL.issues)} indexed issues. This asks for those, and for nothing anyone already holds.
                   </span>
                 </span>
               </label>
@@ -540,7 +540,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
             <span className="ml-auto font-mono text-[10.5px] text-dim">
               {showOrgs
                 ? `${orgHits.length} organizations`
-                : `${live.state === "ok" ? fmt(live.total) : "…"} open issues · ${repoHits.length} catalog {repoHits.length === 1 ? "repo" : "repos"}`}
+                : `${live.state === "ok" ? fmtCompact(live.total) : "…"} open issues · ${repoHits.length} catalog {repoHits.length === 1 ? "repo" : "repos"}`}
             </span>
           </div>
 
@@ -562,7 +562,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
                         <OrgImg src={avatarOf(o.login, 64)} name={o.login} className="w-[30px] h-[30px] rounded-[9px] object-cover bg-sand shrink-0" />
                         <Link to={`/organizations/${o.login}`} className="min-w-0 flex-1">
                           <b className="block text-[13.5px] font-semibold text-ink hover:text-accent transition-colors truncate">{o.name}</b>
-                          <span className="block font-mono text-[9.5px] text-dim truncate">{fmt(o.repos)} repos · {fmt(o.stars)} stars · {fmt(o.issues)} open issues</span>
+                          <span className="block font-mono text-[9.5px] text-dim truncate">{fmtCompact(o.repos)} repos · {fmtCompact(o.stars)} stars · {fmtCompact(o.issues)} open issues</span>
                         </Link>
                         <span className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim shrink-0">{score >= 10 ? "strong" : score >= 6 ? "good" : "some"}</span>
                       </div>
@@ -617,7 +617,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
                 <b className="font-mono text-[9.5px] uppercase tracking-[.14em] text-dim">Open issues in the snapshot</b>
                 {live.state === "ok" && (
                   <span className="font-mono text-[10px] text-dim ml-auto">
-                    {fmt(live.total)} matched{live.scope ? ` · ${live.scope}` : ""} · crawled {live.generated}
+                    {fmtCompact(live.total)} matched{live.scope ? ` · ${live.scope}` : ""} · crawled {live.generated}
                   </span>
                 )}
                 {live.state === "ok" && <Link to={finderHref} className={btn("ghost", "sm")}>Open in issue finder</Link>}
@@ -640,7 +640,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
                     </span>
                     <span className="min-w-0 flex-1">
                       <a href={i.url} target="_blank" rel="noopener" className="block text-[13px] font-semibold text-ink hover:text-accent transition-colors truncate">{i.title}</a>
-                      <span className="block font-mono text-[9.5px] text-dim truncate">{i.repo} · #{i.number} · {i.lang ?? "no language"} · ★ {fmt(i.stars)} · {i.comments} comments</span>
+                      <span className="block font-mono text-[9.5px] text-dim truncate">{i.repo} · #{i.number} · {i.lang ?? "no language"} · ★ {fmtCompact(i.stars)} · {i.comments} comments</span>
                     </span>
                     {i.beginner && <span className="font-mono text-[8.5px] rounded-[5px] border border-accent/35 bg-peach px-1.5 py-px text-accent shrink-0">first issue</span>}
                     {!i.assignees && <span className="font-mono text-[8.5px] rounded-[5px] border border-line px-1.5 py-px text-dim shrink-0 max-[640px]:hidden">open</span>}
@@ -667,10 +667,10 @@ export function CoPilotSection({ d }: { d: Dash }) {
                       <OrgImg src={avatarOf(owner, 48)} name={owner} className="w-[26px] h-[26px] rounded-[7px] object-cover bg-sand shrink-0" />
                       <span className="min-w-0 flex-1">
                         <Link to={`/repo/${encodeURIComponent(r.repo)}`} className="block text-[13px] font-semibold text-ink hover:text-accent transition-colors truncate">{r.repo}</Link>
-                        <span className="block font-mono text-[9.5px] text-dim truncate">{r.lang} · {r.license} · {fmt(r.issues)} open issues</span>
+                        <span className="block font-mono text-[9.5px] text-dim truncate">{r.lang} · {r.license} · {fmtCompact(r.issues)} open issues</span>
                         <Why>{m.why.map((w) => <Word key={w}>{w}</Word>)}</Why>
                       </span>
-                      <span className="font-mono text-[10.5px] font-bold text-honey shrink-0">★ {fmt(r.stars)}</span>
+                      <span className="font-mono text-[10.5px] font-bold text-honey shrink-0">★ {fmtCompact(r.stars)}</span>
                       <button type="button" onClick={() => d.toggleSaved(r.repo)}
                         className={btn(on ? "primary" : "outline", "sm", "shrink-0 max-[640px]:hidden")}>
                         {on ? "Following" : "Follow"}
@@ -686,7 +686,7 @@ export function CoPilotSection({ d }: { d: Dash }) {
 
           <p className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim leading-[1.8]">
             Languages from the catalog&apos;s own language field; topics from its GitHub topics; organization languages from what GitHub
-            reports for their repositories; issues from the {fmt(CRAWL.issues)}-row snapshot, labelled with the day it was crawled.
+            reports for their repositories; issues from the {fmtCompact(CRAWL.issues)}-row snapshot, labelled with the day it was crawled.
             A match is a shared word, not a promise that the maintainer wants you.
           </p>
         </div>

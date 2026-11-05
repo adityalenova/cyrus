@@ -2,7 +2,7 @@
 /* ══ OrgProfile.tsx — one org, stats, contributors, its builds ═ */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "@/lib/router";
-import { orgByLogin, avatarOf, fmt, LANG_COLORS } from "../lib/util";
+import { orgByLogin, avatarOf, fmtCompact, LANG_COLORS } from "../lib/util";
 import { ORGS } from "../data/orgs";
 import { REAL_REPOS, REAL_STATS } from "../data/realOrgs";
 import { programsOf } from "../data/programAssoc";
@@ -125,15 +125,15 @@ export default function OrgProfile() {
             {archiveProgs.map(({ name, n }) => (ARCHIVE_ID[name]
               ? <Link key={name} to={`/programs/${ARCHIVE_ID[name]}`}
                   className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-denim border-denim/35 bg-denim/8 hover:bg-denim/15 transition-colors">
-                  {name} · {fmt(n)}
+                  {name} · {fmtCompact(n)}
                 </Link>
               : <span key={name} className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-denim border-denim/35 bg-denim/8">
-                  {name} · {fmt(n)}
+                  {name} · {fmtCompact(n)}
                 </span>))}
             {assocExtra.map((a) => (
               <Link key={a.id} to={`/programs/${a.id}`}
                 className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-honey border-honey/40 bg-honey/8 hover:bg-honey/15 transition-colors">
-                {a.label} topic · {fmt(a.n)}
+                {a.label} topic · {fmtCompact(a.n)}
               </Link>
             ))}
             {archiveProgs.length === 0 && assocExtra.length === 0 && (
@@ -143,7 +143,7 @@ export default function OrgProfile() {
             )}
             {orgProjects.length > 0 && <>
               <span className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-leaf border-leaf/35 bg-leaf/8">{active2026 ? "● Active 2026" : `● ${projYears[0] ?? "Archive"} archive`}</span>
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-cocoa border-line bg-cream">{fmt(orgProjects.length)} archived projects</span>
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[.12em] px-2.5 py-1.5 rounded-lg border text-cocoa border-line bg-cream">{fmtCompact(orgProjects.length)} archived projects</span>
             </>}
           </div>
           <div className="flex items-center gap-4 flex-wrap">
@@ -253,7 +253,7 @@ export default function OrgProfile() {
                 </div>
               ) : (
                 <p className="card-desc mt-3 text-[12.5px] leading-[1.6]">
-                  {fmt(org.stars)} GitHub stars across the top-10 repos · {fmt(org.repos)} public repos{stats ? ` · ${fmt(stats.followers)} followers` : ""}.
+                  {fmtCompact(org.stars)} GitHub stars across the top-10 repos · {fmtCompact(org.repos)} public repos{stats ? ` · ${fmtCompact(stats.followers)} followers` : ""}.
                   The project archive has no rows for this org yet - browse its flagship repos below.
                 </p>
               )}
@@ -262,7 +262,7 @@ export default function OrgProfile() {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-cream border border-line rounded-[14px] px-4 py-3.5">
                 <p className="font-mono text-[9.5px] uppercase tracking-[.11em] text-dim">Projects</p>
-                <b className="block font-display text-[19px] tracking-[-.02em] mt-1">{fmt(orgProjects.length)}</b>
+                <b className="block font-display text-[19px] tracking-[-.02em] mt-1">{fmtCompact(orgProjects.length)}</b>
               </div>
               <div className="bg-cream border border-accent/25 rounded-[14px] px-4 py-3.5">
                 <p className="font-mono text-[9.5px] uppercase tracking-[.11em] text-accent">Years active</p>
@@ -291,7 +291,7 @@ export default function OrgProfile() {
                       <OrgImg src={avatarOf(o.login, 64)} name={o.login} className="w-5 h-5 object-contain" />
                     </span>
                     <b className="text-ink text-[12px] font-display font-extrabold leading-tight line-clamp-1">{o.name}</b>
-                    <span className="font-mono text-[9.5px] text-dim">{fmt(o.stars)} stars</span>
+                    <span className="font-mono text-[9.5px] text-dim">{fmtCompact(o.stars)} stars</span>
                   </Link>
                 ))}
               </div>
@@ -313,10 +313,10 @@ export default function OrgProfile() {
           <section className="pt-4">
             <div className="flex items-end justify-between gap-4 flex-wrap mb-2">
               <h2 className="font-display font-extrabold text-[24px] tracking-[-.02em]">Past Projects</h2>
-              <span className="font-mono text-[10.5px] uppercase tracking-[.12em] text-cocoa bg-cream border border-line rounded-full px-3 py-1.5">{fmt(orgProjects.length)} total projects</span>
+              <span className="font-mono text-[10.5px] uppercase tracking-[.12em] text-cocoa bg-cream border border-line rounded-full px-3 py-1.5">{fmtCompact(orgProjects.length)} total projects</span>
             </div>
             <p className="text-cocoa text-[13px] leading-[1.6] mb-5 max-w-[680px]">
-              Showing {fmt(ppList.length)} of {fmt(orgProjects.length)} projects. Click any project card for scope, mentors and the accepted-project record.
+              Showing {fmtCompact(ppList.length)} of {fmtCompact(orgProjects.length)} projects. Click any project card for scope, mentors and the accepted-project record.
             </p>
             <div className="flex gap-2 flex-wrap items-center mb-4">
               <button onClick={() => setPpYear("all")}
@@ -375,7 +375,7 @@ export default function OrgProfile() {
               </p>
             )}
             {ppList.length > 30 && (
-              <p className="font-mono text-[10.5px] text-dim mt-4">Showing the 30 newest matches of {fmt(ppList.length)} - narrow with a year or search.</p>
+              <p className="font-mono text-[10.5px] text-dim mt-4">Showing the 30 newest matches of {fmtCompact(ppList.length)} - narrow with a year or search.</p>
             )}
           </section>
         )}
@@ -387,7 +387,7 @@ export default function OrgProfile() {
               Repositories on GitHub
               <span className="font-mono text-[11px] text-dim font-medium">live from github.com/{org.login}, ranked by stars</span>
               <a href={`https://github.com/${org.login}?tab=repositories`} target="_blank" rel="noopener"
-                className="ml-auto font-mono text-[10.5px] font-bold uppercase tracking-[.1em] text-accent hover:underline">All {fmt(org.repos)} repos</a>
+                className="ml-auto font-mono text-[10.5px] font-bold uppercase tracking-[.1em] text-accent hover:underline">All {fmtCompact(org.repos)} repos</a>
             </h2>
             <div className="p-[18px] grid grid-cols-2 gap-3.5 max-[840px]:grid-cols-1">
               {real.map((r) => (
@@ -401,13 +401,13 @@ export default function OrgProfile() {
                         <i className="w-[9px] h-[9px] rounded-full not-italic" style={{ background: LANG_COLORS[r.lang] ?? "#a09282" }} />
                         {r.lang}
                       </span>
-                      <span className="flex items-center gap-1 text-honey"><Ic d={STAR_D} size={12} extra={<path d={STAR_D} fill="currentColor" stroke="none" opacity=".9" />} />{fmt(r.stars)}</span>
-                      <span className="flex items-center gap-1">{IC_FORK}{fmt(r.forks)}</span>
+                      <span className="flex items-center gap-1 text-honey"><Ic d={STAR_D} size={12} extra={<path d={STAR_D} fill="currentColor" stroke="none" opacity=".9" />} />{fmtCompact(r.stars)}</span>
+                      <span className="flex items-center gap-1">{IC_FORK}{fmtCompact(r.forks)}</span>
                     </span>
                   </div>
                   <p className="text-cocoa text-[12.5px] leading-[1.6] line-clamp-2">{r.desc || "No description set on GitHub."}</p>
                   {r.issues > 0 && (
-                    <span className="font-mono text-[10px] text-dim">{fmt(r.issues)} open issues · good place to start if you want to contribute</span>
+                    <span className="font-mono text-[10px] text-dim">{fmtCompact(r.issues)} open issues · good place to start if you want to contribute</span>
                   )}
                 </a>
               ))}

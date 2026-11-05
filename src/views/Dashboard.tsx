@@ -7,7 +7,7 @@
    GitHub crawl.                                                   == */
 import { Link } from "@/lib/router";
 import { btn } from "../components/ui";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
 import { ISSUE_SIGNALS } from "../data/issueSignals";
 import { useDash } from "../lib/dash/useDash";
 import type { Dash } from "../lib/dash/useDash";
@@ -50,7 +50,7 @@ function Overview({ d }: { d: Dash }) {
     [num(workingN), "working on it",
       workingN ? "pull requests to finish" : "move one up when you start"],
     [num(d.saved.length), d.saved.length === 1 ? "repository followed" : "repositories followed",
-      d.savedRepos.length ? `${fmt(d.stars)} stars between them` : "follow one from the catalog"],
+      d.savedRepos.length ? `${fmtCompact(d.stars)} stars between them` : "follow one from the catalog"],
     [`${d.stepsDone}/${d.steps.length}`, "next steps done",
       d.stepsDone === d.steps.length ? "the board is set" : "keep going below"],
   ];
@@ -166,10 +166,10 @@ function Overview({ d }: { d: Dash }) {
           What the archive holds right now - the snapshot every panel on this board reads from.
         </p>
         <StatRow items={[
-          ["open issues", fmt(d.index.issues)],
-          ["repos crawled", fmt(d.index.issueRepos)],
-          ["repos indexed", fmt(d.index.catalog)],
-          ["beginner-labelled", fmt(d.index.beginner)],
+          ["open issues", fmtCompact(d.index.issues)],
+          ["repos crawled", fmtCompact(d.index.issueRepos)],
+          ["repos indexed", fmtCompact(d.index.catalog)],
+          ["beginner-labelled", fmtCompact(d.index.beginner)],
           ["organizations", String(d.index.orgs)],
         ]} />
       </Card>
@@ -212,7 +212,7 @@ function Overview({ d }: { d: Dash }) {
                     {r.repo}
                   </Link>
                   <p className="card-desc mt-1 line-clamp-1">{r.desc}</p>
-                  <StatRow items={[["Stars", fmt(r.stars)], ["Open issues", fmt(r.issues)], ["Last update", r.updated]]} />
+                  <StatRow items={[["Stars", fmtCompact(r.stars)], ["Open issues", fmtCompact(r.issues)], ["Last update", r.updated]]} />
                 </div>
                 <button onClick={() => d.toggleSaved(r.repo)} aria-label={"Unfollow " + r.repo}
                   className="w-[28px] h-[28px] grid place-items-center rounded-[8px] text-accent hover:text-brick transition-colors cursor-pointer shrink-0">
@@ -275,7 +275,7 @@ function Overview({ d }: { d: Dash }) {
           <p className="text-cocoa text-[13.5px] leading-[1.55]">
             You already track every issue in the current sample - the{" "}
             <Link to="/issues" className="text-accent font-semibold hover:underline">issue finder</Link>{" "}
-            holds the whole snapshot of {fmt(d.index.issues)} open issues.
+            holds the whole snapshot of {fmtCompact(d.index.issues)} open issues.
           </p>
         )}
       </Card>

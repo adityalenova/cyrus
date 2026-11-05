@@ -9,7 +9,7 @@ import { PROGRAM_META, PROGRAM_REPOS } from "../data/programRepos";
 import type { ProgramName } from "../data/programRepos";
 import { PROGRAM_DETAILS, programLink } from "../data/programDetails";
 import { filterNameOf, useArchiveIndex } from "../lib/programProjects";
-import { byStars, fmt, avatarOf, inkOn } from "../lib/util";
+import { byStars, fmtCompact, avatarOf, inkOn } from "../lib/util";
 import type { Program } from "../lib/types";
 import { btn, Chip, OrgImg, SectionHead, Tag, Word } from "../components/ui";
 import NotFound from "./NotFound";
@@ -290,7 +290,7 @@ export default function ProgramDetail() {
                     <div className="flex items-center gap-2.5 min-w-0">
                       <OrgImg src={avatarOf(r.repo.split("/")[0], 64)} name={r.repo} className="w-8 h-8 rounded-[9px] object-cover bg-clay shrink-0" />
                       <b className="card-title text-[13.5px] truncate">{r.repo.split("/")[1]}</b>
-                      <span className="ml-auto font-mono text-[10.5px] text-honey font-bold shrink-0">★ {fmt(r.stars)}</span>
+                      <span className="ml-auto font-mono text-[10.5px] text-honey font-bold shrink-0">★ {fmtCompact(r.stars)}</span>
                     </div>
                     <p className="text-cocoa text-[12px] leading-[1.55] line-clamp-2">{r.desc}</p>
                     <div className="flex gap-1.5"><Chip tone="lang">{r.lang}</Chip><Chip tone={PROGRAM_META[shelfName as ProgramName]?.tone ?? ""}>{PROGRAM_META[shelfName as ProgramName]?.label}</Chip></div>

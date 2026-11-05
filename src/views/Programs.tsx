@@ -14,7 +14,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
-import { avatarOf, fmt } from "../lib/util";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { useRosterIndex } from "../lib/programRoster";
 import type { Evidence, RosterIndex } from "../lib/programRoster";
 import { publishesAreas, useProgramStats } from "../lib/contriboOrgs";
@@ -167,7 +167,7 @@ function ArchiveBand({ grid, loading, roster, idx, stats, arcs }: {
                         : s ? "Organizations this program's record names - open the explorer for each one"
                         : r ? EVIDENCE_WORD[r.source] : ""}
                       className="font-mono text-[12.5px] font-bold text-accent hover:text-rust transition-colors tabular-nums">
-                      {fmt(orgs)}
+                      {fmtCompact(orgs)}
                     </Link>
                   ) : <span className="font-mono text-[10px] uppercase tracking-[.08em] text-dim/70">none</span>}
                 </td>
@@ -178,7 +178,7 @@ function ArchiveBand({ grid, loading, roster, idx, stats, arcs }: {
                       {n > 0 && name ? (
                         <Link to={`/projects?prog=${encodeURIComponent(name)}&year=${y}`}
                           className="font-mono text-[12.5px] text-cocoa hover:text-accent transition-colors tabular-nums">
-                          {fmt(n)}
+                          {fmtCompact(n)}
                         </Link>
                       ) : <span className="font-mono text-[12.5px] text-dim/60">–</span>}
                     </td>
