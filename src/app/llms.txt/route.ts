@@ -14,10 +14,19 @@ const body = `# cyrus.ai
 
 ## Pages
 
+${line("/", "the platform overview and starting points for contributors")}
 ${line("/skills", `the ${fmtFull(STATS.catalog)}-repository catalog, ranked by stars, each entry linked to its live GitHub record`)}
 ${line("/projects", `${fmtFull(STATS.archive)} program projects across ${STATS.archivePrograms} programs (GSoC, LFX, Outreachy, Summer of Bitcoin, GSSoC, Season of KDE, MLH, NSOC, Hacktoberfest, 24 Pull Requests, FOSSEE, Vercel OSS), filterable by year, org and tech`)}
 ${line("/issues", `search ${fmtFull(STATS.issues)} open issues by keyword, language, organization, label, beginner-friendly and unassigned`)}
 ${line("/organizations", `${fmtFull(STATS.orgs)} real GitHub organizations with stats, program history and how to contribute to each`)}
+${line("/programs", "the tracked open-source program index, with timelines and eligibility")}
+${line("/organizations/stats", "cross-program organization statistics and participation history")}
+${line("/leaderboard", "contributor rankings and contribution activity")}
+${line("/sponsors", "catalog projects with declared funding and sponsorship links")}
+${line("/about", "the platform's purpose and background")}
+${line("/platform/features", "the platform's tools and capabilities")}
+${line("/platform/how", "how the platform works")}
+${line("/platform/trust", "data sources, verification and trust information")}
 - ${canonical("/programs/gsoc")} and one page like it per tracked program: ${PROGRAMS.map((p) => p.id).join(", ")}
 
 ## Object URLs
