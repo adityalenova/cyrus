@@ -19,8 +19,8 @@ saves everyone an afternoon.
 
 ### Claiming an issue
 
-1. Pick an [open issue](https://github.com/adityalenova/cyrus-ai/issues). If
-   nothing fits, [open one](https://github.com/adityalenova/cyrus-ai/issues/new/choose)
+1. Pick an [open issue](https://github.com/adityalenova/cyrus/issues). If
+   nothing fits, [open one](https://github.com/adityalenova/cyrus/issues/new/choose)
    and wait for it to be accepted before asking to work on it.
 2. Comment `/assign` on the issue. A maintainer assigns it to you or explains
    why it is not a good fit.
@@ -38,10 +38,10 @@ saves everyone an afternoon.
 
 ## What we are looking for
 
-Issues labelled [`enhancement`](https://github.com/adityalenova/cyrus-ai/labels/enhancement),
-[`seo`](https://github.com/adityalenova/cyrus-ai/labels/seo),
-[`performance`](https://github.com/adityalenova/cyrus-ai/labels/performance)
-and [`accessibility`](https://github.com/adityalenova/cyrus-ai/labels/accessibility)
+Issues labelled [`enhancement`](https://github.com/adityalenova/cyrus/labels/enhancement),
+[`seo`](https://github.com/adityalenova/cyrus/labels/seo),
+[`performance`](https://github.com/adityalenova/cyrus/labels/performance)
+and [`accessibility`](https://github.com/adityalenova/cyrus/labels/accessibility)
 are all good places to start. Data corrections are the most useful contribution
 of all: if a star count, deadline, prize or eligibility line is wrong, say so
 on the issue with a link to the primary source.

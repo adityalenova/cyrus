@@ -214,7 +214,7 @@ Each source keeps its own file and its own provenance note inside it, so a reade
 ## Quick start
 
 ```bash
-git clone https://github.com/adityalenova/cyrus-ai && cd cyrus-ai
+git clone https://github.com/adityalenova/cyrus && cd cyrus
 npm install
 cp .env.example .env        # optional - everything runs with an empty .env too
 npm run dev                 # http://localhost:5330
@@ -389,7 +389,7 @@ drizzle/                        SQL migrations for the Neon schema
 
 A `vercel.json` pins the Next.js preset, so importing the repository is all it takes:
 
-1. [vercel.com/new](https://vercel.com/new) - import `cyrus-ai` - Deploy.
+1. [vercel.com/new](https://vercel.com/new) - import `cyrus` - Deploy.
 2. Retype the env vars from `.env.example` in Project Settings (Production + Preview). Never upload your `.env` file. Public client ids and the Turnstile site key are safe; `SESSION_SECRET`, `GITHUB_CLIENT_SECRET`, `DATABASE_URL`, `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` belong only here.
 3. Register the production origin with Google (JS origin **and** redirect URI with trailing slash) and GitHub (callback `<origin>/github-callback.html`).
 4. To switch the backend on: attach a Neon Postgres, set `DATABASE_URL` and `SESSION_SECRET`, run `npm run db:migrate` and `npm run db:seed`. `/api/health` flips to `{"db":true,"auth":true}`, sessions persist across devices, and submissions land in the database. Until then the routes answer 503 and the site runs on checked-in snapshots plus localStorage.
@@ -499,16 +499,16 @@ This is a solo build that grew into a platform - and it gets better every time s
       <sub>the Save button's cursor</sub>
     </td>
     <td align="center" width="112">
-      <a href="https://github.com/adityalenova/cyrus-ai/pulls"><img src="docs/readme/logo.svg" width="84" alt="Your avatar here"/></a><br/>
-      <sub><b><a href="https://github.com/adityalenova/cyrus-ai/pulls">your PR here</a></b></sub><br/>
+      <a href="https://github.com/adityalenova/cyrus/pulls"><img src="docs/readme/logo.svg" width="84" alt="Your avatar here"/></a><br/>
+      <sub><b><a href="https://github.com/adityalenova/cyrus/pulls">your PR here</a></b></sub><br/>
       <sub>first fix earns a slot</sub>
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <a href="https://github.com/adityalenova/cyrus-ai/pulls"><img src="https://img.shields.io/badge/OPEN_YOUR_FIRST_PR-b4602c?style=for-the-badge" alt="Open your first PR"/></a>
-  <a href="https://github.com/adityalenova/cyrus-ai/issues"><img src="https://img.shields.io/badge/IDEAS_WELCOME-3e7d4f?style=for-the-badge" alt="Ideas welcome"/></a>
+  <a href="https://github.com/adityalenova/cyrus/pulls"><img src="https://img.shields.io/badge/OPEN_YOUR_FIRST_PR-b4602c?style=for-the-badge" alt="Open your first PR"/></a>
+  <a href="https://github.com/adityalenova/cyrus/issues"><img src="https://img.shields.io/badge/IDEAS_WELCOME-3e7d4f?style=for-the-badge" alt="Ideas welcome"/></a>
   <a href="https://x.com/iaditya_offical"><img src="https://img.shields.io/badge/FOLLOW_ON_X-181717?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X"/></a>
   <a href="https://www.reddit.com/r/Cyrusagent/"><img src="https://img.shields.io/badge/JOIN_ON_REDDIT-FF4500?style=for-the-badge&logo=reddit&logoColor=white" alt="Join r/Cyrusagent on Reddit"/></a>
   <a href="https://discord.gg/8S6z2Thczd"><img src="https://img.shields.io/badge/JOIN_ON_DISCORD-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join the cyrus.ai Discord server"/></a>
