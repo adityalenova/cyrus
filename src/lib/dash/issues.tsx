@@ -16,7 +16,7 @@ import {
   daysAgo, isStale, type IssueStage, type TrackedIssue,
 } from "./shared";
 import type { Dash } from "./useDash";
-import { trackedIssuesToCsv } from "./csvExport";
+import { trackedIssuesCsvBlob } from "./csvExport";
 
 const ROW = "flex items-start gap-3.5 px-4 py-3.5 rounded-[14px] border transition-colors";
 
@@ -165,8 +165,7 @@ export function IssuesSection({ d }: { d: Dash }) {
       added: i.added,
       updated: i.updated ?? null,
     }));
-    const csvData = trackedIssuesToCsv(payload);
-    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const blob = trackedIssuesCsvBlob(payload);
     const u = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = u;
