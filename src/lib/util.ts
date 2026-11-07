@@ -6,7 +6,7 @@ import { PROGRAM_REPOS } from "../data/programRepos";
 import type { Level, Repo } from "./types";
 import { ORGS } from "../data/orgs";
 
-/** full catalog: the 528-repo agent catalog + program projects */
+/** Full catalog: agent catalog repos (REPOS) plus program projects (PROGRAM_REPOS). */
 export const CATALOG: Repo[] = [...REPOS, ...PROGRAM_REPOS];
 
 /** 1500 -> "1.5k": rounded, for star counts and table cells (siteStats.ts fmtFull is exact) */
