@@ -21,7 +21,7 @@ body:
     attributes:
       label: URL
       description: The page or endpoint involved.
-      placeholder: https://cyrus-agent.vercel.app/hackathons
+      placeholder: https://cyrus-agent.vercel.app/issues
     validations:
       required: true
   - type: textarea
@@ -29,8 +29,8 @@ body:
     attributes:
       label: Steps to reproduce
       placeholder: |
-        1. Open /hackathons
-        2. Type "AI" in search
+        1. Open /issues
+        2. Search or filter the issues
   - type: textarea
     id: env
     attributes:
