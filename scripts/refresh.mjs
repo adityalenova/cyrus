@@ -11,7 +11,7 @@
 import { writeFileSync, mkdirSync } from "fs";
 import { fileURLToPath } from "url";
 import { join } from "path";
-import { updateReadmeSnapshot } from "./readme-snapshot.mjs";
+// import { updateReadmeSnapshot } from "./readme-snapshot.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const EMOJI = /[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]/gu;
@@ -79,5 +79,5 @@ async function refreshGsoc() {
 const which = (process.argv[2] || "all").toLowerCase();
 if (which === "gsoc" || which === "all") await refreshGsoc();
 if (which !== "gsoc" && which !== "all") console.log("usage: node scripts/refresh.mjs [gsoc|all]");
-updateReadmeSnapshot(ROOT);
+// updateReadmeSnapshot(ROOT);
 console.log("refresh done", today);

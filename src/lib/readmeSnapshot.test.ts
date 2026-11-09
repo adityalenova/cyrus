@@ -39,7 +39,7 @@ describe("README snapshot", () => {
     expect(updateSnapshotBadge(readme, label)).toBe(readme);
   });
 
-  it.each(["refresh.mjs", "fetch-orgs.mjs"])("%s updates the badge after its refresh, using only local fixtures", script => {
+  it.each([["refresh.mjs", badge],["fetch-orgs.mjs", badge.replace("12_Oct_2026", "1_Jan_2027")],] as const)("%s produces the expected README badge", (script, expectedBadge) => {
     const fixture = mkdtempSync(join(tmpdir(), "cyrus-snapshot-"));
     fixtures.push(fixture);
     mkdirSync(join(fixture, "scripts"));
@@ -61,8 +61,7 @@ const setTimeout = globalThis.setTimeout;
 globalThis.setTimeout = (callback) => setTimeout(callback, 0);
 `);
     execFileSync(process.execPath, ["--import", pathToFileURL(hook).href, join(fixture, "scripts", script), "gsoc"], {
-      cwd: fixture, stdio: "pipe", timeout: 10000,
-    });
-    expect(readFileSync(join(fixture, "README.md"), "utf8")).toBe(badge.replace("12_Oct_2026", "1_Jan_2027"));
+      cwd: fixture, stdio: "pipe", timeout: 10000,});
+    expect(readFileSync(join(fixture, "README.md"), "utf8")).toBe(expectedBadge);  
   });
 });
