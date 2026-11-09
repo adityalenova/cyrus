@@ -75,6 +75,16 @@ describe("stats the footer and metadata quote", () => {
     expect(STATS.issueRepos).toBeLessThanOrEqual(CRAWL.catalogRepos);
     expect(STATS.beginnerIssues).toBeLessThanOrEqual(STATS.issues);
   });
+
+  /* The refresh once dropped any season outside a hardcoded list without a word. Before a new season's projects
+     are published the newest year is last year's, so accept either. */
+  it("ships the current GSoC season, or the one before it", () => {
+    const { projects } = JSON.parse(
+      readFileSync(new URL("../../public/data/gsoc-projects.json", import.meta.url), "utf8"),
+    ) as { projects: { y: number }[] };
+    const year = new Date().getFullYear();
+    expect([year, year - 1]).toContain(Math.max(...projects.map((p) => p.y)));
+  });
 });
 
 /* The 404 once said "The 1,528 repos that are..." as plain text, so a refresh would have made it a lie with every test green. */

@@ -30,7 +30,7 @@ body:
     attributes:
       label: Where does it appear on cyrus.ai?
       description: Link to the page displaying the incorrect information.
-      placeholder: https://cyrus-agent.vercel.app/hackathons
+      placeholder: https://cyrus-agent.vercel.app/issues
     validations:
       required: true
 
