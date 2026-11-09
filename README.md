@@ -171,7 +171,7 @@ Every figure in this table is the figure the site itself computes. `src/lib/site
 - **Light + dark, same soul.** A hand-tuned coffee-and-honey palette with a dainty sun/moon toggle; every colour is a CSS custom property, so both themes share one source of truth and no component carries a hex literal.
 - **Filters where the question is.** Each program's organization explorer filters by year, stack and sector at the top of the list and stays there - it does not follow the page down over the cards.
 - **Honest empty states.** A program that publishes no participant list, no mentor names or no project table says so on its page and shows nothing, rather than filling the gap with a lookalike.
-- **Self-refreshing data.** `npm run refresh` re-pulls the GSoC archive; `npm run orgs` regenerates organization intel from live GitHub; `node scripts/build-issue-index.mjs` re-crawls the issue snapshot. Refresh stamps this README with the newest repository `updated` date in `src/data/repos.ts`, not the refresh date - so the snapshot badge cannot drift from the data.
+- **Self-refreshing data.** `npm run refresh` re-pulls the GSoC archive; `npm run orgs` regenerates organization intel from live GitHub; `npm run issues` re-crawls the issue snapshot. Refresh stamps this README with the newest repository `updated` date in `src/data/repos.ts`, not the refresh date - so the snapshot badge cannot drift from the data.
 
 ## How the data is built
 
@@ -226,7 +226,8 @@ npm test                    # vitest: 33 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
 npm run refresh             # re-pull the GSoC archive + stamp this README's snapshot date
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
-node scripts/build-issue-index.mjs    # re-crawl the 40k-issue snapshot
+npm run issues              # re-crawl the 40k-issue snapshot
+npm run refresh:all         # refresh, program shards, mentors, orgs, org stats (needs network and gh auth)
 npm run gh-relay            # local GitHub token-exchange relay on :8787
 npm run db:push && npm run db:seed    # only with a DATABASE_URL (Neon)
 ```
