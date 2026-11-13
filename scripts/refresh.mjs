@@ -3,10 +3,10 @@
    node scripts/refresh.mjs gsoc       # the same, named explicitly
 
    Writes:
-     public/data/gsoc-projects.json (fetched at runtime by /opensource)
+     public/data/gsoc-projects.json (fetched at runtime by /projects)
    The open-issue index is not here: that is crawl-github.mjs, and it has to
    be run with a GitHub token, so it stays a scheduled job rather than this one.
-   Cron example (daily 06:00): 0 6 * * * cd ~/Desktop/agent-skills && npm run refresh -- gsoc
+   Cron example (daily 06:00): 0 6 * * * cd /path/to/cyrus && npm run refresh
    ═════════════════════════════════════════════════════════════════════ */
 import { writeFileSync, mkdirSync } from "fs";
 import { fileURLToPath } from "url";
@@ -30,7 +30,7 @@ async function get(url, tries = 3) {
 }
 
 /* ── 1. GSoC archive → public/data/gsoc-projects.json ──────────────────
-     Accepted projects are the archive /opensource reads; the open-issue
+     Accepted projects are the archive /projects reads; the open-issue
      crawl lives in scripts/crawl-github.mjs and scripts/build-crawl-data.mjs.
 */
 async function refreshGsoc() {
