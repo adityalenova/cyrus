@@ -4,7 +4,9 @@
    No notification toggles: nothing sends them, so nothing pretends to. == */
 import { Link } from "@/lib/router";
 import { Avatar, btn } from "../../components/ui";
+import { useState } from "react";
 import { fmtCompact } from "../util";
+import { listByKind, OWNERSHIP_COPY, removalNotice, type TrackedEntry } from "./dataControls";
 import { Card, DashHead, Ic, Toggle } from "./shell";
 import { DP } from "./shared";
 import type { Dash } from "./useDash";
@@ -17,6 +19,30 @@ export function SettingsSection({ d }: { d: Dash }) {
     organizations: d.savedOrgs,
   };
   const nothingFollowed = !board.repositories.length && !board.organizations.length;
+
+  const entries: TrackedEntry[] = [
+    ...d.issues.map((i): TrackedEntry => ({ kind: "issue", key: i.url, label: `${i.repo} #${i.number}` })),
+    ...d.savedRepos.map((r): TrackedEntry => ({ kind: "repository", key: r.repo, label: r.repo })),
+    ...d.orgList.map((o): TrackedEntry => ({ kind: "organization", key: o.login, label: o.login })),
+  ];
+  const [picked, setPicked] = useState<string[]>([]);
+  const [confirming, setConfirming] = useState(false);
+  const idOf = (e: TrackedEntry) => `${e.kind}:${e.key}`;
+  const selected = entries.filter((e) => picked.includes(idOf(e)));
+  const togglePick = (e: TrackedEntry) => {
+    setConfirming(false);
+    setPicked((p) => (p.includes(idOf(e)) ? p.filter((x) => x !== idOf(e)) : [...p, idOf(e)]));
+  };
+  const removeSelected = () => {
+    for (const e of selected) {
+      if (e.kind === "issue") d.removeIssue(e.key);
+      else if (e.kind === "repository") d.toggleSaved(e.key);
+      else d.toggleSavedOrg(e.key);
+    }
+    d.toast(`Removed ${selected.length} from your board. GitHub is unchanged.`);
+    setPicked([]);
+    setConfirming(false);
+  };
 
   const exportBoard = () => {
     const body = JSON.stringify({ exportedAt: new Date().toISOString(), ...board }, null, 2);
@@ -88,6 +114,44 @@ export function SettingsSection({ d }: { d: Dash }) {
           <button onClick={() => { d.unfollowAll(); d.toast("Board cleared."); }} disabled={nothingFollowed}
             className={btn("outline", "sm") + " disabled:opacity-45"}>Unfollow everything</button>
         </div>
+      </Card>
+
+      <Card>
+        <h2 className="panel-h-lg mb-1">Your tracked selections</h2>
+        <p className="text-cocoa text-[13px] mb-1">{OWNERSHIP_COPY.account}</p>
+        <p className="text-dim text-[12.5px] mb-4">{OWNERSHIP_COPY.crawl}</p>
+        {entries.length === 0 ? (
+          <p className="text-cocoa text-[13px]">Nothing is tracked on this account.</p>
+        ) : (
+          <ul className="border-t border-liness" aria-label="Tracked issues, repositories and organizations">
+            {entries.map((e) => (
+              <li key={idOf(e)} className="border-b border-liness">
+                <label className="flex items-center gap-3 py-2.5 text-[13px] cursor-pointer">
+                  <input type="checkbox" checked={picked.includes(idOf(e))} onChange={() => togglePick(e)} />
+                  <span className="font-mono text-[10px] uppercase tracking-[.1em] text-dim w-[92px] shrink-0">{e.kind}</span>
+                  <span className="truncate">{e.label}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        )}
+        {selected.length > 0 && !confirming && (
+          <button onClick={() => setConfirming(true)} className={btn("outline", "sm") + " mt-4"}>
+            Remove {selected.length} selected
+          </button>
+        )}
+        {selected.length > 0 && confirming && (
+          <div role="alertdialog" aria-live="polite" className="mt-4 border border-liness rounded-lg p-4">
+            <p className="text-[13px] mb-1">{removalNotice(selected)}</p>
+            {listByKind(selected).map((line) => (
+              <p key={line} className="text-cocoa text-[12.5px]">{line}</p>
+            ))}
+            <div className="flex gap-2.5 mt-3">
+              <button onClick={removeSelected} className={btn("outline", "sm")}>Confirm removal</button>
+              <button onClick={() => setConfirming(false)} className={btn("outline", "sm")}>Cancel</button>
+            </div>
+          </div>
+        )}
       </Card>
 
       <Card>
