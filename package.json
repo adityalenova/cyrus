@@ -15,6 +15,7 @@
     "check": "tsc --noEmit && next build",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "audit:mobile": "tsx scripts/mobile-audit.ts",
     "refresh": "node scripts/refresh.mjs",
     "orgs": "node scripts/fetch-orgs.mjs",
     "refresh:all": "npm run refresh && npm run program-projects && npm run mentors && npm run orgs && npm run org-stats",
