@@ -109,6 +109,11 @@ TypeScript is strict and `noUnusedLocals` is on, so a leftover import fails the
 build. Add or update a Vitest test when you change behaviour, not only when it
 is convenient.
 
+CI also runs `npm run readme:check`, which compares the figures quoted in
+`README.md` and `docs/readme/hero.svg` (route and test counts, catalog totals)
+with the data. If it fails after you add a page, a route or tests, run
+`npm run readme:stats` and commit what it changes.
+
 ## Pull request checklist
 
 - The PR body names the issue it closes with `Closes #123`, and that issue is
