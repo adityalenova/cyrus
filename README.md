@@ -222,7 +222,7 @@ npm run dev                 # http://localhost:5330
 
 ```bash
 npm run build               # next build
-npm test                    # vitest: 35 files, unit + data-integrity suites
+npm test                    # vitest: 37 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
 npm run refresh             # re-pull the GSoC archive + stamp this README's snapshot date
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
@@ -411,7 +411,7 @@ A `vercel.json` pins the Next.js preset, so importing the repository is all it t
 | Visualization | hand-rolled canvas + SVG | catalog charts, program bars, sparklines - no chart library |
 | Motion | Framer Motion | section reveals and the hero, both behind `prefers-reduced-motion` |
 | Email | Resend | one-tap sign-in codes; only the hash of a code is stored |
-| Tests | Vitest | <!--stat:testFiles-->35<!--/stat--> files, <!--stat:tests-->339<!--/stat--> tests - unit, API-route and data-integrity suites |
+| Tests | Vitest | <!--stat:testFiles-->37<!--/stat--> files, <!--stat:tests-->372<!--/stat--> tests - unit, API-route and data-integrity suites |
 | Hosting | Vercel | `vercel.json` pins the Next.js preset |
 
 ## Contribute & support
