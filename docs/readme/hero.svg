@@ -43,19 +43,19 @@
   <rect x="240" y="276" width="800" height="2" fill="url(#rule)"/>
 
   <g text-anchor="middle" font-family="'Avenir Next','Segoe UI',Helvetica,Arial,sans-serif">
-    <text x="248" y="330" font-size="34" font-weight="800" fill="#d9a441">40,017</text>
+    <text x="248" y="330" font-size="34" font-weight="800" fill="#d9a441" data-stat="issues">40,017</text>
     <text x="248" y="356" font-size="15" fill="#c9b99a">open issues</text>
 
-    <text x="494" y="330" font-size="34" font-weight="800" fill="#c9683f">8,754</text>
+    <text x="494" y="330" font-size="34" font-weight="800" fill="#c9683f" data-stat="archive">8,754</text>
     <text x="494" y="356" font-size="15" fill="#c9b99a">program projects</text>
 
-    <text x="736" y="330" font-size="34" font-weight="800" fill="#7f9a4e">1,528</text>
+    <text x="736" y="330" font-size="34" font-weight="800" fill="#7f9a4e" data-stat="repos">1,528</text>
     <text x="736" y="356" font-size="15" fill="#c9b99a">repos indexed</text>
 
-    <text x="962" y="330" font-size="34" font-weight="800" fill="#4e8f6b">364</text>
+    <text x="962" y="330" font-size="34" font-weight="800" fill="#4e8f6b" data-stat="orgs">364</text>
     <text x="962" y="356" font-size="15" fill="#c9b99a">org profiles</text>
 
-    <text x="1120" y="330" font-size="34" font-weight="800" fill="#a1739b">13</text>
+    <text x="1120" y="330" font-size="34" font-weight="800" fill="#a1739b" data-stat="programs">13</text>
     <text x="1120" y="356" font-size="15" fill="#c9b99a">tracked programs</text>
   </g>
 </svg>

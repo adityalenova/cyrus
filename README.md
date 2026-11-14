@@ -5,7 +5,7 @@
 <h1 align="center">cyrus.ai</h1>
 
 <p align="center">
-  <b>The open-source contribution platform.</b> 40,017 real open issues, an 8,754-project archive of mentored open-source programs, 364 organization profiles and a 1,528-repo agent-skills catalog - one warm, fast, self-refreshing site on Next.js 16, with <b>real sign-in</b> and a <b>server backend on Neon Postgres</b>.
+  <b>The open-source contribution platform.</b> <!--stat:issues-->40,017<!--/stat--> real open issues, an <!--stat:archive-->8,754<!--/stat-->-project archive of mentored open-source programs, <!--stat:orgs-->364<!--/stat--> organization profiles and a <!--stat:repos-->1,528<!--/stat-->-repo agent-skills catalog - one warm, fast, self-refreshing site on Next.js 16, with <b>real sign-in</b> and a <b>server backend on Neon Postgres</b>.
 </p>
 
 <p align="center">
@@ -48,18 +48,18 @@
 
 > **Works like a product, ships like a static site - and never quotes a number it cannot point at.**
 
-- **40,017 real open issues.** The Issue Finder crawls good-first-issue and help-wanted labels across the catalog with the GitHub Search API, then filters by language, label, organization, size and how recently each repository last merged a pull request. Beginner-labelled and nobody-assigned are filters read from the payload, not guesses.
-- **A program archive, not a program poster.** 8,754 mentored projects across the 12 programs that publish a record we can read - GSoC's full 2016-2026 mirror, LFX, Outreachy, Summer of Bitcoin, GSSoC, 24 Pull Requests, Season of KDE, MLH, Nexus Spring of Code, Hacktoberfest, FOSSEE and Vercel OSS. Each row links to the organizer's own page for that project.
-- **13 programs, each with its own organization explorer.** `/programs/:id/organizations` opens every organization that program's record names, as a card with its logo, its field, its technology stack and the seasons it took part in - filterable by year, stack and sector. Season of KDE groups its record by project area rather than host organization, and the page says so instead of presenting areas as orgs.
+- **<!--stat:issues-->40,017<!--/stat--> real open issues.** The Issue Finder crawls good-first-issue and help-wanted labels across the catalog with the GitHub Search API, then filters by language, label, organization, size and how recently each repository last merged a pull request. Beginner-labelled and nobody-assigned are filters read from the payload, not guesses.
+- **A program archive, not a program poster.** <!--stat:archive-->8,754<!--/stat--> mentored projects across the <!--stat:archivePrograms-->12<!--/stat--> programs that publish a record we can read - GSoC's full 2016-2026 mirror, LFX, Outreachy, Summer of Bitcoin, GSSoC, 24 Pull Requests, Season of KDE, MLH, Nexus Spring of Code, Hacktoberfest, FOSSEE and Vercel OSS. Each row links to the organizer's own page for that project.
+- **<!--stat:programs-->13<!--/stat--> programs, each with its own organization explorer.** `/programs/:id/organizations` opens every organization that program's record names, as a card with its logo, its field, its technology stack and the seasons it took part in - filterable by year, stack and sector. Season of KDE groups its record by project area rather than host organization, and the page says so instead of presenting areas as orgs.
 - **Named mentors, not advertised ones.** 6,170 mentor names read off the programs' own project rows: 4,917 on GSoC, 982 on the LFX record, 198 on the GSSoC board, 44 Summer of Bitcoin and 29 Season of KDE. Outreachy prints no mentor name anywhere in its archive, and its page says that too.
-- **One catalog for the agent boom.** Skills, Cursor rules, AGENTS.md files, MCP servers and dev agents - all 1,528 of them, 33.79M stars between them, filterable and downloadable as JSON.
-- **Organization intel that is actually live.** 364 organization profiles, every one named by a program's own record, each with live GitHub stats and the programs it appears in. Profiles for organizations no program claimed were removed rather than kept to pad the directory.
+- **One catalog for the agent boom.** Skills, Cursor rules, AGENTS.md files, MCP servers and dev agents - all <!--stat:repos-->1,528<!--/stat--> of them, 33.79M stars between them, filterable and downloadable as JSON.
+- **Organization intel that is actually live.** <!--stat:orgs-->364<!--/stat--> organization profiles, every one named by a program's own record, each with live GitHub stats and the programs it appears in. Profiles for organizations no program claimed were removed rather than kept to pad the directory.
 - **The same organization, counted once.** `/organizations/stats` folds every program-level archive into 967 organizations - 14,649 projects, 78 of them appearing in more than one program - by name, by GitHub login, and then by legal form, so "OWASP" and "OWASP Foundation" arrive as one row while two rows with two different confirmed accounts never fold. The eight programs that publish projects rather than hosts stay out of the count, and the page says which they are.
 - **Follow the money.** The Sponsors directory reads `.github/FUNDING.yml` from the top 260 catalog repositories by stars and lists the 82 that actually take funding, with the right link to fund each one.
 - **Proof over promises.** The PR Leaderboard ranks contributors from merged pull requests on real repositories, with open pull requests and reviews counted separately so a single number cannot be gamed.
 - **A dashboard that works signed-out.** Saved issues and repositories, plus twelve screens built on the same datasets: a season calendar with a prefilled Google Calendar event per window and a whole year as `.ics`, a demand radar over five years of accepted projects, a repo analyser scoring any public repository live from GitHub, a four-file draft studio, a co-pilot matcher, a mentor finder, an organization comparison and a git-start script generator.
 - **Real sign-in.** Google OIDC, GitHub OAuth with PKCE and a six-digit email code - designed end to end, with an honest answer from any button whose provider is not configured on that deploy.
-- **A real backend, not a mock.** 13 API route handlers with signed-cookie sessions, cross-device saved items, applications, submissions and a catalog query API on Neon Postgres. [The backend](#the-backend) says exactly what is switched on and what is not.
+- **A real backend, not a mock.** <!--stat:api-->13<!--/stat--> API route handlers with signed-cookie sessions, cross-device saved items, applications, submissions and a catalog query API on Neon Postgres. [The backend](#the-backend) says exactly what is switched on and what is not.
 - **Static where it should be.** Typed JSON snapshots are checked into the repo and regenerated by scripts, so catalog pages prerender and the first paint needs no server round trip.
 
 ## See it in action
@@ -73,22 +73,22 @@ Every shot below is the live site at 1440px.
   </tr>
   <tr>
     <td align="center"><b>Home</b> - the index itself as a hero, the program calendar, and drifting organization shelves</td>
-    <td align="center"><b>Skills catalog</b> - 1,528 repositories with a filter rail, live stats and JSON export</td>
+    <td align="center"><b>Skills catalog</b> - <!--stat:repos-->1,528<!--/stat--> repositories with a filter rail, live stats and JSON export</td>
   </tr>
   <tr>
     <td><img src="docs/readme/shots/issues.png" alt="Issue finder" width="100%"/></td>
     <td><img src="docs/readme/shots/programs.png" alt="Programs" width="100%"/></td>
   </tr>
   <tr>
-    <td align="center"><b>Issue finder</b> - 40,017 open issues, filtered by label, language, organization and difficulty</td>
-    <td align="center"><b>Programs</b> - 13 mentored seasons with their windows and the participation record</td>
+    <td align="center"><b>Issue finder</b> - <!--stat:issues-->40,017<!--/stat--> open issues, filtered by label, language, organization and difficulty</td>
+    <td align="center"><b>Programs</b> - <!--stat:programs-->13<!--/stat--> mentored seasons with their windows and the participation record</td>
   </tr>
   <tr>
     <td><img src="docs/readme/shots/organizations.png" alt="Organizations" width="100%"/></td>
     <td><img src="docs/readme/shots/sponsors.png" alt="Sponsors directory" width="100%"/></td>
   </tr>
   <tr>
-    <td align="center"><b>Organization intel</b> - 364 profiles, each named by a program record, with live stats</td>
+    <td align="center"><b>Organization intel</b> - <!--stat:orgs-->364<!--/stat--> profiles, each named by a program record, with live stats</td>
     <td align="center"><b>Sponsors directory</b> - the 82 catalog repositories that take funding, from their FUNDING.yml</td>
   </tr>
   <tr>
@@ -105,7 +105,7 @@ Every shot below is the live site at 1440px.
   </tr>
   <tr>
     <td align="center"><b>Co-pilot matcher</b> - language and interest shortlisted against live issues</td>
-    <td align="center"><b>Project archive</b> - 8,754 mentored projects, filtered by year, organization and stack</td>
+    <td align="center"><b>Project archive</b> - <!--stat:archive-->8,754<!--/stat--> mentored projects, filtered by year, organization and stack</td>
   </tr>
   <tr>
     <td><img src="docs/readme/shots/platform-features.png" alt="Platform features" width="100%"/></td>
@@ -123,19 +123,19 @@ Light and dark share one token set - the same coffee-and-honey palette, roasted 
 
 | Section | Size | Source of truth |
 |---|---:|---|
-| Good-first-issue board | **40,017 open issues** · 290 repositories · 757 beginner-labelled | GitHub Search API via `scripts/build-issue-index.mjs`, crawled 2026-10-21 over 9,024 repositories |
-| Program archive | **8,754 projects** · 8,731 rows browsable · 12 programs | `public/data/gsoc-projects.json` (5,238) + `otherProjects.json` (1,444) + every shard in `public/data/program-projects/index.json` |
+| Good-first-issue board | **<!--stat:issues-->40,017<!--/stat--> open issues** · 290 repositories · 757 beginner-labelled | GitHub Search API via `scripts/build-issue-index.mjs`, crawled 2026-10-21 over 9,024 repositories |
+| Program archive | **<!--stat:archive-->8,754<!--/stat--> projects** · 8,731 rows browsable · <!--stat:archivePrograms-->12<!--/stat--> programs | `public/data/gsoc-projects.json` (5,238) + `otherProjects.json` (1,444) + every shard in `public/data/program-projects/index.json` |
 | Program organization explorers | **616 organizations** · 13,539 projects · 380 resolved to a GitHub account | `scripts/contribo-orgs.mjs` folding each program's published organization record over our copy of its archive |
 | Cross-program organization statistics | **967 organizations** · 14,649 archived projects · 78 appearing in more than one program · 486 with a confirmed GitHub account | `scripts/org-stats.mjs` → `public/data/org-stats.json`, folded three ways (name key, login key, then legal form, so "OWASP" and "OWASP Foundation" arrive as one row) and shown at `/organizations/stats` |
 | Participation roster | **14,912 projects** · 11,265 distinct organizations · 126 in more than one program | `scripts/build-program-roster.mjs` over the 8 programs that publish a participant list |
 | Named mentors | **6,170** across five programs | `scripts/build-mentor-index.mjs` - GSoC 4,917 · LFX 982 · GSSoC 198 · Summer of Bitcoin 44 · Season of KDE 29 |
 | Linux Foundation member directory | **4,495 organizations** across its foundations | `lf-orgs.json`, from LF's own open gateway - a different population from the LFX Mentorship host list, and shown separately |
-| Agent-skills catalog | **1,528 repositories** · 33.79M stars · 4.61M forks | GitHub REST via `gh api` |
-| Organization profiles | **364** live GitHub profiles, every one named by a program | `scripts/fetch-orgs.mjs` → `src/data/orgs.ts`, which drops the fetched profiles no program's record mentions |
+| Agent-skills catalog | **<!--stat:repos-->1,528<!--/stat--> repositories** · 33.79M stars · 4.61M forks | GitHub REST via `gh api` |
+| Organization profiles | **<!--stat:orgs-->364<!--/stat-->** live GitHub profiles, every one named by a program | `scripts/fetch-orgs.mjs` → `src/data/orgs.ts`, which drops the fetched profiles no program's record mentions |
 | Sponsors directory | **82 funded repositories**, found in the top 260 by stars | `.github/FUNDING.yml`, read repository by repository |
-| Program pages | **13** deep dives, each with its own organization explorer and archive | `src/data/programDetails.ts` |
+| Program pages | **<!--stat:programs-->13<!--/stat-->** deep dives, each with its own organization explorer and archive | `src/data/programDetails.ts` |
 | Dashboard | 12 screens - overview, issues, repositories, calendar, demand radar, analyser, drafts, matcher, mentors, compare, git-start, settings | the datasets above, in the browser |
-| Surface | **23** page routes + **14** route handlers (13 API + `/llms.txt`) | `src/app/` (App Router) |
+| Surface | **<!--stat:pages-->23<!--/stat-->** page routes + **<!--stat:handlers-->14<!--/stat-->** route handlers (<!--stat:api-->13<!--/stat--> API + `/llms.txt`) | `src/app/` (App Router) |
 
 Every figure in this table is the figure the site itself computes. `src/lib/siteStats.ts` derives the chrome's counts from the data modules, and `siteStats.test.ts` asserts the two archive totals against the JSON files on disk - a refresh that changes a file fails the test until the module and this table catch up.
 
@@ -193,13 +193,13 @@ Each source keeps its own file and its own provenance note inside it, so a reade
 | Route | What it is |
 |---|---|
 | `/` | Home: the live issue board as a hero, what the product does, programs, the contributor year, organization shelves, FAQ |
-| `/issues` | Good-first-issue finder over 40,017 real open issues - labels, languages, organizations, difficulty |
-| `/organizations` · `/organizations/:login` | 364 GitHub organizations that a program's own record names, with live stats and program badges, plus the rest of the participation roster |
+| `/issues` | Good-first-issue finder over <!--stat:issues-->40,017<!--/stat--> real open issues - labels, languages, organizations, difficulty |
+| `/organizations` · `/organizations/:login` | <!--stat:orgs-->364<!--/stat--> GitHub organizations that a program's own record names, with live stats and program badges, plus the rest of the participation roster |
 | `/organizations/stats` | Every organization named by a program-level archive, counted once across programs: 967 rows, 14,649 projects, sector and technology breakdowns, per-season counts and the logos GitHub publishes |
-| `/projects` | The 8,754-project mentored-program archive, filterable by year, organization, stack and program |
-| `/programs` · `/programs/:id` | 13 funded programs - windows, who they are for, their project record, their named mentors and their participation row |
+| `/projects` | The <!--stat:archive-->8,754<!--/stat-->-project mentored-program archive, filterable by year, organization, stack and program |
+| `/programs` · `/programs/:id` | <!--stat:programs-->13<!--/stat--> funded programs - windows, who they are for, their project record, their named mentors and their participation row |
 | `/programs/:id/organizations` | That program's organization explorer: every organization its record names, filterable by year, stack and sector |
-| `/skills` | The 1,528-repository agent-skills catalog, filterable and downloadable - the active filter and sort live in the URL, so the view you are looking at is the link you can send |
+| `/skills` | The <!--stat:repos-->1,528<!--/stat-->-repository agent-skills catalog, filterable and downloadable - the active filter and sort live in the URL, so the view you are looking at is the link you can send |
 | `/llms.txt` | A plain-text index of the site for AI agents, generated from the same snapshots |
 | `/sponsors` | The 82 catalog repositories that actually take funding, read from their FUNDING.yml |
 | `/leaderboard` | Contributor rankings from merged pull requests |
@@ -222,7 +222,7 @@ npm run dev                 # http://localhost:5330
 
 ```bash
 npm run build               # next build
-npm test                    # vitest: 33 files, unit + data-integrity suites
+npm test                    # vitest: 35 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
 npm run refresh             # re-pull the GSoC archive + stamp this README's snapshot date
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
@@ -284,7 +284,7 @@ sequenceDiagram
 
 ## The backend
 
-cyrus.ai is not a static page with a fake sign-in. The server side is a real Next.js App Router API: **13 route handlers and a 12-table Postgres schema** managed by Drizzle, on Neon's serverless driver.
+cyrus.ai is not a static page with a fake sign-in. The server side is a real Next.js App Router API: **<!--stat:api-->13<!--/stat--> route handlers and a 12-table Postgres schema** managed by Drizzle, on Neon's serverless driver.
 
 <details>
 <summary><b>Every endpoint, what it does and who may call it</b></summary>
@@ -372,6 +372,7 @@ public/data/      issues.json.gz · gsoc-projects.json · otherProjects.json ·
                   contribo-orgs.json · sponsors.json · lf-orgs.json
 scripts/
 ├── refresh.mjs                 GSoC archive re-pull + README snapshot stamp
+├── readme-stats.mjs            README and hero figures, rewritten from the data (--check in CI)
 ├── build-issue-index.mjs       GitHub Search API -> the 40k-issue snapshot
 ├── build-crawl-data.mjs        catalog crawl -> repos.ts + crawlStats.ts
 ├── fetch-orgs.mjs              live GitHub organization intel -> orgs.ts
@@ -410,7 +411,7 @@ A `vercel.json` pins the Next.js preset, so importing the repository is all it t
 | Visualization | hand-rolled canvas + SVG | catalog charts, program bars, sparklines - no chart library |
 | Motion | Framer Motion | section reveals and the hero, both behind `prefers-reduced-motion` |
 | Email | Resend | one-tap sign-in codes; only the hash of a code is stored |
-| Tests | Vitest | 33 files, 295 tests - unit, API-route and data-integrity suites |
+| Tests | Vitest | <!--stat:testFiles-->35<!--/stat--> files, <!--stat:tests-->339<!--/stat--> tests - unit, API-route and data-integrity suites |
 | Hosting | Vercel | `vercel.json` pins the Next.js preset |
 
 ## Contribute & support
@@ -527,7 +528,7 @@ Not a code person? The cheapest support with the biggest impact:
 
 ## Thanks to the data neighbors
 
-Every number on this site belongs to the teams who produced it: Google Summer of Code and its mentoring organizations, the Linux Foundation, Outreachy, MLH, GSSoC, KDE, Summer of Bitcoin, 24 Pull Requests, FOSSEE, Vercel, nsoc.in and the 1,528 open-source repositories indexed from GitHub. Each listing links out to its official page.
+Every number on this site belongs to the teams who produced it: Google Summer of Code and its mentoring organizations, the Linux Foundation, Outreachy, MLH, GSSoC, KDE, Summer of Bitcoin, 24 Pull Requests, FOSSEE, Vercel, nsoc.in and the <!--stat:repos-->1,528<!--/stat--> open-source repositories indexed from GitHub. Each listing links out to its official page.
 
 ## License & credits
 
