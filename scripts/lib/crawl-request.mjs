@@ -9,7 +9,7 @@
 
      createCrawler({ fetchImpl, sleep, now, headers })
        .request(path, { bucket, source })   ->  parsed body | null
-       .countRecords(source, n)             -> records written for that source
+       .countRecords(source, n)             ->  records written for that source
        .finish(source, { target, got })     ->  marks the source's outcome
        .summarize()                         ->  per-source receipt
        .formatSummary()                     ->  the same receipt as text
