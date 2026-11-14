@@ -1,7 +1,8 @@
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
 import { snapshotLabel, updateSnapshotBadge } from "../../scripts/readme-snapshot.mjs";
 
@@ -38,7 +39,7 @@ describe("README snapshot", () => {
     expect(updateSnapshotBadge(readme, label)).toBe(readme);
   });
 
-  it.each(["refresh.mjs", "fetch-orgs.mjs"])("%s updates the badge after its refresh, using only local fixtures", script => {
+  it.each([["refresh.mjs", badge],["fetch-orgs.mjs", badge.replace("12_Oct_2026", "1_Jan_2027")],] as const)("%s produces the expected README badge", (script, expectedBadge) => {
     const fixture = mkdtempSync(join(tmpdir(), "cyrus-snapshot-"));
     fixtures.push(fixture);
     mkdirSync(join(fixture, "scripts"));
@@ -46,6 +47,8 @@ describe("README snapshot", () => {
     for (const file of [script, "readme-snapshot.mjs"]) {
       cpSync(new URL(`scripts/${file}`, root), join(fixture, "scripts", file));
     }
+    // the entry points reach for scripts/lib (promotion) as soon as they write data
+    cpSync(new URL("scripts/lib", root), join(fixture, "scripts", "lib"), { recursive: true });
     writeFileSync(join(fixture, "README.md"), badge);
     writeFileSync(join(fixture, "src/data/repos.ts"), catalog("2027-01-01", "2026-12-31"));
     // Run the real entry points with all remote calls replaced before imports execute.
@@ -59,9 +62,14 @@ globalThis.fetch = async () => ({ ok: true, json: async () => ({ hackathons: [] 
 const setTimeout = globalThis.setTimeout;
 globalThis.setTimeout = (callback) => setTimeout(callback, 0);
 `);
-    execFileSync(process.execPath, ["--import", hook, join(fixture, "scripts", script), "gsoc"], {
-      cwd: fixture, stdio: "pipe", timeout: 10000,
+    /* the stub gives every entry point an empty read. refresh.mjs then declines
+       to promote and exits 1 - which is the point: the badge and the data it
+       describes both stay as they were. spawnSync, because that exit is not an
+       error this test is about. */
+    const run = spawnSync(process.execPath, ["--import", pathToFileURL(hook).href, join(fixture, "scripts", script), "gsoc"], {
+      cwd: fixture, encoding: "utf8", timeout: 10000,
     });
-    expect(readFileSync(join(fixture, "README.md"), "utf8")).toBe(badge.replace("12_Oct_2026", "1_Jan_2027"));
+    expect([0, 1]).toContain(run.status);
+    expect(readFileSync(join(fixture, "README.md"), "utf8")).toBe(expectedBadge);
   });
 });
