@@ -52,7 +52,7 @@ export const FIELD_CAP = 8;
  */
 
 /**
- * @typedef {String} DatasetDiff
+ * @typedef {Object} DatasetDiff
  * @property {number} before
  * @property {number} after
  * @property {Page} added
