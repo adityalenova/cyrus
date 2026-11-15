@@ -58,6 +58,7 @@ export async function GET(req: Request) {
 
   return Response.json({
     meta: index.meta satisfies IssueMeta,
+    serverTime: new Date().toISOString(),
     query,
     total: page.total,
     page: page.page,

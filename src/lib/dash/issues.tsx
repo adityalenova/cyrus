@@ -6,6 +6,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "@/lib/router";
+import { SnapshotFreshnessCue } from "@/components/SnapshotFreshnessCue";
 import { btn, Chip, Tag } from "../../components/ui";
 import { avatarOf, fmtCompact } from "../util";
 import { ISSUE_SIGNALS } from "../../data/issueSignals";
@@ -210,6 +211,13 @@ export function IssuesSection({ d }: { d: Dash }) {
       <DashHead title="My Issues"
         sub="Every issue you took, held at the stage you left it. Titles and labels come from the crawl; the stages are yours." />
 
+      <div className="mb-4">
+        <SnapshotFreshnessCue
+          generated={d.snapshotMeta?.generated ?? d.index.crawledAt}
+          serverTime={d.snapshotMeta?.serverTime}
+        />
+      </div>
+
       <Card>
         <form className="flex gap-2.5 flex-wrap"
           onSubmit={(e) => { e.preventDefault(); if (d.trackIssue(paste)) setPaste(""); }}>
@@ -277,7 +285,12 @@ export function IssuesSection({ d }: { d: Dash }) {
             <h2 className="panel-h-lg flex items-center gap-2.5">
               <Ic d={DP.spark} size={15} /> Open right now
             </h2>
-            <span className="font-mono text-[10.5px] text-dim ml-auto">crawled {d.index.crawledAt}</span>
+            <SnapshotFreshnessCue
+              compact
+              generated={d.snapshotMeta?.generated ?? d.index.crawledAt}
+              serverTime={d.snapshotMeta?.serverTime}
+              className="ml-auto"
+            />
           </div>
           <div className="grid gap-2.5">
             {offered.map((s) => (
@@ -304,7 +317,7 @@ export function IssuesSection({ d }: { d: Dash }) {
           </div>
           <p className="text-dim text-[12px] mt-4">
             A sample of the {fmtCompact(d.index.issues)} open issues read from{" "}
-            {fmtCompact(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
+            {fmtCompact(d.index.issueRepos)} repositories in the index snapshot. The whole
             snapshot is searchable on the{" "}
             <Link to="/issues" className="text-accent font-semibold hover:underline">issue finder</Link>.
           </p>

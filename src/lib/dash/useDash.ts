@@ -4,7 +4,7 @@
    site (saved repos, followed orgs) plus one issue ledger, so every
    /dashboard page hydrates the same picture. When a server session is
    active the repo and org keys also sync through /api/me/saved.     ═ */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@/lib/router";
 import { ORGS } from "../../data/orgs";
 import { CRAWL } from "../../data/crawlStats";
@@ -102,6 +102,22 @@ export function useDash() {
     crawledAt: CRAWL.crawledAt,
   };
 
+  const [snapshotMeta, setSnapshotMeta] = useState<{ generated?: string; serverTime?: string } | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch("/api/issues?per=1", { headers: { accept: "application/json" } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!live || !data) return;
+        setSnapshotMeta({
+          generated: data.meta?.generated,
+          serverTime: data.serverTime ?? data.meta?.serverTime,
+        });
+      })
+      .catch(() => {});
+    return () => { live = false; };
+  }, []);
+
   /* ── needs your attention: derived from the board, never invented ─ */
   type Attention = { tone: "warn" | "info"; title: string; body: string; to: string; cta: string };
   const attention: Attention[] = [];
@@ -188,7 +204,7 @@ export function useDash() {
     saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll, setPaletteOpen,
     ledger, issues, byStage, stageOf, trackIssue, toggleIssue, setStage, removeIssue, clearIssues,
     savedRepos, orgList, stars, openIssues, langs,
-    index, attention, steps, stepsDone, pct,
+    index, attention, steps, stepsDone, pct, snapshotMeta,
   };
 }
 export type Dash = ReturnType<typeof useDash>;
