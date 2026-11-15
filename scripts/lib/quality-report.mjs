@@ -503,7 +503,7 @@ export function resolveThresholds({ file = null, env = process.env, read = null 
     for (const [k, v] of Object.entries(obj ?? {})) {
       if (!(k in DEFAULT_THRESHOLDS)) { out.notes.push(`ignored ${k}: not a threshold`); continue; }
       const n = Number(v);
-      if (!Number.isFinite(n) || n < 0) { out.notes.push(`ignored ${k}=\"${v}\": not a number at or above zero`); continue; }
+      if (!Number.isFinite(n) || n < 0) { out.notes.push(`ignored ${k}="${v}": not a number at or above zero`); continue; }
       out.thresholds[k] = n;
     }
     out.from.push(where);
