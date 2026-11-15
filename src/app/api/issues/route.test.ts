@@ -23,6 +23,8 @@ describe("GET /api/issues", () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.meta).toEqual(index.meta);
+    expect(typeof body.serverTime).toBe("string");
+    expect(Number.isNaN(new Date(body.serverTime).getTime())).toBe(false);
     expect(body.total).toBe(2);
     expect(body.issues[0]).toMatchObject({
       url: expect.stringMatching(/^https:\/\/github\.com\/o\/r\/issues\/\d$/),
