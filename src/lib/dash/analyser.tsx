@@ -1,5 +1,5 @@
 "use client"
-/* ══ analyser.tsx — repo analyser ════════════════════════════════
+/* ══ analyser.tsx — repo analyser ══════════════════════════════════
    Paste any public repository. Everything on the page is a live answer
    from the GitHub REST API for that repository: the stars, the last
    push, how many people have ever committed, how many commits landed
