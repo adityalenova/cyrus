@@ -11,17 +11,17 @@
  *   node scripts/crawl-github.mjs --phase authors --top 220
  *
  * Needs a token in GH_TOKEN (falls back to `gh auth token`). Search is capped at
- * 30 requests/minute and core at 5000/hour; both are respected here.
+ * 30 requests/minute and core at 5000/hour; both are respected here. Every run
+ * ends by writing data/crawl/crawl-report.json, which says per source how many
+ * requests it made, retried, waited on a rate limit, failed, and stored.
  */
 
-import { mkdirSync, appendFileSync, readFileSync, existsSync } from "node:fs";
+import { mkdirSync, appendFileSync, readFileSync, existsSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { createCrawler } from "./lib/crawl-request.mjs";
 
 const OUT = "data/crawl";
-const API = "https://api.github.com";
 const PER = 100;
-const MINUTE = 60_000;
-const SEARCH_PER_MIN = 28;
 
 const args = {};
 for (let i = 0; i < process.argv.length; i++) {
@@ -38,61 +38,31 @@ mkdirSync(OUT, { recursive: true });
 const stamp = () => new Date().toISOString().slice(11, 19);
 const log = (...m) => console.log(`[${stamp()}]`, ...m);
 
-/* ---- two independent limiters: search window, and core quota from headers ---- */
-const window_ = [];
-let coreResetAt = 0, coreRemaining = 5000;
-async function gate(bucket) {
-  if (bucket === "search") {
-    const now = Date.now();
-    while (window_.length && now - window_[0] > MINUTE) window_.shift();
-    if (window_.length >= SEARCH_PER_MIN) {
-      const wait = MINUTE - (now - window_[0]) + 500;
-      log(`search window full, sleeping ${(wait / 1000).toFixed(0)}s`);
-      await new Promise(r => setTimeout(r, wait));
-      return gate(bucket);
-    }
-    window_.push(Date.now());
-  } else {
-    const now = Date.now();
-    if (coreRemaining < 50 && now < coreResetAt) {
-      const wait = coreResetAt - now + 2000;
-      log(`core quota low (${coreRemaining}), sleeping ${(wait / 1000).toFixed(0)}s until reset`);
-      await new Promise(r => setTimeout(r, Math.min(wait, 30 * 60_000)));
-    }
-  }
-}
+/* One limiter, one retry policy, and a receipt for every source it touched.
+   The rate discipline is unchanged from the previous version of this file:
+   search runs in a rolling per-minute window, core defers to the quota GitHub
+   reports in its headers. What is new is that a skipped or exhausted source is
+   now visible in crawl-report.json instead of looking like a finished crawl. */
+const crawler = createCrawler({
+  headers: () => ({
+    Authorization: `Bearer ${TOKEN}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "cyrus-data-pipeline",
+  }),
+  sleep: (ms) => {
+    log(`sleeping ${(ms / 1000).toFixed(0)}s`);
+    return new Promise((r) => setTimeout(r, ms));
+  },
+});
+const get = (path, bucket = "core", source = bucket) => crawler.request(path, { bucket, source });
+const coreRemaining = () => crawler.state.coreRemaining ?? 0;
 
-async function get(path, bucket = "core", tries = 0) {
-  await gate(bucket);
-  let res;
-  try {
-    res = await fetch(`${API}${path}`, {
-      headers: {
-        Authorization: `Bearer ${TOKEN}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "cyrus-data-pipeline",
-      },
-    });
-  } catch (e) {
-    if (tries > 3) return null;
-    await new Promise(r => setTimeout(r, 5000));
-    return get(path, bucket, tries + 1);
-  }
-  coreRemaining = Number(res.headers.get("x-ratelimit-remaining") ?? coreRemaining);
-  coreResetAt = Number(res.headers.get("x-ratelimit-reset") ?? 0) * 1000 || coreResetAt;
-  if (res.status === 403 || res.status === 429) {
-    const ra = Number(res.headers.get("retry-after") || 0);
-    const wait = ra ? ra * 1000 : Math.max(20_000, coreResetAt - Date.now() + 2000);
-    if (tries > 5) { log("giving up on", path); return null; }
-    log(`status ${res.status}, backing off ${(wait / 1000).toFixed(0)}s`);
-    await new Promise(r => setTimeout(r, Math.min(wait, 10 * 60_000)));
-    return get(path, bucket, tries + 1);
-  }
-  if (res.status === 404 || res.status === 451) return null;
-  if (!res.ok) { log(`HTTP ${res.status} ${path}`, (await res.text().catch(() => "")).slice(0, 140)); return null; }
-  return res.json();
-}
+const writeReport = (phaseName) => {
+  const summary = crawler.summarize();
+  writeFileSync(`${OUT}/crawl-report.json`, JSON.stringify({ ...summary, phase: phaseName }, null, 1) + "\n");
+  console.log(crawler.formatSummary(summary));
+};
 
 const seen = (file, key = "id") => {
   const s = new Set();
@@ -126,9 +96,11 @@ async function phaseRepos() {
   }
   for (const shape of shapes) {
     if (n >= target) break;
+    const source = `repos:${shape.split(" ")[0]}`;
+    let stored = 0;
     for (let page = 1; page <= 5; page++) {
       if (n >= target) break;
-      const r = await get(`/search/repositories?q=${encodeURIComponent(shape)}&per_page=${PER}&page=${page}&sort=stars&order=desc`, "search");
+      const r = await get(`/search/repositories?q=${encodeURIComponent(shape)}&per_page=${PER}&page=${page}&sort=stars&order=desc`, "search", source);
       if (!r || !r.items?.length) break;
       const rows = r.items.filter(it => !have.has(it.id)).map(it => ({
         id: it.id, full_name: it.full_name, owner: it.owner?.login, owner_type: it.owner?.type,
@@ -140,10 +112,13 @@ async function phaseRepos() {
       }));
       rows.forEach(x => have.add(x.id));
       write(file, rows);
+      stored += rows.length;
+      crawler.countRecords(source, rows.length);
       n = have.size;
       if (page === 1) log(`repos [${shape}]: +${rows.length} total=${n} (shape has ${r.total_count})`);
       if (rows.length === 0) break;
     }
+    crawler.finish(source, { got: stored });
   }
   log(`PHASE repos done: ${n} repositories in catalog`);
 }
@@ -167,7 +142,7 @@ async function phaseIssues() {
     i++;
     for (let p = 1; p <= pages; p++) {
       if (n >= target) break;
-      const items = await get(`/repos/${repo.full_name}/issues?state=open&per_page=${PER}&page=${p}&sort=created&direction=desc`, "core");
+      const items = await get(`/repos/${repo.full_name}/issues?state=open&per_page=${PER}&page=${p}&sort=created&direction=desc`, "core", "issues");
       if (!Array.isArray(items) || !items.length) break;
       const rows = items
         .filter(it => !it.pull_request && !it.pull_request_url)   // the endpoint mixes in PRs
@@ -184,11 +159,13 @@ async function phaseIssues() {
         }));
       rows.forEach(x => have.add(x.id));
       write(file, rows);
+      crawler.countRecords("issues", rows.length);
       n = have.size;
       if (items.length < PER) break;
     }
-    if (i % 25 === 0) log(`issues: ${i}/${repos.length} repos scanned, stored=${n}, core left=${coreRemaining}`);
+    if (i % 25 === 0) log(`issues: ${i}/${repos.length} repos scanned, stored=${n}, core left=${coreRemaining()}`);
   }
+  crawler.finish("issues", { target, got: n });
   log(`PHASE issues done: ${n} issues from ${i} repositories`);
 }
 
@@ -205,9 +182,11 @@ async function phaseAuthors() {
   const since = args.since || "2025-01-01";
   const nLangs = Number(args.langs || 12);
   for (const lang of LANGS.slice(0, nLangs)) {
+    const source = `authors:${lang}`;
+    let discovered = 0;
     for (let page = 1; page <= 6; page++) {
       const q = `is:pr is:merged language:${lang} merged:>=${since}`;
-      const r = await get(`/search/issues?q=${encodeURIComponent(q)}&per_page=${PER}&page=${page}&sort=updated`, "search");
+      const r = await get(`/search/issues?q=${encodeURIComponent(q)}&per_page=${PER}&page=${page}&sort=updated`, "search", source);
       if (!r || !r.items?.length) break;
       for (const it of r.items) {
         const login = it.user?.login;
@@ -215,8 +194,11 @@ async function phaseAuthors() {
         const cur = tally.get(login) || { login, seen: 0, avatar: it.user?.avatar_url, html: it.user?.html_url };
         cur.seen += 1;
         tally.set(login, cur);
+        discovered += 1;
       }
     }
+    crawler.countRecords(source, discovered);
+    crawler.finish(source, { got: discovered });
     log(`authors: discovered via ${lang}, pool=${tally.size}`);
   }
   const ranked = [...tally.values()].sort((a, b) => b.seen - a.seen).slice(0, 500);
@@ -229,12 +211,12 @@ async function phaseAuthors() {
   for (const c of ranked) {
     if (done.has(c.login)) continue;
     if (done.size >= Number(args.top || 220)) break;
-    const s = (q) => get(`/search/issues?q=${encodeURIComponent(q)}&per_page=1`, "search");
+    const s = (q) => get(`/search/issues?q=${encodeURIComponent(q)}&per_page=1`, "search", "leaderboard");
     const merged = await s(`is:pr is:merged author:${c.login}`);
     if (!merged) continue;
     const open = await s(`is:pr is:open author:${c.login}`);
     const reviews = await s(`is:pr reviewed-by:${c.login}`);
-    const profile = await get(`/users/${c.login}`, "core");
+    const profile = await get(`/users/${c.login}`, "core", "leaderboard");
     write(out, [{
       login: c.login, avatar: c.avatar, html: c.html,
       name: profile?.name || null, bio: profile?.bio || null, company: profile?.company || null,
@@ -246,8 +228,10 @@ async function phaseAuthors() {
       discovered_in_sample: c.seen,
     }]);
     done.add(c.login);
+    crawler.countRecords("leaderboard", 1);
     log(`leaderboard #${done.size} ${c.login}: merged=${merged.total_count} open=${open?.total_count} reviews=${reviews?.total_count}`);
   }
+  crawler.finish("leaderboard", { target: Number(args.top || 220), got: done.size });
   log(`PHASE authors done: ${done.size} ranked contributors stored`);
 }
 
@@ -257,4 +241,7 @@ if (phase === "repos") await phaseRepos();
 else if (phase === "issues") await phaseIssues();
 else if (phase === "authors") await phaseAuthors();
 else { console.error("unknown phase"); process.exit(1); }
+/* the receipt goes to disk as well as stdout: a scheduled run is read from the
+   artifact, and an incomplete source has to be visible without the log */
+writeReport(phase);
 log(`done. files: repos=${count("repos.jsonl")} issues=${count("issues.jsonl")} leaders=${count("leaderboard.jsonl")}`);
