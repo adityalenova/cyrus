@@ -1,3 +1,4 @@
+/* ══ qualityGate.test.ts — a run the gate rejects leaves the archive alone ══ */
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
