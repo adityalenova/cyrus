@@ -14,6 +14,7 @@ import { Link } from "@/lib/router";
 import { btn } from "../../components/ui";
 import { fmtCompact } from "../util";
 import { repoById } from "../util";
+import { repoId } from "../repoRef.mjs";
 import { Card, DashHead, Ic } from "./shell";
 import { ArtScope } from "./art";
 import { DP } from "./shared";
