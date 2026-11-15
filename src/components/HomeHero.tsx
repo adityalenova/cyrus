@@ -13,7 +13,7 @@
    under the northern lights in the dark theme, the snow range at dawn in the
    light one. It never rotates on its own.
    ═════════════════════════════════════════════════════════════ */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Link } from "@/lib/router";
@@ -296,10 +296,49 @@ const PANELS: Record<PanelId, () => ReactNode> = {
   copilot: CopilotPanel,
 };
 
+const RAIL_PANELS = RAIL.map((it) => it.id);
+
+/* The rail is a row under md and a column from md up, which is the same
+   breakpoint the layout uses, so the arrow keys follow the axis the visitor
+   can see rather than a fixed one. */
+const RAIL_STACKED = "(min-width: 768px)";
+
+function useRailStacked() {
+  const [stacked, setStacked] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia(RAIL_STACKED);
+    setStacked(mq.matches);
+    const onChange = (event: MediaQueryListEvent) => setStacked(event.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return stacked;
+}
+
 /* ── the window ─────────────────────────────────────────────── */
 function BoardPreview() {
   const [panel, setPanel] = useState<PanelId>("issues");
+  const stacked = useRailStacked();
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const Active = PANELS[panel];
+
+  const move = (index: number) => {
+    setPanel(RAIL_PANELS[index]);
+    tabs.current[index]?.focus();
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const at = RAIL_PANELS.indexOf(panel);
+    const next = event.key === (stacked ? "ArrowDown" : "ArrowRight") ? (at + 1) % RAIL_PANELS.length
+      : event.key === (stacked ? "ArrowUp" : "ArrowLeft") ? (at - 1 + RAIL_PANELS.length) % RAIL_PANELS.length
+      : event.key === "Home" ? 0
+      : event.key === "End" ? RAIL_PANELS.length - 1
+      : -1;
+    if (next < 0) return;
+    event.preventDefault();
+    move(next);
+  };
+
   return (
     <div className="board-ring">
       <figure className="bg-card/70 backdrop-blur-[2px] rounded-[14px] p-1.5 sm:p-3 md:p-[14px] shadow-lift">
@@ -328,13 +367,16 @@ function BoardPreview() {
           </div>
 
           <div className="flex-1 min-h-0 flex flex-col md:flex-row">
-            {/* the rail: real buttons, real panels */}
-            <nav aria-label="Preview sections"
+            {/* the rail: a tablist over real panels, arrow keys and clicks alike */}
+            <div role="tablist" aria-label="Preview sections" aria-orientation={stacked ? "vertical" : "horizontal"}
+              onKeyDown={onKeyDown}
               className="hero-rail shrink-0 flex md:flex-col gap-1 overflow-x-auto md:overflow-visible md:w-[176px] md:border-r border-line md:bg-sand px-2.5 md:px-2.5 py-2 md:py-3 border-b md:border-b-0">
-              {RAIL.map((it) => {
+              {RAIL.map((it, i) => {
                 const on = it.id === panel;
                 return (
-                  <button key={it.id} type="button" onClick={() => setPanel(it.id)} aria-current={on ? "page" : undefined}
+                  <button key={it.id} type="button" role="tab" id={`rail-tab-${it.id}`} aria-controls="rail-panel"
+                    aria-selected={on} tabIndex={on ? 0 : -1} ref={(el) => { tabs.current[i] = el; }}
+                    onClick={() => setPanel(it.id)}
                     className={`relative flex items-center gap-2 rounded-[8px] px-2.5 md:px-2 py-[6px] md:py-[5px] text-[11px] font-semibold whitespace-nowrap cursor-pointer transition-colors ${on ? "bg-clay text-ink" : "text-cocoa hover:bg-clay/60 hover:text-ink"}`}>
                     {on && <i className="not-italic absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-[13px] rounded-l-full bg-accent max-md:hidden" />}
                     <span className={on ? "text-accent shrink-0" : "shrink-0"}><Ic d={it.icon} size={12} /></span>
@@ -343,10 +385,11 @@ function BoardPreview() {
                   </button>
                 );
               })}
-            </nav>
+            </div>
 
             {/* the panel */}
-            <div className="flex-1 min-w-0 px-3.5 md:px-5 py-3 md:py-3.5 overflow-hidden">
+            <div id="rail-panel" role="tabpanel" aria-labelledby={`rail-tab-${panel}`} tabIndex={-1}
+              className="flex-1 min-w-0 px-3.5 md:px-5 py-3 md:py-3.5 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div key={panel} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.22, ease: [0.22, 0.8, 0.36, 1] }}>
@@ -381,8 +424,8 @@ function BoardPreview() {
           </div>
         </div>
         <figcaption className="mt-3 md:mt-3.5 mb-0.5 text-center font-mono text-[9.5px] md:text-[10.5px] uppercase tracking-[.1em] md:tracking-[.12em] text-cocoa">
-          <span className="max-md:hidden">The board, live on {fmtCompact(CRAWL.issues)} real issues · click the rail, it works</span>
-          <span className="md:hidden">{fmtCompact(CRAWL.issues)} real issues · the rail works</span>
+          <span className="max-md:hidden">The board, live on {fmtCompact(CRAWL.issues)} real issues · arrow-key the rail, or click it</span>
+          <span className="md:hidden">{fmtCompact(CRAWL.issues)} real issues · the rail works, keys too</span>
         </figcaption>
       </figure>
     </div>
