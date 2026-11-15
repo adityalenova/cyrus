@@ -19,6 +19,7 @@ import { useStore } from "../lib/store";
 import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
 import type { Sort } from "../lib/server/issueIndex";
 import { btn, Chip, LevelChip, OrgImg, Tag, Word } from "../components/ui";
+import { SnapshotFreshnessCue } from "../components/SnapshotFreshnessCue";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -33,7 +34,8 @@ type Found = {
 };
 type Facet = { value: string; count: number };
 type Body = {
-  meta: { generated: string; issues: number; repos: number; orgs: number; languages: number };
+  meta: { generated: string; issues: number; repos: number; orgs: number; languages: number; serverTime?: string };
+  serverTime?: string;
   total: number; page: number; per: number; pages: number;
   facets: { langs: Facet[]; orgs: Facet[]; labels: Facet[] };
   issues: Found[];
@@ -311,6 +313,15 @@ export default function IssueFinder() {
             </select>
           </div>
 
+          {body && (
+            <div className="mb-4">
+              <SnapshotFreshnessCue
+                generated={body.meta?.generated}
+                serverTime={body.serverTime ?? body.meta?.serverTime}
+              />
+            </div>
+          )}
+
           {status === "error" && (
             <div className="rounded-[22px] border border-dashed border-rule p-10 text-center bg-cream">
               <p className="font-display text-[20px] text-cocoa mb-2">The issue index is not answering right now.</p>
@@ -377,8 +388,8 @@ export default function IssueFinder() {
           ) : null}
 
           <p className="font-mono text-[10px] text-dim mt-8 leading-[1.7]">
-            Snapshot {body?.meta.generated ?? CRAWL.crawledAt} · {num(CRAWL.issues)} issues · {num(CRAWL.reposWithIssues)} repositories · {CRAWL.languages} languages.
-            An issue being open here means GitHub said so on that date; check the thread before you start.
+            Index snapshot {body?.meta?.generated ?? CRAWL.crawledAt} · {num(CRAWL.issues)} issues · {num(CRAWL.reposWithIssues)} repositories · {CRAWL.languages} languages.
+            An issue being open here means GitHub said so on that snapshot date; live thread state on GitHub may differ.
           </p>
         </section>
       </div>
