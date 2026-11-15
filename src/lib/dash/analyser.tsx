@@ -12,8 +12,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { btn } from "../../components/ui";
-import { fmtCompact } from "../util";
-import { repoById } from "../util";
+import { fmtCompact, repoById } from "../util";
+import { repoId } from "../repoRef";
 import { Card, DashHead, Ic } from "./shell";
 import { ArtScope } from "./art";
 import { DP } from "./shared";
@@ -150,23 +150,17 @@ const Stat = ({ k, v, sub }: { k: string; v: string; sub?: string }) => (
   </div>
 );
 
-const parseRepo = (s: string) => {
-  const t = s.trim().replace(/\.git$/, "").replace(/^https?:\/\/github\.com\//, "");
-  const m = t.match(/^([\w.-]+)\/([\w.-]+)/);
-  return m ? `${m[1]}/${m[2]}` : null;
-};
-
 export function AnalyserSection({ d }: { d: Dash }) {
   const [raw, setRaw] = useState("");
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<Read | null>(null);
   const [asked, setAsked] = useState("");
 
-  const guess = useMemo(() => parseRepo(raw), [raw]);
+  const guess = useMemo(() => repoId(raw), [raw]);
   const catalog = guess ? repoById(guess) : undefined;
 
   const run = async (target?: string) => {
-    const full = parseRepo(target ?? raw ?? "");
+    const full = repoId(target ?? raw ?? "");
     if (!full) { d.toast("That does not look like owner/repo yet."); return; }
     setBusy(true); setAsked(full); setRes(null);
     const out = await readRepo(full);
