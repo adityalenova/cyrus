@@ -4,24 +4,36 @@
    plus the five-year archive band: accepted-project counts pulled at
    runtime from the same /data/*.json files the /projects listing reads,
    so every cell is a real number and every cell deep-links into that
-   listing with the program and year pre-filtered.                     ═ */
+   listing with the program and year pre-filtered.
+
+   The organization number on a card and in the band is the merged list that
+   /programs/<id>/organizations opens: Contribo's organization record for that
+   program folded over our own copy of its archive, name by name, by
+   scripts/contribo-summary.mjs. The card's number and the page behind it are
+   computed by the same code, so they cannot drift.                        ═ */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
-import { avatarOf, fmt } from "../lib/util";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { useRosterIndex } from "../lib/programRoster";
+import type { Evidence, RosterIndex } from "../lib/programRoster";
+import { publishesAreas, useProgramStats } from "../lib/contriboOrgs";
+import type { ProgramStats } from "../lib/contriboOrgs";
+import { useProjectArchives } from "../lib/programProjects";
+import type { ArchiveSummary } from "../lib/programProjects";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
 import type { Program } from "../lib/types";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
-/* which programs have a real project archive in /data, and the exact
-   program string the /projects filter matches on */
-const ARCHIVE_OF: Record<string, string> = {
-  gsoc: "GSoC",
-  lfx: "LFX",
-  outreachy: "Outreachy",
-  sob: "Summer of Bitcoin",
+/* The four programs whose full archives /projects reads directly (GSoC's
+   5,238-row mirror and the LFX/Outreachy/Summer of Bitcoin file) get their
+   season columns from those files. Every other program's row comes from its
+   own shard under /data/program-projects/, listed by the index the build step
+   writes - so a program with no published record shows "–" instead of a
+   invented number. */
+const BIG_ARCHIVE_LABEL: Record<string, string> = {
+  gsoc: "GSoC", lfx: "LFX", outreachy: "Outreachy", sob: "Summer of Bitcoin",
 };
 
 const STATUS_FILTERS: [string, string][] = [
@@ -34,9 +46,16 @@ const STATUS_PILL: Record<Program["status"], string> = {
   closed: "text-dim border-line bg-cream",
 };
 
+const EVIDENCE_WORD: Record<Evidence, string> = {
+  archive: "from its project archive", api: "from its open API",
+  listing: "from its published list", topics: "from GitHub topics",
+};
+
 /* ── one program card ─────────────────────────────────────────── */
-function ProgCard({ p, roster }: { p: Program; roster?: RosterSlot }) {
-  const archived = ARCHIVE_OF[p.id];
+type RosterSlot = { orgs: number; projects: number; source: Evidence };
+
+function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSummary }) {
+  const archived = arc?.filter;
   return (
     <article className="group bg-card border border-line rounded-[20px] overflow-hidden flex flex-col shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift hover:border-accent/45">
       <Link to={`/programs/${p.id}`} className="relative block aspect-[16/7] bg-clay">
@@ -51,20 +70,19 @@ function ProgCard({ p, roster }: { p: Program; roster?: RosterSlot }) {
           <h3 className="card-title text-[15.5px] truncate">{p.name}</h3>
         </div>
         <p className="text-cocoa text-[12.5px] leading-[1.55] line-clamp-2">{p.tag}</p>
+        {/* one chip, the stipend. The org and project counts used to sit here as
+            well, which turned the shelf into a wall of statistics and duplicated
+            the record table below - both numbers now live on the program's own
+            page and in its organization explorer. */}
         <div className="flex gap-1.5 flex-wrap">
           <Chip tone="green">{p.pay}</Chip>
-          <Chip tone="cat">{p.orgs}</Chip>
-          <Chip tone="blue">{p.slots}</Chip>
         </div>
         <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim">{p.window}</p>
-        <p className="font-mono text-[10px] tracking-[.09em] uppercase -mt-1.5 text-accent/80">
-          {roster ? `${fmt(roster.orgs)} orgs listed · ${roster.source}` : "Roster not published"}
-        </p>
         <div className="flex items-center gap-3 mt-auto pt-3 border-t border-liness">
           <Link to={`/programs/${p.id}`} className="text-[12.5px] font-bold text-accent hover:text-rust transition-colors">Program page</Link>
-          <Link to={archived ? `/projects?prog=${encodeURIComponent(archived)}` : "/projects"}
+          <Link to={s ? `/programs/${p.id}/organizations` : archived ? `/projects?prog=${encodeURIComponent(archived)}` : "/projects"}
             className="ml-auto text-[12px] font-semibold text-cocoa border-b border-dashed border-dim pb-0.5 hover:text-accent hover:border-accent transition-colors">
-            {archived ? "Project archive" : "Related projects"}
+            {s ? "Organization list" : archived ? "Project archive" : "Related projects"}
           </Link>
         </div>
       </div>
@@ -74,30 +92,43 @@ function ProgCard({ p, roster }: { p: Program; roster?: RosterSlot }) {
 
 /* ── the participation record for all thirteen programs ─────── */
 type YearGrid = Map<string, Map<number, number>>;
-type RosterSlot = { orgs: number; projects: number; source: "archive" | "topics" };
 
-function ArchiveBand({ grid, loading, roster }: { grid: YearGrid | null; loading: boolean; roster: Record<string, RosterSlot> }) {
+function ArchiveBand({ grid, loading, roster, idx, stats, arcs }: {
+  grid: YearGrid | null; loading: boolean; roster: Record<string, RosterSlot>;
+  idx: RosterIndex; stats: Record<string, ProgramStats>; arcs: Record<string, ArchiveSummary>;
+}) {
   const years = useMemo(() => {
-    if (!grid) return [2026, 2025, 2024, 2023, 2022];
     const set = new Set<number>();
-    for (const byYear of grid.values()) for (const y of byYear.keys()) set.add(y);
-    return [...set].sort((a, b) => b - a);
-  }, [grid]);
+    for (const byYear of grid?.values() ?? []) for (const y of byYear.keys()) set.add(y);
+    for (const a of Object.values(arcs)) for (const y of Object.keys(a.byYear)) {
+      const n = Number(y);
+      if (n > 2000) set.add(n);
+    }
+    return [...set].sort((a, b) => b - a).slice(0, 6);
+  }, [grid, arcs]);
 
-  const total = (name: string) =>
-    grid ? [...(grid.get(name)?.values() ?? [])].reduce((a, b) => a + b, 0) : 0;
-
-  const orgTotal = Object.values(roster).reduce((s, r) => s + r.orgs, 0);
+  /** one program's season counts: the full mirror where we hold it, otherwise
+      the rows its own shard carries */
+  const byYearOf = (id: string): Map<number, number> => {
+    const big = BIG_ARCHIVE_LABEL[id];
+    if (big && grid?.get(big)) return grid.get(big)!;
+    const m = new Map<number, number>();
+    for (const [y, n] of Object.entries(arcs[id]?.byYear ?? {})) {
+      const k = Number(y);
+      if (k > 2000) m.set(k, n);
+    }
+    return m;
+  };
 
   return (
     <section className="bg-card border border-line rounded-[22px] p-[22px] shadow-soft overflow-x-auto">
       <div className="flex items-end justify-between gap-4 flex-wrap mb-5">
         <div>
-          <h2 className="panel-h text-[18px]">Five years of <Word>accepted projects</Word></h2>
-          <p className="text-cocoa text-[12.5px] mt-1.5 max-w-[680px] leading-[1.6]">
-            Every program we track, with the organizations it actually named and the projects it
-            actually accepted. Pick a number to open that slice - the org count opens the roster on
-            the program page. Where an organizer publishes nothing, the row says so.
+          <h2 className="panel-h text-[18px]">The <Word>participation record</Word></h2>
+          <p className="text-cocoa text-[12.5px] mt-1.5 max-w-[660px] leading-[1.6]">
+            Every program we track, one row each. Pick a number to open that slice of the archive; the
+            organization count opens that program's organization explorer. Where an organizer publishes
+            nothing we can read, the row shows a dash instead of a guess.
           </p>
         </div>
         <Link to="/projects" className={btn("outline", "sm")}>Browse the whole archive</Link>
@@ -112,14 +143,16 @@ function ArchiveBand({ grid, loading, roster }: { grid: YearGrid | null; loading
                 {loading ? "…" : y}
               </th>
             ))}
-            <th className="font-mono text-[9.5px] uppercase tracking-[.12em] text-dim pb-2.5 font-medium text-right">Projects</th>
           </tr>
         </thead>
         <tbody>
           {PROGRAMS.map((p) => {
-            const name = ARCHIVE_OF[p.id];
-            const byYear = name ? grid?.get(name) : undefined;
+            const arc = arcs[p.id];
+            const name = BIG_ARCHIVE_LABEL[p.id] ?? arc?.filter;
+            const byYear = byYearOf(p.id);
             const r = roster[p.id];
+            const s = stats[p.id];
+            const orgs = s?.orgs ?? r?.orgs;
             return (
               <tr key={p.id} className="border-t border-liness">
                 <td className="py-2.5 pr-3">
@@ -128,38 +161,45 @@ function ArchiveBand({ grid, loading, roster }: { grid: YearGrid | null; loading
                   </Link>
                 </td>
                 <td className="text-right py-2.5">
-                  {r ? (
-                    <Link to={`/programs/${p.id}`} title={`${r.source === "archive" ? "Counted from accepted projects" : "Counted from GitHub topics"}`}
+                  {orgs ? (
+                    <Link to={s ? `/programs/${p.id}/organizations` : `/programs/${p.id}`}
+                      title={publishesAreas(p.id) ? "Season of KDE groups its projects by area, so this counts areas, not host organizations"
+                        : s ? "Organizations this program's record names - open the explorer for each one"
+                        : r ? EVIDENCE_WORD[r.source] : ""}
                       className="font-mono text-[12.5px] font-bold text-accent hover:text-rust transition-colors tabular-nums">
-                      {fmt(r.orgs)}
+                      {fmtCompact(orgs)}
                     </Link>
                   ) : <span className="font-mono text-[10px] uppercase tracking-[.08em] text-dim/70">none</span>}
                 </td>
                 {years.map((y) => {
-                  const n = byYear?.get(y) ?? 0;
+                  const n = byYear.get(y) ?? 0;
                   return (
                     <td key={y} className="text-right py-2.5">
                       {n > 0 && name ? (
                         <Link to={`/projects?prog=${encodeURIComponent(name)}&year=${y}`}
                           className="font-mono text-[12.5px] text-cocoa hover:text-accent transition-colors tabular-nums">
-                          {fmt(n)}
+                          {fmtCompact(n)}
                         </Link>
                       ) : <span className="font-mono text-[12.5px] text-dim/60">–</span>}
                     </td>
                   );
                 })}
-                <td className="text-right py-2.5 font-mono text-[12.5px] font-bold text-cocoa tabular-nums">
-                  {name ? (loading ? "…" : fmt(total(name))) : r ? fmt(r.projects) : <span className="text-dim/60 font-normal">–</span>}
-                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <p className="font-mono text-[10px] uppercase tracking-[.11em] text-dim mt-4">
+      <p className="font-mono text-[10px] uppercase tracking-[.11em] text-dim mt-4 leading-[1.9]">
         {loading
-          ? "Counting the archive…"
-          : <>Org and project counts read from the archive files - <b className="text-cocoa">{fmt(orgTotal)}</b> distinct organizations across <b className="text-cocoa">{fmt(total("GSoC") + total("LFX") + total("Outreachy") + total("Summer of Bitcoin"))}</b> accepted projects. The {PROGRAMS.length - Object.keys(roster).length} programs with no public roster say so on their page instead of guessing.</>}
+          ? "Reading the archive…"
+          : <>
+            Each year column counts the rows in the browsable listing for that
+            season. Every figure comes from the archive, API or
+            published list the program itself puts out. Where a program's record is
+            built from GitHub topics rather than an organizer list, the Orgs column
+            counts the repositories in that season, not host organizations.
+            {idx.generated ? <> Record built {idx.generated}.</> : null}
+          </>}
       </p>
     </section>
   );
@@ -169,6 +209,8 @@ export default function Programs() {
   const [status, setStatus] = useState("all");
   const [grid, setGrid] = useState<YearGrid | null>(null);
   const rst = useRosterIndex();
+  const cs = useProgramStats();
+  const arc = useProjectArchives(PROGRAMS);
 
   useEffect(() => {
     let go = true;
@@ -203,7 +245,6 @@ export default function Programs() {
     () => PROGRAMS.filter((p) => status === "all" || p.status === status),
     [status],
   );
-  const live = PROGRAMS.filter((p) => p.status === "live").length;
 
   return (
     <div className={`${W} pt-14 pb-16`}>
@@ -213,10 +254,9 @@ export default function Programs() {
       <h1 className="font-display font-extrabold tracking-[-.02em] leading-[1.08] mt-3.5 mb-3 text-[clamp(33px,4.2vw,52px)]">
         Open source <Word>programs</Word>
       </h1>
-      <p className="text-ink font-medium max-w-[720px] text-[16.5px] leading-[1.6]">
-        Mentored seasons with real stipends and a public record - {PROGRAMS.length} tracked programs,{" "}{live} in
-        session right now. Every page carries the organizations that took part and the projects they
-        accepted, counted from the archive rather than estimated.
+      <p className="text-ink font-medium max-w-[680px] text-[16.5px] leading-[1.6]">
+        Mentored seasons with real stipends and a public record. Filter by where you are in the
+        calendar, then open a program for its organizations, its projects and its windows.
       </p>
 
       {/* status filter */}
@@ -235,8 +275,9 @@ export default function Programs() {
       )}
 
       {/* the cards */}
+      <h2 className="sr-only">Programs</h2>
       <div className="grid grid-cols-3 gap-5 mt-7 max-[1100px]:grid-cols-2 max-[680px]:grid-cols-1">
-        {list.map((p) => <ProgCard key={p.id} p={p} roster={rst.byId[p.id]} />)}
+        {list.map((p) => <ProgCard key={p.id} p={p} s={cs.byId[p.id]} arc={arc.summaries[p.id]} />)}
       </div>
       {list.length === 0 && (
         <p className="text-cocoa text-[14px] mt-10">Nothing in that bucket this cycle - try "Everything".</p>
@@ -244,7 +285,7 @@ export default function Programs() {
 
       {/* five-year archive */}
       <div className="mt-14">
-        <ArchiveBand grid={grid} loading={grid === null} roster={rst.byId} />
+        <ArchiveBand grid={grid} loading={grid === null} roster={rst.byId} idx={rst} stats={cs.byId} arcs={arc.summaries} />
       </div>
 
       {/* close */}

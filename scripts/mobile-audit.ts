@@ -1,44 +1,47 @@
-/* Throwaway mobile audit - 390px viewport, overflow report + screenshots to /tmp/shots */
+/* Mobile audit - 390px viewport, overflow report + screenshots to .shots/mobile
+   First time only: npx playwright install chromium
+   Run:  npm run dev                      (one terminal, serves http://localhost:5330)
+         npm run audit:mobile             (another terminal, every page below)
+         npm run audit:mobile -- home,about   (only the pages with these names)
+   MVW=<px> changes the width. .shots/ is git-ignored. */
 import { chromium } from "@playwright/test";
 import { mkdirSync } from "fs";
-import { homedir } from "os";
 
-const SHELL = `${homedir()}/Library/Caches/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-mac-arm64/chrome-headless-shell`;
+const OUT = ".shots/mobile";
 
 const PAGES: [string, string][] = [
   ["/", "home"],
-  ["/tools", "tools-home"],
-  ["/tools/browse", "tools-browse"],
-  ["/tools/ui-design", "tools-cat"],
-  ["/tools/typography-colour/typography", "tools-sub"],
-  ["/tools/ui-design/effects/glassmorphism", "tool-detail"],
-  ["/tools/ai-prompting/model-picker/aipick-small-fast", "tool-guide"],
-  ["/tools/builder", "builder"],
-  ["/apis", "apis"],
+  ["/issues", "issues"],
+  ["/programs", "programs"],
+  ["/programs/gsoc", "program-detail"],
+  ["/programs/gsoc/organizations", "program-orgs"],
+  ["/organizations", "organizations"],
+  ["/organizations/microsoft", "org-profile"],
+  ["/organizations/stats", "org-stats"],
+  ["/skills", "skills"],
+  ["/repo/affaan-m%2FECC", "repo-detail"],
+  ["/projects", "projects"],
+  ["/sponsors", "sponsors"],
+  ["/leaderboard", "leaderboard"],
   ["/dashboard", "dashboard"],
-  ["/dashboard/watchlist", "dash-feature"],
   ["/dashboard/matcher", "dash-matcher"],
   ["/dashboard/compare", "dash-compare"],
   ["/platform/features", "features"],
-  ["/platform/nova", "platform-nova"],
   ["/platform/how", "platform-how"],
   ["/platform/trust", "platform-trust"],
-  ["/hackathons", "hackathons"],
-  ["/opensource", "opensource"],
-  ["/projects", "projects"],
-  ["/organizations", "organizations"],
-  ["/resources", "resources"],
   ["/about", "about"],
-  ["/nova", "nova"],
   ["/affiliations", "affiliations"],
+  ["/terms", "terms"],
+  ["/privacy", "privacy"],
+  ["/cookies", "cookies"],
 ];
 
 (async () => {
   const only = process.argv[2]; // optional: filter to page names, comma list
   const pages = only ? PAGES.filter(([, n]) => only.split(",").includes(n)) : PAGES;
   const vw = Number(process.env.MVW || 390);
-  mkdirSync("/tmp/shots", { recursive: true });
-  const browser = await chromium.launch({ executablePath: SHELL });
+  mkdirSync(OUT, { recursive: true });
+  const browser = await chromium.launch();
   const ctx = await browser.newContext({ viewport: { width: vw, height: 844 }, deviceScaleFactor: 2, isMobile: vw < 500, hasTouch: true });
   const results: string[] = [];
   for (const [path, name] of pages) {
@@ -62,7 +65,7 @@ const PAGES: [string, string][] = [
         return { vw, sw, bad: bad.slice(0, 5) };
       });
       results.push(`${path} [${name}] ${res?.status()} scrollW=${info.sw}/${info.vw}${info.sw > info.vw + 1 ? " OVERFLOW" : ""}${info.bad.length ? "\n   " + info.bad.join("\n   ") : ""}${errs.length ? "\n   ERR " + errs.join("; ") : ""}`);
-      await page.screenshot({ path: `/tmp/shots/${name}.png` });
+      await page.screenshot({ path: `${OUT}/${name}.png` });
     } catch (e) {
       results.push(`${path} [${name}] FAILED ${String(e).slice(0, 140)}`);
     }

@@ -179,17 +179,57 @@ export const __spent = spent;
 /* ── sending via Resend (fetch only) ────────────────────────────────── */
 export type SendResult = { sent: true } | { sent: false; demo: true; code: string } | { sent: false; error: string };
 
+const TEST_FROM = "cyrus.ai <onboarding@resend.dev>";
+
+/** "missing_key" = demo mode, "unverified_from" = key but no sender Resend will
+   deliver from (EMAIL_FROM unset, or still the shared testing address),
+   "ok" = key plus an EMAIL_FROM. Whether the domain is really verified is only
+   known to Resend. */
+export type EmailStatus = "missing_key" | "unverified_from" | "ok";
+
+export function emailStatus(): EmailStatus {
+  if (!(process.env.RESEND_API_KEY ?? "").trim()) return "missing_key";
+  const from = (process.env.EMAIL_FROM ?? "").trim();
+  if (!from || from.toLowerCase().includes("@resend.dev")) return "unverified_from";
+  return "ok";
+}
+
+/** short, safe reason from a Resend error response. Only the `name` and
+   `message` fields are used, any email address in the message is masked
+   (Resend can echo the recipient or the account owner) and the result is
+   capped. The raw body never leaves this function, and a body that is not
+   JSON falls back to a generic line instead of throwing. */
+async function resendReason(r: Response): Promise<string> {
+  const generic = `resend rejected the request (${r.status})`;
+  try {
+    const j = (await r.json()) as { name?: unknown; message?: unknown } | null;
+    const name = typeof j?.name === "string" ? j.name.trim() : "";
+    const message = typeof j?.message === "string"
+      ? j.message.replace(/[^\s<>()"',;:]+@[^\s<>()"',;:]+/g, "[address]").trim()
+      : "";
+    const reason = [name, message].filter(Boolean).join(": ").slice(0, 200);
+    return reason ? `resend ${r.status}: ${reason}` : generic;
+  } catch {
+    return generic;
+  }
+}
+
 export async function sendCodeEmail(email: string, code: string): Promise<SendResult> {
   const key = (process.env.RESEND_API_KEY ?? "").trim();
-  const from = (process.env.EMAIL_FROM ?? "").trim() || "cyrus.ai <onboarding@resend.dev>";
   email = email.trim();
   if (!key) return { sent: false, demo: true, code }; // demo mode: caller shows the code
+  /* Resend's testing sender only reaches the account owner, so it is a local
+     convenience. In production an unset EMAIL_FROM is a config error. */
+  const from = (process.env.EMAIL_FROM ?? "").trim();
+  if (!from && process.env.NODE_ENV === "production") {
+    return { sent: false, error: "email not configured: EMAIL_FROM must be a sender on a domain verified in Resend" };
+  }
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
       body: JSON.stringify({
-        from,
+        from: from || TEST_FROM,
         to: [email],
         subject: `${code} is your cyrus.ai sign-in code`,
         text: `Your cyrus.ai verification code is ${code}. It expires in 10 minutes. ` +
@@ -204,7 +244,7 @@ export async function sendCodeEmail(email: string, code: string): Promise<SendRe
 </div>`,
       }),
     });
-    if (!r.ok) return { sent: false, error: `resend ${r.status}` };
+    if (!r.ok) return { sent: false, error: await resendReason(r) };
     return { sent: true };
   } catch (e) {
     return { sent: false, error: e instanceof Error ? e.message : "send failed" };

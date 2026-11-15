@@ -9,7 +9,7 @@
    `challenge` is the signed code envelope the verify step must echo back when
    there is no database. The code itself is never logged and lives only hashed.
    ═ */
-import { genCode, issueEnvelope, normalizeEmail, sendCodeEmail, storeCode, validEmail } from "@/lib/server/email";
+import { dropCode, genCode, issueEnvelope, normalizeEmail, sendCodeEmail, storeCode, validEmail } from "@/lib/server/email";
 import { verifyTurnstile } from "@/lib/server/turnstile";
 
 export const runtime = "nodejs";
@@ -36,5 +36,6 @@ export async function POST(req: Request) {
   const send = await sendCodeEmail(email, code);
   if (send.sent) return Response.json({ ok: true, sent: true, challenge, expires_in_seconds: 600 });
   if ("demo" in send && send.demo) return Response.json({ ok: true, sent: false, demo: true, code, challenge, expires_in_seconds: 600 });
+  await dropCode(email);
   return Response.json({ ok: false, reason: "send_failed", error: "error" in send ? send.error : "send failed" });
 }

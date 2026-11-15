@@ -9,11 +9,15 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /* in-process rate limit: 6 submissions per IP per 10 minutes */
+const WINDOW = 600_000;
 const hits = new Map<string, { n: number; t: number }>();
 function rateLimited(ip: string): boolean {
   const now = Date.now();
+  if (hits.size > 5_000) {
+    for (const [key, e] of hits) if (now - e.t > WINDOW) hits.delete(key);
+  }
   const e = hits.get(ip);
-  if (!e || now - e.t > 600_000) { hits.set(ip, { n: 1, t: now }); return false; }
+  if (!e || now - e.t > WINDOW) { hits.set(ip, { n: 1, t: now }); return false; }
   if (e.n >= 6) return true;
   e.n++;
   return false;

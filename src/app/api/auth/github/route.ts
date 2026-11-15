@@ -1,20 +1,17 @@
 /* ══ POST /api/auth/github — PKCE code exchange, server-side ════
    The client sends { code, verifier } from the popup flow; the token
    exchange happens here with GITHUB_CLIENT_SECRET (never in the browser).
-   Needs DATABASE_URL + SESSION_SECRET + GITHUB_CLIENT_SECRET to do
-   anything - otherwise the frontend keeps the static relay path.    ═ */
-import { OFFLINE, backendReady, publicUser, setSession, upsertUser } from "@/lib/server/auth";
+   Needs SESSION_SECRET + GITHUB_CLIENT_SECRET to do anything - a database
+   is optional, it only stores the user row.                          ═ */
+import { OFFLINE, githubReady, issueSession } from "@/lib/server/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-  if (!backendReady()) return OFFLINE();
-  const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
-  const secret = process.env.GITHUB_CLIENT_SECRET;
-  if (!clientId || !secret) {
-    return Response.json({ error: "GitHub OAuth is not configured on this server" }, { status: 500 });
-  }
+  if (!githubReady()) return OFFLINE();
+  const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID ?? "";
+  const secret = process.env.GITHUB_CLIENT_SECRET ?? "";
   let body: { code?: string; verifier?: string };
   try { body = await req.json(); } catch { body = {}; }
   if (!body.code || !body.verifier) {
@@ -39,11 +36,10 @@ export async function POST(req: Request) {
   }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   if (!gh?.login) return Response.json({ error: "Could not read your GitHub profile" }, { status: 401 });
 
-  const user = await upsertUser({
+  const user = await issueSession({
     provider: "github", providerId: String(gh.id ?? gh.login),
     login: gh.login, name: gh.name || gh.login,
     email: gh.email ?? null, picture: gh.avatar_url ?? null,
   });
-  await setSession({ uid: user.id, name: user.name, provider: "github" });
-  return Response.json({ ok: true, user: publicUser(user) });
+  return Response.json({ ok: true, user });
 }

@@ -1,0 +1,1619 @@
+{
+ "program": "kde",
+ "label": "Season of KDE",
+ "source": "MediaWiki source of community.kde.org/SoK/Ideas/<year> for 2017-2026, held at public/data/kde-archive.json (`ideas`)",
+ "evidence": "listing",
+ "url": "https://community.kde.org/SoK/Ideas",
+ "note": "One row per idea the Season of KDE ideas page PROPOSES, with the mentor KDE names on that idea. These are not accepted or completed projects - the unit is \"proposed ideas\" for exactly that reason. 23 wiki furniture line(s) (\"General information\", \"Information for mentees\", \"Sample project\", \"Your Own Idea\") and 20 section heading(s) repeated as rows were dropped, and \"Project:\"/\"===\" wiki syntax was stripped from the rest; an idea the page marks slot-filled or slot-taken keeps its title and says so in `b`, because that is KDE's own statement about the row. The 25 accepted Season of KDE 2026 proposals this site read from community.kde.org/SoK/2026/StatusReport (data/raw/kde.json) are deliberately NOT merged into this shard: an accepted proposal is a different kind of record from a proposed idea and the shard has one unit. Where a year's page lists no ideas at all (2026's page carries only the information sections), this shard has no rows for that year.",
+ "unit": "proposed ideas",
+ "generated": "2026-10-25",
+ "years": [
+  2017,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026
+ ],
+ "rows": 112,
+ "capped": false,
+ "projects": [
+  {
+   "title": "Adding Vamana Guntalu to Mankala Engine and a WebXDC bookmarking system in Falkon",
+   "org": "Falkon",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/4",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @shibe: ## 1. Project Abstract This proposal outlines a dual-track initiative to contribute specialized logic to the KDE ecosystem. 1. **Falkon XMPP Integration (PubSub & WebXDC):** My primary focus within the larger XMPP integration project for **Falkon** is to implement the **Publish-Subscribe (PubSub)*",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "[SoK Proposal] Improve Mankala GUI and add translations for Game variants",
+   "org": "Mankala Engine",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/5",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @usersam: ## Project abstract This project plans to improve the GUI experience of Mankala Engine improving components like `rules`, `profile`, `dropdown menu`, etc. also improving the overall experience in design and reponse time and add translations for the two local variants in their respective regional la",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal: Migrate from dblatex to pandoc for KDE documentation.",
+   "org": "Documentation Website (docs.kde.org)",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/6",
+   "year": 2026,
+   "lang": "XSLT",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @ajaysinghh: # Proposal: Migrate from dblatex to pandoc for KDE documentation. ## Overview KDE’s documentation build pipeline currently relies on a legacy, copy-pasted fork of `dblatex-cvs-install` embedded inside the `docs-kde-org` repository. While functional, this setup obscures Git history, complicates upg",
+   "season": null,
+   "techs": [
+    "accepted",
+    "not completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal to improve `kde-docs-org` maintenance",
+   "org": "Documentation Website (docs.kde.org)",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/23",
+   "year": 2026,
+   "lang": "XSLT",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @libremelon: ## Project abstract The `docs-kde-org` project currently relies on an old, hard forked version of [`dblatex`](https://dblatex.sourceforge.net/) (specifically `dblatex-cvs-install`), which is bundled directly within the repository. This makes maintenance difficult. The aim of this project is to dec",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "proposal for mentorship.kde.org",
+   "org": "KDE Mentor Programs (mentorship.kde.org)",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/24",
+   "year": 2026,
+   "lang": "SCSS",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @askelad: ## Project Abstract I propose working on the project Improvements in **mentorship.kde.org**. The purpose of the project is to work on the UX of the already existing page of KDE mentorship. This project will optimize the mentorship page for the people who are visiting the KDE mentorship page for th",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal: Transforming mentorship.kde.org into a complete onboarding system",
+   "org": "KDE Mentor Programs (mentorship.kde.org)",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/27",
+   "year": 2026,
+   "lang": "SCSS",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @decimatrix: ## **Project abstract** I want to transform mentorship.kde.org into a fully functional onboarding system for KDE contributors. @drowsywings built a solid foundation during GSoC 2025: reusable components, homepage redesign, pathway navigator and few placeholder pages. However, the new homepage isn't",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "SoK Proposal - Marknote - Siddharth Chopra",
+   "org": "Marknote",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/29",
+   "year": 2026,
+   "lang": "C",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @siddharthc: ## Project abstract The proposed project is to improve the functionality of Marknote by adding 2 much requested features - a raw markdown editor for .md files and a plain text editor for .txt files. Also, after completion of above, I plan to work on making some improvements to the current markdown",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 6 - Tanish Kumar",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/30",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @tanishfr: ## Project abstract My goal is to refactor the KXMLGUI setup in Lokalize to make the menubar consistent across the whole application. Currently menus (like \"Edit\", \"Go\", and \"Sync\") appear, disappear, or shift position depending on if the user is in the \"Project Overview\" or \"editor\" tab. This beha",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 3 – Improving Logic Consistency and macOS Platform Stability",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/32",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @varun: 1\\. Project Abstract: Lokalize is the cornerstone of KDE’s translation infrastructure. This project focuses on Task 3 (Smart QA / Logic Consistency). My goal is to improve the editor's \"intelligence\" by refining how it handles punctuation and spacing in Translation Memory (TM) matches. Additionall",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Testing - Vishesh Srivastava",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/33",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @thatdevishesh: ## Project abstract Introducing Appium Testing in Lokalize ## Proposal Some of KDE projects already have Appium as their means of testing. I came across appium while exploring testing for a bug regarding keyboard shortcuts. Things like these could be easily tested using appium since it is possibl",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Scripty: Task 1 - Aviral Singh",
+   "org": "Scripty",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/36",
+   "year": 2026,
+   "lang": "Shell",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @faucetfailure: ## Project Abstract I propose to complete the standardization of translation reference paths across all kool KDE projects in Scripty. As of now, PO files contain source reference comments with inconsistent path formats where some are relative to subdirectories, others absolute, and some fragmented.",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 4 - Arun Rawat",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/38",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @arunrawat: # Project Abstract I would like to work on [**Task 4: Redesign translation memory tab**](https://community.kde.org/MentorshipPrograms/2026#Task_4:_Redesign_translation_memory_tab) in Lokalize. The current translation memory tab only allows searching one translation memory at a time. This project a",
+   "season": null,
+   "techs": [
+    "accepted",
+    "not completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Scripty: Task 1 - Keshav Nanda",
+   "org": "Scripty",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/39",
+   "year": 2026,
+   "lang": "Shell",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @keshavnanda: ## Project abstract (I plan on working on the Scripty KDE project: **Standardise translation reference paths across all KDE projects**. The main objective is to ensure that PO files contain file paths relative to the project root (e.g. `src/file.cpp`) rather than inconsistent paths like `../src/fil",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 2 - Jaimukund Bhan",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/40",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @jaimukund: ## Project abstract ### Lokalize: Fix the glossary Glossary is a feature provided by Lokalize, allowing users quick access to frequent terminology through the use of shortcuts. Currently, users face the issue of manually creating a new glossary file for projects and are tasked with navigating throug",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 3 - Navya Sai Sadu",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/42",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @navyasai: ## Project abstract I want to contribute to **Lokalize**. I installed Lokalize and reproduced the bug for \"_Approve and go next_\"(currently one just goes to the next unit without the filter applied), out of curiosity I tried \"_Approve and go prev_\" and it turned out to be buggy too. I want to fix b",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 2 - Aditya Sarna",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/43",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @adityasarna: ## Project abstract Lokalize is a computer-aided translation system used for viewing, editing, and managing translations. It helps translators work more efficiently by providing tools to edit entries, track translation status, and manage localization projects. ## Proposal **1.1 Problem Statement",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lokalize: Task 3 - Kumud Sagar",
+   "org": "Lokalize",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/44",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @kumud: ## Project abstract I would like to propose a fix on task3 of lokalize which is mentored by Finley watson .The approve and next shortcut does not jumps to the correct list entry in the filtered list but rather moves to the entry of the unfiltered list ## Proposal The bug exists because the Transl",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "[SoK Proposal] Making Cantor’s Existing Tests Visible, Reproducible, and Actionable in CI",
+   "org": "Cantor",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/47",
+   "year": 2026,
+   "lang": "Jupyter Notebook",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @avyaktjain: ## Project abstract **Project:** Cantor Cantor already contains a substantial set of backend and worksheet tests, but these tests are currently passive: they are conditionally built, inconsistently registered, and not executed or surfaced in continuous integration. As a result, regressions can pas",
+   "season": null,
+   "techs": [
+    "accepted",
+    "not completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "KEcoLab: Porting test scripts from x11 to wayland and Add test scripts to measure energy consumption of KDE Plasma Desktop Environment",
+   "org": "KEcoLab",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/50",
+   "year": 2026,
+   "lang": "R",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @neogg: ## Project abstract (Which KDE project do you want to do a proposal for, describe **briefly** what is your idea) The test computer of Lab was recently migrated to Fedora 43 that comes with Wayland as default display server. Currently all the Standard User Scenario Scripts use xdotool to perform ac",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal for Plasma Setup - SoK2026",
+   "org": "Plasma Setup",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/51",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @onatribar: ## Project abstract Plasma Setup currently targets desktop systems, but it would benefit from supporting Plasma Mobile and devices with varying screen sizes. This proposal aims to extend Plasma Setup into a cross-device setup wizard by making the UI adaptive and separating shared dependencies so th",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "SoK Proposal: Call Log Synchronization and Backup in KDE Connect",
+   "org": "KDE Connect",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/55",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @sys-nitin: ## Project abstract This proposal focuses on improving telephony integration in KDE Connect by implementing call log synchronization and backup from Android devices to the desktop. Instead of creating a separate desktop client for call history, the project integrates call logs directly into the exi",
+   "season": null,
+   "techs": [
+    "accepted",
+    "not completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Enhancement of KDE Mancala: Engine Parallelization and Digital Asset Creation",
+   "org": "Mankala Engine",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/57",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @pavansg: ## Project abstract This project proposes an enhancement of the KDE Mancala, targeting both the core AI in MankalaEngine and the user interface in the MankalaNextGen client. The project will significantly upgrade the engine's intelligence and performance by implementing a parallelized game tree sea",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal for the KDE Project: XMPP Support in Falkon through WebXDC - SAIRAM BISOYI",
+   "org": "Falkon",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/62",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @yowhatsup: ## **1. Abstract** This proposal describes a Season of KDE project to add experimental **WebXDC support to the Falkon web browser using XMPP**. The goal is to build a prototype Falkon extension that allows users to run and share WebXDC applications sandboxed, offline-first web apps whose state is s",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Proposal for \"Automate Promo Data Collection\"",
+   "org": "KDE Promo Team",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/70",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @cjnguyen: ## Project abstract Targeting the project idea listed as [Automate Promo Data Collection](https://community.kde.org/MentorshipPrograms/2026#Automate_Promo_Data_Collection) under the MentorshipPrograms/2026 page. This project aims to analyze insight data and data sources the KDE Promo team currentl",
+   "season": null,
+   "techs": [
+    "accepted",
+    "completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "SoK 2026: Implement font subsetting when saving files in Okular",
+   "org": "Okular",
+   "orgLogin": null,
+   "url": "https://invent.kde.org/teams/mentor-programs/2026/-/issues/71",
+   "year": 2026,
+   "lang": "C++",
+   "stars": null,
+   "desc": "Accepted Season of KDE 2026 proposal by GitLab user @rv: ## Project abstract Currently, Okular supports PDF annotations and form-filling. When a user adds text to a document, Okular must ensure that the text remains readable on any system irrespective of whether the font is installed locally or not. Hence the font data is directly embedded into the docum",
+   "season": null,
+   "techs": [
+    "accepted",
+    "not completed"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "General information",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2026",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for mentees",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2026",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "General information",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for mentees",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Your Own Idea: Something that you're totally excited about",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Games: Improve Mankala Graphical User Interface",
+   "org": "Games",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Games: Add a Mancala Game to Mankala Engine",
+   "org": "Games",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Kdenlive - create animated icon previews for transitions",
+   "org": "Kdenlive",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "kdenlive, Jean-Baptiste Mardelle"
+   ]
+  },
+  {
+   "title": "Konverter: An app to convert videos and audios",
+   "org": "Konverter",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "Win2Linux-Chooser: An app to help migrate from Windows to Linux (SLOTS TAKEN)",
+   "org": "Win2Linux",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KEcoLab: 2 Projects for Written/Video Documentation of Measurement Process and Report (SLOTS TAKEN)",
+   "org": "KEcoLab",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KdeEcoTest: Improve emulation tool",
+   "org": "KdeEcoTest",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2025",
+   "year": 2025,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "General information",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for mentees",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Your Own Idea: Something that you're totally excited about",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sustainability 1: Testing and development of \"KEcoLab\" (SLOT TAKEN)",
+   "org": "Sustainability 1",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sustainability 2: Improve \"KdeEcoTest\" emulation tool (SLOT TAKEN)",
+   "org": "Sustainability 2",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sustainability 3: Selenium automation of energy measurement / accessibility tests for KDE applications (SLOT T",
+   "org": "Sustainability 3",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Cantor: Extend the embedded documentation for supported Computer Algebra Systems",
+   "org": "Cantor",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "asemke, Alexander Semke"
+   ]
+  },
+  {
+   "title": "LabPlot: Download/Import of data sets from kaggle.com",
+   "org": "LabPlot",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "asemke, Alexander Semke"
+   ]
+  },
+  {
+   "title": "App Translation",
+   "org": "App Translation ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Benson Muite"
+   ]
+  },
+  {
+   "title": "Kdenlive: Bézier Curve Keyframe Types (slot taken)",
+   "org": "Kdenlive",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2024",
+   "year": 2024,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for mentees",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Your Own Idea: Something that you're totally excited about",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Accessibility: Work on improving the accessibility of Kalendar or Tokodon",
+   "org": "Accessibility",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "Accessibility: Work on improving the accessibility of KDE's websites (slot filled, do not submit a proposal fo",
+   "org": "Accessibility",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Accessibility: Plasma Accessibility Widget (Slot filled)",
+   "org": "Accessibility",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "fusionfuture, Fushan Wen"
+   ]
+  },
+  {
+   "title": "Sustainability 1: Preparation of KDE apps for Blue Angel eco-certification",
+   "org": "Sustainability 1",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sustainability 2: Improve \"KDE Eco Test\" emulation tool",
+   "org": "Sustainability 2",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sustainability 3: Measurement of energy consumption with Selenium",
+   "org": "Sustainability 3",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Systematization 1: Automate Flatpak checks in GitLab Invent CI",
+   "org": "Systematization 1",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Aleix Pol"
+   ]
+  },
+  {
+   "title": "Spectacle: Improving the annotation tools (Slot filled)",
+   "org": "Spectacle",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "bharadwaj-raju, Bharadwaj Raju"
+   ]
+  },
+  {
+   "title": "Plasma: Better holiday support in the digital clock widget (Slot filled)",
+   "org": "Plasma",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2023",
+   "year": 2023,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "fusionfuture, Fushan Wen"
+   ]
+  },
+  {
+   "title": "Information for students",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Your Own Idea: Something that you're totally excited about",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Plasma Sound Design",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Guilherme Mar, KDE Identity"
+   ]
+  },
+  {
+   "title": "KDE Apps packaging as Flatpak for Flathub",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Permission management for Flatpak Apps in Discover",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Aleix Pol"
+   ]
+  },
+  {
+   "title": "Notification support in Tokodon",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "Improving GCompris",
+   "org": "Improving GCompris ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Improving UX for KDE Connect iOS Internal Error",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Lucas Wang, Apollo Zhu"
+   ]
+  },
+  {
+   "title": "Investigate Feasibility of KDE Connect for watchOS",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Lucas Wang, Apollo Zhu"
+   ]
+  },
+  {
+   "title": "Document KDE Connect Network Packages",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Lucas Wang, Apollo Zhu"
+   ]
+  },
+  {
+   "title": "Preparing Standard Usage Scenarios for Energy Consumption Measurements",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2022",
+   "year": 2022,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "joseph, De Veaugh-Geiss"
+   ]
+  },
+  {
+   "title": "Information for students",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Your Own Idea: Something that you're totally excited about",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Promo",
+   "org": "Promo ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Paul Brown, KDE Promo"
+   ]
+  },
+  {
+   "title": "Documentation: Improve documentation about various part of KDE",
+   "org": "Documentation",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "KStars, Coding: Make custom catalogs fast by putting them on a special data structure",
+   "org": "KStars, Coding",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Peruse: Expand Peruse or Creator's featureset",
+   "org": "Peruse",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Dan Leinir Turthra Jensen"
+   ]
+  },
+  {
+   "title": "Plasma",
+   "org": "Plasma ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "David Edmundson"
+   ]
+  },
+  {
+   "title": "Plasma Discover rpm-ostree backend",
+   "org": "Plasma Discover rpm",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Aleix Pol"
+   ]
+  },
+  {
+   "title": "ISO Image Writer, Live USB Maker",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Sung Jae Cho"
+   ]
+  },
+  {
+   "title": "Calamares",
+   "org": "Calamares ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KWeather",
+   "org": "KWeather ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Devin Lin, Han Young"
+   ]
+  },
+  {
+   "title": "Plasma Firewall",
+   "org": "Plasma Firewall ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Tomaz Canabrava, Lucas Biaggi"
+   ]
+  },
+  {
+   "title": "KClock: Produce default alarm/ringtones",
+   "org": "KClock",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Devin Lin, Han Young"
+   ]
+  },
+  {
+   "title": "Elisa",
+   "org": "Elisa ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Matthieu Gallien"
+   ]
+  },
+  {
+   "title": "NeoChat",
+   "org": "NeoChat ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "KQuickImageEditor",
+   "org": "KQuickImageEditor ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Carl Schwan"
+   ]
+  },
+  {
+   "title": "eurOS: Standard European Operating System",
+   "org": "eurOS",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2021",
+   "year": 2021,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for students",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Atelier",
+   "org": "Atelier ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Calligra",
+   "org": "Calligra ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "GCompris",
+   "org": "GCompris ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Plasma",
+   "org": "Plasma ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Kdenlive",
+   "org": "Kdenlive ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KDE Connect",
+   "org": "KDE Connect ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KDE Web",
+   "org": "KDE Web ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Krita",
+   "org": "Krita ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "KDE Developer Portal",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "marK",
+   "org": "marK ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "ROCS",
+   "org": "ROCS ===",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Plasma Phonebook Contact Groups",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Plasma Mobile Clock application",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Plasma Mobile: Nextcloud contacts integration",
+   "org": "Plasma Mobile",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2020",
+   "year": 2020,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Information for students",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2017",
+   "year": 2017,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Project: Sample project",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2017",
+   "year": 2017,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Project: KApiDox and KDE Apis generations",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2017",
+   "year": 2017,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Olivier Churlaud"
+   ]
+  },
+  {
+   "title": "Project: Kdenlive - Improving Windows/Mac ports",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2017",
+   "year": 2017,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Vincent Pinon"
+   ]
+  },
+  {
+   "title": "Project: Kdenlive - Import new effect libraries in MLT",
+   "org": "KDE",
+   "orgLogin": null,
+   "url": "https://community.kde.org/SoK/Ideas/2017",
+   "year": 2017,
+   "lang": null,
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [],
+   "mentors": [
+    "Vincent Pinon"
+   ]
+  }
+ ]
+}

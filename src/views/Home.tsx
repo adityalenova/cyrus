@@ -5,7 +5,7 @@
    contributors, the projects and orgs behind them, and the questions
    a first-time visitor actually asks. No hackathons, no artifacts.
    ════════════════════════════════════════════════════════════ */
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router";
@@ -13,9 +13,10 @@ import HomeHero from "../components/HomeHero";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { REPOS } from "../data/repos";
 import { CRAWL } from "../data/crawlStats";
+import { STATS } from "../lib/siteStats";
 import type { Program } from "../lib/types";
-import { avatarOf, fmt, byStars, CAT_META } from "../lib/util";
-import { Word, SectionTag, btn, OrgImg, Avatar } from "../components/ui";
+import { avatarOf, fmtCompact, byStars, CAT_META, reduceMotion } from "../lib/util";
+import { Word, SectionTag, btn, OrgImg, Portrait } from "../components/ui";
 import { useStore } from "../lib/store";
 
 /* ── shared bits ──────────────────────────────────────────── */
@@ -32,6 +33,8 @@ const ICONS = {
   board: <Icon d="M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z" />,
   search: <Icon d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm5 12 4 4" />,
   spark: <Icon d="M12 3.5 13.9 9l5.6 2-5.6 2L12 20.5 10.1 13 4.5 11l5.6-2Z" />,
+  tray: <Icon d="M12 3v11m0 0 4-4m-4 4-4-4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />,
+  merged: <Icon d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-3.2 9.3 2.3 2.3 4.4-4.6" />,
 };
 
 /* Every section below the hero fades and rises into place once, the first
@@ -121,10 +124,11 @@ function ProgCard({ p }: { p: Program }) {
         <p className="font-mono text-[10px] tracking-[.06em] uppercase text-dim mt-1.5">{p.window}</p>
       </div>
       <p className="card-desc flex-1">{p.tag}</p>
+      {/* the pay line only. The org/project counts used to sit to the right of
+          it, which made every card in the shelf read like a stat block. */}
       <div className="flex items-end justify-between gap-3 pt-3 border-t border-dashed border-line">
         <span className="font-display font-bold text-[15px]">{p.pay}
           <small className="block font-mono text-[9px] font-medium text-dim tracking-[.08em] uppercase mt-0.5">{p.payNote}</small></span>
-        <span className="text-right font-mono text-[10px] text-cocoa leading-[1.5]">{p.orgs}<br />{p.slots}</span>
       </div>
     </a>
   );
@@ -204,7 +208,192 @@ function Timeline() {
   );
 }
 
+/* ── the contributor roadmap ──────────────────────────────────
+   Six steps in the order a contributor actually walks them, and every one of
+   them is a screen that exists on the board. The strip across the top is the
+   sequence; the panel underneath is whichever step you picked. On the right
+   is the ink loop - the one decorative thing on this page, silent and
+   looping, held back until the section scrolls into view. */
+type StepId = "lane" | "setup" | "issue" | "pr" | "merge" | "funded";
+const STEPS: {
+  id: StepId; label: string; sub: string; icon: keyof typeof ICONS;
+  eyebrow: string; title: string; body: string; checks: string[];
+  cta: string; to: string;
+}[] = [
+  {
+    id: "lane", label: "Pick a lane", sub: "Organizations", icon: "board", eyebrow: "Step 1 · Choose",
+    title: "Start with the project, not the issue",
+    body: "An issue is only worth taking if the repository behind it is worth a week of your time. Sort the organizations by the things you can actually check.",
+    checks: ["Live counts from each organization's public GitHub profile", "Stack, license and how recently the work moved", "No sponsored placement, no ranking you can buy"],
+    cta: "Open the directory", to: "/organizations",
+  },
+  {
+    id: "setup", label: "Set it up", sub: "Git starter", icon: "repo", eyebrow: "Step 2 · Build",
+    title: "The clone-to-first-commit part, written out",
+    body: "Every project has its own habits. The starter reads the repository's manifest and gives you the commands for that one, in order, so setup stops being the reason you never started.",
+    checks: ["Branch naming that matches the issue you claimed", "Install and dev commands taken from the project itself", "The compare link ready when your first commit lands"],
+    cta: "Open the git starter", to: "/dashboard/gitstart",
+  },
+  {
+    id: "issue", label: "Find the issue", sub: "Issue finder", icon: "issue", eyebrow: "Step 3 · Claim",
+    title: "Good first issues you can still take",
+    body: "Half of the advice on the internet is a list of issues nobody assigned anyone to. This one says which are claimed, locked, stale, or already have a pull request pointing at them.",
+    checks: ["Assignment and lock state, shown on the card", "How long since the thread moved", "Filtered by language, size and difficulty estimate"],
+    cta: "Find an issue", to: "/issues",
+  },
+  {
+    id: "pr", label: "Open the pull", sub: "Draft studio", icon: "tray", eyebrow: "Step 4 · Ship",
+    title: "Write the description once, properly",
+    body: "The pull request that gets read is the one that gets merged. The studio drafts the sections maintainers ask for from the diff and the repository's own contributing guide.",
+    checks: ["Summary, changes, test steps and checklist", "Templates read from the target repository", "Nothing is posted without you pressing the button"],
+    cta: "Open the studio", to: "/dashboard/drafts",
+  },
+  {
+    id: "merge", label: "Get it merged", sub: "Leaderboard", icon: "merged", eyebrow: "Step 5 · Land",
+    title: "Track the review without living in your inbox",
+    body: "Saved issues and repositories tell you what moved while you were away, and the leaderboard keeps the merged work in one dated list instead of twelve browser tabs.",
+    checks: ["Merged, open and reviewed counted separately", "A window you set, not a window we picked", "Every row links back to the thread on GitHub"],
+    cta: "See the leaderboard", to: "/leaderboard",
+  },
+  {
+    id: "funded", label: "Get funded", sub: "Programs", icon: "sponsor", eyebrow: "Step 6 · Apply",
+    title: "Turn the merged work into a paid season",
+    body: "The programs that pay stipends run on published calendars. Their windows, their organization lists and their project records are on the same page as the issues you already worked on.",
+    checks: [`${PROGRAMS.length} mentored programs with their real windows`, "Each program's own archived project record", "Application dates you can put in your calendar"],
+    cta: "Browse the programs", to: "/programs",
+  },
+];
+
+function Cross({ pos }: { pos: string }) {
+  return (
+    <span aria-hidden className={`absolute z-[2] h-[11px] w-[11px] ${pos}`}>
+      <i className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-rule" />
+      <i className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 bg-rule" />
+    </span>
+  );
+}
+
+/* The loop only runs while the plate is on screen and the visitor has not
+   asked for less motion. preload="none" plus this means the 245 KB never
+   downloads for anyone who scrolls past the section too fast to see it. */
+function useInkLoop<T extends HTMLVideoElement>() {
+  const ref = useRef<T>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { v.pause(); return; }
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) void v.play().catch(() => {}); else v.pause(); },
+      { threshold: 0.25 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
+function Roadmap() {
+  const [step, setStep] = useState<StepId>("lane");
+  const s = STEPS.find((x) => x.id === step)!;
+  const vid = useInkLoop();
+  return (
+    <Section id="roadmap">
+      <Head tag="The contributor roadmap" title={<>Six steps from an empty <Word>weekend</Word> to merged.</>}
+        sub="The order a first contribution actually happens in, and the screen on the board that does each part." />
+      <div className="relative rounded-[26px] border border-dashed border-line bg-card/40 overflow-hidden">
+        <span aria-hidden className="absolute inset-0 pointer-events-none opacity-60 bg-[linear-gradient(to_right,var(--color-liness)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-liness)_1px,transparent_1px)] [background-size:46px_46px]" />
+        <Cross pos="left-[-6px] top-[-6px]" /><Cross pos="right-[-6px] top-[-6px]" />
+        <Cross pos="left-[-6px] bottom-[-6px]" /><Cross pos="right-[-6px] bottom-[-6px]" />
+
+        {/* the step strip */}
+        <div className="relative flex overflow-x-auto no-scrollbar border-b border-dashed border-line">
+          {STEPS.map((x) => {
+            const on = x.id === step;
+            return (
+              <button key={x.id} type="button" onClick={() => setStep(x.id)} aria-pressed={on}
+                className="group relative flex min-w-[148px] flex-1 flex-col items-center gap-1.5 px-3 py-6 cursor-pointer transition-opacity last:border-r-0 border-r border-dashed border-line opacity-60 hover:opacity-100 data-[on=true]:opacity-100"
+                data-on={on}>
+                <span className={`grid h-[38px] w-[38px] place-items-center rounded-[11px] border transition-colors ${on ? "border-accent/60 bg-accent/12 text-accent" : "border-line text-cocoa group-hover:text-ink"}`}>
+                  {ICONS[x.icon]}
+                </span>
+                <b className={`font-display text-[14.5px] leading-none ${on ? "text-ink" : "text-cocoa"}`}>{x.label}</b>
+                <span className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim leading-none">{x.sub}</span>
+                {on && <span aria-hidden className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-accent" />}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* the step itself */}
+        <div className="relative grid grid-cols-[1.05fr_1fr] gap-10 max-[980px]:grid-cols-1 max-[980px]:gap-8">
+          <div className="border-r border-dashed border-line px-8 py-12 max-[980px]:border-r-0 max-[980px]:border-b max-[980px]:px-6 max-[980px]:py-9">
+            <span className="inline-flex items-center gap-2 rounded-[9px] border border-line bg-card px-3 py-1.5 font-mono text-[10.5px] uppercase tracking-[.12em] text-cocoa">
+              <span className="text-accent">{ICONS[s.icon]}</span>{s.eyebrow}
+            </span>
+            <h3 className="font-display font-extrabold tracking-[-.022em] leading-[1.08] text-[clamp(26px,3.1vw,38px)] mt-6 max-w-[440px]">{s.title}</h3>
+            <p className="text-cocoa text-[15px] leading-[1.7] mt-5 max-w-[430px]">{s.body}</p>
+            <ul className="grid gap-3 list-none mt-8">
+              {s.checks.map((c) => (
+                <li key={c} className="flex gap-3 text-[13.5px] leading-[1.6] text-cocoa">
+                  <span className="grid h-[19px] w-[19px] shrink-0 place-items-center rounded-[6px] border border-accent/40 bg-accent/10 mt-[2px]">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-accent" aria-hidden><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                  </span>
+                  {c}
+                </li>
+              ))}
+            </ul>
+            <Link to={s.to} className={`${btn("dark", "md")} mt-9`}>{s.cta}</Link>
+          </div>
+
+          {/* the plate: the supplied ink loop, silent and looping */}
+          <div className="px-8 py-12 max-[980px]:px-6 max-[980px]:py-9">
+            <figure className="relative m-0 mx-auto max-w-[560px] overflow-hidden rounded-[16px] border border-line bg-[#050607] shadow-lift">
+              <video ref={vid} className="block aspect-square w-full object-cover"
+                src="/roadmap-demo.mp4" poster="/roadmap-demo-poster.jpg"
+                width={600} height={600} muted loop playsInline preload="none" aria-hidden />
+              <figcaption className="absolute inset-x-0 bottom-0 flex items-center gap-2 border-t border-white/10 bg-black/50 px-4 py-2.5">
+                <span className="h-[6px] w-[6px] rounded-full bg-accent" aria-hidden />
+                <span className="font-mono text-[9.5px] uppercase tracking-[.14em] text-white/70">Silent loop · 2.5 seconds</span>
+              </figcaption>
+            </figure>
+            <p className="font-mono text-[9.5px] uppercase leading-[1.8] tracking-[.1em] text-dim mt-4">
+              Pick a step above - the panel on the left is the part that changes.
+            </p>
+          </div>
+        </div>
+
+        {/* everything else the board does */}
+        <div className="relative border-t border-dashed border-line">
+          <p className="px-8 pt-5 font-mono text-[10px] uppercase tracking-[.16em] text-dim">More on the board</p>
+          <div className="grid grid-cols-4 max-[900px]:grid-cols-2">
+            {MORE.map((m) => (
+              <Link key={m.to} to={m.to}
+                className="group flex items-center gap-3 border-r border-dashed border-line px-8 py-5 transition-colors hover:bg-cream/60 last:border-r-0 [&:nth-child(4n)]:border-r-0 max-[900px]:border-b max-[900px]:[&:nth-child(2n)]:border-r-0 max-[900px]:[&:nth-child(n+3)]:border-b-0">
+                <span className="grid h-[30px] w-[30px] shrink-0 place-items-center rounded-[9px] border border-line text-cocoa transition-colors group-hover:border-accent/50 group-hover:text-accent">
+                  {ICONS[m.icon]}
+                </span>
+                <span className="min-w-0">
+                  <b className="block font-display text-[13.5px] leading-none truncate">{m.label}</b>
+                  <span className="block font-mono text-[9.5px] uppercase tracking-[.08em] text-dim mt-1 truncate">{m.sub}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 /* ── projects + organizations ─────────────────────────────── */
+const MORE: { label: string; sub: string; icon: keyof typeof ICONS; to: string }[] = [
+  { label: "Season calendar", sub: "Every deadline", icon: "calendar", to: "/dashboard/calendar" },
+  { label: "Co-pilot", sub: "Matched to you", icon: "spark", to: "/dashboard/matcher" },
+  { label: "Repo analyser", sub: "Is it alive", icon: "search", to: "/dashboard/analyser" },
+  { label: "Sponsors", sub: "Who gets paid", icon: "sponsor", to: "/sponsors" },
+];
+
+
 function OrgMarquee() {
   const card = (o: (typeof ORGS)[number]) => (
     <Link key={o.login} to={`/organizations/${o.login}`}
@@ -213,23 +402,44 @@ function OrgMarquee() {
       <span className="min-w-0">
         <b className="block card-title text-[14px] truncate">{o.name}</b>
         <span className="block text-[11.5px] text-cocoa truncate">{o.tagline}</span>
-        <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmt(o.stars)} · {o.repos} repos</span>
+        <span className="font-mono text-[10.5px] text-honey font-bold">★ {fmtCompact(o.stars)} · {o.repos} repos</span>
       </span>
     </Link>
   );
-  const half = Math.ceil(ORGS.length / 2);
-  const rowA = ORGS.slice(0, half).map(card);
-  const rowB = ORGS.slice(half).map(card);
+  /* The track is duplicated so the loop has no seam, and the travel per cycle
+     is set to exactly one row's width with --marq-shift: cards x (250px card +
+     14px gap). Timing the animation from that same width keeps the crawl at one
+     calm speed no matter how many organizations sit on it. It used to inherit
+     the 46s token while carrying 182 cards per row, roughly 1,000px a second,
+     which read as a blur rather than a shelf you can browse.
+
+     The row stays inside the section column and fades at both ends with
+     .marq-mask, the same as the organizations explorer: the shelf is a band of
+     cards with a beginning and an end, not something that runs edge to edge
+     past the rest of the page. */
+  const CARD = 264;
+  const SPEED = 52; /* px per second */
+  const top = [...ORGS].sort(byStars);
+  const track = (row: ReactNode[], reverse = false) => (
+    <div className="marq-mask overflow-hidden">
+      <div className={`marq-track animate-marq ${reverse ? "[animation-direction:reverse]" : ""}`}
+        style={{
+          animationDuration: `${Math.round((row.length * CARD) / SPEED)}s`,
+          ["--marq-shift" as string]: `-${row.length * CARD}px`,
+        }}>
+        {row}
+        {row}
+      </div>
+    </div>
+  );
   return (
     <Section id="orgs">
       <Head tag="Where the work is" title={<>Popular <Word>organizations</Word></>}
         sub="Hover to pause, click for the full profile with repositories, issues and contributor stats."
         side={<Link className={btn("dark", "md")} to="/organizations">Browse all</Link>} />
-      <div className="marq-mask overflow-hidden">
-        <div className="marq-track animate-marq">{rowA}{rowA}</div>
-      </div>
-      <div className="marq-mask overflow-hidden mt-3.5">
-        <div className="marq-track animate-marq [animation-direction:reverse]">{rowB}{rowB}</div>
+      <div className="flex flex-col gap-3.5">
+        {track(top.slice(0, 16).map(card))}
+        {track(top.slice(16, 32).map(card), true)}
       </div>
     </Section>
   );
@@ -240,7 +450,7 @@ function Skills () {
   return (
     <Section id="skills">
       <Head tag="Browse good open source projects" title={<>Most-starred in the <Word>catalog</Word>.</>}
-        sub={`${fmt(CRAWL.catalogRepos)} repositories indexed by language, topic and stars, refreshed from the GitHub API.`}
+        sub={`${fmtCompact(STATS.catalog)} repositories indexed by language, topic and stars, refreshed from the GitHub API.`}
         side={<Link className={btn("outline", "md")} to="/skills">All skills</Link>} />
       <div className="grid grid-cols-4 gap-[14px] max-[1100px]:grid-cols-2 max-[700px]:grid-cols-1">
         {cards.map((r) => {
@@ -250,13 +460,13 @@ function Skills () {
               className="bg-card border border-line rounded-[16px] p-[22px] flex flex-col gap-3 shadow-soft hover:-translate-y-[4px] hover:shadow-lift hover:border-accent transition-all">
               <div className="flex items-center gap-3">
                 <OrgImg src={avatarOf(owner, 96)} name={owner} className="w-10 h-10 rounded-[12px] object-cover bg-sand" />
-                <span className="min-w-0"><h4 className="panel-h text-[15.5px] leading-[1.25] truncate">{name}</h4>
-                  <span className="font-mono text-[10px] text-dim tracking-[.05em]">{owner}</span></span>
+                <div className="min-w-0"><h3 className="panel-h text-[15.5px] leading-[1.25] truncate">{name}</h3>
+                  <span className="font-mono text-[10px] text-dim tracking-[.05em]">{owner}</span></div>
               </div>
               <p className="text-cocoa text-[13px] leading-[1.6] flex-1 line-clamp-3">{r.desc}</p>
               <div className="flex items-center justify-between gap-2.5">
                 <span className="font-mono text-[10.5px] font-bold rounded-full px-2.5 py-1 border border-accent/30 bg-peach text-accent">{CAT_META[r.cat]?.label ?? r.cat}</span>
-                <span className="font-mono text-[11.5px] font-bold text-honey">★ {fmt(r.stars)}</span>
+                <span className="font-mono text-[11.5px] font-bold text-honey">★ {fmtCompact(r.stars)}</span>
               </div>
             </Link>
           );
@@ -266,13 +476,14 @@ function Skills () {
   );
 }
 
-/* ── the numbers, all from the crawl ──────────────────────── */
+/* ── the numbers the chrome quotes, all from src/lib/siteStats ───── */
+const ARCHIVE_AS_OF = "2026-10-25";
 function Band() {
   const cells: [string, string][] = [
-    [fmt(CRAWL.issues), "open issues indexed"],
-    [fmt(CRAWL.catalogRepos), "repositories catalogued"],
-    [fmt(ORGS.length), "organizations profiled"],
-    [String(PROGRAMS.length), "programs on the calendar"],
+    [fmtCompact(STATS.issues), "open issues indexed"],
+    [fmtCompact(STATS.archive), "program projects archived"],
+    [fmtCompact(STATS.orgs), "organizations profiled"],
+    [String(STATS.programs), "programs on the calendar"],
   ];
   return (
     <Section id="band" className="!pt-[80px]">
@@ -285,7 +496,8 @@ function Band() {
         ))}
       </div>
       <p className="text-center font-mono text-[10.5px] text-dim mt-4">
-        Issue and repository counts are a snapshot of the GitHub search and REST APIs taken {CRAWL.crawledAt}.
+        Issues and repositories are a snapshot of the GitHub API taken {CRAWL.crawledAt}; the project
+        archive is the {STATS.archivePrograms} program records read on {ARCHIVE_AS_OF}.
       </p>
     </Section>
   );
@@ -294,14 +506,47 @@ function Band() {
 /* ── voices ───────────────────────────────────────────────── */
 /* PLACEHOLDER CONTENT. These are illustrative quotes written for the layout,
    not statements from real users. Replace each entry with a quote someone has
-   actually given us before this section ships to a public audience. */
-const QUOTES: [string, string, string, string][] = [
-  ["Priya N.", "ML engineer, Bengaluru", "The program calendar told me LFX Term 3 was open the week I had capacity. I applied with a documentation fix as my proof of work.", "Placeholder"],
-  ["Marcus D.", "CS undergraduate", "I used to skim a dozen org pages. One view of open issues, review latency and stack is enough to decide.", "Placeholder"],
-  ["Sana K.", "Frontend developer", "Filtering by language and label got me to a real first issue in about ten minutes instead of a weekend.", "Placeholder"],
-  ["Arjun R.", "Backend developer, Pune", "Watching what changed on issues I had saved is the part I did not know I needed.", "Placeholder"],
-  ["Wei L.", "Data scientist", "The repository pages tell me whether a project is alive before I open a pull request into a void.", "Placeholder"],
-  ["Fatima Z.", "Second-year student", "Outreachy felt impossible until the prep window was on the same page as the communities doing it.", "Placeholder"],
+   actually given us before this section ships to a public audience.
+   Each one is *about* a single organization, and that organization's own mark
+   sits on the card so a reader knows which program the words concern. The mark
+   is attribution of subject, never endorsement - the intro and the tag on
+   every card both say so.
+   The faces are AI-generated headshots (public/text-to-image endpoint, then
+   cropped square), so nobody's likeness is being put in our words. They are
+   files in public/portraits, not hot-linked, and every card still carries the
+   Illustrative tag. */
+type Voice = { name: string; role: string; quote: string; org: string; login: string; face: string };
+const QUOTES: Voice[] = [
+  {
+    name: "Priya N.", role: "ML engineer, Bengaluru", org: "LFX", login: "linuxfoundation",
+    face: "/portraits/priya.png",
+    quote: "The program calendar told me LFX Term 3 was open the week I had capacity. I applied with a documentation fix as my proof of work.",
+  },
+  {
+    name: "Marcus D.", role: "CS undergraduate", org: "GitHub", login: "github",
+    face: "/portraits/marcus.png",
+    quote: "I used to skim a dozen GitHub organization pages. One view of open issues, review latency and stack is enough to decide.",
+  },
+  {
+    name: "Sana K.", role: "Frontend developer", org: "Google Summer of Code", login: "google",
+    face: "/portraits/sana.png",
+    quote: "GSoC felt like a black hole until every participating organization's open issues were on one page. I shortlisted nine in an evening.",
+  },
+  {
+    name: "Arjun R.", role: "Backend developer, Pune", org: "Vercel Open Source", login: "vercel",
+    face: "/portraits/arjun.png",
+    quote: "Watching what changed on the issues I had saved is the part I did not know I needed. Two of them were Vercel's.",
+  },
+  {
+    name: "Wei L.", role: "Data scientist", org: "Kubernetes", login: "kubernetes",
+    face: "/portraits/wei.png",
+    quote: "Before I opened a pull request into a void, I checked how long that Kubernetes working group had gone without reviewing one.",
+  },
+  {
+    name: "Fatima Z.", role: "Second-year student", org: "Outreachy", login: "outreachy",
+    face: "/portraits/fatima.png",
+    quote: "Outreachy felt impossible until the prep window was on the same page as the communities actually doing it.",
+  },
 ];
 const QuoteMark = () => (
   <svg width="22" height="18" viewBox="0 0 24 20" fill="currentColor" aria-hidden className="text-accent/60">
@@ -309,36 +554,80 @@ const QuoteMark = () => (
   </svg>
 );
 
+/* Arrows, not an auto-scroll: a row that moves on its own cannot be read, and
+   the middle of a quote is the worst place to lose it. The strip snaps to the
+   cards and the buttons step one card at a time. */
+const Arrow = ({ dir }: { dir: -1 | 1 }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    {dir === -1 ? <path d="M15 5l-7 7 7 7" /> : <path d="M9 5l7 7-7 7" />}
+  </svg>
+);
+
+/* The AI-generated headshots are local files, so a card never depends on an
+   image host at render time. If a file goes missing the drawn avatar is still
+   there underneath - the section degrades to obviously-made-up rather than a
+   broken icon. */
+function Face({ src, name }: { src: string; name: string }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) return <Portrait name={name} size={46} className="ring-1 ring-line" />;
+  return <img src={src} alt="" width={46} height={46} loading="lazy" onError={() => setBroken(true)}
+    className="h-[46px] w-[46px] shrink-0 rounded-full object-cover ring-1 ring-line" />;
+}
+
 function Voices() {
-  const card = ([name, role, quote]: typeof QUOTES[number], k: number) => (
-    <figure key={name + k}
-      className="shrink-0 w-[360px] max-[700px]:w-[290px] bg-card border border-line rounded-[16px] p-[22px] flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-lift">
-      <QuoteMark />
-      <blockquote className="text-ink text-[14px] leading-[1.72] mt-3.5 flex-1">{quote}</blockquote>
-      <figcaption className="mt-5 pt-4 border-t border-dashed border-line flex items-center gap-3">
-        <Avatar name={name} size={36} />
-        <span className="min-w-0">
-          <b className="block font-display text-[13.5px] truncate">{name}</b>
-          <span className="block text-[11.5px] text-cocoa truncate">{role}</span>
+  const rail = useRef<HTMLDivElement | null>(null);
+  const nudge = (dir: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const w = card ? card.offsetWidth + 16 : 376;
+    el.scrollBy({ left: dir * w, behavior: reduceMotion ? "auto" : "smooth" });
+  };
+  const card = (v: Voice, k: number) => (
+    <figure key={v.name + k} data-card
+      className="group/card shrink-0 snap-start w-[376px] max-[700px]:w-[292px] bg-card border border-line rounded-[18px] p-[24px] flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-accent/60 hover:shadow-lift">
+      {/* the face on the left, the organization it is about on the right */}
+      <div className="flex items-start justify-between gap-3">
+        <Face src={v.face} name={v.name} />
+        <span className="grid h-[40px] w-[40px] shrink-0 place-items-center rounded-[12px] bg-foam ring-1 ring-line transition-shadow duration-300 group-hover/card:ring-accent/45"
+          title={`About ${v.org}`}>
+          <OrgImg src={avatarOf(v.login, 80)} name={v.org} alt={v.org} width={26} height={26} className="h-[26px] w-[26px] object-contain" />
         </span>
-        <span className="ml-auto shrink-0 font-mono text-[9px] font-bold uppercase tracking-[.08em] text-dim border border-line rounded-full px-2.5 py-[4px]">Sample</span>
+      </div>
+      <div className="mt-5"><QuoteMark /></div>
+      <blockquote className="text-ink text-[14.5px] leading-[1.75] mt-3 flex-1">{v.quote}</blockquote>
+      <figcaption className="mt-6 pt-4 border-t border-dashed border-line">
+        <div className="flex items-end justify-between gap-3">
+          <span className="sign text-ink">{v.name}</span>
+          <span className="mb-[5px] shrink-0 font-mono text-[8.5px] font-bold uppercase tracking-[.1em] text-dim border border-line rounded-full px-2 py-[4px]">Illustrative</span>
+        </div>
+        <p className="text-cocoa text-[11.5px] mt-3 truncate">
+          {v.role}<span className="text-dim"> · </span>{v.org}
+        </p>
       </figcaption>
     </figure>
   );
-  const row = QUOTES.map(card);
   return (
-    <section id="stories" className="mt-[92px] bg-coffee border-y border-bean text-foam overflow-hidden">
-      <div className="max-w-[1240px] mx-auto px-6 pt-14 pb-2">
-        <div className="flex items-end justify-between gap-5 flex-wrap">
-          <div>
-            <SectionTag>Early feedback</SectionTag>
-            <h2 className="font-display font-extrabold tracking-[-.022em] text-[clamp(28px,3.6vw,42px)] mt-3 text-foam">What builders <Word>tell us</Word>.</h2>
-          </div>
-          <p className="text-steam text-[13.5px] max-w-[380px] leading-[1.6]">These cards are layout placeholders until we have quotes we can attribute. The tag on each one says so.</p>
+    <section id="stories" className="on-dark mt-[92px] bg-coffee border-y border-bean text-foam">
+      <div className="max-w-[1240px] mx-auto px-6 pt-14 pb-7 flex items-end justify-between gap-6 flex-wrap">
+        <div>
+          <SectionTag>Early feedback</SectionTag>
+          <h2 className="font-display font-extrabold tracking-[-.022em] text-[clamp(28px,3.6vw,42px)] mt-3 text-foam">What builders <Word>tell us</Word>.</h2>
+          <p className="text-steam text-[13.5px] max-w-[540px] leading-[1.65] mt-3">These cards are layout placeholders until we have quotes we can attribute. The faces are AI-generated portraits, not photographs of anyone real, and the mark beside each one is the organization that quote is about - not an endorsement from it.</p>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <button type="button" onClick={() => nudge(-1)} aria-label="Previous quotes"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/18 text-foam/80 transition-colors hover:border-accent hover:text-accent cursor-pointer">
+            <Arrow dir={-1} />
+          </button>
+          <button type="button" onClick={() => nudge(1)} aria-label="Next quotes"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/18 text-foam/80 transition-colors hover:border-accent hover:text-accent cursor-pointer">
+            <Arrow dir={1} />
+          </button>
         </div>
       </div>
-      <div className="marq-mask overflow-hidden py-8">
-        <div className="marq-track animate-marq gap-4 px-4">{row}{row}</div>
+      <div ref={rail} className="snap-x snap-proximity overflow-x-auto no-scrollbar px-6 pb-14">
+        <div className="mx-auto flex max-w-[1240px] gap-4">{QUOTES.map(card)}</div>
       </div>
     </section>
   );
@@ -396,9 +685,9 @@ function Faq() {
 function Cta() {
   const { setAuthOpen } = useStore();
   return (
-    <section className="cta-close mt-[110px] relative overflow-hidden bg-coffee text-foam">
+    <section className="on-dark cta-close mt-[110px] relative overflow-hidden bg-coffee text-foam">
       <span aria-hidden className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,var(--gl)_1px,transparent_1px),linear-gradient(to_bottom,var(--gl)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(900px_520px_at_50%_42%,#000_40%,transparent)]" />
-      <span aria-hidden className="absolute inset-0 pointer-events-none bg-[radial-gradient(720px_340px_at_50%_-12%,color-mix(in_srgb,var(--color-accent)_16%,transparent),transparent_70%)]" />
+      <span aria-hidden className="absolute inset-0 pointer-events-none bg-[radial-gradient(720px_340px_at_50%_-12%,rgba(255,255,255,0.05),transparent_70%)]" />
       <div className="relative max-w-[860px] mx-auto px-6 pt-[104px] pb-[112px] text-center">
         <div className="footer-arc w-[120px] mx-auto" />
         <span className="inline-flex items-center gap-2.5 mt-9 eyebrow !text-steam">
@@ -429,6 +718,7 @@ export default function Home() {
       <Features />
       <Programs />
       <Timeline />
+      <Roadmap />
       <Skills />
       <Band />
       <OrgMarquee />

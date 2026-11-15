@@ -151,9 +151,14 @@ export async function queryRepos(params: RepoQuery) {
   if (params.framework) conds.push(sql`${reposTable.frameworks} && ARRAY[${params.framework}::text]`);
   const where = conds.length ? and(...conds) : undefined;
   const base = db.select().from(reposTable);
-  const rows = await (where ? base.where(where) : base)
-    .orderBy(desc(reposTable.stars))
-    .limit(per)
-    .offset((page - 1) * per);
-  return rows;
+  const countBase = db.select({ count: sql<number>`count(*)::int` }).from(reposTable);
+  const [rows, countRes] = await Promise.all([
+    (where ? base.where(where) : base)
+      .orderBy(desc(reposTable.stars))
+      .limit(per)
+      .offset((page - 1) * per),
+    where ? countBase.where(where) : countBase,
+  ]);
+  const total = Number(countRes[0]?.count ?? 0);
+  return { rows, total };
 }

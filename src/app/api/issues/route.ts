@@ -2,7 +2,7 @@
    Read-only search over the crawled snapshot. The response carries the
    snapshot date with it, because a list of "open issues" that does not
    say when it was read is a list of guesses. */
-import { facets, filterIssues, issueUrl, loadIndex, parseQuery, type IssueMeta, type IssueRow } from "@/lib/server/issueIndex";
+import { facetKey, facets, filterIssues, issueUrl, loadIndex, parseQuery, type IssueMeta, type IssueQuery, type IssueRow } from "@/lib/server/issueIndex";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +26,22 @@ function rateLimited(ip: string): boolean {
   return false;
 }
 
+/* facets are recomputed per query now, so the result is kept by the filters
+   that shaped it (not the sort or page). Insertion-ordered Map, oldest entry
+   dropped past the cap, and the whole cache is reset if the index is reloaded. */
+const FACET_CACHE_MAX = 200;
 const facetCache = new Map<string, ReturnType<typeof facets>>();
+let facetCacheItems: unknown = null;
+function facetsFor(items: IssueRow[], query: IssueQuery) {
+  if (facetCacheItems !== items) { facetCache.clear(); facetCacheItems = items; }
+  const key = facetKey(query);
+  const hit = facetCache.get(key);
+  if (hit) return hit;
+  const fresh = facets(items, query);
+  if (facetCache.size >= FACET_CACHE_MAX) facetCache.delete(facetCache.keys().next().value as string);
+  facetCache.set(key, fresh);
+  return fresh;
+}
 
 export async function GET(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
@@ -40,7 +55,6 @@ export async function GET(req: Request) {
 
   const query = parseQuery(url.searchParams);
   const page = filterIssues(index.items, query);
-  if (!facetCache.has("all")) facetCache.set("all", facets(index.items));
 
   return Response.json({
     meta: index.meta satisfies IssueMeta,
@@ -49,7 +63,7 @@ export async function GET(req: Request) {
     page: page.page,
     per: page.per,
     pages: page.pages,
-    facets: facetCache.get("all"),
+    facets: facetsFor(index.items, query),
     issues: page.results.map((row: IssueRow) => ({
       url: issueUrl(row),
       repo: row.r,

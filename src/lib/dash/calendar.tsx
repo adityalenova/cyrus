@@ -65,6 +65,9 @@ export function CalendarSection({ d }: { d: Dash }) {
   const live = useMemo(() => (only ? all.filter((e) => e.pid === only) : all), [all, only]);
 
   const cells = useMemo(() => monthGrid(ms), [ms]);
+  /* monthGrid always fills six weeks; drop a sixth row that is entirely next
+     month so a five-week month reads as five rows, like a real calendar */
+  const rows = useMemo(() => (cells.slice(35).every((c) => !c.inMonth) ? cells.slice(0, 35) : cells), [cells]);
   const from = monthStart(ms);
   const to = new Date(new Date(ms).getFullYear(), new Date(ms).getMonth() + 1, 1).getTime();
   const today = midnight(Date.now());
@@ -95,12 +98,9 @@ export function CalendarSection({ d }: { d: Dash }) {
           title="Season calendar"
           sub="Application windows, community bondings and coding periods for all thirteen tracked programs, on one grid."
           action={
-            <>
-              <button type="button" onClick={download} className={btn("outline", "sm")}>
-                <Ic d={DP.download} size={13} /> {yearOf(ms)} as .ics
-              </button>
-              <button type="button" onClick={() => { setMs(midnight(Date.now())); setPick(null); }} className={btn("ghost", "sm")}>Today</button>
-            </>
+            <button type="button" onClick={download} className={btn("outline", "sm")}>
+              <Ic d={DP.download} size={13} /> {yearOf(ms)} as .ics
+            </button>
           }
         />
 
@@ -122,51 +122,63 @@ export function CalendarSection({ d }: { d: Dash }) {
           })}
         </div>
 
-        {/* month nav */}
-        <div className="flex items-center gap-3 mt-6">
+        {/* month nav - arrows at the outer edges, month and Today centered */}
+        <div className="relative flex items-center justify-center gap-3 mt-7 mb-4">
           <button type="button" onClick={() => shift(-1)} aria-label="Previous month"
-            className="w-[32px] h-[32px] rounded-[9px] border border-line text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer grid place-items-center font-mono">‹</button>
-          <h2 className="font-display font-extrabold text-[19px] tracking-[-.02em] min-w-[190px] text-center">{monthName(ms)}</h2>
+            className="absolute left-0 w-[34px] h-[34px] rounded-full border border-line text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer grid place-items-center font-mono">‹</button>
+          <h2 className="font-display font-extrabold text-[21px] tracking-[-.02em]">{monthName(ms)}</h2>
+          <button type="button" onClick={() => { setMs(midnight(Date.now())); setPick(null); }} className={btn("outline", "sm")}>Today</button>
           <button type="button" onClick={() => shift(1)} aria-label="Next month"
-            className="w-[32px] h-[32px] rounded-[9px] border border-line text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer grid place-items-center font-mono">›</button>
-          <span className="ml-auto font-mono text-[9.5px] uppercase tracking-[.12em] text-dim">
-            {inMonth.length} window{inMonth.length === 1 ? "" : "s"} · {new Set(inMonth.map((e) => e.pid)).size} program{new Set(inMonth.map((e) => e.pid)).size === 1 ? "" : "s"}
-          </span>
+            className="absolute right-0 w-[34px] h-[34px] rounded-full border border-line text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer grid place-items-center font-mono">›</button>
         </div>
 
-        {/* the grid */}
-        <div className="grid grid-cols-7 gap-[3px] mt-4">
-          {WD.map((w) => (
-            <span key={w} className="font-mono text-[9px] uppercase tracking-[.12em] text-dim text-center py-1.5">{w}</span>
-          ))}
-          {cells.map((c) => {
-            const evs = live.filter((e) => overlaps(e, c.ms, c.ms + DAY));
-            const isToday = c.ms === today;
-            const isPick = c.ms === pick;
-            const on = evs.length > 0;
-            return (
-              <button key={c.ms} type="button" onClick={() => setPick(isPick ? null : (on ? c.ms : null))}
-                disabled={!on} aria-pressed={isPick} aria-label={`${c.day} - ${evs.map((e) => `${e.program} ${e.phase}`).join(", ") || "nothing"}`}
-                className={`min-h-[74px] md:min-h-[92px] rounded-[10px] border p-1.5 text-left transition-colors ${
-                  isPick ? "border-accent bg-peach" : on ? "border-accent/25 bg-cream cursor-pointer hover:border-accent/60" : "border-line/60 bg-card"
-                } ${c.inMonth ? "" : "opacity-40"} ${isToday ? "ring-1 ring-honey" : ""}`}>
-                <span className={`block font-mono text-[10px] mb-1 ${isToday ? "text-honey font-bold" : "text-dim"}`}>{c.day}</span>
-                <span className="flex flex-wrap gap-1">
-                  {evs.slice(0, 4).map((e) => (
-                    <span key={e.id} className="max-[820px]:hidden flex items-center gap-1 rounded-[6px] bg-card border border-line px-1 py-px min-w-0">
-                      <Dot c={e.color} />
-                      <span className="font-mono text-[8.5px] text-cocoa truncate max-w-[68px]">{e.program.split(" ")[0]}</span>
-                    </span>
-                  ))}
-                  {evs.length > 4 && <span className="font-mono text-[8.5px] text-dim">+{evs.length - 4}</span>}
-                  {evs.length > 0 && evs.length <= 4 && (
-                    <span className="max-[820px]:flex hidden gap-1">{evs.map((e) => <Dot key={e.id} c={e.color} />)}</span>
-                  )}
-                </span>
-              </button>
-            );
-          })}
+        {/* the grid: hairline walls, one readable chip per window */}
+        <div className="rounded-[16px] border border-line bg-card overflow-hidden">
+          <div className="grid grid-cols-7 border-b border-line bg-cream">
+            {WD.map((w) => (
+              <span key={w} className="py-2.5 text-center font-mono text-[9px] sm:text-[9.5px] uppercase tracking-[.16em] text-dim">{w}</span>
+            ))}
+          </div>
+          <div className="grid grid-cols-7">
+            {rows.map((c, i) => {
+              const evs = live.filter((e) => overlaps(e, c.ms, c.ms + DAY));
+              const isToday = c.ms === today;
+              const isPick = c.ms === pick;
+              const edgeR = (i + 1) % 7 === 0;
+              const edgeB = i >= rows.length - 7;
+              return (
+                <button key={c.ms} type="button"
+                  onClick={() => setPick(isPick ? null : (evs.length ? c.ms : null))}
+                  disabled={!evs.length} aria-pressed={isPick}
+                  aria-label={`${c.day} ${monthName(ms)} - ${evs.map((e) => `${e.program} ${e.phase}`).join(", ") || "no window"}`}
+                  className={`relative min-h-[92px] sm:min-h-[128px] p-1.5 sm:p-2 text-left transition-colors ${
+                    edgeR ? "" : "border-r border-liness"} ${edgeB ? "" : "border-b border-liness"} ${
+                    isPick ? "bg-peach" : evs.length ? "bg-cream/60 cursor-pointer hover:bg-cream" : "bg-transparent"} ${
+                    c.inMonth ? "" : "opacity-45"}`}>
+                  <span className={`block font-mono text-[11px] leading-none mb-1.5 ${
+                    isToday ? "grid place-items-center w-[21px] h-[21px] rounded-full bg-ink text-paper font-bold"
+                      : c.inMonth ? "text-cocoa" : "text-dim"}`}>{c.day}</span>
+                  <span className="grid gap-1">
+                    {evs.slice(0, 3).map((e) => (
+                      <span key={e.id} title={`${e.program} - ${e.phase}`}
+                        className="flex items-center gap-1.5 min-w-0 rounded-full border border-line bg-card pl-[5px] pr-2 py-[3px]">
+                        <Dot c={e.color} />
+                        <span className="font-mono text-[9px] sm:text-[9.5px] text-cocoa truncate">{e.program}</span>
+                      </span>
+                    ))}
+                    {evs.length > 3 && (
+                      <span className="font-mono text-[9px] text-dim pl-1">+{evs.length - 3} more</span>
+                    )}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
+
+        <p className="font-mono text-[9.5px] uppercase tracking-[.12em] text-dim mt-2.5">
+          {inMonth.length} window{inMonth.length === 1 ? "" : "s"} · {new Set(inMonth.map((e) => e.pid)).size} program{new Set(inMonth.map((e) => e.pid)).size === 1 ? "" : "s"} this month · tap a day for its full list
+        </p>
 
         {pick !== null && (
           <div className="mt-4 rounded-[12px] border border-line bg-cream p-4">

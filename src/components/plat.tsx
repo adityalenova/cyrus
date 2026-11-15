@@ -33,7 +33,7 @@ export const Cross = () => (
 export const TONES: Record<string, string> = {
   rust: "text-rust bg-peach border-accent/25",
   leaf: "text-leaf bg-leaf/10 border-leaf/25",
-  honey: "text-[#a97b1f] bg-honey/12 border-honey/40",
+  honey: "text-honey bg-honey/12 border-honey/40",
   denim: "text-denim bg-denim/10 border-denim/25",
   plum: "text-plum bg-plum/10 border-plum/25",
   brick: "text-brick bg-brick/10 border-brick/25",
@@ -115,12 +115,16 @@ export function YourAction({ children, tone = "rust" }: { children: ReactNode; t
   );
 }
 
-/* big centered section opener */
-export function CenterHead({ pill, h2, sub }: { pill: string; h2: ReactNode; sub?: string }) {
+/* big centered section opener. `as` is there because a page whose first
+   heading is a section heading leaves the whole document without an h1 -
+   /platform/trust opens with this, and its page title is the one a screen
+   reader or a search result should be reading. */
+export function CenterHead({ pill, h2, sub, as = "h2" }: { pill: string; h2: ReactNode; sub?: string; as?: "h1" | "h2" }) {
+  const Head = as;
   return (
     <div className="text-center max-w-[700px] mx-auto">
       <Pill center>{pill}</Pill>
-      <h2 className="font-display font-extrabold tracking-[-.025em] text-[clamp(28px,3.6vw,42px)] leading-[1.12] mt-6">{h2}</h2>
+      <Head className="font-display font-extrabold tracking-[-.025em] text-[clamp(28px,3.6vw,42px)] leading-[1.12] mt-6">{h2}</Head>
       {sub && <p className="text-cocoa text-[15.5px] leading-[1.7] mt-4">{sub}</p>}
     </div>
   );

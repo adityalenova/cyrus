@@ -6,10 +6,11 @@
 import type { ReactNode } from "react";
 import { Link } from "@/lib/router";
 import { btn, OrgImg } from "../components/ui";
-import { avatarOf, fmt, byStars } from "../lib/util";
+import { avatarOf, fmtCompact, byStars } from "../lib/util";
 import { W, Pill, StepHead, Behind, YourAction, MockPanel, MockRow, GridBG, PlatCTA, Rule } from "../components/plat";
 import CompanyBand from "../components/CompanyBand";
 import { CRAWL } from "../data/crawlStats";
+import { STATS } from "../lib/siteStats";
 import { REPOS } from "../data/repos";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { ISSUE_STAGES, STAGE_LABEL, STAGE_NOTE } from "../lib/dash/shared";
@@ -25,9 +26,9 @@ const SOURCES: [string, string][] = [
   ["github", "GitHub REST + search API"],
   ["google", "GSoC program API"],
   ["linuxfoundation", "LFX mentorship API"],
-  ["huggingface", "HF org profiles"],
-  ["vercel", "Vercel org profiles"],
-  ["cloudflare", "Cloudflare org profiles"],
+  ["huggingface", "HF repository catalog"],
+  ["vercel", "Vercel repository catalog"],
+  ["cloudflare", "Cloudflare repository catalog"],
   ["kubernetes", "CNCF project tracks"],
   ["flutter", "Flutter / Google OSS"],
   ["pytorch", "AI-infra org signals"],
@@ -80,11 +81,11 @@ export default function How() {
 
         {/* STEP 01 */}
         <Step step="01" label="Find work that is open" d={D.gauge} tone="rust"
-          sub={`One place to search public GitHub data: ${fmt(CRAWL.issues)} open issues from ${fmt(CRAWL.reposWithIssues)} repositories, ${fmt(CRAWL.catalogRepos)} catalogued projects in ${CRAWL.languages} languages, and ${fmt(CRAWL.orgs)} organizations with a profile of their own. Filter it, then open the thread on GitHub before you start work.`}
+          sub={`One place to search public GitHub data: ${fmtCompact(CRAWL.issues)} open issues from ${fmtCompact(CRAWL.reposWithIssues)} repositories, ${fmtCompact(STATS.archive)} archived program projects in the ${STATS.archivePrograms} program records, and ${fmtCompact(ORGS.length)} organizations with a profile of their own. Filter it, then open the thread on GitHub before you start work.`}
           h2="Start from what is actually open."
           behind={[
-            `Issues crawled from ${fmt(CRAWL.reposWithIssues)} active repositories on ${CRAWL.crawledAt}`,
-            `Beginner-labelled work surfaced separately (${fmt(CRAWL.beginnerLabelled)} issues)`,
+            `Issues crawled from ${fmtCompact(CRAWL.reposWithIssues)} active repositories on ${CRAWL.crawledAt}`,
+            `Beginner-labelled work surfaced separately (${fmtCompact(CRAWL.beginnerLabelled)} issues)`,
             "Every repository page shows the README, guidelines and open work",
             "Organization pages carry their program history and flagship repos",
             "GitHub stays the source of truth - each row links to the live thread",
@@ -96,7 +97,7 @@ export default function How() {
                 <MockRow key={r.repo} n={i + 1} tone="rust">
                   <b className="block">{r.repo.split("/")[1]}</b>
                   <span className="block text-[12px] font-medium text-dim mt-0.5 truncate">
-                    {fmt(r.stars)} stars · {fmt(r.issues)} open issues · {r.lang}
+                    {fmtCompact(r.stars)} stars · {fmtCompact(r.issues)} open issues · {r.lang}
                   </span>
                 </MockRow>
               ))}
@@ -173,7 +174,7 @@ export default function How() {
         <section className={`${W} mt-[54px] pb-6 text-center`}>
           <p className="text-cocoa text-[14.5px] leading-[1.7] max-w-[560px] mx-auto">
             That is the whole method - find, season, ship. The data behind each step is documented
-            on the features and trust pages, and {fmt(ORGS.length)} organizations are profiled today.
+            on the features and trust pages, and {fmtCompact(ORGS.length)} organizations are profiled today.
           </p>
           <PlatCTA to="/platform/features" label="Explore platform features" also={["/platform/trust", "See how we verify data"]} />
         </section>

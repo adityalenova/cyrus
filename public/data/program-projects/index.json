@@ -1,0 +1,218 @@
+{
+ "generated": "2026-10-25",
+ "note": "Where these rows come from: GSoC, LFX, Outreachy and Summer of Bitcoin are reshaped from our on-disk archive exports (gsoc-projects.json / otherProjects.json), each row a project the program published. 24 Pull Requests rows are its live contribution wishlist (projects.json), not mentored projects. GSSoC rows are the season board its own API serves. Season of KDE is the 25 accepted 2026 proposals from KDE's GitLab mentor-programs tracker merged with its SoK/Ideas wiki listings. MLH has no project list; the rows are the upstream repositories its Fellowship batches forked. Nexus Spring of Code rows are the 85-repository directory nsoc.in itself publishes (URLs verified against the GitHub API) plus a handful of nsoc-topic repositories - the small count is the truth, not padding. Hacktoberfest rows are simply the 400 starriest repositories carrying the hacktoberfest topic; Hacktoberfest publishes no archive. FOSSEE rows are the outcome tables fossee.in/fellowship/<year> publishes for each of the seven years it has run the Summer Fellowship (2020 118, 2021 12, 2022 38, 2023 30, 2024 23, 2025 72, 2026 121 = 414 rows); the title is the page Project name cell and the organization is its Floss Name cell, the FOSS codebase the fellow worked on, so the nine names in that shard are codebases, not nine hosts. Vercel Open Source Program rows are its funded-project grid, each repo re-verified via the GitHub API, dead links dropped. Eclipse SoC publishes no reachable project archive from this machine: soc.eclipse.to does not resolve and api.eclipse.org endpoints redirect to documentation HTML, so there is no esoc shard (the build probes them each run and writes one only if real JSON rows come back). Shards are capped at 400 rows (year desc, then stars desc); the projects figure in this index is the FULL fetched count, never the capped one. Contribo's project datasets were tested and rejected: their githubUrls (e.g. github.com/nokia/5g-packet-sim) return 404, so no row here comes from them.",
+ "programs": {
+  "gsoc": {
+   "label": "Google Summer of Code",
+   "source": "public/data/gsoc-projects.json, the per-year project records read from summerofcode.withgoogle.com/programs/<year>/archive",
+   "evidence": "archive",
+   "url": "https://summerofcode.withgoogle.com/archive",
+   "projects": 5238,
+   "years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "orgs": 305,
+   "withUrl": 5238,
+   "file": "program-projects/gsoc.json",
+   "rows": 400,
+   "capped": true,
+   "unit": "accepted projects"
+  },
+  "outreachy": {
+   "label": "Outreachy",
+   "source": "outreachy.org internship-round pages, held at public/data/otherProjects.json (program \"Outreachy\")",
+   "evidence": "archive",
+   "url": "https://www.outreachy.org/alums/",
+   "projects": 437,
+   "years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "orgs": 61,
+   "withUrl": 437,
+   "file": "program-projects/outreachy.json",
+   "rows": 400,
+   "capped": true,
+   "unit": "internships"
+  },
+  "lfx": {
+   "label": "LFX Mentorship",
+   "source": "api.mentorship.lfx.linuxfoundation.org, held at public/data/otherProjects.json (program \"LFX\")",
+   "evidence": "archive",
+   "url": "https://mentorship.lfx.linuxfoundation.org",
+   "projects": 941,
+   "years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "orgs": 24,
+   "withUrl": 941,
+   "file": "program-projects/lfx.json",
+   "rows": 400,
+   "capped": true,
+   "unit": "mentored projects"
+  },
+  "sob": {
+   "label": "Summer of Bitcoin",
+   "source": "public/data/otherProjects.json (program \"Summer of Bitcoin\"), read from summerofbitcoin.org's project list, with each github.com link re-read via gh api repos/<owner>/<repo>",
+   "evidence": "archive",
+   "url": "https://www.summerofbitcoin.org",
+   "projects": 66,
+   "years": [
+    2026
+   ],
+   "orgs": 32,
+   "withUrl": 66,
+   "file": "program-projects/sob.json",
+   "rows": 66,
+   "capped": false,
+   "unit": "funded projects"
+  },
+  "24pr": {
+   "label": "24 Pull Requests",
+   "source": "https://24pullrequests.com/projects.json (the current curated wishlist, data/24pr-raw.json), each repository then re-read via gh api repos/<owner>/<repo>",
+   "evidence": "api",
+   "url": "https://24pullrequests.com/projects",
+   "projects": 306,
+   "years": [],
+   "orgs": 353,
+   "withUrl": 466,
+   "file": "program-projects/24pr.json",
+   "rows": 306,
+   "capped": false,
+   "unit": "listed repositories"
+  },
+  "gssoc": {
+   "label": "GSSoC'26",
+   "source": "https://gssoc.girlscript.org/api/projects - GirlScript's live season board, cached at scripts/.cache/gssoc-board.json, each repo_url then verified via gh api repos/<owner>/<repo>",
+   "evidence": "api",
+   "url": "https://gssoc.girlscript.org",
+   "projects": 423,
+   "years": [
+    2026
+   ],
+   "orgs": 443,
+   "withUrl": 454,
+   "file": "program-projects/gssoc.json",
+   "rows": 400,
+   "capped": true,
+   "unit": "board projects"
+  },
+  "kde": {
+   "label": "Season of KDE",
+   "source": "MediaWiki source of community.kde.org/SoK/Ideas/<year> for 2017-2026, held at public/data/kde-archive.json (`ideas`)",
+   "evidence": "listing",
+   "url": "https://community.kde.org/SoK/Ideas",
+   "projects": 112,
+   "years": [
+    2017,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "orgs": 53,
+   "withUrl": 123,
+   "file": "program-projects/kde.json",
+   "rows": 112,
+   "capped": false,
+   "unit": "proposed ideas"
+  },
+  "mlh": {
+   "label": "MLH Fellowship",
+   "source": "every repository under github.com/MLH-Fellowship and the upstream repository it was forked from (data/mlh-parents.json, read via the GitHub API), each fork re-verified with gh api repos/MLH-Fellowship/<fork>",
+   "evidence": "api",
+   "url": "https://github.com/MLH-Fellowship",
+   "projects": 187,
+   "years": [],
+   "orgs": 121,
+   "withUrl": 433,
+   "file": "program-projects/mlh.json",
+   "rows": 187,
+   "capped": false,
+   "unit": "forked repositories"
+  },
+  "nsoc": {
+   "label": "Nexus Spring of Code",
+   "source": "nsoc.in's own live project directory (data/raw/nsoc.json, crawled from nexus-be-7xkn.onrender.com/api/v1/projects with every repo URL verified via the GitHub API) merged with GitHub topic search (topic:nsoc, topic:nsoc-2026, org Nexus-Spring-of-Code)",
+   "evidence": "listing",
+   "url": "https://nsoc.in",
+   "projects": 95,
+   "years": [
+    2026
+   ],
+   "orgs": 92,
+   "withUrl": 95,
+   "file": "program-projects/nsoc.json",
+   "rows": 95,
+   "capped": false,
+   "unit": null
+  },
+  "oct": {
+   "label": "Hacktoberfest",
+   "source": "public/data/issues.json.gz (40017 issues across 290 repositories, snapshot 2026-10-21) filtered to issues whose labels read \"hacktoberfest\", plus gh api search/repositories?q=topic:hacktoberfest&sort=stars",
+   "evidence": "topics",
+   "url": "https://github.com/topics/hacktoberfest",
+   "projects": 400,
+   "years": [],
+   "orgs": 368,
+   "withUrl": 704,
+   "file": "program-projects/oct.json",
+   "rows": 400,
+   "capped": false,
+   "unit": "Hacktoberfest repositories"
+  },
+  "fossee": {
+   "label": "FOSSEE Summer Fellowship",
+   "source": "https://fossee.in/fellowship/<year> - the per-year result tables FOSSEE publishes (2020: 81, 2021: 12, 2022: 38, 2023: 29, 2024: 23, 2025: 72, 2026: 121)",
+   "evidence": "listing",
+   "url": "https://fossee.in/fellowship/2026",
+   "projects": 414,
+   "years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "orgs": 9,
+   "withUrl": 414,
+   "file": "program-projects/fossee.json",
+   "rows": 414,
+   "capped": false,
+   "unit": "fellowship projects"
+  },
+  "vercel-oss": {
+   "label": "Vercel Open Source Program",
+   "source": "https://vercel.com/open-source-program (the current-cohort card grid plus every collapsed past cohort list), each repository then re-read via the GitHub API",
+   "evidence": "scrape",
+   "url": "https://vercel.com/open-source-program",
+   "projects": 135,
+   "years": [
+    2025,
+    2026
+   ],
+   "orgs": 135,
+   "withUrl": 135,
+   "file": "program-projects/vercel-oss.json",
+   "rows": 135,
+   "capped": false,
+   "unit": "cohort projects"
+  }
+ }
+}

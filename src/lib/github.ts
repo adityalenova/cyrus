@@ -20,7 +20,7 @@
         (plus your production origin when you host the site).
 
    No client id configured = the UI keeps its demo prompt fallback.   ═ */
-import { api, serverAuthReady } from "./api";
+import { api, providerReady } from "./api";
 
 export const GITHUB_CLIENT_ID: string | undefined =
   (process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID as string | undefined)?.trim() || undefined;
@@ -28,6 +28,14 @@ const GITHUB_EXCHANGE_URL: string | undefined =
   (process.env.NEXT_PUBLIC_GITHUB_EXCHANGE_URL as string | undefined)?.trim() || undefined;
 
 export const githubConfigured = () => !!GITHUB_CLIENT_ID;
+
+/** true when a click on "GitHub" can end in a session: this deploy has the
+   server leg (the OAuth secret lives there), or a static relay is configured.
+   A client id alone is not enough - a browser cannot finish the exchange. */
+export async function githubCanFinish(): Promise<boolean> {
+  if (!GITHUB_CLIENT_ID) return false;
+  return Boolean(GITHUB_EXCHANGE_URL) || (await providerReady("github"));
+}
 
 export type GithubProfile = { login: string; name: string; email: string; avatar: string };
 
@@ -74,9 +82,9 @@ export async function promptGitHub(): Promise<GithubProfile> {
     window.addEventListener("message", onMsg);
   });
 
-  /* server-side exchange when the session backend is configured - the
-     client secret stays on the server and a real cookie is issued */
-  if (await serverAuthReady()) {
+  /* server-side exchange when this deploy holds the client secret - the
+     token never touches the browser and a real session cookie is issued */
+  if (await providerReady("github")) {
     const srv = await api.authGithub(code, verifier);
     if (srv?.user) {
       return {
@@ -89,6 +97,14 @@ export async function promptGitHub(): Promise<GithubProfile> {
     throw new Error("GitHub sign-in didn't complete on the server - try again.");
   }
 
+  /* no server leg: only a relay can trade the code, because GitHub does not
+   answer a browser's CORS preflight on the token endpoint */
+  if (!GITHUB_EXCHANGE_URL) {
+    throw new Error(
+      "This deploy has the GitHub app id but no secret to exchange the code with - " +
+      "set GITHUB_CLIENT_SECRET on the server, or sign in with email.",
+    );
+  }
   const token = await exchange(code, verifier);
   const r = await fetch("https://api.github.com/user", { headers: { accept: "application/json", authorization: `Bearer ${token}` } });
   if (!r.ok) throw new Error(`GitHub rejected the token (HTTP ${r.status}) - try again.`);

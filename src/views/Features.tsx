@@ -5,7 +5,7 @@
    "collect once, satisfy all three" program table, and a day-by-day
    timeline - all in the cyrus.ai coffee/honey theme.            ═ */
 import { Link } from "@/lib/router";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
 import { btn, Word } from "../components/ui";
 import { REPOS, CATEGORIES } from "../data/repos";
 import { PROGRAMS } from "../data/orgs";
@@ -68,7 +68,7 @@ function Workflow() {
         </div>
       </div>
       <div className="rounded-[26px] border border-line bg-cream p-8 shadow-lift relative overflow-hidden">
-        <span aria-hidden className="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(400px_120px_at_50%_0%,rgba(62,125,79,.10),transparent_70%)]" />
+        <span aria-hidden className="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(400px_120px_at_50%_0%,rgba(255,255,255,.05),transparent_70%)]" />
         <p className="text-center font-mono text-[10.5px] font-bold tracking-[.22em] uppercase text-leaf">Cyrus workflow</p>
         <h3 className="text-center font-display font-extrabold text-[24px] tracking-[-.02em] mt-2 mb-7">Saved to merged PR</h3>
         <div className="relative">
@@ -126,7 +126,7 @@ function Stand() {
           {STAND.map(([d, tone, b, p]) => (
             <div key={b} className="flex gap-4 items-start">
               <span className={`w-[46px] h-[46px] rounded-full border grid place-items-center shrink-0 bg-card ${""}`} style={{ borderColor: "var(--color-line)" }}>
-                <span className={tone === "rust" ? "text-rust" : tone === "plum" ? "text-plum" : tone === "honey" ? "text-[#a97b1f]" : tone === "denim" ? "text-denim" : "text-leaf"}><Ico d={D[d]} size={19} /></span>
+                <span className={tone === "rust" ? "text-rust" : tone === "plum" ? "text-plum" : tone === "honey" ? "text-honey" : tone === "denim" ? "text-denim" : "text-leaf"}><Ico d={D[d]} size={19} /></span>
               </span>
               <span className="min-w-0">
                 <b className="block font-display font-bold text-[16.5px] text-ink mb-1">{b}</b>
@@ -235,8 +235,8 @@ function Timeline() {
 
 /* ── section 6: the full shelf grid ── */
 const SHELVES: [string, string, string, string, string][] = [
-  ["Skill catalog", "/skills", "grid", "rust", `${fmt(REPOS.length)} agent skills, Cursor rules, config packs and MCP servers across ${CATEGORIES.length} curated shelves.`],
-  ["Open issues", "/dashboard/issues", "bookmark", "denim", `${fmt(CRAWL.issues)} issues crawled live from GitHub on ${CRAWL.crawledAt}, with their labels and age.`],
+  ["Skill catalog", "/skills", "grid", "rust", `${fmtCompact(REPOS.length)} agent skills, Cursor rules, config packs and MCP servers across ${CATEGORIES.length} curated shelves.`],
+  ["Open issues", "/dashboard/issues", "bookmark", "denim", `${fmtCompact(CRAWL.issues)} issues crawled live from GitHub on ${CRAWL.crawledAt}, with their labels and age.`],
   ["Organization profiles", "/organizations", "building", "plum", "Live GitHub signals plus five years of accepted projects, per org."],
   ["Program calendar", "/projects", "calendar", "honey", `${PROGRAMS.length} mentored programs and contribution seasons, each in its published phase.`],
   ["Project archive", "/projects", "layers", "leaf", "6,600+ accepted program projects, filterable by year, stack and difficulty."],

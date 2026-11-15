@@ -9,7 +9,8 @@ import { Link } from "@/lib/router";
 import { REPOS, CATEGORIES } from "../data/repos";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { CRAWL } from "../data/crawlStats";
-import { avatarOf, fmt } from "../lib/util";
+import { STATS } from "../lib/siteStats";
+import { avatarOf, fmtCompact } from "../lib/util";
 import { btn, Word, SectionTag, OrgImg, Logo } from "../components/ui";
 import { Rule } from "../components/plat";
 import CompanyBand from "../components/CompanyBand";
@@ -78,7 +79,7 @@ const CAPS: [string, string, string, string, ReactNode, string][] = [
     capIcon("M4 5h7v7H4zM13 5h7v4h-7zM13 12h7v7h-7zM4 15h7v4H4z"),
     "Every shelf is filtered by what the repo itself declares - SKILL.md, rules files, MCP manifests - and each card carries stars, forks, last-push and license from the public API."],
   ["Open issues, counted", "/dashboard/issues", "text-denim bg-denim/10 border-denim/25",
-    `${fmt(CRAWL.issues)} open issues in ${fmt(CRAWL.reposWithIssues)} of the ${fmt(CRAWL.catalogRepos)} catalog repositories, crawled ${CRAWL.crawledAt}.`,
+    `${fmtCompact(CRAWL.issues)} open issues in ${fmtCompact(CRAWL.reposWithIssues)} of the ${fmtCompact(CRAWL.catalogRepos)} catalog repositories, crawled ${CRAWL.crawledAt}.`,
     capIcon("M8 2v4M16 2v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"),
     "An issue is only listed when GitHub still reports it open. Age, labels and the repository's own star count travel with it, so a stale invitation is obvious before you spend an evening on it."],
   ["Organization profiles", "/organizations", "text-leaf bg-leaf/10 border-leaf/25",
@@ -90,7 +91,7 @@ const CAPS: [string, string, string, string, ReactNode, string][] = [
     capIcon("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3.5 2"),
     "Each program page shows the phase you are actually in today - organization applications, participant applications, community bonding, coding period - with the window dates the organizer publishes."],
   ["Project archive", "/projects", "text-honey bg-honey/12 border-honey/40",
-    "6,600+ accepted program projects from 2022 to 2026, filterable by year, organization, stack and difficulty.",
+    `${fmtCompact(STATS.archive)} program projects from the ${STATS.archivePrograms} archives we can read, 2017 to 2026, filterable by year, organization, stack and difficulty.`,
     capIcon("M3 7l9-4 9 4v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7ZM3 7l9 4 9-4M12 11v10"),
     "Pulled from each program's public API by our refresh pipeline - titles, orgs, mentors, tech tags and descriptions, never hand-typed."],
   ["Your board", "/dashboard", "text-rust bg-peach border-accent/20",
@@ -148,7 +149,7 @@ const FAQS: [string, string][] = [
   ["Why rank by stars at all, if stars are hype?",
    "They're the only cross-repo signal that's public, historical and cheap to verify. We show forks, open issues and last-push beside every star count so a 200k repo that hasn't moved in a year doesn't pretend otherwise."],
   ["How current are the open issues?",
-   `The issue index is a real crawl of GitHub's search API, last run ${CRAWL.crawledAt} across ${fmt(CRAWL.reposWithIssues)} repositories. An issue is listed only while GitHub still reports it open, but a repo can merge or close one between crawls - so every card links to the live thread and says how long ago it was touched.`],
+   `The issue index is a real crawl of GitHub's search API, last run ${CRAWL.crawledAt} across ${fmtCompact(CRAWL.reposWithIssues)} repositories. An issue is listed only while GitHub still reports it open, but a repo can merge or close one between crawls - so every card links to the live thread and says how long ago it was touched.`],
   ["Can I list my own repository?",
    "Yes - save a bookmark on /projects for the submit flow we're shipping next: paste a GitHub URL, we enrich the metadata from the API, and your repo joins the review queue for the right shelf."],
   ["Is this affiliated with GitHub, Google or Anthropic?",
@@ -212,11 +213,12 @@ export default function About() {
               gut feeling.
             </p>
             <p>
-              So we built the index we kept wishing for: {fmt(CRAWL.issues)} open issues crawled
-              from {fmt(CRAWL.reposWithIssues)} repositories on {CRAWL.crawledAt}, a skill catalog of{" "}
+              So we built the index we kept wishing for: {fmtCompact(CRAWL.issues)} open issues crawled
+              from {fmtCompact(CRAWL.reposWithIssues)} repositories on {CRAWL.crawledAt}, a skill catalog of{" "}
               {REPOS.length} repositories across {CATEGORIES.length} shelves published by {ORGS.length}{" "}
-              curated organizations, the {PROGRAMS.length} mentored programs those orgs join every
-              year and {fmt(6600)}+ accepted program projects from 2022 to 2026 - each with the
+              hand-picked organizations, {fmtCompact(CRAWL.orgs)} organizations in the issue crawl, the{" "}
+              {PROGRAMS.length} mentored programs they join every year, and {fmtCompact(STATS.archive)} program projects from {STATS.archivePrograms}
+              archives, 2017 to 2026 - each with the
               boring-but-decisive facts: stars, forks, open issues, language, license and last push.
             </p>
             <p>
@@ -266,7 +268,7 @@ export default function About() {
             <li><b className="text-ink">Difficulty labels</b> - derived, not claimed: beginner under 10k★, intermediate to 50k★, advanced above.</li>
             <li><b className="text-ink">Beginner signal</b> - an issue counts as beginner-labelled only when GitHub carries a real good-first-issue or help-wanted label: {CRAWL.beginnerLabelled.toLocaleString("en-US")} of {CRAWL.issues.toLocaleString("en-US")} right now.</li>
             <li><b className="text-ink">Logos</b> - official org avatars via GitHub, and program covers are our own generated SVG artwork, never copied branding.</li>
-            <li><b className="text-ink">Sessions</b> - the demo sign-in and saved items live only in your browser's localStorage.</li>
+            <li><b className="text-ink">Sign-in</b> - Google and email codes start a real session: an <code>httpOnly</code> cookie this server signs, not a value the page writes for itself. Your browsing state and saved items stay in your browser until a database is attached to the deploy.</li>
           </ul>
 
           <h2 id="faq" className="font-display font-extrabold text-[24px] tracking-[-.02em] mt-9 mb-5 scroll-mt-24">Frequently asked</h2>
@@ -286,12 +288,15 @@ export default function About() {
           <div className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
             <h3 className="panel-h text-[17px] mb-4">Catalog at a glance</h3>
             {[
-              [CRAWL.issues.toLocaleString("en-US"), "open issues, crawled"],
-              [CRAWL.reposWithIssues.toLocaleString("en-US"), "repositories crawled for issues"],
+              [fmtCompact(CRAWL.issues), "open issues, crawled"],
+              [fmtCompact(CRAWL.reposWithIssues), "repositories crawled for issues"],
+              [fmtCompact(STATS.archive), "program projects archived"],
+              [String(STATS.archivePrograms), "program archives read"],
               [String(REPOS.length), "repos in the skill snapshot"],
               [String(ORGS.length), "organizations hand-picked"],
               [String(PROGRAMS.length), "mentorship programs tracked"],
-              ["2026-10-02", "current snapshot date"],
+              ["2026-10-02", "skill snapshot date"],
+              [CRAWL.crawledAt, "issue crawl date"],
             ].map(([v, l]) => (
               <div key={l} className="flex items-baseline justify-between gap-3 py-2.5 border-b border-liness last:border-0">
                 <b className="font-mono text-[17px]">{v}</b><span className="text-cocoa text-[12.5px] text-right">{l}</span>

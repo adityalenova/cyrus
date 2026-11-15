@@ -1,8 +1,9 @@
 /* ══ POST /api/auth/google — verify the implicit id_token ═══════
    The client completes the redirect flow and posts the raw id_token here.
    Verification goes through Google's tokeninfo endpoint (no extra
-   dependency); we check issuer + audience before trusting the claims. ═ */
-import { OFFLINE, backendReady, publicUser, setSession, upsertUser } from "@/lib/server/auth";
+   dependency); we check issuer + audience before trusting the claims.
+   A database is optional - SESSION_SECRET is what has to exist.       ═ */
+import { OFFLINE, googleReady, issueSession } from "@/lib/server/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,9 +11,11 @@ export const dynamic = "force-dynamic";
 const ISSUERS = ["https://accounts.google.com", "accounts.google.com"];
 
 export async function POST(req: Request) {
-  if (!backendReady()) return OFFLINE();
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  if (!clientId) return Response.json({ error: "Google OAuth is not configured on this server" }, { status: 500 });
+  /* googleReady is sessionsReady + a client id, so there is nothing left to
+     check for configuration here - the audience below is the only secret part
+     of a Google token this server trusts. */
+  if (!googleReady()) return OFFLINE();
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
 
   let body: { idToken?: string };
   try { body = await req.json(); } catch { body = {}; }
@@ -25,11 +28,10 @@ export async function POST(req: Request) {
     return Response.json({ error: "Google token failed verification - try again" }, { status: 401 });
   }
 
-  const user = await upsertUser({
+  const user = await issueSession({
     provider: "google", providerId: String(claims.sub),
     login: null, name: claims.name || claims.email || "you",
     email: claims.email ?? null, picture: claims.picture ?? null,
   });
-  await setSession({ uid: user.id, name: user.name, provider: "google" });
-  return Response.json({ ok: true, user: publicUser(user) });
+  return Response.json({ ok: true, user });
 }

@@ -1,0 +1,6543 @@
+{
+ "generated": "2026-10-25",
+ "note": "Names are the mentors published alongside accepted projects in the archive we hold. Distinct spellings, not distinct people, and an organization that listed itself as mentor is dropped.",
+ "programs": {
+  "gsoc": {
+   "label": "Google Summer of Code",
+   "years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "mentors": 4917,
+   "projectsWithMentors": 5234,
+   "top": [
+    {
+     "name": "Bruno",
+     "projects": 40,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "AOSSIE"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Till Kamppeter",
+     "projects": 37,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Vassil Vassilev",
+     "projects": 32,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "LLVM Compiler Infrastructure",
+      "CERN-HSF"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Toby Dylan Hocking",
+     "projects": 30,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "R project for statistical computing"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Emanuele Usai",
+     "projects": 27,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)",
+      "HumanAI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "jddeep",
+     "projects": 26,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "AOSSIE"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andreuibanez",
+     "projects": 23,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Liquid Galaxy project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ira McDonald",
+     "projects": 22,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Sreeja Kamishetty",
+     "projects": 22,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Chromium"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Suresh",
+     "projects": 21,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shaheem Azmal M MD",
+     "projects": 20,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FOSSology"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Walter Bender",
+     "projects": 20,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Sugar Labs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "czgdp1807",
+     "projects": 19,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Fortran-lang",
+      "Python Software Foundation",
+      "NumFOCUS",
+      "stdlib"
+     ],
+     "orgCount": 4
+    },
+    {
+     "name": "Gaurav Mishra",
+     "projects": 19,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FOSSology",
+      "SW360"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "hackeramitkumar",
+     "projects": 19,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "AOSSIE"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Apostolos Chalkis",
+     "projects": 18,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GeomScale"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Bradly Alicea",
+     "projects": 18,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ondřej Čertík",
+     "projects": 18,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Fortran-lang",
+      "Python Software Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Vissarion Fisikopoulos",
+     "projects": 18,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GeomScale",
+      "Open Technologies Alliance - GFOSS"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Chihurumnaya Ibiam",
+     "projects": 17,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Sugar Labs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Eric Reinhardt",
+     "projects": 17,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)",
+      "HumanAI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "SureshMarru",
+     "projects": 17,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Apache Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Anna Parul",
+     "projects": 16,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)",
+      "HumanAI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Kaushlendra",
+     "projects": 16,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FOSSology"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Stephen",
+     "projects": 16,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Chromium"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Xabier Granja",
+     "projects": 16,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "HumanAI"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kris Stern",
+     "projects": 15,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Jenkins"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chris Rackauckas",
+     "projects": 14,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Elias Tsigaridas",
+     "projects": 14,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GeomScale"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jonathan Balkind",
+     "projects": 14,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Free and Open Source Silicon Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Romain",
+     "projects": 14,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Internet Health Report"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Albumen Kevin",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Apache Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Barbara Cutler",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "Submitty"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "BWGartner",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "openSUSE Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Evan Patton",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "MIT App Inventor"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Federico Capoano",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OpenWISP"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jesse Parent",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Karine Pistili Rodrigues",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Liquid Galaxy project",
+      "Invesalius",
+      "Uramaki LAB"
+     ],
+     "orgCount": 3
+    },
+    {
+     "name": "Marc Gonzalez Capdevila",
+     "projects": 13,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Liquid Galaxy project",
+      "Invesalius",
+      "Uramaki LAB"
+     ],
+     "orgCount": 3
+    },
+    {
+     "name": "Paulo Henrique Junqueira Amorim",
+     "projects": 13,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Invesalius"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Pranath Reddy",
+     "projects": 13,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Felix Paul Kühne",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Henry Senyondo",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Julia Herold",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "International Catrobat Association"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "KC Kong",
+     "projects": 12,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Rohit Goswami",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Fortran-lang",
+      "Python Software Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "sletz",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GRAME"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Thiago F Moraes",
+     "projects": 12,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Invesalius"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Thomas Guillem",
+     "projects": 12,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Abraham Aranguren",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OWASP Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "AugustinL",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "National Resource for Network Biology (NRNB)",
+      "cBioPortal for Cancer Genomics"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Bruno Verachten",
+     "projects": 11,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Jenkins"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Carlos Fernandez Sanz",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "CCExtractor Development"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "chubinou",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Diptarko Choudhury",
+     "projects": 11,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Gedare Bloom",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "RTEMS Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Hartmut Kaiser",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Ste||ar group"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ivan Ogasawara",
+     "projects": 11,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS",
+      "Open Science Labs"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Jun",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Apache Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Konstantin Matchev",
+     "projects": 11,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Marcus Edel",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "mlpack",
+      "NumFOCUS"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "ToMago",
+     "projects": 11,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Viyat",
+     "projects": 11,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OWASP Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Yash Raj",
+     "projects": 11,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Liquid Galaxy project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Zdenek Dohnal",
+     "projects": 11,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Alexandre Janniaux",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Anindya Kundu",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Sugar Labs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "arkid15r",
+     "projects": 10,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OWASP Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chandan S Gowda",
+     "projects": 10,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "AOSSIE"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chris",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dominic Mills",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Palisadoes Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Eric Larson",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Hugo Dueñas",
+     "projects": 10,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "omegaUp"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jan-Simon Möller",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Keavon Chambers",
+     "projects": 10,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Graphite"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Lee Calcote",
+     "projects": 10,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "CNCF",
+      "Meshery"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Monkey",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "MetaBrainz Foundation Inc"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Neeraj Dhanraj Bokde",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "R project for statistical computing"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Randy Mackay",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "ArduPilot"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Roman Ivanov",
+     "projects": 10,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "checkstyle"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Saransh Chopra",
+     "projects": 10,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shail Patel",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Submitty"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "sunbiz",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2026
+     ],
+     "orgs": [
+      "LibreHealth"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Victor Romero",
+     "projects": 10,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Mifos Initiative"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Walt Miner",
+     "projects": 10,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "William Allen",
+     "projects": 10,
+     "years": [
+      2022,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "Submitty"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Yang Luo",
+     "projects": 10,
+     "years": [
+      2022
+     ],
+     "orgs": [
+      "Casbin"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aaron Brethorst",
+     "projects": 9,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Open Transit Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Abdulhakim Alnuqaydan",
+     "projects": 9,
+     "years": [
+      2022,
+      2023
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aditya Bhattad",
+     "projects": 9,
+     "years": [
+      2025
+     ],
+     "orgs": [
+      "AOSSIE"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Antonis",
+     "projects": 9,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "gprMax"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "aph",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Arthur Cohen",
+     "projects": 9,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GNU Compiler Collection (GCC)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Brendan Ames",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Carl Schwan",
+     "projects": 9,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "KDE Community"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Charith",
+     "projects": 9,
+     "years": [
+      2022
+     ],
+     "orgs": [
+      "SCoRe Lab"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Colin Crovella",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Daniele Marinazzo",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Di Cook",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "R project for statistical computing"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ethan White",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Eugene Sandulenko",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "ScummVM"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Harrison M.",
+     "projects": 9,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "HumanAI"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "jbk",
+     "projects": 9,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kinsey",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "RTEMS Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Malte Tashiro",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Internet Health Report"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Manolis",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Honeynet Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Matteo Lodi",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Honeynet Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Michael Toomey",
+     "projects": 9,
+     "years": [
+      2022,
+      2023
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Philippe Ombredanne",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "AboutCode"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "saghul",
+     "projects": 9,
+     "years": [
+      2022,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Jitsi"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "sloriot",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "CGAL Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Terri Oda",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "TG1999",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "AboutCode"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Thibaud ​Cola​s-",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Wagtail"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Thorsten Bandel",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "International Catrobat Association"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Vedant Paranjape",
+     "projects": 9,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "BeagleBoard.org",
+      "libcamera"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Aaron Meurer",
+     "projects": 8,
+     "years": [
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "SymPy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Alex Pitchford",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ankur Sinha (he/him/his)",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Atharva Arya",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "TARDIS RT Collaboration"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aveek Basu",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Brian G. Peterson",
+     "projects": 8,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "R project for statistical computing"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Craig",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "gprMax"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "danistrigaro",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Devin Ulibarri",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Sugar Labs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dinesh PR",
+     "projects": 8,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "HumanAI",
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Diogo",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "VideoLAN"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dr. Sawood Alam",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Internet Archive"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "emileaben",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Internet Health Report"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Erwan",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "OpenAstronomy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Gagan Deep (pandafy)",
+     "projects": 8,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OpenWISP"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Gil Arasa Verge",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "MetaCall"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "ivantha",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "SCoRe Lab",
+      "C2SI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Joel Sherrill",
+     "projects": 8,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "RTEMS Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Johannes Doerfert",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "LLVM Compiler Infrastructure"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Juan Gomez",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "omegaUp"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kannupriya Kalra",
+     "projects": 8,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Scala Center"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Katia Matcheva",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Lionel Laské",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Sugar Labs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "MarioB",
+     "projects": 8,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FOSSASIA"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Matteo Bachetti",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OpenAstronomy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Maxi",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Michael Lawrence Evans",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Mayor's Office of New Urban Mechanics",
+      "City of Boston"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Mike Toomey",
+     "projects": 8,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Padraig Gleeson",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Parra",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "MetaCall"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "PG Guan",
+     "projects": 8,
+     "years": [
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Radostin Stoyanov",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "CRIU"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "RazvanD",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Unikraft"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Regina Obe",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Reimar Bauer",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ruchi Chudasama",
+     "projects": 8,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "SERGE KOUDORO",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Siqueira",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "X.Org Foundation",
+      "The Linux Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Suren Byna",
+     "projects": 8,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "UC OSPO"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Tommaso Soru",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "DBpedia"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Wolfgang Slany",
+     "projects": 8,
+     "years": [
+      2022,
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "International Catrobat Association"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "acethecreator",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Postman",
+      "AsyncAPI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Anca Doloc-Mihu",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andrea Underhill",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "HumanAI"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andreas Flörs",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "TARDIS RT Collaboration"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andrew Fullard",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "TARDIS RT Collaboration"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andrey Velichkevich",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Kubeflow"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Athif Shaffy",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "Neutralinojs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Avinaash M Vijayvargiya",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "The Mifos Initiative"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "ayansinha",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "AboutCode"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Babak Mahmoudi",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Department of Biomedical Informatics, Emory University"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ben Weinstein",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Cengiz Gunay",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chris Black",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "PEcAn Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chris Johns",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "RTEMS Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Chris Reed",
+     "projects": 7,
+     "years": [
+      2022,
+      2024
+     ],
+     "orgs": [
+      "Submitty"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Christian Couder",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GitLab",
+      "Git"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Christos Chronis",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "Open Technologies Alliance - GFOSS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Claudio Wunder",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2026
+     ],
+     "orgs": [
+      "GNOME Foundation",
+      "webpack"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "cvvergara",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dan McCloy",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Python Software Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Daniele Rosetti",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Honeynet Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "David Allison",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "AnkiDroid"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "David Lange",
+     "projects": 7,
+     "years": [
+      2022,
+      2025
+     ],
+     "orgs": [
+      "CERN-HSF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "dimitrios_san",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Internet Health Report"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dnouv",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "rocket.chat"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "DonnieBLT",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "OWASP Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Francesco Bonazzi",
+     "projects": 7,
+     "years": [
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "SymPy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Francois Cartegnie",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "FOSSASIA",
+      "VideoLAN"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "GFenoy",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Guilherme Gazzo",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "rocket.chat"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Isidoros",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Ste||ar group"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Iuliana Prodan",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Linux Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jaladh Singhal",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "TARDIS RT Collaboration"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jason Moore",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "SymPy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jason@BeagleBoard.org",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "BeagleBoard.org",
+      "The Linux Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "JB Poline",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jehan",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GNU Image Manipulation Program"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jesper Pedersen",
+     "projects": 7,
+     "years": [
+      2022,
+      2023
+     ],
+     "orgs": [
+      "PostgreSQL"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "José María Cañas",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "JdeRobot"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "koppor",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "JabRef e.V.",
+      "Eclipse Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Lorenzo Moneta",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "CERN-HSF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Mael",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "CGAL Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Mahmoud Zeydabadinezhad",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Department of Biomedical Informatics, Emory University"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Md Noman Khan",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "The Palisadoes Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Mihaela Dumitru",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Jitsi"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Mike Dietze",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "PEcAn Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "My-Wine-Cellar",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "PostgreSQL"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Navin Chandra",
+     "projects": 7,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "openSUSE Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "NehaGupta",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Keploy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Nguyễn Hồng Quân",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FOSSASIA"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Nicholas Tolley",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "INCF"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Nikos Cheimarios",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Open Technologies Alliance - GFOSS",
+      "GeomScale"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Onur Sumer",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "cBioPortal for Cancer Genomics"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Osvaldo",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "NumFOCUS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Paul W. Ayers",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "QC-Devs"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Pavel Pisa",
+     "projects": 7,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "RTEMS Project",
+      "Apache Software Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Pedro Arias-Perez",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "JdeRobot"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Peter Uhrig",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024
+     ],
+     "orgs": [
+      "Red Hen Lab"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Pierre-Emmanuel Patry",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GNU Compiler Collection (GCC)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "pr0m1th3as",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "GNU Octave"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Pradeeban Kathiravelu",
+     "projects": 7,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Alaska"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Rajan Maurya",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The Mifos Initiative"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "RavinduDeSilva",
+     "projects": 7,
+     "years": [
+      2023,
+      2024
+     ],
+     "orgs": [
+      "SCoRe Lab",
+      "C2SI"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "reqrefusion",
+     "projects": 7,
+     "years": [
+      2025,
+      2026
+     ],
+     "orgs": [
+      "FreeCAD"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "RodolfoRG",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Synfig"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Samet Akcay",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "OpenVINO Toolkit"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shreyas",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Ste||ar group"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shubham Jain",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Keploy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Steve Hoover",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "Free and Open Source Silicon Foundation",
+      "CHIPS Alliance"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Thorsten",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "LibreOffice"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Tommaso Pecorella",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The ns-3 Network Simulator Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Warner Losh",
+     "projects": 7,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "The FreeBSD Project",
+      "QEMU"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Yuval Lifshitz",
+     "projects": 7,
+     "years": [
+      2023,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Ceph"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aaron van Meerten",
+     "projects": 6,
+     "years": [
+      2022,
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Jitsi"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aboobacker MK",
+     "projects": 6,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "CircuitVerse.org"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Adhiambo",
+     "projects": 6,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "Oppia Foundation"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Aditya.Gupta",
+     "projects": 6,
+     "years": [
+      2024,
+      2025
+     ],
+     "orgs": [
+      "FOSSASIA"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Alex Kanitz",
+     "projects": 6,
+     "years": [
+      2022,
+      2023,
+      2026
+     ],
+     "orgs": [
+      "Global Alliance for Genomics and Health"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ali Hariri",
+     "projects": 6,
+     "years": [
+      2022
+     ],
+     "orgs": [
+      "Machine Learning for Science (ML4SCI)"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ankit M.",
+     "projects": 6,
+     "years": [
+      2024,
+      2025,
+      2026
+     ],
+     "orgs": [
+      "API Dash"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Anupam Ghosh",
+     "projects": 6,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "FOSSology"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "ApoorvGarg",
+     "projects": 6,
+     "years": [
+      2023,
+      2024,
+      2025
+     ],
+     "orgs": [
+      "JdeRobot",
+      "Django Software Foundation"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Ashish-Kumar",
+     "projects": 6,
+     "years": [
+      2022,
+      2023,
+      2024,
+      2026
+     ],
+     "orgs": [
+      "OSGeo (Open Source Geospatial Foundation)"
+     ],
+     "orgCount": 1
+    }
+   ]
+  },
+  "lfx": {
+   "label": "LFX Mentorship",
+   "years": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "mentors": 982,
+   "projectsWithMentors": null,
+   "note": "Every distinct mentor name printed on the 1303 projects LFX Mentorship has published.",
+   "top": [
+    {
+     "name": "Ayush Shrivastav",
+     "projects": 37,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Node.js",
+      "C++",
+      "JavaScript"
+     ]
+    },
+    {
+     "name": "Robert Dahlberg",
+     "projects": 25,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "C",
+      "Code review",
+      "API"
+     ]
+    },
+    {
+     "name": "Tanmay Rauth",
+     "projects": 21,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Algorithm",
+      "Amazon Web Services",
+      "Bootstrap"
+     ]
+    },
+    {
+     "name": "Jyotsna Jahanavi Devi K",
+     "projects": 18,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Python",
+      "Java",
+      "JavaScript"
+     ]
+    },
+    {
+     "name": "Habtamu Asfaw",
+     "projects": 16,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Ansible",
+      "Terraform",
+      "Amazon Web Services"
+     ]
+    },
+    {
+     "name": "Peter Somogyvari",
+     "projects": 14,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Programming",
+      "Software Architecture",
+      "Blockchain"
+     ]
+    },
+    {
+     "name": "Rajan Sharma",
+     "projects": 14,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "Cloud Native Architecture",
+      "Platform Engineering"
+     ]
+    },
+    {
+     "name": "SRIJAN DE",
+     "projects": 14,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Angular",
+      "C++",
+      "Django"
+     ]
+    },
+    {
+     "name": "Selva Ramasamy",
+     "projects": 13,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Protocols: BGP, EVPN, MPLS, SRv6, OSPF, VRRP, IGMP, LAG, STP",
+      "SONiC/SAOS Expertise: Disaggregated routing, containerized network functions, YANG/Netconf",
+      "Languages/Tools: C, C++, Python, Docker, Git, Yocto, Jenkins, Wireshark"
+     ]
+    },
+    {
+     "name": "Sridhar Rao",
+     "projects": 13,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "SDN",
+      "NFV",
+      "Machine Learning"
+     ]
+    },
+    {
+     "name": "zahir sayyed",
+     "projects": 12,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Code quality",
+      "Java",
+      "JavaScript"
+     ]
+    },
+    {
+     "name": "Matthias Wahl",
+     "projects": 11,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Rust",
+      "Pony",
+      "C"
+     ]
+    },
+    {
+     "name": "Nitin Singhal",
+     "projects": 11,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "HTML",
+      "User Experience Design",
+      "UI Design"
+     ]
+    },
+    {
+     "name": "Shraddha Alawane",
+     "projects": 11,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "HTML",
+      "CSS",
+      "React"
+     ]
+    },
+    {
+     "name": "Bartlomiej Płotka",
+     "projects": 10,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Code quality",
+      "Code review"
+     ]
+    },
+    {
+     "name": "Dr Zubaida Khatoon",
+     "projects": 10,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Chrome",
+      "Web Components",
+      "Jupyter Notebook"
+     ]
+    },
+    {
+     "name": "Ganesh Suryadas Gurudu",
+     "projects": 10,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Site Reliability Engineering (SRE)",
+      "Platform Engineering",
+      "Kubernetes / OpenShift"
+     ]
+    },
+    {
+     "name": "Harikrishnan Balagopal",
+     "projects": 10,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "JavaScript",
+      "Python"
+     ]
+    },
+    {
+     "name": "Wang Yan",
+     "projects": 10,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Design",
+      "GO"
+     ]
+    },
+    {
+     "name": "Akshay Waghmare",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "React",
+      "Next",
+      "Flutter"
+     ]
+    },
+    {
+     "name": "amrit0097.becse24@chitkara.edu.in amrit0097.becse24@chitkara.edu.in",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "API",
+      "Python",
+      "HTML"
+     ]
+    },
+    {
+     "name": "Andy Anderson",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Python",
+      "Node.js"
+     ]
+    },
+    {
+     "name": "Antriksh Misri",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Python",
+      "Express",
+      "React"
+     ]
+    },
+    {
+     "name": "Baohua Yang",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Algorithm",
+      "Blockchain",
+      "Design"
+     ]
+    },
+    {
+     "name": "Ben Hirschberg",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "C",
+      "GO",
+      "Security"
+     ]
+    },
+    {
+     "name": "berg zhao",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO"
+     ]
+    },
+    {
+     "name": "Charalampos Mainas",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "C",
+      "GO",
+      "Bash"
+     ]
+    },
+    {
+     "name": "Craig Box",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Deployment",
+      "DevOps",
+      "Podcasting"
+     ]
+    },
+    {
+     "name": "fisher fisher",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Kubernetes"
+     ]
+    },
+    {
+     "name": "Flody Lee",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Security",
+      "Project management",
+      "Privacy Preserving Technology"
+     ]
+    },
+    {
+     "name": "Gerardo Lopez",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "Android",
+      "Amazon Web Services"
+     ]
+    },
+    {
+     "name": "Giedrius Statkevičius",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Linux",
+      "Monitoring"
+     ]
+    },
+    {
+     "name": "Heinz Gies",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Rust",
+      "Elixir",
+      "Testing"
+     ]
+    },
+    {
+     "name": "Hongbing Zhang",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Operating system",
+      "Kubernetes",
+      "Linux"
+     ]
+    },
+    {
+     "name": "Hung-Ying Tai",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "C++",
+      "Compiler",
+      "Linux"
+     ]
+    },
+    {
+     "name": "Jim Bugwadia",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Kubernetes",
+      "distributed systems"
+     ]
+    },
+    {
+     "name": "Jonah Kowall",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "API",
+      "Bash",
+      "Database"
+     ]
+    },
+    {
+     "name": "Kautilya Tripathi",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Kubernetes",
+      "TypeScript"
+     ]
+    },
+    {
+     "name": "Lee Calcote",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Homebrew",
+      "Rust",
+      "GO"
+     ]
+    },
+    {
+     "name": "Manan Gupta",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Python",
+      "Bash"
+     ]
+    },
+    {
+     "name": "Mehant Kammakomati",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "Docker",
+      "GO"
+     ]
+    },
+    {
+     "name": "Michael Yuan",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Rust",
+      "webassembly",
+      "Serverless"
+     ]
+    },
+    {
+     "name": "Monali Nayak",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Ansible",
+      "Python",
+      "Data structures"
+     ]
+    },
+    {
+     "name": "Orlin Vasilev",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "golang",
+      "community"
+     ]
+    },
+    {
+     "name": "Orlin Vasilev",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes"
+     ]
+    },
+    {
+     "name": "Priyansh Singh",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Algorithm",
+      "Babel",
+      "C"
+     ]
+    },
+    {
+     "name": "Rahul Jadhav",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Linux",
+      "Kernel"
+     ]
+    },
+    {
+     "name": "Ren Hongcai",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Kubernetes"
+     ]
+    },
+    {
+     "name": "Rene Dudfield",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "TypeScript",
+      "Kubernetes",
+      "GO"
+     ]
+    },
+    {
+     "name": "S.Santhosh Nagaraj",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO",
+      "Kubernetes",
+      "React"
+     ]
+    },
+    {
+     "name": "Saswata Mukherjee",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO"
+     ]
+    },
+    {
+     "name": "Shivam Gupta",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Algorithm",
+      "Android",
+      "API"
+     ]
+    },
+    {
+     "name": "Shuah Khan",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Linux Kernel",
+      "C",
+      "GNU Make"
+     ]
+    },
+    {
+     "name": "Shuting Zhao",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "GO"
+     ]
+    },
+    {
+     "name": "Subarna Lamsal",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Algorithm",
+      "Bot",
+      "Command line interface"
+     ]
+    },
+    {
+     "name": "Tom Slanda",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Git",
+      "JavaScript",
+      "React"
+     ]
+    },
+    {
+     "name": "Vadim Bauer",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "API",
+      "Amazon Web Services"
+     ]
+    },
+    {
+     "name": "Xuzheng Chang",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "GO",
+      "Git"
+     ]
+    },
+    {
+     "name": "Yi-Ying He",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "C",
+      "C++"
+     ]
+    },
+    {
+     "name": "Yue Bao",
+     "projects": 9,
+     "years": [],
+     "orgs": [],
+     "skills": [
+      "Kubernetes",
+      "Docker"
+     ]
+    }
+   ],
+   "directory": {
+    "registered": 1769,
+    "nameable": 1761,
+    "withProjects": 1279,
+    "source": "api.mentorship.lfx.linuxfoundation.org/mentors",
+    "note": "Every mentor profile on the LFX Mentorship platform. registered is everyone who signed up, including accounts named only by an email address; nameable has a real display name; withProjects also lists at least one project or graduate. The site quotes withProjects."
+   }
+  },
+  "outreachy": {
+   "label": "Outreachy",
+   "years": [
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "mentors": 0,
+   "projectsWithMentors": 0,
+   "top": []
+  },
+  "sob": {
+   "label": "Summer of Bitcoin",
+   "years": [
+    2026
+   ],
+   "mentors": 44,
+   "projectsWithMentors": 65,
+   "top": [
+    {
+     "name": "Bob",
+     "projects": 11,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "braidpool",
+      "ChatBTC"
+     ],
+     "orgCount": 2
+    },
+    {
+     "name": "Ace",
+     "projects": 7,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "SeedSigner"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Keith Mukai",
+     "projects": 7,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "SeedSigner"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Andreas",
+     "projects": 5,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "ChatBTC"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kostas Karasavvas",
+     "projects": 5,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "ChatBTC"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Buck Perley",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Caravan"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Evan Kaloudis",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Zeus"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kulpreet Singh",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "P2Pool"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Prisca",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Demand"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Rajarshi Maitra",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Coinswap"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Rohan",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Cypherock"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shubham Kumar",
+     "projects": 3,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Zeus"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Calvadev",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Shopstr"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Dan Gershony",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Angor"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Deeksha",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Saving Satoshi"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Eric Sirion",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Fedimint"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jakub",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Alby"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Justin Carter",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Galoy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Justin Moon",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Fedimint"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Kartik",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Galoy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Lee",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Saving Satoshi"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Leonardo",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "BDK"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Pavan",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Alby"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Sandipan",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Galoy"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Shaurya",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Fedimint"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Steve Myers",
+     "projects": 2,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "BDK"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Abhay",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Formstr"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Abhilash",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Bitcoin-Tribe"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Abubakar",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Bitcoin Core"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Anant Tapadia",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Bitcoin-Keeper"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Bruno Gracia",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Bitcoin-Fuzz"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Devrandom",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "VLS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Jack Ronaldi",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "VLS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Lakshay",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "VLS"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Marco Argentieri",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Ark"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Matt Morehouse",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Lightning-Network"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Oliver Gugger",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "LND"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "René",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "LN History"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Roy Sheinfeld",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Breez"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Sai",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Nostr Components"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Stacie",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Bitcoin Dev Project"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Thebora Kompanioni",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "Jam"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Vincenzo Palazzo",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "lampo"
+     ],
+     "orgCount": 1
+    },
+    {
+     "name": "Ziggie",
+     "projects": 1,
+     "years": [
+      2026
+     ],
+     "orgs": [
+      "LND"
+     ],
+     "orgCount": 1
+    }
+   ]
+  },
+  "gssoc": {
+   "label": "GSSoC'26",
+   "years": [
+    2026
+   ],
+   "mentors": 198,
+   "projectsWithMentors": 423,
+   "note": "The mentor directory GSSoC exposes at /api/mentors returns 199 names and ignores pagination, plus the project admins named on each registered project.",
+   "top": [
+    {
+     "name": "Aadya Patel",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Aadya2901"
+    },
+    {
+     "name": "Aamod Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Aamodx6"
+    },
+    {
+     "name": "Aayushi Sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "aayushi1806sharma-afk"
+    },
+    {
+     "name": "Abdullah Jameel",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "abdullahxyz85"
+    },
+    {
+     "name": "Abdulwahab",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AbdulWahab740"
+    },
+    {
+     "name": "Abhigyan Dutta",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ultrabot05"
+    },
+    {
+     "name": "ABHINAV RAJ",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "probably-ABHINAV"
+    },
+    {
+     "name": "Abhishek Rao",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "abhishekraoas"
+    },
+    {
+     "name": "Adithyan C S S",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "adithyan-css"
+    },
+    {
+     "name": "Aditthya SS Varma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AditthyaSS"
+    },
+    {
+     "name": "Agastya Pandey",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "BeastAyyg"
+    },
+    {
+     "name": "Ahana Banerjee",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "ahana4banerjee"
+    },
+    {
+     "name": "Ajay Razz",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ajayrazz"
+    },
+    {
+     "name": "Akanksha Trehun",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "magic-peach"
+    },
+    {
+     "name": "Akash Dutta",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "akashduttaa"
+    },
+    {
+     "name": "Akshit Maheshwari",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AkshitMaheshwari"
+    },
+    {
+     "name": "Amogh Sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Chunnu-Munnu"
+    },
+    {
+     "name": "Amogh Sunil",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "stealthwhizz"
+    },
+    {
+     "name": "Amritanshu kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "amritanshu2005"
+    },
+    {
+     "name": "Anirban Sarkar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AnirbansarkarS"
+    },
+    {
+     "name": "Anirudh Phophalia",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AnirudhPhophalia"
+    },
+    {
+     "name": "Anjali Sinha",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "aanjalii01"
+    },
+    {
+     "name": "Ankush Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "whyankush07"
+    },
+    {
+     "name": "Anubhav Jaiswal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "anubhavxdev"
+    },
+    {
+     "name": "Anuj Kulkarni",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "steam-bell-92"
+    },
+    {
+     "name": "Anupam Maurya",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "anupammaurya6767"
+    },
+    {
+     "name": "Anusha Anand",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "yellowgram1543"
+    },
+    {
+     "name": "Anushree Bondia",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Anushreebasics"
+    },
+    {
+     "name": "Armaan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "iarmaanx"
+    },
+    {
+     "name": "Aryan Bhutani",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "aryanbhutani26"
+    },
+    {
+     "name": "Aryan Kaushik",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "a-kaushik2209"
+    },
+    {
+     "name": "arzoo rai",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "arzoo0511"
+    },
+    {
+     "name": "Ashish Parab",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "asheesh109"
+    },
+    {
+     "name": "Ashutosh Raj",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "AshutoshRaj1260"
+    },
+    {
+     "name": "Athar Akram",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "xthxr"
+    },
+    {
+     "name": "Atharva Matale",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "oasis-parzival"
+    },
+    {
+     "name": "Ayesha Saleem",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "aysh34"
+    },
+    {
+     "name": "Ayush Kumar Rai",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "ayu-yishu13"
+    },
+    {
+     "name": "Ayush Patel",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ayush-Patel-56"
+    },
+    {
+     "name": "Ayush sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "ayushap18"
+    },
+    {
+     "name": "Ayush Sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ayushh-Sharmaa"
+    },
+    {
+     "name": "Baleeshwar Palavadi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "eeshwar369"
+    },
+    {
+     "name": "Beerum Bhuvan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Bbn08"
+    },
+    {
+     "name": "Bhoompally Kalyan Reddy",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kalyan-1845"
+    },
+    {
+     "name": "Bishal Saha",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "bishal2623"
+    },
+    {
+     "name": "Bittu Agarwal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "BittuAgarwal1237"
+    },
+    {
+     "name": "Brajesh Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Brajesh31"
+    },
+    {
+     "name": "Brijesh Thummar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Brijeshthummar02"
+    },
+    {
+     "name": "Chetan Rangari",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Chetan0e"
+    },
+    {
+     "name": "Chhavi Luthra",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "chhaviluthra08"
+    },
+    {
+     "name": "Daksh Jain",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "itsdakshjain"
+    },
+    {
+     "name": "Dakshata",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "the-matrixneo"
+    },
+    {
+     "name": "Daniel G Kebede",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Maxd646"
+    },
+    {
+     "name": "Darshan Pawar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Darshanpawar7"
+    },
+    {
+     "name": "Darshan Vasani",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "dpvasani"
+    },
+    {
+     "name": "Deepak Bhagat",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "deepak0x"
+    },
+    {
+     "name": "Deepak Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "deepaksinghh12"
+    },
+    {
+     "name": "Devansh Nigam",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "DevanshAIBuilder"
+    },
+    {
+     "name": "Devesh Chauhan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "devloperdevesh"
+    },
+    {
+     "name": "Dewansh Shekhar Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "dewanshshekhar"
+    },
+    {
+     "name": "Diksha Dhanaji Dabhole",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "diksha78dev"
+    },
+    {
+     "name": "Eswaramuthu M",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Eswaramuthu"
+    },
+    {
+     "name": "Fahed Khan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "12fahed"
+    },
+    {
+     "name": "Gaurav Chand",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "gaurav123-4"
+    },
+    {
+     "name": "Gopichand Dandimeni",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Gooichand"
+    },
+    {
+     "name": "Gourav Kumar Pandey",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Gouravkumarpandey"
+    },
+    {
+     "name": "Gyanshankar pd singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "gyanshankar1708"
+    },
+    {
+     "name": "Haile Tassew",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Haile-12"
+    },
+    {
+     "name": "Hardik Bandhiya",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "BandhiyaHardik"
+    },
+    {
+     "name": "Harsh Manmode",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Harsh-2006-git"
+    },
+    {
+     "name": "Harsh Vardhan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "harxhe"
+    },
+    {
+     "name": "Harshit Kudhial",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "harshitnub077"
+    },
+    {
+     "name": "Himanshu",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "himanshu007-creator"
+    },
+    {
+     "name": "Isaak Kamau",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Isaakkamau"
+    },
+    {
+     "name": "Ishant Singh Bisht",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ixotic27"
+    },
+    {
+     "name": "Jagadeesh kota",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kota-jagadeesh"
+    },
+    {
+     "name": "JAGADEESH MUMMANA",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Mummanajagadeesh"
+    },
+    {
+     "name": "Janhavi kashyap",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Janhavi078"
+    },
+    {
+     "name": "Jeet Pandya",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "PandyaJeet"
+    },
+    {
+     "name": "Joe Celaster",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "JoeCelaster"
+    },
+    {
+     "name": "Kallal Mukherjee",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kallal79"
+    },
+    {
+     "name": "Karan Gupta",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "KaranGupta2005"
+    },
+    {
+     "name": "Karan Mani Tripathi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "knoxiboy"
+    },
+    {
+     "name": "Kartikey Korimilli",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kartikey369-ind"
+    },
+    {
+     "name": "Karun Pacholi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kpj2006"
+    },
+    {
+     "name": "Kelavath Balaji Naik",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Balaji91221"
+    },
+    {
+     "name": "Ketan Thombare",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Kthombare-dev"
+    },
+    {
+     "name": "Kona Naga Devi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nagadevikona20-max"
+    },
+    {
+     "name": "kratika agrawal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kr8865"
+    },
+    {
+     "name": "Kumar Nirupam",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "KumarNirupam1"
+    },
+    {
+     "name": "Kumari Lucky Raj",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kumariluckyraj"
+    },
+    {
+     "name": "Kunal Das",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Kunal25Das"
+    },
+    {
+     "name": "Kunal Verma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "kunalverma2512"
+    },
+    {
+     "name": "Lakshay bhatia",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "lkshayb"
+    },
+    {
+     "name": "Leona Goel",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "leonagoel"
+    },
+    {
+     "name": "Lourdu Radjou",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "lourduradjou"
+    },
+    {
+     "name": "Mabud Alam",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "MabudAlam"
+    },
+    {
+     "name": "Manan Chawla",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "manan-chawla"
+    },
+    {
+     "name": "Mandeep Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "mandeep6207"
+    },
+    {
+     "name": "Maneshwar C Holla",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "lovestaco"
+    },
+    {
+     "name": "MANISH",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Chmanish999"
+    },
+    {
+     "name": "Mayank Sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "MAYANKSHARMA01010"
+    },
+    {
+     "name": "Milad Ajaz Bhat",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "m4milaad"
+    },
+    {
+     "name": "Minha Kenzy OM",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "KENZY004"
+    },
+    {
+     "name": "Minhajul Hossain",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "c0sm0void"
+    },
+    {
+     "name": "Mohit",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Mohit-368"
+    },
+    {
+     "name": "Mrigakshi Rathore",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Mrigakshi-Rathore"
+    },
+    {
+     "name": "Mrinal Roy",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Mrinalray"
+    },
+    {
+     "name": "Mudit Khater",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "mudit108-code"
+    },
+    {
+     "name": "Muhammad azeem",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "MUHAMMAD-AZEEM-AZAM"
+    },
+    {
+     "name": "Mukul Prasad",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "MUKUL-PRASAD-SIGH"
+    },
+    {
+     "name": "Naman jha",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Naman-iitm"
+    },
+    {
+     "name": "Neeraj Rajeev",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "idklevi"
+    },
+    {
+     "name": "Neeru",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "neeru24"
+    },
+    {
+     "name": "Nihal Awasthi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nihalawasthi"
+    },
+    {
+     "name": "Nilanjan Saha",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Devnil434"
+    },
+    {
+     "name": "Nimra Wani",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nimrawani04"
+    },
+    {
+     "name": "Nirvik Goswami",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nirvik34"
+    },
+    {
+     "name": "Nishant",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nishantxscooby"
+    },
+    {
+     "name": "Nisshchaya Rathi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nisshchayarathi"
+    },
+    {
+     "name": "Nitin Mishra",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "nitinog10"
+    },
+    {
+     "name": "Nitya Gosain",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Nitya-003"
+    },
+    {
+     "name": "Om Choubey",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "4f4d"
+    },
+    {
+     "name": "Om Roy",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "omroy07"
+    },
+    {
+     "name": "Omkar Kathile",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "OmkarKathile007"
+    },
+    {
+     "name": "Pankaj singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "PankajSingh34"
+    },
+    {
+     "name": "Paramjit Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "param20h"
+    },
+    {
+     "name": "Piyush Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "piyushdotcomm"
+    },
+    {
+     "name": "Prateek singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Prateekiiitg56"
+    },
+    {
+     "name": "Prathick Dhanes R",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "peterish8"
+    },
+    {
+     "name": "Pratyay Banerjee",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "neilblaze"
+    },
+    {
+     "name": "Preet Biswas",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "preetbiswas12"
+    },
+    {
+     "name": "Puneeth Aditya Myakam",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "mugiwaraluffy56"
+    },
+    {
+     "name": "Pushkarini",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Pushkarini579"
+    },
+    {
+     "name": "PUSHPAK MAHENDRA JAISWAL",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "PUSHPAK-JAISWAL"
+    },
+    {
+     "name": "Rahul Shendre",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "rahulshendre"
+    },
+    {
+     "name": "Raman Bhardwaj",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "2PieRadian"
+    },
+    {
+     "name": "Rashi Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Rashi-AI7"
+    },
+    {
+     "name": "Ratnadip Roy",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Ratnadip143"
+    },
+    {
+     "name": "Ritesh Bonthalakoti",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "riteshbonthalakoti"
+    },
+    {
+     "name": "Rithvik",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Rithvik1709"
+    },
+    {
+     "name": "Ritika Gupta",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "ritika"
+    },
+    {
+     "name": "Riya Mehta",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "1754riya"
+    },
+    {
+     "name": "Robin Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Engineerrobin7"
+    },
+    {
+     "name": "Rohit Lahu Bhalekar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "DevROHIT11"
+    },
+    {
+     "name": "Roshini Tavva",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Roshini1369"
+    },
+    {
+     "name": "Rounakk Raaj Sabat",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "rounakkraaj-1744"
+    },
+    {
+     "name": "Sabeena Viklar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "sabeenaviklar"
+    },
+    {
+     "name": "Sagar Datkhile",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Sagar-Datkhile"
+    },
+    {
+     "name": "Saif Ur Rasool",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "SaifRasool92"
+    },
+    {
+     "name": "Saloni Jain",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "techRunnerBySJ"
+    },
+    {
+     "name": "Sameer",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "ThePlator"
+    },
+    {
+     "name": "Sandeep Sarkar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "sandy4242"
+    },
+    {
+     "name": "Sandip Mandal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Sandipmandal25"
+    },
+    {
+     "name": "Sarthak Patil",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Precise-Goals"
+    },
+    {
+     "name": "Satyabrata Mohanty",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Satya900"
+    },
+    {
+     "name": "Satyam Pandey",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "satyam12x"
+    },
+    {
+     "name": "SATYAM PANDEY",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "SatyamPandey-07"
+    },
+    {
+     "name": "Saumya Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "oksaumya"
+    },
+    {
+     "name": "Saurabh Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "SaurabhSinghRajput-8777"
+    },
+    {
+     "name": "Sayan Roy",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "mesayanroy"
+    },
+    {
+     "name": "Shaarav Raghu",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "shaaravraghu"
+    },
+    {
+     "name": "Shravanthi S",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Shravanthi20"
+    },
+    {
+     "name": "Sibam Paul",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Sibam-Paul"
+    },
+    {
+     "name": "Siddhartha Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Siddhartha-singh01"
+    },
+    {
+     "name": "snehkris",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "snehkris"
+    },
+    {
+     "name": "Soumya Sagar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Soumya-codr"
+    },
+    {
+     "name": "Sourav Rajak",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "morningstarxcdcode"
+    },
+    {
+     "name": "Sparsh Agarwal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "sparshagarwal0411"
+    },
+    {
+     "name": "Sparsh Mishra",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "SparshM8"
+    },
+    {
+     "name": "SRINADH TADIKONDA",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "srinadhtadikonda"
+    },
+    {
+     "name": "Subrata Mondal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "subratamondalnsec"
+    },
+    {
+     "name": "SUMIT DAS",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Sumit-ai-dev"
+    },
+    {
+     "name": "Sunil Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "sunilkumar2170"
+    },
+    {
+     "name": "Sushil Kumar kushwaha",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "CodewithsushilOfficial"
+    },
+    {
+     "name": "Suvanwita Das",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "suvanwita"
+    },
+    {
+     "name": "Swastik Sharma",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "swastik7805"
+    },
+    {
+     "name": "Syed Imtiyaz Ali",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "SyedImtiyaz-1"
+    },
+    {
+     "name": "Tamil Selvan K",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "tamil-selvan-k"
+    },
+    {
+     "name": "Tapasi Patra",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "topshe23"
+    },
+    {
+     "name": "Tarunya Kesharwani",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "TarunyaProgrammer"
+    },
+    {
+     "name": "Uddalak Mukhopadhyay",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "uddalak2005"
+    },
+    {
+     "name": "Utkarsh Thakur",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "thakurutkarsh22"
+    },
+    {
+     "name": "VAISHNAVI PANDEY",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Vaishnavi-Pandey12"
+    },
+    {
+     "name": "Vansh Aggarwal",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "vanshaggarwal07"
+    },
+    {
+     "name": "Ved Thakar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Vedthakar"
+    },
+    {
+     "name": "Vedhapprakashni M",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "vedhapprakashni"
+    },
+    {
+     "name": "Vibhanshu Singh",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "singhvibhanshu"
+    },
+    {
+     "name": "Vikash Kumar",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Vikash55Kumar"
+    },
+    {
+     "name": "Vipin Baniya",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Vipin-Baniya"
+    },
+    {
+     "name": "Vishal Dubey",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "Vishal34sd"
+    },
+    {
+     "name": "Vishnu varthan",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "vishnu-varthan1"
+    },
+    {
+     "name": "Vishwanath Barve",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "CoderOggy78"
+    },
+    {
+     "name": "vivek prakash",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "IkkiOcean"
+    },
+    {
+     "name": "Vybhav Chaturvedi",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "vybhav72954"
+    },
+    {
+     "name": "Yash Daga",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "YashDaga17"
+    },
+    {
+     "name": "Yash Khare",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "FireFistisDead"
+    },
+    {
+     "name": "Zubin Shah",
+     "projects": 0,
+     "years": [
+      2026
+     ],
+     "orgs": [],
+     "login": "coder-zs-cse"
+    }
+   ],
+   "capped": false,
+   "participants": 47896
+  },
+  "kde": {
+   "label": "Season of KDE",
+   "years": [
+    2017,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "mentors": 29,
+   "projectsWithMentors": 87,
+   "note": "The Mentor line on each Season of KDE ideas page. Free text: a placeholder like 'approach them' is dropped rather than counted as a person.",
+   "top": [
+    {
+     "name": "Carl Schwan",
+     "projects": 6,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Aleix Pol",
+     "projects": 3,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Lucas Wang",
+     "projects": 3,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Apollo Zhu",
+     "projects": 3,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Vincent Pinon",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Devin Lin",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Han Young",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "fusionfuture",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Fushan Wen",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "asemke",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Alexander Semke",
+     "projects": 2,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Olivier Churlaud",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Paul Brown",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "KDE Promo",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Dan Leinir Turthra Jensen",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "David Edmundson",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Sung Jae Cho",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Tomaz Canabrava",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Lucas Biaggi",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Matthieu Gallien",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Guilherme Mar",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "KDE Identity",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "joseph",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "De Veaugh-Geiss",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "bharadwaj-raju",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Bharadwaj Raju",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Benson Muite",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "kdenlive",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    },
+    {
+     "name": "Jean-Baptiste Mardelle",
+     "projects": 1,
+     "years": [],
+     "orgs": []
+    }
+   ]
+  }
+ }
+}

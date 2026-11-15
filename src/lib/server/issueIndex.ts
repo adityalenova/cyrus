@@ -114,19 +114,36 @@ export function scoreRow(row: IssueRow, words: string[]): number {
 
 export type IssuePage = { total: number; page: number; per: number; pages: number; results: IssueRow[] };
 
+/** The three filters that have a facet rail of their own. */
+type Rail = "langs" | "orgs" | "labels";
+
+/** Which of the three rail filters this row fails. Split out so the facets
+ *  can apply every filter except the rail's own. */
+function failedRails(row: IssueRow, query: IssueQuery, langs: string[]): Rail[] {
+  const out: Rail[] = [];
+  if (langs.length && !langs.includes((row.g ?? "").toLowerCase())) out.push("langs");
+  if (query.org && !row.r.toLowerCase().startsWith(query.org + "/")) out.push("orgs");
+  if (query.label && !row.l.some((l) => l.toLowerCase().includes(query.label))) out.push("labels");
+  return out;
+}
+
+/** The filters that no rail owns: repo, the two toggles and the text query.
+ *  Returns the text score, or -1 when the row is out. */
+function scoreOther(row: IssueRow, query: IssueQuery, words: string[]): number {
+  if (query.repo && !row.r.toLowerCase().includes(query.repo)) return -1;
+  if (query.beginner && !row.b) return -1;
+  if (query.unassigned && row.a > 0) return -1;
+  return scoreRow(row, words);
+}
+
 export function filterIssues(items: IssueRow[], query: IssueQuery): IssuePage {
   const words = tokens(query.q);
   const langs = query.langs.map((l) => l.toLowerCase());
   const matched: { row: IssueRow; score: number }[] = [];
 
   for (const row of items) {
-    if (langs.length && !langs.includes((row.g ?? "").toLowerCase())) continue;
-    if (query.org && !row.r.toLowerCase().startsWith(query.org + "/")) continue;
-    if (query.repo && !row.r.toLowerCase().includes(query.repo)) continue;
-    if (query.label && !row.l.some((l) => l.toLowerCase().includes(query.label))) continue;
-    if (query.beginner && !row.b) continue;
-    if (query.unassigned && row.a > 0) continue;
-    const score = scoreRow(row, words);
+    if (failedRails(row, query, langs).length) continue;
+    const score = scoreOther(row, query, words);
     if (score < 0) continue;
     matched.push({ row, score });
   }
@@ -161,20 +178,37 @@ export function filterIssues(items: IssueRow[], query: IssueQuery): IssuePage {
 }
 
 /** Facets for the filter rail: what is actually in the result set, so a
- *  chip never offers a language that returns nothing. */
-export function facets(items: IssueRow[]) {
-  const langs = new Map<string, number>();
-  const orgs = new Map<string, number>();
-  const labels = new Map<string, number>();
+ *  chip never offers a language that returns nothing. With a query, each
+ *  rail counts the rows that match every active filter except its own, so
+ *  a chosen language still shows its siblings and the other rails narrow
+ *  with the search. */
+export function facets(items: IssueRow[], query: IssueQuery = EMPTY_QUERY) {
+  const words = tokens(query.q);
+  const langsQ = query.langs.map((l) => l.toLowerCase());
+  const counts: Record<Rail, Map<string, number>> = { langs: new Map(), orgs: new Map(), labels: new Map() };
+  const bump = (m: Map<string, number>, key: string) => m.set(key, (m.get(key) ?? 0) + 1);
+
   for (const row of items) {
-    if (row.g) langs.set(row.g, (langs.get(row.g) ?? 0) + 1);
-    const org = row.r.split("/")[0];
-    orgs.set(org, (orgs.get(org) ?? 0) + 1);
-    for (const l of row.l) labels.set(l.toLowerCase(), (labels.get(l.toLowerCase()) ?? 0) + 1);
+    const failed = failedRails(row, query, langsQ);
+    /* failing two rail filters means every rail's own-excluded view drops it */
+    if (failed.length > 1) continue;
+    if (scoreOther(row, query, words) < 0) continue;
+    if ((!failed.length || failed[0] === "langs") && row.g) bump(counts.langs, row.g);
+    if (!failed.length || failed[0] === "orgs") bump(counts.orgs, row.r.split("/")[0]);
+    if (!failed.length || failed[0] === "labels") for (const l of row.l) bump(counts.labels, l.toLowerCase());
   }
   const top = (m: Map<string, number>, n: number) =>
     [...m.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, n).map(([value, count]) => ({ value, count }));
-  return { langs: top(langs, 12), orgs: top(orgs, 12), labels: top(labels, 14) };
+  return { langs: top(counts.langs, 12), orgs: top(counts.orgs, 12), labels: top(counts.labels, 14) };
+}
+
+/** What the facets depend on: the filters and the text, never the sort or
+ *  the page. Two requests that only differ in those share one entry. */
+export function facetKey(query: IssueQuery): string {
+  return JSON.stringify([
+    tokens(query.q),
+    [...query.langs].sort(), query.org, query.label, query.repo, query.beginner, query.unassigned,
+  ]);
 }
 
 /* ── the I/O half ─────────────────────────────────────────────────── */

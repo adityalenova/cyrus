@@ -1,0 +1,4605 @@
+{
+ "program": "24pr",
+ "label": "24 Pull Requests",
+ "source": "https://24pullrequests.com/projects.json (the current curated wishlist, data/24pr-raw.json), each repository then re-read via gh api repos/<owner>/<repo>",
+ "evidence": "api",
+ "url": "https://24pullrequests.com/projects",
+ "note": "One row per repository the 24 Pull Requests team has listed as wanting contributions. These are WISHLIST repositories - the program does not accept or fund them, so the unit is \"listed repositories\" and `m` is empty because no mentor is named. 1 listed repository no longer resolves and was dropped rather than shipped as a dead link, so `projects` is the verified count. 24pullrequests.com ignores its ?year= parameter and publishes one live list, so rows carry no year: the year they were wanted is not in the API. The 10080 organizations 24 Pull Requests lists at /organisations.json are an organization rollup without project titles, kept at /data/24pr-archive.json and not merged here.",
+ "unit": "listed repositories",
+ "generated": "2026-10-25",
+ "years": [],
+ "rows": 306,
+ "capped": false,
+ "projects": [
+  {
+   "title": "Examples and server integrations for generating the Swagger API Specification, which enables easy access to your REST API",
+   "org": "swagger-api",
+   "orgLogin": "swagger-api",
+   "url": "https://github.com/swagger-api/swagger-core",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A platform to create documentation/wiki content built with PHP & Laravel",
+   "org": "BookStackApp",
+   "orgLogin": "BookStackApp",
+   "url": "https://github.com/BookStackApp/BookStack",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Canonical sources for HOL4 theorem-proving system. Branch develop is where “mainline development” occurs; when develop passes our regression",
+   "org": "HOL-Theorem-Prover",
+   "orgLogin": "HOL-Theorem-Prover",
+   "url": "https://github.com/HOL-Theorem-Prover/HOL",
+   "year": null,
+   "lang": "Standard ML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Standard ML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Go extension for Visual Studio Code",
+   "org": "golang",
+   "orgLogin": "golang",
+   "url": "https://github.com/golang/vscode-go",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Fast, easy and reliable testing for anything that runs in a browser.",
+   "org": "cypress-io",
+   "orgLogin": "cypress-io",
+   "url": "https://github.com/cypress-io/cypress",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Universal Command Line Interface for Amazon Web Services",
+   "org": "aws",
+   "orgLogin": "aws",
+   "url": "https://github.com/aws/aws-cli",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Tyk Open Source API Gateway written in Go, supporting REST, GraphQL, TCP and gRPC protocols",
+   "org": "TykTechnologies",
+   "orgLogin": "TykTechnologies",
+   "url": "https://github.com/TykTechnologies/tyk",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "✅ The 5th major version of the programmer-friendly testing framework for Java and the JVM",
+   "org": "junit-team",
+   "orgLogin": "junit-team",
+   "url": "https://github.com/junit-team/junit5",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The documentation repository for the .NET platform.",
+   "org": "dotnet",
+   "orgLogin": "dotnet",
+   "url": "https://github.com/dotnet/docs",
+   "year": null,
+   "lang": "Markdown",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Markdown"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Distributed Task Queue (development branch)",
+   "org": "celery",
+   "orgLogin": "celery",
+   "url": "https://github.com/celery/celery",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "This is the project website for the TEAMMATES feedback management tool for education",
+   "org": "TEAMMATES",
+   "orgLogin": "TEAMMATES",
+   "url": "https://github.com/TEAMMATES/teammates",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Cataclysm - Dark Days Ahead. A turn-based survival game set in a post-apocalyptic world.",
+   "org": "CleverRaven",
+   "orgLogin": "CleverRaven",
+   "url": "https://github.com/CleverRaven/Cataclysm-DDA",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Mediawiki scraper: all your wiki articles in one highly compressed ZIM file",
+   "org": "openzim",
+   "orgLogin": "openzim",
+   "url": "https://github.com/openzim/mwoffliner",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed.",
+   "org": "facebook",
+   "orgLogin": "facebook",
+   "url": "https://github.com/facebook/tornado",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "JuiceFS is a distributed POSIX file system built on top of Redis and S3.",
+   "org": "juicedata",
+   "orgLogin": "juicedata",
+   "url": "https://github.com/juicedata/juicefs",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Node.js JavaScript runtime :sparkles::turtle::rocket::sparkles:",
+   "org": "nodejs",
+   "orgLogin": "nodejs",
+   "url": "https://github.com/nodejs/node",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "FOSSology is an open source license compliance software system and toolkit. As a toolkit you can run license, copyright and export control s",
+   "org": "fossology",
+   "orgLogin": "fossology",
+   "url": "https://github.com/fossology/fossology",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "QGIS is a free, open source, cross platform (lin/win/mac) geographical information system (GIS)",
+   "org": "qgis",
+   "orgLogin": "qgis",
+   "url": "https://github.com/qgis/QGIS",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Private Torrent Tracker Built With Laravel, Livewire and AlpineJS.",
+   "org": "HDInnovations",
+   "orgLogin": "HDInnovations",
+   "url": "https://github.com/HDInnovations/UNIT3D-Community-Edition",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The world’s fastest framework for building websites.",
+   "org": "spf13",
+   "orgLogin": "spf13",
+   "url": "https://github.com/spf13/hugo",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A fast, simple & powerful blog framework, powered by Node.js.",
+   "org": "tommy351",
+   "orgLogin": "tommy351",
+   "url": "https://github.com/tommy351/hexo",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Modern Data Stack 🐰 — Directus is an instant REST+GraphQL API and intuitive no-code data collaboration app for any SQL database.",
+   "org": "RNGR",
+   "orgLogin": "RNGR",
+   "url": "https://github.com/RNGR/directus6",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Declarative routing for React",
+   "org": "remix-run",
+   "orgLogin": "remix-run",
+   "url": "https://github.com/remix-run/react-router",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Common Voice is part of Mozilla's initiative to help teach machines how real people speak.",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/voice-web",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Payload Components: registry-backed Payload CMS blocks installed wired, not pasted.",
+   "org": "Ducksss",
+   "orgLogin": "Ducksss",
+   "url": "https://github.com/Ducksss/payload-components",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Open source routing engine for OpenStreetMap. Use it as Java library or standalone web server.",
+   "org": "graphhopper",
+   "orgLogin": "graphhopper",
+   "url": "https://github.com/graphhopper/graphhopper",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "an application that automates the lifecycle of servers",
+   "org": "theforeman",
+   "orgLogin": "theforeman",
+   "url": "https://github.com/theforeman/foreman",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Umbraco is a free and open source .NET content management system helping you deliver delightful digital experiences.",
+   "org": "umbraco",
+   "orgLogin": "umbraco",
+   "url": "https://github.com/umbraco/Umbraco-CMS",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A command-line installer for Windows.",
+   "org": "lukesampson",
+   "orgLogin": "lukesampson",
+   "url": "https://github.com/lukesampson/scoop",
+   "year": null,
+   "lang": "PowerShell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PowerShell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Symfony PHP framework",
+   "org": "symfony",
+   "orgLogin": "symfony",
+   "url": "https://github.com/symfony/symfony",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "JavaScript 3D Library.",
+   "org": "mrdoob",
+   "orgLogin": "mrdoob",
+   "url": "https://github.com/mrdoob/three.js",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Source code of the recurrent donations platform Liberapay",
+   "org": "liberapay",
+   "orgLogin": "liberapay",
+   "url": "https://github.com/liberapay/liberapay.com",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Asynchronous HTTP client/server framework for asyncio and Python",
+   "org": "aio-libs",
+   "orgLogin": "aio-libs",
+   "url": "https://github.com/aio-libs/aiohttp",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Fluent migrations framework for .NET",
+   "org": "schambers",
+   "orgLogin": "schambers",
+   "url": "https://github.com/schambers/fluentmigrator",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "📝 Modern documentation format and toolchain using Git and Markdown",
+   "org": "GitbookIO",
+   "orgLogin": "GitbookIO",
+   "url": "https://github.com/GitbookIO/gitbook",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Automatic Video Library Manager for TV Shows. It watches for new episodes of your favorite shows, and when they are posted it does its magic",
+   "org": "pymedusa",
+   "orgLogin": "pymedusa",
+   "url": "https://github.com/pymedusa/Medusa",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A free, self-hostable news aggregator…",
+   "org": "FreshRSS",
+   "orgLogin": "FreshRSS",
+   "url": "https://github.com/FreshRSS/FreshRSS",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Adaptable, fast automation for all",
+   "org": "gradle",
+   "orgLogin": "gradle",
+   "url": "https://github.com/gradle/gradle",
+   "year": null,
+   "lang": "Groovy",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Groovy"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Privacy Badger is a browser extension that automatically learns to block invisible trackers.",
+   "org": "EFForg",
+   "orgLogin": "EFForg",
+   "url": "https://github.com/EFForg/privacybadger",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Independent technology for modern publishing, memberships, subscriptions and newsletters.",
+   "org": "TryGhost",
+   "orgLogin": "TryGhost",
+   "url": "https://github.com/TryGhost/Ghost",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open-source, comprehensive Interledger service for wallet providers, enabling them to provide Interledger functionality to their users.",
+   "org": "interledger",
+   "orgLogin": "interledger",
+   "url": "https://github.com/interledger/rafiki",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A flexible commandline tool for template rendering. Supports lots of local and remote datasources.",
+   "org": "hairyhenderson",
+   "orgLogin": "hairyhenderson",
+   "url": "https://github.com/hairyhenderson/gomplate",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Dependency Manager for PHP",
+   "org": "composer",
+   "orgLogin": "composer",
+   "url": "https://github.com/composer/composer",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "This repository is for active development of the Azure SDK for .NET. For consumers of the SDK we recommend visiting our public developer doc",
+   "org": "WindowsAzure",
+   "orgLogin": "WindowsAzure",
+   "url": "https://github.com/WindowsAzure/azure-sdk-for-net",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Modern CSS framework based on Flexbox",
+   "org": "jgthms",
+   "orgLogin": "jgthms",
+   "url": "https://github.com/jgthms/bulma",
+   "year": null,
+   "lang": "CSS",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "CSS"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A powerful cross-platform UI toolkit for building native-quality iOS, Android, and Progressive Web Apps with HTML, CSS, and JavaScript.",
+   "org": "driftyco",
+   "orgLogin": "driftyco",
+   "url": "https://github.com/driftyco/ionic",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "TypeScript is a superset of JavaScript that compiles to clean JavaScript output.",
+   "org": "Microsoft",
+   "orgLogin": "Microsoft",
+   "url": "https://github.com/Microsoft/TypeScript",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":rocket::star: Minimalistic, powerful and extremely customizable Zsh prompt",
+   "org": "denysdovhan",
+   "orgLogin": "denysdovhan",
+   "url": "https://github.com/denysdovhan/spaceship-prompt",
+   "year": null,
+   "lang": "Shell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Shell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Godot Engine – Multi-platform 2D and 3D game engine",
+   "org": "godotengine",
+   "orgLogin": "godotengine",
+   "url": "https://github.com/godotengine/godot",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Connect suppliers, distributors and consumers to trade local produce.",
+   "org": "openfoodfoundation",
+   "orgLogin": "openfoodfoundation",
+   "url": "https://github.com/openfoodfoundation/openfoodnetwork",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Hypothesis is a powerful, flexible, and easy to use library for property-based testing.",
+   "org": "HypothesisWorks",
+   "orgLogin": "HypothesisWorks",
+   "url": "https://github.com/HypothesisWorks/hypothesis-python",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The java implementation of Apache Dubbo. An RPC and microservice framework.",
+   "org": "apache",
+   "orgLogin": "apache",
+   "url": "https://github.com/apache/incubator-dubbo",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "JavaScript syntax highlighter with language auto-detection and zero dependencies.",
+   "org": "isagalaev",
+   "orgLogin": "isagalaev",
+   "url": "https://github.com/isagalaev/highlight.js",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A platform for community discussion. Free, open, simple.",
+   "org": "discourse",
+   "orgLogin": "discourse",
+   "url": "https://github.com/discourse/discourse",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web.",
+   "org": "twbs",
+   "orgLogin": "twbs",
+   "url": "https://github.com/twbs/bootstrap",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "my artificial intelligence research",
+   "org": "GLORIFIER7",
+   "orgLogin": "GLORIFIER7",
+   "url": "https://github.com/GLORIFIER7/GLORIFIER",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Home of the Joomla! Content Management System",
+   "org": "joomla",
+   "orgLogin": "joomla",
+   "url": "https://github.com/joomla/joomla-cms",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Bitfocus Companion enables the reasonably priced Elgato Streamdeck and other controllers to be a professional shotbox surface for an increas",
+   "org": "bitfocus",
+   "orgLogin": "bitfocus",
+   "url": "https://github.com/bitfocus/companion",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A tool to enforce Swift style and conventions.",
+   "org": "realm",
+   "orgLogin": "realm",
+   "url": "https://github.com/realm/SwiftLint",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Static site generator that supports Markdown and reST syntax. Powered by Python.",
+   "org": "getpelican",
+   "orgLogin": "getpelican",
+   "url": "https://github.com/getpelican/pelican",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "ODK Collect is an Android app for filling out forms. It's been used to collect billions of data points in challenging environments around th",
+   "org": "opendatakit",
+   "orgLogin": "opendatakit",
+   "url": "https://github.com/opendatakit/collect",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Local-first .NET app that captures IP camera snapshots and creates H.264 timelapse videos with FFmpeg.",
+   "org": "KalyteraSystems",
+   "orgLogin": "KalyteraSystems",
+   "url": "https://github.com/KalyteraSystems/IPCamLapse",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Apache JMeter open-source load testing tool for analyzing and measuring the performance of a variety of services",
+   "org": "apache",
+   "orgLogin": "apache",
+   "url": "https://github.com/apache/jmeter",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Doctrine Object Relational Mapper (ORM)",
+   "org": "doctrine",
+   "orgLogin": "doctrine",
+   "url": "https://github.com/doctrine/doctrine2",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Self hosted FLOSS fitness/workout, nutrition and weight tracker written with Django",
+   "org": "rolandgeider",
+   "orgLogin": "rolandgeider",
+   "url": "https://github.com/rolandgeider/wger",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Platform for Machine Learning projects on Software Engineering",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/bugbug",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Data intensive science for everyone.",
+   "org": "galaxyproject",
+   "orgLogin": "galaxyproject",
+   "url": "https://github.com/galaxyproject/galaxy",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Prettier is an opinionated code formatter.",
+   "org": "prettier",
+   "orgLogin": "prettier",
+   "url": "https://github.com/prettier/prettier",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Ruby on Rails web framework. There are a lot of issues being tracked in github leading up to the 4.0 release.",
+   "org": "rails",
+   "orgLogin": "rails",
+   "url": "https://github.com/rails/rails",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Implementation of the ocaml.org website.",
+   "org": "ocaml",
+   "orgLogin": "ocaml",
+   "url": "https://github.com/ocaml/ocaml.org",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "♞ lichess.org: the forever free, adless and open source chess server ♞",
+   "org": "ornicar",
+   "orgLogin": "ornicar",
+   "url": "https://github.com/ornicar/lila",
+   "year": null,
+   "lang": "Scala",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Scala"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Language Savant. If your repository's language is being reported incorrectly, send us a pull request!",
+   "org": "github",
+   "orgLogin": "github",
+   "url": "https://github.com/github/linguist",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Simple Machines Forum — SMF in short — is free and open-source community forum software, delivering professional grade features in a package",
+   "org": "SimpleMachines",
+   "orgLogin": "SimpleMachines",
+   "url": "https://github.com/SimpleMachines/SMF2.1",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Prometheus Alertmanager",
+   "org": "prometheus",
+   "orgLogin": "prometheus",
+   "url": "https://github.com/prometheus/alertmanager",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A community-driven Emacs distribution - The best editor is neither Emacs nor Vim, it's Emacs *and* Vim!",
+   "org": "syl20bnr",
+   "orgLogin": "syl20bnr",
+   "url": "https://github.com/syl20bnr/spacemacs",
+   "year": null,
+   "lang": "Emacs Lisp",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Emacs Lisp"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "OpenEBS is containerized block storage written in Go for cloud native and other environments w/ per container (or pod) QoS SLAs, tiering and",
+   "org": "openebs",
+   "orgLogin": "openebs",
+   "url": "https://github.com/openebs/openebs",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The easy-to-use and developer-friendly enterprise CMS powered by Django",
+   "org": "divio",
+   "orgLogin": "divio",
+   "url": "https://github.com/divio/django-cms",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The user-friendly command line shell.",
+   "org": "fish-shell",
+   "orgLogin": "fish-shell",
+   "url": "https://github.com/fish-shell/fish-shell",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Julia Programming Language",
+   "org": "julialang",
+   "orgLogin": "julialang",
+   "url": "https://github.com/julialang/julia",
+   "year": null,
+   "lang": "Julia",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Julia"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Web framework for perfectionists with deadlines.",
+   "org": "django",
+   "orgLogin": "django",
+   "url": "https://github.com/django/django",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Storybook is a frontend workshop for building UI components and pages in isolation. Made for UI development, testing, and documentation.",
+   "org": "storybooks",
+   "orgLogin": "storybooks",
+   "url": "https://github.com/storybooks/storybook",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A multi-backend compiler for Perl 6, currently supporting Parrot and the JVM",
+   "org": "rakudo",
+   "orgLogin": "rakudo",
+   "url": "https://github.com/rakudo/rakudo",
+   "year": null,
+   "lang": "Perl",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Perl"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "💬 ‎ Modern, responsive, cross-platform, self-hosted web IRC client",
+   "org": "thelounge",
+   "orgLogin": "thelounge",
+   "url": "https://github.com/thelounge/thelounge",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Terraform enables you to safely and predictably create, change, and improve infrastructure. It is a source-available tool that codifies APIs",
+   "org": "hashicorp",
+   "orgLogin": "hashicorp",
+   "url": "https://github.com/hashicorp/terraform",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Typed interactions with the GitHub API v3",
+   "org": "jacquev6",
+   "orgLogin": "jacquev6",
+   "url": "https://github.com/jacquev6/PyGithub",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "⚔️ A cross-platform, open source, and super fast MUD client with scripting in Lua",
+   "org": "Mudlet",
+   "orgLogin": "Mudlet",
+   "url": "https://github.com/Mudlet/Mudlet",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The library for web and native user interfaces.",
+   "org": "facebook",
+   "orgLogin": "facebook",
+   "url": "https://github.com/facebook/react",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Servo aims to empower developers with a lightweight, high-performance alternative for embedding web technologies in applications.",
+   "org": "servo",
+   "orgLogin": "servo",
+   "url": "https://github.com/servo/servo",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Joplin - the secure note taking and to-do app with synchronisation capabilities for Windows, macOS, Linux, Android and iOS.",
+   "org": "laurent22",
+   "orgLogin": "laurent22",
+   "url": "https://github.com/laurent22/joplin",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Bitcoin Core integration/staging tree",
+   "org": "bitcoin",
+   "orgLogin": "bitcoin",
+   "url": "https://github.com/bitcoin/bitcoin",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The stream database optimised for event sourcing",
+   "org": "eventstore",
+   "orgLogin": "eventstore",
+   "url": "https://github.com/eventstore/eventstore",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "OpenModelica is an open-source Modelica-based modeling and simulation environment intended for industrial and academic usage.",
+   "org": "OpenModelica",
+   "orgLogin": "OpenModelica",
+   "url": "https://github.com/OpenModelica/OpenModelica",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Easy to use OpenStreetMap editor for Android",
+   "org": "westnordost",
+   "orgLogin": "westnordost",
+   "url": "https://github.com/westnordost/StreetComplete",
+   "year": null,
+   "lang": "Kotlin",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Kotlin"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Canonical common brand names, operators, transit and flags for OpenStreetMap.",
+   "org": "osmlab",
+   "orgLogin": "osmlab",
+   "url": "https://github.com/osmlab/name-suggestion-index",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "AAC communication board with text-to-speech for the browser",
+   "org": "shayc",
+   "orgLogin": "shayc",
+   "url": "https://github.com/shayc/cboard",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An enterprise-class UI design language and React UI library",
+   "org": "ant-design",
+   "orgLogin": "ant-design",
+   "url": "https://github.com/ant-design/ant-design",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Official upstream development repository for Cabal and cabal-install",
+   "org": "haskell",
+   "orgLogin": "haskell",
+   "url": "https://github.com/haskell/cabal",
+   "year": null,
+   "lang": "Haskell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Haskell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Node.js based forum software built for the modern web",
+   "org": "designcreateplay",
+   "orgLogin": "designcreateplay",
+   "url": "https://github.com/designcreateplay/NodeBB",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "p5.js is a client-side JS platform that empowers artists, designers, students, and anyone to learn to code and express themselves creatively",
+   "org": "processing",
+   "orgLogin": "processing",
+   "url": "https://github.com/processing/p5.js",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Rust package registry",
+   "org": "rust-lang",
+   "orgLogin": "rust-lang",
+   "url": "https://github.com/rust-lang/crates.io",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Enterprise open source portal built by and for the higher education community.",
+   "org": "Jasig",
+   "orgLogin": "Jasig",
+   "url": "https://github.com/Jasig/uPortal",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Python package installer",
+   "org": "pypa",
+   "orgLogin": "pypa",
+   "url": "https://github.com/pypa/pip",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Prometheus monitoring system and time series database.",
+   "org": "prometheus",
+   "orgLogin": "prometheus",
+   "url": "https://github.com/prometheus/prometheus",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A Swift command line tool for generating your Xcode project",
+   "org": "yonaskolb",
+   "orgLogin": "yonaskolb",
+   "url": "https://github.com/yonaskolb/XcodeGen",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Dolibarr ERP CRM is a modern software package to manage your company or foundation's activity (contacts, suppliers, invoices, orders, stocks",
+   "org": "dolibarr",
+   "orgLogin": "dolibarr",
+   "url": "https://github.com/dolibarr/dolibarr",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Turn Based Strategy Game. Master your beasts! 🐺",
+   "org": "FreezingMoon",
+   "orgLogin": "FreezingMoon",
+   "url": "https://github.com/FreezingMoon/AncientBeast",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "📚 Collaborative cheatsheets for console commands",
+   "org": "tldr-pages",
+   "orgLogin": "tldr-pages",
+   "url": "https://github.com/tldr-pages/tldr",
+   "year": null,
+   "lang": "Markdown",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Markdown"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An HTTP library for Rust",
+   "org": "hyperium",
+   "orgLogin": "hyperium",
+   "url": "https://github.com/hyperium/hyper",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A private AI summarizer in your browser for articles, videos, emails, and more. It runs on your device with WebGPU (Chrome), Transformers.js",
+   "org": "darshi1337",
+   "orgLogin": "darshi1337",
+   "url": "https://github.com/darshi1337/apogee",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Graphical Java application for managing BibTeX and biblatex (.bib) databases",
+   "org": "JabRef",
+   "orgLogin": "JabRef",
+   "url": "https://github.com/JabRef/jabref",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "dmd D Programming Language compiler",
+   "org": "dlang",
+   "orgLogin": "dlang",
+   "url": "https://github.com/dlang/dmd",
+   "year": null,
+   "lang": "D",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "D"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Across 348 long-horizon benchmark sessions, Tura used up to 83.1% fewer turns on the rewrite benchmark and improved the DeepSWE pass rate by",
+   "org": "Tura-AI",
+   "orgLogin": "Tura-AI",
+   "url": "https://github.com/Tura-AI/tura",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Rust Programming Language",
+   "org": "rust-lang",
+   "orgLogin": "rust-lang",
+   "url": "https://github.com/rust-lang/book",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Deliver Go binaries as fast and easily as possible",
+   "org": "goreleaser",
+   "orgLogin": "goreleaser",
+   "url": "https://github.com/goreleaser/goreleaser",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Easily generate and modify .docx files with JS/TS with a nice declarative API. Works for Node and on the Browser.",
+   "org": "dolanmiu",
+   "orgLogin": "dolanmiu",
+   "url": "https://github.com/dolanmiu/docx",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "WebGoat is a deliberately insecure application",
+   "org": "WebGoat",
+   "orgLogin": "WebGoat",
+   "url": "https://github.com/WebGoat/WebGoat",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Rust package manager",
+   "org": "rust-lang",
+   "orgLogin": "rust-lang",
+   "url": "https://github.com/rust-lang/cargo",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Vim-fork focused on extensibility and agility.",
+   "org": "neovim",
+   "orgLogin": "neovim",
+   "url": "https://github.com/neovim/neovim",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Monorepo for Firefox Accounts",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/fxa",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Command-line program to download videos from YouTube.com and other video sites",
+   "org": "rg3",
+   "orgLogin": "rg3",
+   "url": "https://github.com/rg3/youtube-dl",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A Ruby static code analyzer and formatter, based on the community Ruby style guide.",
+   "org": "bbatsov",
+   "orgLogin": "bbatsov",
+   "url": "https://github.com/bbatsov/rubocop",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A keyboard-driven, vim-like browser based on Python and Qt.",
+   "org": "The-Compiler",
+   "orgLogin": "The-Compiler",
+   "url": "https://github.com/The-Compiler/qutebrowser",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Awesome Procedures On Cypher for Neo4j - codenamed \"apoc\" If you like it, please ★ above ⇧",
+   "org": "neo4j-contrib",
+   "orgLogin": "neo4j-contrib",
+   "url": "https://github.com/neo4j-contrib/neo4j-apoc-procedures",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open source re-implementation of RollerCoaster Tycoon 2 🎢",
+   "org": "OpenRCT2",
+   "orgLogin": "OpenRCT2",
+   "url": "https://github.com/OpenRCT2/OpenRCT2",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Official OpenMage LTS codebase | Migrate easily from Magento Community Edition in minutes! Download the source code for free or contribute t",
+   "org": "OpenMage",
+   "orgLogin": "OpenMage",
+   "url": "https://github.com/OpenMage/magento-lts",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A mighty CSS linter that helps you avoid errors and enforce conventions.",
+   "org": "stylelint",
+   "orgLogin": "stylelint",
+   "url": "https://github.com/stylelint/stylelint",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Volunteer management system for nonprofit CASA, which serves foster youth in counties across America.",
+   "org": "rubyforgood",
+   "orgLogin": "rubyforgood",
+   "url": "https://github.com/rubyforgood/casa",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Build Mobile, Desktop and WebAssembly apps with C# and XAML. Today. Open source and professionally supported.",
+   "org": "nventive",
+   "orgLogin": "nventive",
+   "url": "https://github.com/nventive/Uno",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "React-specific linting rules for ESLint",
+   "org": "yannickcr",
+   "orgLogin": "yannickcr",
+   "url": "https://github.com/yannickcr/eslint-plugin-react",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🍻 Default casks (upstream binary packages) for the package manager for everywhere",
+   "org": "phinze",
+   "orgLogin": "phinze",
+   "url": "https://github.com/phinze/homebrew-cask",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Liberating Web Analytics. Star us on Github? +1. Matomo is the leading open alternative to Google Analytics that gives you full control over",
+   "org": "piwik",
+   "orgLogin": "piwik",
+   "url": "https://github.com/piwik/piwik",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Jenkins automation server",
+   "org": "jenkinsci",
+   "orgLogin": "jenkinsci",
+   "url": "https://github.com/jenkinsci/jenkins",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A client library for Apple TV and AirPlay devices",
+   "org": "postlund",
+   "orgLogin": "postlund",
+   "url": "https://github.com/postlund/pyatv",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The best React-based framework with performance, scalability and security built in.",
+   "org": "gatsbyjs",
+   "orgLogin": "gatsbyjs",
+   "url": "https://github.com/gatsbyjs/gatsby",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A free Windows-compatible Operating System",
+   "org": "reactos",
+   "orgLogin": "reactos",
+   "url": "https://github.com/reactos/reactos",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Local-first Rust pipeline for turning long-form video into short-form clips, captions, vertical exports, and platform-ready metadata.",
+   "org": "Gangsworld3",
+   "orgLogin": "Gangsworld3",
+   "url": "https://github.com/Gangsworld3/viralclip-swarm",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Empowering everyone to build reliable and efficient software.",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/rust",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Framework that supports Mozilla's continuous integration and release processes.",
+   "org": "taskcluster",
+   "orgLogin": "taskcluster",
+   "url": "https://github.com/taskcluster/taskcluster",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Open Source Routing Machine - C++ backend",
+   "org": "DennisOSRM",
+   "orgLogin": "DennisOSRM",
+   "url": "https://github.com/DennisOSRM/Project-OSRM",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Automated auditing, performance metrics, and best practices for the web.",
+   "org": "GoogleChrome",
+   "orgLogin": "GoogleChrome",
+   "url": "https://github.com/GoogleChrome/lighthouse",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A Django content management system focused on flexibility and user experience",
+   "org": "wagtail",
+   "orgLogin": "wagtail",
+   "url": "https://github.com/wagtail/wagtail",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Kanban project management software",
+   "org": "kanboard",
+   "orgLogin": "kanboard",
+   "url": "https://github.com/kanboard/kanboard",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy and maintain. Automate everyt",
+   "org": "ansible",
+   "orgLogin": "ansible",
+   "url": "https://github.com/ansible/ansible",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A Q&A platform software for teams at any scales. Whether it's a community forum, help center, or knowledge management platform, you can alwa",
+   "org": "apache",
+   "orgLogin": "apache",
+   "url": "https://github.com/apache/incubator-answer",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "☁️ Nextcloud server, a safe home for all your data",
+   "org": "nextcloud",
+   "orgLogin": "nextcloud",
+   "url": "https://github.com/nextcloud/server",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Python Jira library. Development chat available on https://matrix.to/#/#pycontribs:matrix.org",
+   "org": "pycontribs",
+   "orgLogin": "pycontribs",
+   "url": "https://github.com/pycontribs/jira",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Cyan Worlds's Plasma game engine",
+   "org": "H-uru",
+   "orgLogin": "H-uru",
+   "url": "https://github.com/H-uru/Plasma",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Fast, unopinionated, minimalist web framework for node.",
+   "org": "visionmedia",
+   "orgLogin": "visionmedia",
+   "url": "https://github.com/visionmedia/express",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🐠 Babel is a compiler for writing next generation JavaScript.",
+   "org": "babel",
+   "orgLogin": "babel",
+   "url": "https://github.com/babel/babel",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Yii 2: The Fast, Secure and Professional PHP Framework",
+   "org": "yiisoft",
+   "orgLogin": "yiisoft",
+   "url": "https://github.com/yiisoft/yii2",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "OpenSCAD - The Programmers Solid 3D CAD Modeller",
+   "org": "openscad",
+   "orgLogin": "openscad",
+   "url": "https://github.com/openscad/openscad",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Monitor your servers, containers, and applications, in high-resolution and in real-time!",
+   "org": "firehol",
+   "orgLogin": "firehol",
+   "url": "https://github.com/firehol/netdata",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Mutation testing for .NET core and .NET framework!",
+   "org": "stryker-mutator",
+   "orgLogin": "stryker-mutator",
+   "url": "https://github.com/stryker-mutator/stryker-net",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "MJML: the only framework that makes responsive-email easy",
+   "org": "mjmlio",
+   "orgLogin": "mjmlio",
+   "url": "https://github.com/mjmlio/mjml",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Firefox for iOS is coming soon to iOS. Done in Swift, targeted for iOS8 and iPhone only to begin with.",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/firefox-ios",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Software to automate the management and configuration of any infrastructure or application at scale. Get access to the Salt software package",
+   "org": "saltstack",
+   "orgLogin": "saltstack",
+   "url": "https://github.com/saltstack/salt",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Manage your app's Ruby environment",
+   "org": "sstephenson",
+   "orgLogin": "sstephenson",
+   "url": "https://github.com/sstephenson/rbenv",
+   "year": null,
+   "lang": "Shell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Shell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Presentation-Ready Data Summary and Analytic Result Tables",
+   "org": "ddsjoberg",
+   "orgLogin": "ddsjoberg",
+   "url": "https://github.com/ddsjoberg/gtsummary",
+   "year": null,
+   "lang": "R",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "R"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Main repository for GoCD - Continuous Delivery server",
+   "org": "gocd",
+   "orgLogin": "gocd",
+   "url": "https://github.com/gocd/gocd",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open source payments switch written in Rust to make payments fast, reliable and affordable",
+   "org": "juspay",
+   "orgLogin": "juspay",
+   "url": "https://github.com/juspay/hyperswitch",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "This is the repo for Vue 2. For Vue 3, go to https://github.com/vuejs/core",
+   "org": "vuejs",
+   "orgLogin": "vuejs",
+   "url": "https://github.com/vuejs/vue",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Sketch and take handwritten notes.",
+   "org": "flxzt",
+   "orgLogin": "flxzt",
+   "url": "https://github.com/flxzt/rnote",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A static analysis tool for finding errors in PHP applications",
+   "org": "vimeo",
+   "orgLogin": "vimeo",
+   "url": "https://github.com/vimeo/psalm",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Official repository for Concrete CMS development",
+   "org": "concrete5",
+   "orgLogin": "concrete5",
+   "url": "https://github.com/concrete5/concrete5",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Cocoa Dependency Manager.",
+   "org": "CocoaPods",
+   "orgLogin": "CocoaPods",
+   "url": "https://github.com/CocoaPods/CocoaPods",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Iconic font aggregator, collection, & patcher. 3,600+ icons, 50+ patched fonts: Hack, Source Code Pro, more. Glyph collections: Font Awesome",
+   "org": "ryanoasis",
+   "orgLogin": "ryanoasis",
+   "url": "https://github.com/ryanoasis/nerd-fonts",
+   "year": null,
+   "lang": "CSS",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "CSS"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Node.js Production Process Manager with a built-in Load Balancer.",
+   "org": "Unitech",
+   "orgLogin": "Unitech",
+   "url": "https://github.com/Unitech/pm2",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Moby Project - a collaborative project for the container ecosystem to assemble container-based systems",
+   "org": "dotcloud",
+   "orgLogin": "dotcloud",
+   "url": "https://github.com/dotcloud/docker",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Lightweight, user-friendly onboarding tour library",
+   "org": "usablica",
+   "orgLogin": "usablica",
+   "url": "https://github.com/usablica/intro.js",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A markdown parser and compiler. Built for speed.",
+   "org": "markedjs",
+   "orgLogin": "markedjs",
+   "url": "https://github.com/markedjs/marked",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Official repository for IPython itself. Other repos in the IPython organization contain things like the website, documentation builds, etc.",
+   "org": "ipython",
+   "orgLogin": "ipython",
+   "url": "https://github.com/ipython/ipython",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A full featured, fast Command Line Argument Parser for Rust",
+   "org": "kbknapp",
+   "orgLogin": "kbknapp",
+   "url": "https://github.com/kbknapp/clap-rs",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "From community websites to web applications, this CSS framework will help you achieve a consistent look and feel.",
+   "org": "vanilla-framework",
+   "orgLogin": "vanilla-framework",
+   "url": "https://github.com/vanilla-framework/vanilla-framework",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Firefox Profiler — Web app for Firefox performance analysis",
+   "org": "firefox-devtools",
+   "orgLogin": "firefox-devtools",
+   "url": "https://github.com/firefox-devtools/profiler",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Making mozilla.org awesome, one pebble at a time",
+   "org": "mozilla",
+   "orgLogin": "mozilla",
+   "url": "https://github.com/mozilla/bedrock",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Free, cross-platform 2D game engine powered by Haxe and OpenFL",
+   "org": "HaxeFlixel",
+   "orgLogin": "HaxeFlixel",
+   "url": "https://github.com/HaxeFlixel/flixel",
+   "year": null,
+   "lang": "Haxe",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Haxe"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Add more simplifications to various definitions for the sake of beginner's clarity.",
+   "org": "firstcontributions",
+   "orgLogin": "firstcontributions",
+   "url": "https://github.com/firstcontributions/first-contributions",
+   "year": null,
+   "lang": "Markdown",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Markdown"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Python interface to the Redis key-value store.",
+   "org": "andymccurdy",
+   "orgLogin": "andymccurdy",
+   "url": "https://github.com/andymccurdy/redis-py",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Streaming music player that finds free music for you",
+   "org": "nukeop",
+   "orgLogin": "nukeop",
+   "url": "https://github.com/nukeop/nuclear",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A premium app for managing and editing your photos, videos, GIFs without ads",
+   "org": "SimpleMobileTools",
+   "orgLogin": "SimpleMobileTools",
+   "url": "https://github.com/SimpleMobileTools/Simple-Gallery",
+   "year": null,
+   "lang": "Kotlin",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Kotlin"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Racket Programming Language(s)",
+   "org": "plt",
+   "orgLogin": "plt",
+   "url": "https://github.com/plt/racket",
+   "year": null,
+   "lang": "Racket",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Racket"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "JHipster is a development platform to quickly generate, develop, & deploy modern web applications & microservice architectures.",
+   "org": "jhipster",
+   "orgLogin": "jhipster",
+   "url": "https://github.com/jhipster/generator-jhipster",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Packer is a tool for creating identical machine images for multiple platforms from a single source configuration.",
+   "org": "mitchellh",
+   "orgLogin": "mitchellh",
+   "url": "https://github.com/mitchellh/packer",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🆔 The easy-to-use OpenStreetMap editor in JavaScript.",
+   "org": "systemed",
+   "orgLogin": "systemed",
+   "url": "https://github.com/systemed/iD",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🤖 Dependabot's core logic for creating update PR's.",
+   "org": "dependabot",
+   "orgLogin": "dependabot",
+   "url": "https://github.com/dependabot/dependabot-core",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🛒 Solidus, the open-source eCommerce framework for industry trailblazers.",
+   "org": "solidusio",
+   "orgLogin": "solidusio",
+   "url": "https://github.com/solidusio/solidus",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Chocolatey - the package manager for Windows",
+   "org": "chocolatey",
+   "orgLogin": "chocolatey",
+   "url": "https://github.com/chocolatey/choco",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Call all Node.js modules directly from DOM/WebWorker and enable a new way of writing applications with all Web technologies.",
+   "org": "rogerwang",
+   "orgLogin": "rogerwang",
+   "url": "https://github.com/rogerwang/node-webkit",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":electron: A complete tool for building and publishing Electron applications",
+   "org": "electron-userland",
+   "orgLogin": "electron-userland",
+   "url": "https://github.com/electron-userland/electron-forge",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "⭐️ A friendly language for building type-safe, scalable systems!",
+   "org": "gleam-lang",
+   "orgLogin": "gleam-lang",
+   "url": "https://github.com/gleam-lang/gleam",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Meteor, the JavaScript App Platform",
+   "org": "meteor",
+   "orgLogin": "meteor",
+   "url": "https://github.com/meteor/meteor",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open-source, web-based viewer for zoomable images, implemented in pure JavaScript.",
+   "org": "openseadragon",
+   "orgLogin": "openseadragon",
+   "url": "https://github.com/openseadragon/openseadragon",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Developer-first error tracking and performance monitoring",
+   "org": "getsentry",
+   "orgLogin": "getsentry",
+   "url": "https://github.com/getsentry/sentry",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Visual Studio Code - Code Editing. Redefined. VS Code is a new type of tool that combines the simplicity of a code editor with what develope",
+   "org": "Microsoft",
+   "orgLogin": "Microsoft",
+   "url": "https://github.com/Microsoft/vscode",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An interactive TLS-capable intercepting HTTP proxy for penetration testers and software developers.",
+   "org": "mitmproxy",
+   "orgLogin": "mitmproxy",
+   "url": "https://github.com/mitmproxy/mitmproxy",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "PowerShell for every system!",
+   "org": "PowerShell",
+   "orgLogin": "PowerShell",
+   "url": "https://github.com/PowerShell/PowerShell",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Orchid is a @laravel package that allows for rapid application development of back-office applications, admin/user panels, and dashboards.",
+   "org": "orchidsoftware",
+   "orgLogin": "orchidsoftware",
+   "url": "https://github.com/orchidsoftware/Platform",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Python Imaging Library (fork)",
+   "org": "python-pillow",
+   "orgLogin": "python-pillow",
+   "url": "https://github.com/python-pillow/Pillow",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Cloud Native application framework for .NET",
+   "org": "dotnet",
+   "orgLogin": "dotnet",
+   "url": "https://github.com/dotnet/orleans",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Etherpad: A modern really-real-time collaborative document editor.",
+   "org": "ether",
+   "orgLogin": "ether",
+   "url": "https://github.com/ether/etherpad-lite",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Online genealogy software in PHP.",
+   "org": "fisharebest",
+   "orgLogin": "fisharebest",
+   "url": "https://github.com/fisharebest/webtrees",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "We have made you a wrapper you can't refuse",
+   "org": "python-telegram-bot",
+   "orgLogin": "python-telegram-bot",
+   "url": "https://github.com/python-telegram-bot/python-telegram-bot",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Flyway by Redgate • Database Migrations Made Easy.",
+   "org": "flyway",
+   "orgLogin": "flyway",
+   "url": "https://github.com/flyway/flyway",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🍺 The missing package manager for macOS (or Linux)",
+   "org": "Homebrew",
+   "orgLogin": "Homebrew",
+   "url": "https://github.com/Homebrew/brew",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Git with a cup of tea! Painless self-hosted all-in-one software development service, including Git hosting, code review, team collaboration,",
+   "org": "go-gitea",
+   "orgLogin": "go-gitea",
+   "url": "https://github.com/go-gitea/gitea",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "ALE is the Asynchronous Linting Engine for Vim, used for linting and fixing code.",
+   "org": "w0rp",
+   "orgLogin": "w0rp",
+   "url": "https://github.com/w0rp/ale",
+   "year": null,
+   "lang": "VimL",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "VimL"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Collabora Online is a collaborative online office suite based on LibreOffice technology. This is also the source for the Collabora Office ap",
+   "org": "CollaboraOnline",
+   "orgLogin": "CollaboraOnline",
+   "url": "https://github.com/CollaboraOnline/online",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Documentation for Godot Engine, a cross-platform 2D and 3D engine. Parts in RST, Markdown and plain text/HTML - you can also contribute to t",
+   "org": "godotengine",
+   "orgLogin": "godotengine",
+   "url": "https://github.com/godotengine/godot-docs",
+   "year": null,
+   "lang": "Markdown",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Markdown"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A JavaScript implementation of various web standards, for use with Node.js",
+   "org": "tmpvar",
+   "orgLogin": "tmpvar",
+   "url": "https://github.com/tmpvar/jsdom",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Core framework that implements the functionality of the Sulu content management system",
+   "org": "sulu-cmf",
+   "orgLogin": "sulu-cmf",
+   "url": "https://github.com/sulu-cmf/sulu",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":cookie: A full-featured, hackable tiling window manager written and configured in Python (X11 + Wayland)",
+   "org": "qtile",
+   "orgLogin": "qtile",
+   "url": "https://github.com/qtile/qtile",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Platform.sh documentation. Templates available at https://github.com/platformsh-templates/",
+   "org": "platformsh",
+   "orgLogin": "platformsh",
+   "url": "https://github.com/platformsh/platformsh-docs",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Flexible and powerful data analysis / manipulation library for Python, providing labeled data structures similar to R data.frame objects, st",
+   "org": "pydata",
+   "orgLogin": "pydata",
+   "url": "https://github.com/pydata/pandas",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open-source platform for making universal native apps with React. Expo runs on Android, iOS, and the web.",
+   "org": "expo",
+   "orgLogin": "expo",
+   "url": "https://github.com/expo/expo",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The rust code formatter.",
+   "org": "rust-lang-nursery",
+   "orgLogin": "rust-lang-nursery",
+   "url": "https://github.com/rust-lang-nursery/rustfmt",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Kodi is an award-winning free and open source home theater/media center software and entertainment hub for digital media. With its beautiful",
+   "org": "xbmc",
+   "orgLogin": "xbmc",
+   "url": "https://github.com/xbmc/xbmc",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Focus on what matters instead of fighting with Git.",
+   "org": "desktop",
+   "orgLogin": "desktop",
+   "url": "https://github.com/desktop/desktop",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Vagrant is a tool for building and distributing development environments.",
+   "org": "mitchellh",
+   "orgLogin": "mitchellh",
+   "url": "https://github.com/mitchellh/vagrant",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":crab: Small exercises to get you used to reading and writing Rust code!",
+   "org": "carols10cents",
+   "orgLogin": "carols10cents",
+   "url": "https://github.com/carols10cents/rustlings",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Universal dependency update tool that fits into your workflows.",
+   "org": "renovateapp",
+   "orgLogin": "renovateapp",
+   "url": "https://github.com/renovateapp/renovate",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources like Promet",
+   "org": "grafana",
+   "orgLogin": "grafana",
+   "url": "https://github.com/grafana/grafana",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Community-based GPL-licensed network monitoring system",
+   "org": "librenms",
+   "orgLogin": "librenms",
+   "url": "https://github.com/librenms/librenms",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Code editor designed for elementary OS",
+   "org": "elementary",
+   "orgLogin": "elementary",
+   "url": "https://github.com/elementary/code",
+   "year": null,
+   "lang": "Vala",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Vala"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "stellar-core is the reference implementation for the peer to peer agent that manages the Stellar network",
+   "org": "stellar",
+   "orgLogin": "stellar",
+   "url": "https://github.com/stellar/stellar-core",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Gogs is a painless self-hosted Git service",
+   "org": "gogits",
+   "orgLogin": "gogits",
+   "url": "https://github.com/gogits/gogs",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The iconic SVG, font, and CSS toolkit",
+   "org": "FortAwesome",
+   "orgLogin": "FortAwesome",
+   "url": "https://github.com/FortAwesome/Font-Awesome",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The communications platform that puts data protection first.",
+   "org": "RocketChat",
+   "orgLogin": "RocketChat",
+   "url": "https://github.com/RocketChat/Rocket.Chat",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Open Food Facts database, API server and web interface - 🐪🦋 Perl, CSS and JS coders welcome 😊 For helping in Python, see Robotoff or taxo",
+   "org": "openfoodfacts",
+   "orgLogin": "openfoodfacts",
+   "url": "https://github.com/openfoodfacts/openfoodfacts-server",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open source cybersecurity protocol for syncing decentralized graph data.",
+   "org": "amark",
+   "orgLogin": "amark",
+   "url": "https://github.com/amark/gun",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A flutter package for showing customizable vector/raster maps with MapLibre (forked from tobrun/flutter-mapbox-gl)",
+   "org": "m0nac0",
+   "orgLogin": "m0nac0",
+   "url": "https://github.com/m0nac0/flutter-maplibre-gl",
+   "year": null,
+   "lang": "Dart",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Dart"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Pharo is a dynamic reflective pure object-oriented language supporting live programming inspired by Smalltalk.",
+   "org": "pharo-project",
+   "orgLogin": "pharo-project",
+   "url": "https://github.com/pharo-project/pharo",
+   "year": null,
+   "lang": "Smalltalk",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Smalltalk"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "SVG icons for popular brands",
+   "org": "danleech",
+   "orgLogin": "danleech",
+   "url": "https://github.com/danleech/simple-icons",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The source code that powers readthedocs.org",
+   "org": "rtfd",
+   "orgLogin": "rtfd",
+   "url": "https://github.com/rtfd/readthedocs.org",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A private messenger for iOS.",
+   "org": "WhisperSystems",
+   "orgLogin": "WhisperSystems",
+   "url": "https://github.com/WhisperSystems/Signal-iOS",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "CockroachDB - the open source, cloud-native distributed SQL database.",
+   "org": "cockroachdb",
+   "orgLogin": "cockroachdb",
+   "url": "https://github.com/cockroachdb/cockroach",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "a AsciiDoc Toolchain for technical Software Documentation, focused on Software Architecture Documentation",
+   "org": "docToolchain",
+   "orgLogin": "docToolchain",
+   "url": "https://github.com/docToolchain/docToolchain",
+   "year": null,
+   "lang": "Groovy",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Groovy"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A self-hosted digital asset manager for 3d print files.",
+   "org": "manyfold3d",
+   "orgLogin": "manyfold3d",
+   "url": "https://github.com/manyfold3d/manyfold",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "CodeChecker is an analyzer tooling, defect database and viewer extension for the Clang Static Analyzer and Clang Tidy",
+   "org": "Ericsson",
+   "orgLogin": "Ericsson",
+   "url": "https://github.com/Ericsson/codechecker",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Jarvis is an AI-powered application that allows users to control various devices and applications through voice commands, offering tailored",
+   "org": "Avdhesh-Varshney",
+   "orgLogin": "Avdhesh-Varshney",
+   "url": "https://github.com/Avdhesh-Varshney/Jarvis",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Yet another project to get beginners contributing to open source",
+   "org": "Roshanjossey",
+   "orgLogin": "Roshanjossey",
+   "url": "https://github.com/Roshanjossey/first-contributions",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An open-source time-series SQL database optimized for fast ingest and complex queries. Packaged as a PostgreSQL extension.",
+   "org": "timescale",
+   "orgLogin": "timescale",
+   "url": "https://github.com/timescale/timescaledb",
+   "year": null,
+   "lang": "C",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "CrateDB is a distributed and scalable SQL database for storing and analyzing massive amounts of data in near real-time, even with complex qu",
+   "org": "crate",
+   "orgLogin": "crate",
+   "url": "https://github.com/crate/crate",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "🙃 A delightful community-driven (with 2,200+ contributors) framework for managing your zsh configuration. Includes 300+ optional plugins (r",
+   "org": "robbyrussell",
+   "orgLogin": "robbyrussell",
+   "url": "https://github.com/robbyrussell/oh-my-zsh",
+   "year": null,
+   "lang": "Shell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Shell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Build highly concurrent, distributed, and resilient message-driven applications on the JVM",
+   "org": "akka",
+   "orgLogin": "akka",
+   "url": "https://github.com/akka/akka",
+   "year": null,
+   "lang": "Scala",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Scala"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A customizable, open-source ecommerce platform built on WordPress. Build any commerce solution you can imagine.",
+   "org": "woothemes",
+   "orgLogin": "woothemes",
+   "url": "https://github.com/woothemes/woocommerce",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "www.embla-carousel.com — A lightweight carousel library with fluid motion and great swipe precision.",
+   "org": "davidcetinkaya",
+   "orgLogin": "davidcetinkaya",
+   "url": "https://github.com/davidcetinkaya/embla-carousel",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Javascript Canvas Library, SVG-to-Canvas (& canvas-to-SVG) Parser",
+   "org": "kangax",
+   "orgLogin": "kangax",
+   "url": "https://github.com/kangax/fabric.js",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "💧 A server-side Swift HTTP web framework.",
+   "org": "vapor",
+   "orgLogin": "vapor",
+   "url": "https://github.com/vapor/vapor",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Free and Open, Distributed, RESTful Search Engine",
+   "org": "elastic",
+   "orgLogin": "elastic",
+   "url": "https://github.com/elastic/elasticsearch",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "MODX Revolution - Content Management Framework",
+   "org": "modxcms",
+   "orgLogin": "modxcms",
+   "url": "https://github.com/modxcms/revolution",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An an easy-to-use backup tool for GNU Linux using rsync in the back",
+   "org": "bit-team",
+   "orgLogin": "bit-team",
+   "url": "https://github.com/bit-team/backintime",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Meshery, the cloud native manager",
+   "org": "layer5io",
+   "orgLogin": "layer5io",
+   "url": "https://github.com/layer5io/meshery",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Package manager for Chrome OS",
+   "org": "skycocker",
+   "orgLogin": "skycocker",
+   "url": "https://github.com/skycocker/chromebrew",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Mattermost is an open source platform for secure collaboration across the entire software development lifecycle..",
+   "org": "mattermost",
+   "orgLogin": "mattermost",
+   "url": "https://github.com/mattermost/platform",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Feature-rich ORM for modern Node.js and TypeScript, it supports PostgreSQL (with JSON and JSONB support), MySQL, MariaDB, SQLite, MS SQL Ser",
+   "org": "sequelize",
+   "orgLogin": "sequelize",
+   "url": "https://github.com/sequelize/sequelize",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Cypress Documentation including Guides, API, Plugins, Examples, & FAQ.",
+   "org": "cypress-io",
+   "orgLogin": "cypress-io",
+   "url": "https://github.com/cypress-io/cypress-documentation",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Ticket shop application for conferences, festivals, concerts, tech events, shows, exhibitions, workshops, barcamps, etc.",
+   "org": "pretix",
+   "orgLogin": "pretix",
+   "url": "https://github.com/pretix/pretix",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Artemis - Interactive Learning with Automated Feedback",
+   "org": "ls1intum",
+   "orgLogin": "ls1intum",
+   "url": "https://github.com/ls1intum/Artemis",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Flexible level editor",
+   "org": "bjorn",
+   "orgLogin": "bjorn",
+   "url": "https://github.com/bjorn/tiled",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Verified swarm engineering: humans, AI agents, and heterogeneous compute collaborate through bounded tasks, independent verification, and re",
+   "org": "MSKazemi",
+   "orgLogin": "MSKazemi",
+   "url": "https://github.com/MSKazemi/idkmesh",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Web based localization tool with tight version control integration.",
+   "org": "WeblateOrg",
+   "orgLogin": "WeblateOrg",
+   "url": "https://github.com/WeblateOrg/weblate",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Open Source multi-language/multi-currency/multi-store eCommerce platform",
+   "org": "spree",
+   "orgLogin": "spree",
+   "url": "https://github.com/spree/spree",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.",
+   "org": "FreeCodeCamp",
+   "orgLogin": "FreeCodeCamp",
+   "url": "https://github.com/FreeCodeCamp/FreeCodeCamp",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Local-first Japanese speaking practice for Korean learners; SDG 4 Quality Education OSS with pre-authored dialogue banks and local STT/TTS.",
+   "org": "duct-tape2",
+   "orgLogin": "duct-tape2",
+   "url": "https://github.com/duct-tape2/ai-language-partner",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The repository for high quality TypeScript type definitions.",
+   "org": "borisyankov",
+   "orgLogin": "borisyankov",
+   "url": "https://github.com/borisyankov/DefinitelyTyped",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Laravel Framework.",
+   "org": "laravel",
+   "orgLogin": "laravel",
+   "url": "https://github.com/laravel/framework",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The core of the Plone content management system",
+   "org": "plone",
+   "orgLogin": "plone",
+   "url": "https://github.com/plone/Products.CMFPlone",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Role-aware, permission-enforced benchmark for LLM agents that operate HPC systems — SLURM, telemetry, RBAC, docs, facility. A policy violati",
+   "org": "MSKazemi",
+   "orgLogin": "MSKazemi",
+   "url": "https://github.com/MSKazemi/aobench",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A curated list of awesome Go frameworks, libraries and software",
+   "org": "avelino",
+   "orgLogin": "avelino",
+   "url": "https://github.com/avelino/awesome-go",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The CVE Binary Tool helps you determine if your system includes known vulnerabilities. You can scan binaries for over 200 common, vulnerable",
+   "org": "intel",
+   "orgLogin": "intel",
+   "url": "https://github.com/intel/cve-bin-tool",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "REST API for any Postgres database",
+   "org": "PostgREST",
+   "orgLogin": "PostgREST",
+   "url": "https://github.com/PostgREST/postgrest",
+   "year": null,
+   "lang": "Haskell",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Haskell"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The most powerful headless CMS for Node.js — built with GraphQL and React",
+   "org": "keystonejs",
+   "orgLogin": "keystonejs",
+   "url": "https://github.com/keystonejs/keystone",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Exporter for machine metrics",
+   "org": "prometheus",
+   "orgLogin": "prometheus",
+   "url": "https://github.com/prometheus/node_exporter",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An Android app for reading compressed Wikipedia / HTML based content. Used in schools all over the world.",
+   "org": "kiwix",
+   "orgLogin": "kiwix",
+   "url": "https://github.com/kiwix/kiwix-android",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "An AI SRE for Kubernetes: connects to your cluster, investigates with real tools, explains the root cause in plain English, and executes the",
+   "org": "MSKazemi",
+   "orgLogin": "MSKazemi",
+   "url": "https://github.com/MSKazemi/kubeintellect",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Parse, validate, manipulate, and display dates in javascript.",
+   "org": "moment",
+   "orgLogin": "moment",
+   "url": "https://github.com/moment/moment",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Input method framework that help you to build your own input method engine.",
+   "org": "fodydev",
+   "orgLogin": "fodydev",
+   "url": "https://github.com/fodydev/afrim",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A Python native, OS native GUI toolkit.",
+   "org": "pybee",
+   "orgLogin": "pybee",
+   "url": "https://github.com/pybee/toga",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Code documentation written as code! How novel and totally my idea!",
+   "org": "adambard",
+   "orgLogin": "adambard",
+   "url": "https://github.com/adambard/learnxinyminutes-docs",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "a cross-platform, terminal-based music player, audio engine, metadata indexer, and server in c++",
+   "org": "clangen",
+   "orgLogin": "clangen",
+   "url": "https://github.com/clangen/musikcube",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "This is the Official source code repository of the Synfig project",
+   "org": "synfig",
+   "orgLogin": "synfig",
+   "url": "https://github.com/synfig/synfig",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "PrestaShop is the universal open-source software platform to build your e-commerce solution.",
+   "org": "PrestaShop",
+   "orgLogin": "PrestaShop",
+   "url": "https://github.com/PrestaShop/PrestaShop",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "A safe, extensible ORM and Query Builder for Rust",
+   "org": "diesel-rs",
+   "orgLogin": "diesel-rs",
+   "url": "https://github.com/diesel-rs/diesel",
+   "year": null,
+   "lang": "Rust",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Rust"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Cross-platform library for converting natural raster images into clean SVGs - fast, precise and configurable.",
+   "org": "Ryan-Millard",
+   "orgLogin": "Ryan-Millard",
+   "url": "https://github.com/Ryan-Millard/Img2Num",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Peace of mind from prototype to production",
+   "org": "phoenixframework",
+   "orgLogin": "phoenixframework",
+   "url": "https://github.com/phoenixframework/phoenix",
+   "year": null,
+   "lang": "Elixir",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Elixir"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Nim is a compiled, garbage-collected systems programming language with a design that focuses on efficiency, expressiveness, and elegance.",
+   "org": "nim-lang",
+   "orgLogin": "nim-lang",
+   "url": "https://github.com/nim-lang/Nim",
+   "year": null,
+   "lang": "Nimrod",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Nimrod"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The standard library of the D programming language",
+   "org": "dlang",
+   "orgLogin": "dlang",
+   "url": "https://github.com/dlang/phobos",
+   "year": null,
+   "lang": "D",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "D"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Concise, consistent, and legible badges in SVG and raster format",
+   "org": "badges",
+   "orgLogin": "badges",
+   "url": "https://github.com/badges/shields",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The Symfony documentation",
+   "org": "symfony",
+   "orgLogin": "symfony",
+   "url": "https://github.com/symfony/symfony-docs",
+   "year": null,
+   "lang": "HTML",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "HTML"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "File browser designed for elementary OS",
+   "org": "elementary",
+   "orgLogin": "elementary",
+   "url": "https://github.com/elementary/files",
+   "year": null,
+   "lang": "Vala",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Vala"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Alibaba Java Diagnostic Tool Arthas/Alibaba Java诊断利器Arthas",
+   "org": "alibaba",
+   "orgLogin": "alibaba",
+   "url": "https://github.com/alibaba/arthas",
+   "year": null,
+   "lang": "Java",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Java"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The simplest, fastest way to get business intelligence and analytics to everyone in your company :yum:",
+   "org": "metabase",
+   "orgLogin": "metabase",
+   "url": "https://github.com/metabase/metabase",
+   "year": null,
+   "lang": "Clojure",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Clojure"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "The open-source Shopify alternative ⚡️",
+   "org": "medusajs",
+   "orgLogin": "medusajs",
+   "url": "https://github.com/medusajs/medusa",
+   "year": null,
+   "lang": "TypeScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "TypeScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Metasploit Framework",
+   "org": "rapid7",
+   "orgLogin": "rapid7",
+   "url": "https://github.com/rapid7/metasploit-framework",
+   "year": null,
+   "lang": "Ruby",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Ruby"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "CiviCRM (Core Application and Framework)",
+   "org": "civicrm",
+   "orgLogin": "civicrm",
+   "url": "https://github.com/civicrm/civicrm-core",
+   "year": null,
+   "lang": "PHP",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "PHP"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":camera: A modern, cross-platform, 2D Graphics library for .NET",
+   "org": "JimBobSquarePants",
+   "orgLogin": "JimBobSquarePants",
+   "url": "https://github.com/JimBobSquarePants/ImageSharp",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Elixir is a dynamic, functional language for building scalable and maintainable applications",
+   "org": "elixir-lang",
+   "orgLogin": "elixir-lang",
+   "url": "https://github.com/elixir-lang/elixir",
+   "year": null,
+   "lang": "Elixir",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Elixir"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "NLTK -- the Natural Language Toolkit -- is a suite of open source Python modules, data sets, and tutorials supporting research and developme",
+   "org": "nltk",
+   "orgLogin": "nltk",
+   "url": "https://github.com/nltk/nltk",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Golang client for NATS, the cloud native messaging system.",
+   "org": "apcera",
+   "orgLogin": "apcera",
+   "url": "https://github.com/apcera/nats",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Ember.js - A JavaScript framework for creating ambitious web applications",
+   "org": "emberjs",
+   "orgLogin": "emberjs",
+   "url": "https://github.com/emberjs/ember.js",
+   "year": null,
+   "lang": "JavaScript",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "JavaScript"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "NuGet Gallery is a package repository that powers https://www.nuget.org. Use this repo for reporting NuGet.org issues.",
+   "org": "NuGet",
+   "orgLogin": "NuGet",
+   "url": "https://github.com/NuGet/NuGetGallery",
+   "year": null,
+   "lang": "C#",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C#"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Free, open-source, fully-offline-by-default voice dictation for Linux (X11 & Wayland), macOS & Windows. Hold a key, speak, release — on-devi",
+   "org": "MSKazemi",
+   "orgLogin": "MSKazemi",
+   "url": "https://github.com/MSKazemi/yazses",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "WordPress for iOS - Official repository",
+   "org": "wordpress-mobile",
+   "orgLogin": "wordpress-mobile",
+   "url": "https://github.com/wordpress-mobile/WordPress-iOS",
+   "year": null,
+   "lang": "Swift",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Swift"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "PowerDNS Authoritative, PowerDNS Recursor, dnsdist",
+   "org": "PowerDNS",
+   "orgLogin": "PowerDNS",
+   "url": "https://github.com/PowerDNS/pdns",
+   "year": null,
+   "lang": "C++",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "C++"
+   ],
+   "mentors": []
+  },
+  {
+   "title": "Fast and extensible multi-platform HTTP/1-2-3 web server with automatic HTTPS",
+   "org": "mholt",
+   "orgLogin": "mholt",
+   "url": "https://github.com/mholt/caddy",
+   "year": null,
+   "lang": "Go",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Go"
+   ],
+   "mentors": []
+  },
+  {
+   "title": ":house_with_garden: Open source home automation that puts local control and privacy first.",
+   "org": "home-assistant",
+   "orgLogin": "home-assistant",
+   "url": "https://github.com/home-assistant/home-assistant",
+   "year": null,
+   "lang": "Python",
+   "stars": null,
+   "desc": "",
+   "season": null,
+   "techs": [
+    "Python"
+   ],
+   "mentors": []
+  }
+ ]
+}
