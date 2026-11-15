@@ -10,6 +10,7 @@ import { PROGRAMS, ORGS } from "@/data/orgs";
 import { REPOS } from "@/data/repos";
 import { fmtFull, STATS } from "@/lib/siteStats";
 import { catalogSnapshot, homeCard, programCard } from "@/lib/ogContent";
+import type { Program } from "@/lib/types";
 
 describe("catalog snapshot", () => {
   it("is the newest updated date in the project catalog", () => {
@@ -97,5 +98,35 @@ describe("program cards", () => {
        data file changes size - which is exactly when the card builder
        needs re-reading against the new records */
     expect(PROGRAMS).toHaveLength(13);
+  });
+});
+
+describe("program cards on partial records", () => {
+  /* A fixture with the stipend, window and reach unpublished: the share card
+     must not claim a value the record does not publish, and must not turn the
+     gap into a "$0" or a blank row. */
+  const base = PROGRAMS[0];
+  const noFigures: Program = { ...base, pay: "", window: "", orgs: "", payNote: "" };
+
+  it("emits no ledger row for a field the record does not publish", () => {
+    const card = programCard(noFigures);
+    expect(card.rows).toEqual([]);
+    const said = JSON.stringify(card);
+    expect(said).not.toContain("$0");
+    expect(said).not.toContain('"v":""');
+  });
+
+  it("keeps the published pay paired with its own note, not another record's", () => {
+    const withPay: Program = { ...noFigures, pay: "$1,500 – $3,000", payNote: "PER TERM" };
+    const card = programCard(withPay);
+    const pay = card.rows.find((r) => r.v === withPay.pay);
+    expect(pay?.k).toBe("PER TERM");
+    expect(card.rows).toHaveLength(1);
+  });
+
+  it("labels a published pay with no note as plain Pay rather than inventing one", () => {
+    const payOnly: Program = { ...noFigures, pay: "Badge + tree" };
+    const card = programCard(payOnly);
+    expect(card.rows.find((r) => r.v === "Badge + tree")?.k).toBe("Pay");
   });
 });

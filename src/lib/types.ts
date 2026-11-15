@@ -21,9 +21,9 @@ export interface Phase { label: string; s: number; e: number; c: string; active?
 
 export interface Program {
   id: string; name: string; owner: string; img: string; url: string;
-  tag: string; pay: string; payNote: string;
+  tag: string; pay?: string; payNote?: string;
   status: "live" | "upcoming" | "closed";
-  window: string; orgs: string; slots: string;
+  window?: string; orgs?: string; slots?: string;
   phases: Phase[];
 }
 

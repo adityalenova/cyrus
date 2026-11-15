@@ -13,6 +13,7 @@ import { PROGRAM_DETAILS } from "@/data/programDetails";
 import { SITE_ORIGIN, canonical } from "@/lib/seo";
 import type { Org, Program } from "@/lib/types";
 import { statsLine } from "@/lib/siteStats";
+import { isPublished } from "@/lib/programFields";
 
 export type JsonLd = Record<string, unknown>;
 
@@ -73,9 +74,9 @@ export function programEntity(p: Program): JsonLd {
     isAccessibleForFree: true,
   };
   if (detail) {
-    body.coursePrerequisites = detail.eligibility;
+    if (isPublished(detail.eligibility)) body.coursePrerequisites = detail.eligibility;
     body.educationalLevel = detail.level;
-    body.abstract = detail.about[0];
+    if (isPublished(detail.about[0])) body.abstract = detail.about[0];
   }
   return body;
 }
