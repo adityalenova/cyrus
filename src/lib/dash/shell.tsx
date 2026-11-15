@@ -4,12 +4,13 @@
    live counts and a pinned account card, then the page column. The
    marketing header is swapped for this one on /dashboard routes by
    Shell.tsx, so the board reads as a product and not as a page.   ══ */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Link } from "@/lib/router";
 import { Avatar, btn, Logo } from "../../components/ui";
 import { ThemeToggle } from "../../components/Nav";
 import { useStored } from "../util";
+import { pickHeading, shouldMoveFocus } from "./navFocus";
 import { DP, ISSUE_STAGES, STAGE_LABEL, W } from "./shared";
 import type { Dash } from "./useDash";
 
@@ -193,6 +194,23 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
   const user = dash.user!;
   const [narrow, setNarrow] = useStored<boolean>("cyrus.nav.collapsed", false);
   const [menu, setMenu] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+  const prevActive = useRef<string | null>(null);
+  /* A section change closes the drawer, puts focus on the new page heading
+     and returns the scroll to the top of the content. The heading is made
+     programmatically focusable only, so it never joins the tab order. */
+  useEffect(() => {
+    const move = shouldMoveFocus(prevActive.current, active);
+    prevActive.current = active;
+    setMenu(false);
+    if (!move) return;
+    const h = pickHeading(mainRef.current);
+    if (h) {
+      h.tabIndex = -1;
+      h.focus({ preventScroll: true });
+    }
+    window.scrollTo({ top: 0 });
+  }, [active]);
   const groups = rail(dash);
   const flat = groups.flatMap((g) => g.items.map((it) => ({ ...it, group: g.label })));
 
@@ -333,7 +351,7 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
               </Link>
             ))}
           </nav>
-          <main className="mx-auto max-w-[1160px] px-4 md:px-7 py-6 md:py-9 grid gap-6 md:gap-7 [&>*]:min-w-0">{children}</main>
+          <main ref={mainRef} className="mx-auto max-w-[1160px] px-4 md:px-7 py-6 md:py-9 grid gap-6 md:gap-7 [&>*]:min-w-0">{children}</main>
         </div>
       </div>
     </div>
