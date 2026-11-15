@@ -27,7 +27,7 @@ const dataset = (id: string, before: unknown, after: unknown, extra: Record<stri
 const check = (r: any, name: string) => r.checks.find((c: any) => c.name === name);
 
 describe("an unchanged refresh", () => {
-  const same = rows({ u: "a", t: "Alpha", o: "Org", stars: 10 });
+  const same = rows({ u: "a", t: "Alpha", o: "Org", y: 2024, stars: 10 });
   it("passes, and says so in every output", () => {
     const r = report([dataset("gsoc", same, same)]);
     expect(r.status).toBe("pass");
@@ -234,7 +234,7 @@ describe("malformed records", () => {
 
   it("fails the run on the first malformed row, because that is the default limit", () => {
     const ten = rows(...Array.from({ length: 10 }, (_, i) => ({ u: `r${i}`, t: `Row ${i}`, o: "O" })));
-    const r = report([dataset("oct", ten, rows(...ten.list, { u: "bad", t: "Bad", o: "O", y: })),
+    const r = report([dataset("oct", ten, rows(...ten.list, { u: "bad", t: "Bad", o: "O", y: 3 })),
       dataset("gsoc", rows({ u: "b", t: "B", o: "O" }), rows({ u: "b", t: "B", o: "O" }))]);
     expect(r.status).toBe("fail");
     expect(r.failed).toEqual(["maxInvalidRecords"]);
