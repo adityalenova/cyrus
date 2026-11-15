@@ -1,3 +1,4 @@
+/* ══ qualityReport.test.ts — what a refresh changed, and what to do about it ══ */
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_THRESHOLDS, FIELD_CAP, LIST_CAP, PREVIEW_CAP,
