@@ -1,0 +1,1044 @@
+{
+ "program": "sob",
+ "label": "Summer of Bitcoin",
+ "source": "public/data/otherProjects.json (program \"Summer of Bitcoin\"), read from summerofbitcoin.org's project list, with each github.com link re-read via gh api repos/<owner>/<repo>",
+ "evidence": "archive",
+ "url": "https://www.summerofbitcoin.org",
+ "note": "One row per funded Summer of Bitcoin project. `b` keeps the fellow's institution as the program's own record states it and `m` the mentor the program lists. 50 row(s) point at a GitHub repository that we then re-read through the GitHub API for stars, language, license, description and topics; 2 repository links no longer resolve and were dropped rather than shipped as dead links. Rows whose program record carries no repository keep the fields empty. Organizations are keyed by the project name the program's own list uses, and that name is not a GitHub account, so no `orgs` URL is filled.",
+ "unit": "funded projects",
+ "generated": "2026-10-25",
+ "years": [
+  2026
+ ],
+ "rows": 66,
+ "capped": false,
+ "projects": [
+  {
+   "title": "Formstr: Ollama Integration",
+   "org": "Formstr",
+   "orgLogin": "Formstr",
+   "url": "https://github.com/abh3po/nostr-forms",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology Patna, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Abhay"
+   ]
+  },
+  {
+   "title": "Initial Bead Download (IBD) for Braidpool",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/187",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology Roorkee , India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "SeedSigner Enhancement - Add Support for BIP-39 Passphrase Accented Characters",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pull/714",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Motilal Nehru National Institute of Technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "Braidpool Monitoring Dashboard",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/121",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: University Institute of Engineering and Technology, Panjab University, Chandigarh, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "Improve Testing of Caravan",
+   "org": "Caravan",
+   "orgLogin": "Caravan",
+   "url": "https://github.com/caravan-bitcoin/caravan/pull/248",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National Institute of Technology, Durgapur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Buck Perley"
+   ]
+  },
+  {
+   "title": "SeedSigner Enhancement - SeedXOR",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pull/738",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT Jodhpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "View Connected and Disconnected Peers in Zeus",
+   "org": "Zeus",
+   "orgLogin": "Zeus",
+   "url": "https://github.com/ZeusLN/zeus/pull/3217",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indira Gandhi National Open University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Evan Kaloudis",
+    "Shubham Kumar"
+   ]
+  },
+  {
+   "title": "Committed Mempool",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/237",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: UIET Panjab University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "Committed Mempool",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/227",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Chennai Mathematical Institute, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "Wallet Health Dashboard in Caravan Coordinator",
+   "org": "Caravan",
+   "orgLogin": "Caravan",
+   "url": "https://github.com/caravan-bitcoin/caravan/pull/311",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National Institute of Technology Hamirpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Buck Perley"
+   ]
+  },
+  {
+   "title": "Nostr Components: Take Nostr content beyond Nostr clients - embed it anywhere on the internet",
+   "org": "Nostr Components",
+   "orgLogin": null,
+   "url": "https://github.com/saiy2k/nostr-components/pull/27",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT Jodhpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Sai"
+   ]
+  },
+  {
+   "title": "Bitcoin AI-Assisted Coding Tools",
+   "org": "ChatBTC",
+   "orgLogin": "ChatBTC",
+   "url": "https://github.com/bitcointranscripts/tstbtc/pull/131",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Panjab University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kostas Karasavvas",
+    "Bob",
+    "Andreas"
+   ]
+  },
+  {
+   "title": "Add AWS to Galoy-Infra",
+   "org": "Galoy",
+   "orgLogin": "Galoy",
+   "url": "https://github.com/GaloyMoney/galoy-infra/pull/283",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology Indore, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kartik",
+    "Sandipan",
+    "Justin Carter"
+   ]
+  },
+  {
+   "title": "LNprototest Message Flow Visualizer",
+   "org": "lnprototest",
+   "orgLogin": "lnprototest",
+   "url": "https://github.com/gitsofaryan/lightning-event-viewer",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: gyan ganga institute of technology and sciences, India",
+   "season": "",
+   "techs": [],
+   "mentors": []
+  },
+  {
+   "title": "Add Nostr Wallet Connect (NWC) to the Breez SDK",
+   "org": "Breez",
+   "orgLogin": "Breez",
+   "url": "https://github.com/breez/breez-sdk-liquid/pull/920",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: PDPM IIITDM Jabalpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Roy Sheinfeld"
+   ]
+  },
+  {
+   "title": "Add Support for Multiple Upstream",
+   "org": "Demand",
+   "orgLogin": "Demand",
+   "url": "https://github.com/demand-open-source/demand-cli/pull/71",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: The LNM Institute of Information Technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Prisca"
+   ]
+  },
+  {
+   "title": "Update SeedSigner BIP-85 implementation",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pulls?q=involves%3AChaitanya-Keyal+sort%3Aupdated-desc",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Birla Institute of Technology and Science, Pilani - Hyderabad Campus, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "Fuzzing Lightning Implementations",
+   "org": "Lightning-Network",
+   "orgLogin": "Lightning-Network",
+   "url": "https://github.com/ElementsProject/lightning/pulls?page=1&q=is%3Apr+author%3AChand-ra",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Sardar Vallabhbhai National Institute of Technology, Surat, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Matt Morehouse"
+   ]
+  },
+  {
+   "title": "Extending Message Signing & Verification with On-Chain Address Keys",
+   "org": "Zeus",
+   "orgLogin": "Zeus",
+   "url": "https://github.com/ZeusLN/zeus/pull/3139",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: BITS Pilani , India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Evan Kaloudis",
+    "Shubham Kumar"
+   ]
+  },
+  {
+   "title": "Ark Protocol & Bitcoin Script",
+   "org": "Ark",
+   "orgLogin": "Ark",
+   "url": "https://github.com/arkade-os/rust-sdk/pull/89",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: International Institute of Information Technology - Hyderabad, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Marco Argentieri"
+   ]
+  },
+  {
+   "title": "Create Transaction selection Dashboard",
+   "org": "Demand",
+   "orgLogin": "Demand",
+   "url": "https://github.com/demand-open-source/jd-tx-selection-dashboard/pull/1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology (BHU) Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Prisca"
+   ]
+  },
+  {
+   "title": "ln-history: platform to store and analyse gossip messages of the Lightning Network",
+   "org": "LN History",
+   "orgLogin": null,
+   "url": "https://docs.ln-history.info",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Technical University Berlin, Germany",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "René"
+   ]
+  },
+  {
+   "title": "Code Cleanup for SeedSigner Loading Screens",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pull/718",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Maharishi International University, United States",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "Add an alternative storage back-end implementation using redb",
+   "org": "BDK",
+   "orgLogin": "BDK",
+   "url": "https://crates.io/crates/bdk_redb",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT Kanpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Steve Myers",
+    "Leonardo"
+   ]
+  },
+  {
+   "title": "Payment Escrow and Processing",
+   "org": "Shopstr",
+   "orgLogin": "Shopstr",
+   "url": "https://github.com/shopstr-eng/shopstr/pull/161",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Birla Institute of Technology & Science, Pilani Campus, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Calvadev"
+   ]
+  },
+  {
+   "title": "Fedimint Web Wallet using WebSDK",
+   "org": "Fedimint",
+   "orgLogin": "Fedimint",
+   "url": "https://gist.github.com/Harshdev098/5e716c490c2e66fc3b727455ec4b47cb",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Babu Banarasi Das Engineering College, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Justin Moon",
+    "Shaurya",
+    "Eric Sirion"
+   ]
+  },
+  {
+   "title": "Bitcoin AI-Assisted Coding Tools",
+   "org": "ChatBTC",
+   "orgLogin": "ChatBTC",
+   "url": "https://github.com/braidpool/GraphRAG/tree/graph-rag-agents",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Punjab Engineering College , India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kostas Karasavvas",
+    "Bob",
+    "Andreas"
+   ]
+  },
+  {
+   "title": "Fiat Currency Toggle in Invoice Creation",
+   "org": "Zeus",
+   "orgLogin": "Zeus",
+   "url": "https://github.com/zeusLN/zeus/pulls?q=is%3Apr+author%3Aa-khushal+is%3Aclosed",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Visvesvaraya Technological University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Evan Kaloudis",
+    "Shubham Kumar"
+   ]
+  },
+  {
+   "title": "QR Code Based Interactions in Caravan",
+   "org": "Caravan",
+   "orgLogin": "Caravan",
+   "url": "https://github.com/caravan-bitcoin/caravan/pull/299",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Jaypee Institute of Information Technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Buck Perley"
+   ]
+  },
+  {
+   "title": "Upgrade Bria to Bitcoin Development Kit (BDK) 1.0",
+   "org": "Galoy",
+   "orgLogin": "Galoy",
+   "url": "https://github.com/GaloyMoney/es-entity/pull/30",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: The LNM Institute of Information Technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kartik",
+    "Sandipan",
+    "Justin Carter"
+   ]
+  },
+  {
+   "title": "Lampo: Tests, PoC and clap-cli",
+   "org": "lampo",
+   "orgLogin": "lampo",
+   "url": "https://github.com/vincenzopalazzo/lampo.rs/pull/474",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT-BHU(Varanasi), India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Vincenzo Palazzo"
+   ]
+  },
+  {
+   "title": "Event Loop Library for Efficient I/O Management",
+   "org": "Coinswap",
+   "orgLogin": "Coinswap",
+   "url": "https://github.com/citadel-tech/Event-Loop/pull/17",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Zagazig University, Egypt",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rajarshi Maitra"
+   ]
+  },
+  {
+   "title": "Committed Mempool",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/213",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Guru Gobind Singh Indraprastha University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "Bitcoin AI-Assisted Coding Tools",
+   "org": "ChatBTC",
+   "orgLogin": "ChatBTC",
+   "url": "https://github.com/braidpool/GraphRAG/pull/20",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute Of Technology , BHU, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kostas Karasavvas",
+    "Bob",
+    "Andreas"
+   ]
+  },
+  {
+   "title": "Saving Satoshi - An educational bitcoin RPG",
+   "org": "Saving Satoshi",
+   "orgLogin": null,
+   "url": "https://www.figma.com/design/qHNmvIn1zyUS63RIyyqwiQ/Saving-Satoshi--Copy-?node-id=",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT BHU, Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Deeksha",
+    "Lee"
+   ]
+  },
+  {
+   "title": "Saving Satoshi - An educational bitcoin RPG",
+   "org": "Saving Satoshi",
+   "orgLogin": null,
+   "url": "https://www.figma.com/design/qHNmvIn1zyUS63RIyyqwiQ/Saving-Satoshi--Copy-?node-id=",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT BHU, Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Deeksha",
+    "Lee"
+   ]
+  },
+  {
+   "title": "Jam v2 UI",
+   "org": "Jam",
+   "orgLogin": "Jam",
+   "url": "https://github.com/joinmarket-webui/jam/commit/8708f2836150ee6442679053af56e5ff4d24bb71",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: AJ institute of engineering and technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Thebora Kompanioni"
+   ]
+  },
+  {
+   "title": "Continuous Fuzzing for LND",
+   "org": "LND",
+   "orgLogin": "LND",
+   "url": "https://github.com/go-continuous-fuzz/go-continuous-fuzz/pull/1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology (BHU) Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ziggie",
+    "Oliver Gugger"
+   ]
+  },
+  {
+   "title": "SeedSigner Enhancement - Create Seed with Coinflips",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pull/720",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Birla Institute of Technology and Science, Pilani, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "BOLT 12 and Greenlight Integration",
+   "org": "Shopstr",
+   "orgLogin": "Shopstr",
+   "url": "https://github.com/shopstr-eng/merchant-usernames/pull/1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Starex University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Calvadev"
+   ]
+  },
+  {
+   "title": "Enhancing Alby’s Smaller Apps & Tools: Developer",
+   "org": "Alby",
+   "orgLogin": "Alby",
+   "url": "https://github.com/getAlby/lightning-browser-extension/pull/3408",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Federal University of Technology, Akure, Nigeria, (FUTA), Nigeria",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Jakub",
+    "Pavan"
+   ]
+  },
+  {
+   "title": "Improving Fedimint WebSDK",
+   "org": "Fedimint",
+   "orgLogin": "Fedimint",
+   "url": "https://github.com/fedimint/fedimint/pulls?q=is%3Apr+author%3AMrImmortal09",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Information Technology, Lucknow, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Justin Moon",
+    "Shaurya",
+    "Eric Sirion"
+   ]
+  },
+  {
+   "title": "NS3 Simulation for P2Poolv2's Sharechain With Uncles",
+   "org": "P2Pool",
+   "orgLogin": "P2Pool",
+   "url": "https://github.com/p2poolv2/Ns3_simulation",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: APSIT, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kulpreet Singh"
+   ]
+  },
+  {
+   "title": "Improve Fee Rate Precision in Bitcoin Core CFeeRate Class",
+   "org": "Bitcoin Core",
+   "orgLogin": null,
+   "url": "https://github.com/bitcoin/bitcoin/pull/32750",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Universitat Autònoma de Barcelona, Spain",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Abubakar"
+   ]
+  },
+  {
+   "title": "Replace reqwest with async-minreq in rust-esplora-client",
+   "org": "BDK",
+   "orgLogin": "BDK",
+   "url": "https://crates.io/crates/async_minreq",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Information Technology, Lucknow, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Steve Myers",
+    "Leonardo"
+   ]
+  },
+  {
+   "title": "Braidpool Monitoring Dashboard",
+   "org": "braidpool",
+   "orgLogin": "braidpool",
+   "url": "https://github.com/braidpool/braidpool/pull/238",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Galgotias University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bob"
+   ]
+  },
+  {
+   "title": "Bitcoin Keeper Desktop App UX/UI",
+   "org": "Bitcoin-Keeper",
+   "orgLogin": "Bitcoin-Keeper",
+   "url": "https://www.figma.com/design/Tsjkre0tK1OL9C9ajeKAfq/Keeper-Design-Compilation--In-progress-?node-id=0-1&t=Majvd8K6vn3WnUez-1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National University of Singapore, Singapore",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Anant Tapadia"
+   ]
+  },
+  {
+   "title": "Provide DoS prevention for P2Poolv2 Networking Stack",
+   "org": "P2Pool",
+   "orgLogin": "P2Pool",
+   "url": "https://github.com/pool2win/p2pool-v2/pull/135",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Medhavi Skills University,Sikkim,India, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kulpreet Singh"
+   ]
+  },
+  {
+   "title": "Wallet Encryption and Backup Mechanism",
+   "org": "Coinswap",
+   "orgLogin": "Coinswap",
+   "url": "https://github.com/citadel-tech/coinswap/pull/507",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Università della Valle d'Aosta, Italy",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rajarshi Maitra"
+   ]
+  },
+  {
+   "title": "UI/UX Design for Bitcoin HWI & Bitcoin-Only Firmware on Cypherock X1",
+   "org": "Cypherock",
+   "orgLogin": "Cypherock",
+   "url": "https://www.figma.com/design/WXqRXAAWE9NMD544UkHeHM/Cypherock-SoB-25?node-id=1426-47772&t=hLGWquFwcWuUW14O-1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology Roorkee , India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rohan"
+   ]
+  },
+  {
+   "title": "Liquid Network Integration for Angor Wallet",
+   "org": "Angor",
+   "orgLogin": "Angor",
+   "url": "https://liquid.angor.online/",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Information Technology, Jabalpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Dan Gershony",
+    "V"
+   ]
+  },
+  {
+   "title": "Bitcoin AI-Assisted Coding Tools",
+   "org": "ChatBTC",
+   "orgLogin": "ChatBTC",
+   "url": "https://github.com/braidpool/Bitcoin-AI/issues/5",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Information Technology, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kostas Karasavvas",
+    "Bob",
+    "Andreas"
+   ]
+  },
+  {
+   "title": "Create SeedSigner User Guide",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://www.figma.com/design/sig3dVUbLkO9tKrvPRvLox/SeedSigner-User-Guide",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology (BHU) Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "Brand Update",
+   "org": "Bitcoin Dev Project",
+   "orgLogin": null,
+   "url": "https://www.figma.com/board/FDMTdUVcHEbX66xbTv5rAy/BDP?t=ovsNcFhYHXdlvZ4y-6",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: York University, Canada",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Stacie"
+   ]
+  },
+  {
+   "title": "Establishing a Comprehensive Brand Identity for Bitcoin Tribe",
+   "org": "Bitcoin-Tribe",
+   "orgLogin": "Bitcoin-Tribe",
+   "url": "https://www.figma.com/design/FFStaZ9Jg9kt6IZAj9mWEx/Bitcoin-Tribe-Desktop-app?node-id=0-1&t=BwupAsm8t0PMVUnI-1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology Kanpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Abhilash"
+   ]
+  },
+  {
+   "title": "Fix Taker Private Key Handover Exploit",
+   "org": "Coinswap",
+   "orgLogin": "Coinswap",
+   "url": "https://github.com/citadel-tech/coinswap/pull/531",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Bennett University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rajarshi Maitra"
+   ]
+  },
+  {
+   "title": "Bitcoin AI-Assisted Coding Tools",
+   "org": "ChatBTC",
+   "orgLogin": "ChatBTC",
+   "url": "https://github.com/Shashankss1205/CodeGraphContext",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: IIT BHU, Varanasi, India, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kostas Karasavvas",
+    "Bob",
+    "Andreas"
+   ]
+  },
+  {
+   "title": "Alby Apps: Improve some of the less known, smaller Alby apps & tools",
+   "org": "Alby",
+   "orgLogin": "Alby",
+   "url": "https://www.figma.com/design/G6tYia6rgBC75rp7efKqQI/Shubham-s-Summer-of-Bitcoin?node-id=586-155&t=08Dr29YKrvwlj71n-1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National Institute of Technology Tiruchirappalli, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Jakub",
+    "Pavan"
+   ]
+  },
+  {
+   "title": "VLS Test Coverage Improvement",
+   "org": "VLS",
+   "orgLogin": "VLS",
+   "url": "https://gitlab.com/lightning-signer/validating-lightning-signer/-/merge_requests/747",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Indian Institute of Technology (BHU) Varanasi, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Devrandom",
+    "Jack Ronaldi",
+    "Lakshay"
+   ]
+  },
+  {
+   "title": "Build atomic swap from P2Pool to Ark",
+   "org": "P2Pool",
+   "orgLogin": "P2Pool",
+   "url": "https://github.com/pool2win/p2pool-v2/pull/94",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Ramaiah University of Applied Sciences, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Kulpreet Singh"
+   ]
+  },
+  {
+   "title": "SeedSigner Enhancement - Silent Payments BIP-352",
+   "org": "SeedSigner",
+   "orgLogin": "SeedSigner",
+   "url": "https://github.com/SeedSigner/seedsigner/pull/790",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Aliah University, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Ace",
+    "Keith Mukai"
+   ]
+  },
+  {
+   "title": "Bitcoin HWI (Hardware Wallet Interface) for Cypherock X1 to Integrate Software Wallets like Sparrow Wallet using Cyphero",
+   "org": "Cypherock",
+   "orgLogin": "Cypherock",
+   "url": "https://github.com/Cypherock/sdk-python/pull/1",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Ahmadu bello university, Nigeria",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rohan"
+   ]
+  },
+  {
+   "title": "Bitcoin-Only Firmware for Cypherock X1 Hardware Wallet",
+   "org": "Cypherock",
+   "orgLogin": "Cypherock",
+   "url": "https://github.com/Cypherock/x1_wallet_firmware/pull/658",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National Institute of Technology, Hamirpur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Rohan"
+   ]
+  },
+  {
+   "title": "Implement a Transparency System for Demand Pool Proxy",
+   "org": "Demand",
+   "orgLogin": "Demand",
+   "url": "https://github.com/demand-open-source/share-accounting-ext/pull/8",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: Shri G. S. Institute of Technology & Science (SGSITS) Indore, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Prisca"
+   ]
+  },
+  {
+   "title": "Enhance UI/UX of the Angor decentralized P2P Funding Protocol",
+   "org": "Angor",
+   "orgLogin": "Angor",
+   "url": "https://github.com/block-core/angor/pull/435",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: National Institute of Technology, Kurukshetra - India, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Dan Gershony",
+    "V"
+   ]
+  },
+  {
+   "title": "Differential Fuzzing Bitcoin implementations",
+   "org": "Bitcoin-Fuzz",
+   "orgLogin": "Bitcoin-Fuzz",
+   "url": "https://github.com/bitcoinfuzz/bitcoinfuzz/pull/200",
+   "year": 2026,
+   "lang": null,
+   "stars": null,
+   "desc": "Summer of Bitcoin 2026: NIT Durgapur, India",
+   "season": "",
+   "techs": [],
+   "mentors": [
+    "Bruno Gracia"
+   ]
+  }
+ ]
+}

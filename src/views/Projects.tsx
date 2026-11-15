@@ -1,15 +1,18 @@
 "use client"
 /* ══ Projects.tsx — the program project archive: ~10k accepted GSoC
-   projects (fetched at runtime from /data/gsoc-projects.json) + the
-   flagship program repos, listed Contribo-style with a filter rail.
-   Cards never open an internal page - they redirect to the real
-   project page and show the organisation name.                    ═ */
+   projects (fetched at runtime from /data/gsoc-projects.json), the other
+   four big archives' rows in /data/otherProjects.json, and one shard per
+   remaining program under /data/program-projects/ - listed Contribo-style
+   with a filter rail. Cards never open an internal page: they go to the
+   project's own page, and a row only ever carries what its source said. ═ */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { PROGRAM_REPOS, PROGRAM_META } from "../data/programRepos";
 import type { ProgramName } from "../data/programRepos";
-import { fmt, hash } from "../lib/util";
+import { useProjectArchives } from "../lib/programProjects";
+import { fmtFull } from "../lib/siteStats";
+import { fmtCompact } from "../lib/util";
 import { useStore } from "../lib/store";
 import { btn, Chip, Word } from "../components/ui";
 
@@ -22,9 +25,12 @@ interface Proj {
   title: string;
   org: string;
   orgUrl: string;
-  program: string;            // "GSoC" | "LFX" | "GSSoC" | "Outreachy"
+  program: string;            // the program's own display label
   year: number;
-  size: "small" | "medium" | "large";
+  /** project scope, only where the archive states it - GSoC publishes this */
+  size?: "small" | "medium" | "large";
+  /** the round or cohort the source names on this row, when it names one */
+  season?: string;
   tags: string[];
   body: string;
   mentor: string;
@@ -50,22 +56,24 @@ function orgTarget(p: Proj): Pick<Proj, "orgTo"> {
 interface RawGsoc { y: number; u: string; t: string; o: string; s: string; tt: string[]; tp: string[]; b: string; m: string }
 interface RawFile { projects: RawGsoc[]; orgs: Record<string, { url?: string; category?: string }> }
 
-/* stipend + hours bands per project size, deterministic per uid so a
-   card always shows the same numbers. GSoC 2022-2026 ranges. */
-const BAND: Record<Proj["size"], { stipend: [number, number]; hours: [number, number] }> = {
-  small: { stipend: [3.0, 3.6], hours: [150, 175] },
-  medium: { stipend: [4.0, 4.9], hours: [300, 350] },
-  large: { stipend: [5.3, 6.6], hours: [400, 450] },
-};
-const DIFF: Record<Proj["size"], string> = { small: "Easy", medium: "Medium", large: "Hard" };
-const DIFF_CLS: Record<Proj["size"], string> = {
+/* One program reaches this grid under several spellings: the flagship shelf
+   carries the ProgramName key ("GSSoc"), its archive shard carries the edition
+   ("GSSoC'26"). progLabel is what a card prints and what the rail offers,
+   progKey is what a filter compares, so the two spellings are one option and a
+   ?prog= link from a program page still matches either kind of row. */
+const stripSeason = (s: string) => s.replace(/['’]?\d{2,4}$/, "");
+const progLabel = (s: string) => PROGRAM_META[s as ProgramName]?.label ?? stripSeason(s);
+const progKey = (s: string) => stripSeason(s).toLowerCase();
+
+/* What a project's published scope means for a newcomer. GSoC states
+   small/medium/large per row; that is the only difficulty figure any card
+   shows, and the badge says who it is easy for rather than inventing a score. */
+type Size = "small" | "medium" | "large";
+const DIFF: Record<Size, string> = { small: "Easy", medium: "Medium", large: "Hard" };
+const DIFF_CLS: Record<Size, string> = {
   small: "text-leaf border-leaf/40 bg-leaf/10",
   medium: "text-honey border-honey/45 bg-honey/12",
   large: "text-brick border-brick/40 bg-brick/10",
-};
-const inBand = ([a, b]: [number, number], seed: number, dp = 0) => {
-  const v = a + (seed % 1000) / 1000 * (b - a);
-  return dp ? v.toFixed(dp) : String(Math.round(v));
 };
 
 /* the 87 flagship program repos, mapped into the same shape */
@@ -84,25 +92,25 @@ const flagships: Proj[] = PROGRAM_REPOS.map((r) => {
 function ProjCard({ p }: { p: Proj }) {
   const { saved, toggleSaved, toast } = useStore();
   const on = saved.includes(p.url);
-  const seed = hash(p.key);
-  const bd = BAND[p.size];
-  const stipend = inBand(bd.stipend, seed % 997, 1);
-  const hours = inBand(bd.hours, (seed >> 3) % 991);
   return (
     <article className="group bg-card border border-line rounded-[18px] p-[18px] flex flex-col shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift hover:border-accent/45">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
           <h3 className="card-title text-[16px] line-clamp-2">{p.title}</h3>
-          <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim mt-1.5 truncate">{p.org} • {p.year}</p>
+          <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim mt-1.5 truncate">{p.org}{p.year ? ` • ${p.year}` : ""}{p.season ? ` • ${p.season}` : ""}</p>
         </div>
-        <span className={`font-mono text-[9px] font-bold uppercase tracking-[.09em] px-2 py-1 rounded-md border shrink-0 ${DIFF_CLS[p.size]}`}>{DIFF[p.size] === "Easy" ? "BEGINNER" : DIFF[p.size] === "Medium" ? "INTERMEDIATE" : "ADVANCED"}</span>
+        {p.size && (
+          <span className={`font-mono text-[9px] font-bold uppercase tracking-[.09em] px-2 py-1 rounded-md border shrink-0 ${DIFF_CLS[p.size]}`}>{DIFF[p.size] === "Easy" ? "BEGINNER" : DIFF[p.size] === "Medium" ? "INTERMEDIATE" : "ADVANCED"}</span>
+        )}
       </div>
+      {/* the program's own name, on every card. These rows used to carry a
+          stipend range and an hours figure read off a band for the project's
+          size rather than off the archive, so a GSoC card showed money and no
+          program name while every other card showed the name. The scope badge
+          above is what the source actually publishes. */}
       <div className="flex gap-1.5 flex-wrap mt-3">
-        {p.program === "GSoC" ? <>
-          <Chip tone="green">$ {stipend}k–${(+stipend + 2.6).toFixed(1)}k</Chip>
-          <span className="font-mono text-[9.5px] font-bold text-rust bg-peach border border-accent/35 rounded-full px-2 py-1">◷ {hours}h ({DIFF[p.size]})</span>
-        </> : <Chip tone="cat">{p.program} flagship</Chip>}
-        {p.stars > 0 && <Chip tone="stars">★ {fmt(p.stars)}</Chip>}
+        <Chip tone="cat">{progLabel(p.program)}</Chip>
+        {p.stars > 0 && <Chip tone="stars">★ {fmtCompact(p.stars)}</Chip>}
       </div>
       <p className="text-cocoa text-[12.5px] leading-[1.55] mt-2.5 line-clamp-3">{p.body}</p>
       <div className="flex gap-1.5 flex-wrap mt-3 items-center">
@@ -154,6 +162,8 @@ export default function Projects() {
     SORT_VALUES.includes(rawSort as any) ? (rawSort as "recent" | "org" | "title") : "recent"
   );
   const [shown, setShown] = useState(60);
+  /* per-program shards + the honest list of programs that publish no archive */
+  const arc = useProjectArchives(PROGRAMS);
 
   /* every filter change rewrites the whole query so stacked facets
      survive, and the sync effect below never sees a partial URL */
@@ -169,7 +179,12 @@ export default function Projects() {
     setParams(rec);
   };
   const setQUrl = (v: string) => { setQ(v); write({ q: v }); };
-  const setProgUrl = (v: string) => { setProg(v); write({ prog: v }); };
+  /* programs are chosen from the sidebar; a /programs link can still arrive
+     with ?prog=…, so that facet stays honoured - this only clears it */
+  const clearProg = () => { setProg("all"); write({ prog: "all" }); };
+  /* the rail can also set it, which is how you get from the whole archive to
+     one program's rows without leaving the page */
+  const setProgUrl = (v: string) => { setProg(v); write({ prog: v }); setShown(60); };
   const setDiffUrl = (v: string) => { setDiff(v); write({ diff: v }); };
   const setYearUrl = (v: string) => { setYear(v); write({ year: v }); };
   const setTechUrl = (v: string) => { setTech(v); write({ tech: v }); };
@@ -215,16 +230,61 @@ export default function Projects() {
       key: `${(p as { program?: string }).program ?? "x"}${p.u}`, title: p.t, org: p.o,
       orgUrl: orgs[p.o]?.url || `https://github.com/search?q=${encodeURIComponent(p.o)}&type=organizations`,
       program: (p as { program?: string }).program ?? "LFX",
-      year: p.y, size: (["small", "medium", "large"].includes(p.s) ? p.s : "medium") as Proj["size"],
+      year: p.y, size: (["small", "medium", "large"].includes(p.s) ? p.s : undefined) as Proj["size"] | undefined,
+      /* these three carry their round in the same cell GSoC uses for scope, so
+         only a value that reads like a season is shown as one */
+      season: /\d{4}|round|cohort|term/i.test(p.s) ? p.s : undefined,
       tags: [...p.tt, ...p.tp].slice(0, 4), body: p.b, mentor: p.m,
       url: (p as { url?: string }).url || `https://mentorship.lfx.linuxfoundation.org/#all_all_all`, stars: 0,
     }));
-    return [...gsoc, ...extra, ...flagships];
-  }, [raw, other]);
+    /* one shard per remaining program - GSSoC, Season of KDE, 24 Pull Requests,
+       MLH, NSoC, Hacktoberfest, FOSSEE, Vercel OSS - each labelled with the
+       evidence its build step recorded, so a chip never overclaims */
+    const shards: Proj[] = arc.rows.map((r) => ({
+      key: r.key, title: r.title, org: r.org, orgUrl: r.orgUrl,
+      program: r.program,
+      year: r.year, season: r.season,
+      tags: r.tags, body: r.body, mentor: r.mentor, url: r.url, stars: r.stars,
+    }));
+    return [...gsoc, ...extra, ...shards, ...flagships];
+  }, [raw, other, arc.rows]);
 
-  /* filter option lists derived from what actually loaded */
-  const years = useMemo(() => [...new Set(all.map((p) => p.year))].sort((a, b) => b - a), [all]);
-  const progs = useMemo(() => [...new Set(["GSoC", ...flagships.map((f) => f.program), ...(other?.projects ?? []).map((p) => (p as { program?: string }).program ?? "LFX")])], [other]);
+  /* filter option lists derived from what actually loaded.
+     A shard row whose program publishes no date per project keeps year 0 -
+     Hacktoberfest, MLH and 24 Pull Requests all do - and a "0" chip in a row of
+     years reads as a season, so it is left out of the option list. */
+  const years = useMemo(() => [...new Set(all.map((p) => p.year))].filter((y) => y > 0).sort((a, b) => b - a), [all]);
+
+  /* the programs this listing really holds, biggest archive first; the chips
+     carry the name only, never a row count, because the count changes with
+     every filter already applied above it.
+     One program can reach the grid under two spellings - the GSSoC shard says
+     "GSSoC'26" and the flagship shelf says "GSSoc" - so rows are grouped on the
+     name with its trailing season digits removed and the most frequent spelling
+     becomes the option. Without this the rail offers the same program twice and
+     each half looks like a thin archive. The grouping key is the module-level
+     progKey, the same one the filter predicate compares against, so the option a
+     rail shows and the match a click makes can never disagree. */
+  const progOptions = useMemo(() => {
+    /* key -> (spelling -> how many rows use it) */
+    const g = new Map<string, Map<string, number>>();
+    for (const p of all) {
+      const k = progKey(p.program);
+      const byLabel = g.get(k) ?? new Map<string, number>();
+      byLabel.set(p.program, (byLabel.get(p.program) ?? 0) + 1);
+      g.set(k, byLabel);
+    }
+    const size = (m: Map<string, number>) => [...m.values()].reduce((s, n) => s + n, 0);
+    return [...g.entries()]
+      .map(([k, byLabel]) => ({
+        k,
+        /* the spelling most of its rows already carry */
+        label: [...byLabel.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0][0],
+        n: size(byLabel),
+      }))
+      .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label))
+      .map((x) => x.label);
+  }, [all]);
 
   const stacks = useMemo(() => {
     const c = new Map<string, number>();
@@ -234,8 +294,9 @@ export default function Projects() {
 
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
+    const progK = prog === "all" ? "" : progKey(prog);
     const r = all.filter((p) =>
-      (prog === "all" || p.program === prog) &&
+      (prog === "all" || progKey(p.program) === progK) &&
       (diff === "all" || p.size === diff) &&
       (year === "all" || String(p.year) === year) &&
       (tech === "all" || p.tags.some((t) => t.toLowerCase() === tech.toLowerCase())) &&
@@ -264,7 +325,7 @@ export default function Projects() {
         Explore <Word>Projects</Word>
       </h1>
       <p className="text-ink font-medium max-w-[720px] text-[16.5px] leading-[1.6]">
-        Find open source projects actively accepting contributors. Search repositories, filter by program, difficulty tags, or tech stack.
+        Find open source projects actively accepting contributors. Search repositories, then filter by difficulty tag, year, or tech stack.
       </p>
 
       {/* how to work the archive */}
@@ -272,7 +333,7 @@ export default function Projects() {
         <div className="min-w-[280px] flex-1">
           <h2 className="card-title-xl">Not sure which project to take?</h2>
           <p className="text-cocoa text-[13.5px] leading-[1.6] mt-2 max-w-[600px]">
-            Narrow the archive with the filters on the left - program, difficulty, language - then track the issues
+            Narrow the archive with the filters on the left - difficulty, year, language - then track the issues
             worth your week on your own board. cyrus shows the public record; the choice stays yours.
           </p>
         </div>
@@ -291,19 +352,26 @@ export default function Projects() {
             <input className={fin} placeholder="Title, tech, org..." value={q} onChange={(e) => { setQUrl(e.target.value); setShown(60); }} aria-label="Search projects" />
           </div>
           <div>
+            <span className={lbl}>Program</span>
+            <select className={`${fin} select-warm pr-8`} value={prog} onChange={(e) => setProgUrl(e.target.value)} aria-label="Filter by program">
+              <option value="all">All Programs</option>
+              {/* a ?prog= link can name a program this listing has no rows for
+                  yet - the archive shards stream in after the URL is read. Keep
+                  the facet selected rather than silently dropping it back to
+                  "All Programs", so the count below still says what was asked. */}
+              {prog !== "all" && !progOptions.includes(prog) && <option value={prog}>{prog}</option>}
+              {progOptions.map((l) => (
+                <option key={l} value={l}>{l === "GSoC" ? "Google Summer of Code" : l}</option>
+              ))}
+            </select>
+          </div>
+          <div>
             <span className={lbl}>Difficulty</span>
             <select className={`${fin} select-warm pr-8`} value={diff} onChange={(e) => { setDiffUrl(e.target.value); setShown(60); }} aria-label="Filter by difficulty">
               <option value="all">All Difficulties</option>
               <option value="small">Easy · small (~175h)</option>
               <option value="medium">Medium · ~350h</option>
               <option value="large">Hard · large (~450h)</option>
-            </select>
-          </div>
-          <div>
-            <span className={lbl}>Program</span>
-            <select className={`${fin} select-warm pr-8`} value={prog} onChange={(e) => { setProgUrl(e.target.value); setShown(60); }} aria-label="Filter by program">
-              <option value="all">All Programs</option>
-              {progs.map((p) => <option key={p} value={p}>{p === "GSoC" ? "Google Summer of Code" : PROGRAM_META[p as ProgramName]?.label ?? p}</option>)}
             </select>
           </div>
           <div>
@@ -322,6 +390,14 @@ export default function Projects() {
         </aside>
 
         <section id="results" className="scroll-mt-24">
+          {prog !== "all" && (
+            <p className="font-mono text-[11px] font-bold tracking-[.05em] text-cocoa pb-4">
+              <span className="rounded-full border border-line bg-card px-3.5 py-2">
+                {prog === "GSoC" ? "Google Summer of Code" : PROGRAM_META[prog as ProgramName]?.label ?? prog}
+                <button onClick={clearProg} className="ml-2.5 text-accent font-bold hover:underline cursor-pointer">Show every program</button>
+              </span>
+            </p>
+          )}
           <div className="flex gap-2 flex-wrap pb-4">
             {[["all", "All Years"], ...years.map((y) => [String(y), String(y)] as [string, string])].map(([v, l]) => (
               <button key={v} onClick={() => { setYearUrl(v); setShown(60); }}
@@ -332,7 +408,7 @@ export default function Projects() {
           </div>
           <div className="flex items-center gap-3.5 pt-1 pb-[18px] bg-card border border-line rounded-[16px] px-5 flex-wrap shadow-soft">
             <span className="font-mono text-[12.5px] tracking-[.1em] uppercase text-cocoa">
-              <b className="text-ink">{fmt(list.length)}</b>&nbsp; projects found
+              <b className="text-ink">{fmtFull(list.length)}</b>&nbsp; projects found
               {loadErr && <span className="normal-case tracking-normal text-brick ml-3">Archive file missing - run npm run refresh</span>}
             </span>
             <span className="ml-auto font-mono text-[10.5px] tracking-[.12em] uppercase text-dim">Sort by</span>
@@ -351,7 +427,7 @@ export default function Projects() {
               {shown < list.length && (
                 <div className="flex justify-center mt-8">
                   <button onClick={() => setShown(shown + 60)} className={btn("outline", "lg") + " cursor-pointer"}>
-                    Show {Math.min(60, list.length - shown)} of {fmt(list.length - shown)} more
+                    Show {Math.min(60, list.length - shown)} of {fmtFull(list.length - shown)} more
                   </button>
                 </div>
               )}
@@ -371,13 +447,13 @@ export default function Projects() {
 
           {anyFilter && list.length > 0 && (
             <p className="font-mono text-[10.5px] text-dim mt-5">
-              Showing {visible.length} of {fmt(list.length)} · <button className="text-accent font-semibold hover:underline cursor-pointer" onClick={clearAll}>Clear filters</button>
+              Showing {visible.length} of {fmtFull(list.length)} · <button className="text-accent font-semibold hover:underline cursor-pointer" onClick={clearAll}>Clear filters</button>
             </p>
           )}
 
           <div className="flex justify-center gap-3 mt-12 flex-wrap">
             <Link to="/#timeline" className={btn("dark", "md")}>See the 12-month program timeline</Link>
-            <Link to="/organizations" className={btn("outline", "md")}>Browse the {PROGRAMS.length} program orgs</Link>
+            <Link to="/organizations" className={btn("outline", "md")}>Browse the program orgs</Link>
           </div>
         </section>
       </div>

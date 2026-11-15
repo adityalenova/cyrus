@@ -3,7 +3,11 @@ import OrgProfile from "@/views/OrgProfile";
 import { ORGS } from "@/data/orgs";
 import { canonical, clip } from "@/lib/seo";
 import { jsonLdScript, organizationEntity } from "@/lib/jsonLd";
-import { fmt } from "@/lib/siteStats";
+import { fmtFull } from "@/lib/siteStats";
+
+export function generateStaticParams() {
+  return ORGS.map((o) => ({ login: encodeURIComponent(o.login) }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ login: string }> }): Promise<Metadata> {
   const { login } = await params;
@@ -13,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ login: st
 
   const url = canonical(`/organizations/${o.login}`);
   const description = clip(
-    `${o.tagline} - ${fmt(o.repos)} catalogued repositories and ${fmt(o.stars)} stars, with program history and a contribution playbook.`,
+    `${o.tagline} - ${fmtFull(o.repos)} catalogued repositories and ${fmtFull(o.stars)} stars, with program history and a contribution playbook.`,
   );
   return {
     title: o.name || o.login,

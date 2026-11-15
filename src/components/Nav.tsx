@@ -9,16 +9,19 @@ import { Logo, Brand, Avatar, btn } from "./ui";
 import { TONES } from "./plat";
 import { useStore } from "../lib/store";
 
-const LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/organizations", label: "Organizations" },
-  { to: "/issues", label: "Issues" },
-  { to: "/leaderboard", label: "Leaderboard" },
-  { to: "/projects", label: "Projects" },
+/* Header order is the site's own priority: what a contributor comes to look at
+   first (the programs that fund them), then who runs them, then the work.
+   "Home" is not a link - the wordmark at the left of the strip already is one,
+   and spending a slot on it pushed the real destinations into an overflow. */
+const LINKS: { to: string; label: string; short?: string }[] = [
   { to: "/programs", label: "Programs" },
+  { to: "/organizations", label: "Organizations", short: "Orgs" },
+  { to: "/projects", label: "Projects" },
+  { to: "/issues", label: "Issues" },
   { to: "/skills", label: "Skills" },
   { to: "/sponsors", label: "Sponsors" },
-  { to: "/about", label: "About us" },
+  { to: "/leaderboard", label: "Leaderboard" },
+  { to: "/about", label: "About" },
 ];
 
 /* Platform menu entries: slug, label, blurb, icon path, tone class from the plat kit */
@@ -28,8 +31,12 @@ const PLAT: [string, string, string, string, string][] = [
   ["how", "How it works", "Three steps from empty tabs to merged PR.", "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3.5 2", "honey"],
 ];
 
-/* pill size bases - desktop is tightened so all 9 items fit from 1024px up */
-const PILL = "px-3 py-[7px] rounded-full text-[12.5px] font-semibold whitespace-nowrap transition-colors cursor-pointer";
+/* pill size bases. The row is measured, not guessed: at 1024px the pill strip
+   has about 660px to live in once the wordmark, the right-hand controls and
+   the pill's own padding are counted, so the pills carry 10px of horizontal
+   padding at 12px type and sit 2px apart. Anything looser and the last item
+   ("Platform") gets clipped behind the controls. */
+const PILL = "px-2.5 py-[7px] rounded-full text-[12px] font-semibold whitespace-nowrap transition-colors cursor-pointer";
 const pillCls = (on: boolean) => on ? "bg-coffee text-foam" : "text-cocoa hover:bg-card hover:text-ink";
 
 export default function Nav() {
@@ -48,15 +55,34 @@ export default function Nav() {
     document.addEventListener("click", close);
     return () => document.removeEventListener("click", close);
   }, []);
-  /* sheet open: lock page scroll, Escape closes */
+  /* Sheet open: lock page scroll, move focus inside, keep Tab inside, and hand
+     focus back to the button that opened it. A sheet that only *looks* modal
+     is not one - a keyboard visitor who Tabs past the last link walks straight
+     into the page behind the overlay and starts activating things they cannot
+     see. The panel is labelled and now traps, so aria-modal is the truth. */
+  const sheetRef = useRef<HTMLElement | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
     if (!menu) return;
     document.body.style.overflow = "hidden";
-    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setMenu(false); };
-    document.addEventListener("keydown", esc);
+    const inside = () => Array.from(
+      sheetRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])') ?? []
+    ).filter((el) => el.offsetParent !== null);
+    inside()[0]?.focus();
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { setMenu(false); openerRef.current?.focus(); return; }
+      if (e.key !== "Tab") return;
+      const els = inside();
+      if (!els.length) return;
+      const first = els[0], last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", key);
     return () => {
       document.body.style.overflow = "";
-      document.removeEventListener("keydown", esc);
+      document.removeEventListener("keydown", key);
     };
   }, [menu]);
 
@@ -67,25 +93,28 @@ export default function Nav() {
     <header>
       <nav className="sticky top-0 z-[60] bg-paper px-4 pt-3 max-[700px]:px-2.5">
         <div className="max-w-[1340px] mx-auto bg-paper/92 backdrop-blur-[16px] saturate-[1.35] border border-liness rounded-full shadow-soft">
-          <div className="flex items-center gap-5 h-[62px] pl-4 pr-4 max-[1023px]:h-[54px] max-[700px]:gap-2.5 max-[700px]:pl-2.5 max-[700px]:pr-2.5">
-            <Link to="/" className="flex items-center gap-2.5 shrink-0 max-[700px]:gap-2"><Logo size={34} /><Brand /></Link>
-            {/* desktop strip: single tightened row, lg+ only */}
-            <div className="hidden lg:flex items-center gap-1 min-w-0">
-              {LINKS.slice(0, -1).map((l) => (
-                <NavLink key={l.to} to={l.to} end={l.to === "/"}
+          <div className="flex items-center gap-4 h-[62px] pl-4 pr-4 max-[1179px]:gap-3 max-[1023px]:h-[54px] max-[700px]:gap-2.5 max-[700px]:pl-2.5 max-[700px]:pr-2.5">
+            {/* min-h keeps the mark's own link a 36px thumb target now that the
+                logo itself is 28px; the a11y suite measures this strip. */}
+            <Link to="/" className="flex items-center gap-3 shrink-0 min-h-[36px] max-[700px]:gap-2.5"><Logo size={28} /><Brand /></Link>
+            {/* desktop strip: single tightened row, lg+ only. Below 1280 the
+                one label that will not spare the pixels keeps its short form;
+                from xl the full name comes back. */}
+            <div className="hidden lg:flex items-center gap-0.5 min-w-0">
+              {LINKS.map((l) => (
+                <NavLink key={l.to} to={l.to}
                   className={`${PILL} ${pillCls(active(l.to))}`}>
-                  {l.label}
+                  {l.short ? (
+                    <><span className="hidden xl:inline">{l.label}</span><span className="xl:hidden">{l.short}</span></>
+                  ) : l.label}
                 </NavLink>
               ))}
               <PlatformMenu />
-              <NavLink to="/about" className={`${PILL} ${pillCls(active("/about"))}`}>
-                About us
-              </NavLink>
             </div>
 
-            <div className="ml-auto flex items-center gap-3.5 max-[700px]:gap-2">
+            <div className="ml-auto flex items-center gap-3.5 max-[1179px]:gap-2.5 max-[700px]:gap-2">
               <ThemeToggle />
-              <span className="w-px h-6 bg-line shrink-0 max-[700px]:hidden" aria-hidden />
+              <span className="w-px h-6 bg-line shrink-0 max-[1179px]:hidden" aria-hidden />
               {user ? (
                 <div className="relative" ref={accountRef}>
                   <button className="!p-0 border-0" onClick={() => setPop((open) => !open)} aria-label="Account" aria-expanded={pop}>
@@ -108,7 +137,7 @@ export default function Nav() {
                 <SignInButton className="max-[700px]:!px-3.5 max-[700px]:!py-2 max-[700px]:!text-[12.5px]" />
               )}
               {/* hamburger: phone + tablet only, always the rightmost control */}
-              <button onClick={(e) => { e.stopPropagation(); setMenu(!menu); }}
+              <button ref={openerRef} onClick={(e) => { e.stopPropagation(); setMenu(!menu); }}
                 aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu}
                 className="lg:hidden relative w-[38px] h-[38px] rounded-full grid place-items-center border border-line bg-card/60 text-ink transition-colors duration-200 hover:bg-peach shrink-0 cursor-pointer">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -136,12 +165,12 @@ export default function Nav() {
             <div onClick={() => setMenu(false)} aria-hidden
               className="lg:hidden fixed inset-0 z-[80] bg-ink/45 backdrop-blur-[3px]"
               style={{ animation: "fadeIn .25s ease both" }} />
-            <aside role="dialog" aria-label="Site menu" className="lg:hidden fixed top-0 right-0 bottom-0 z-[85] w-[min(86vw,340px)]
+            <aside ref={sheetRef} role="dialog" aria-modal="true" aria-label="Site menu" className="lg:hidden fixed top-0 right-0 bottom-0 z-[85] w-[min(86vw,340px)]
             bg-paper border-l border-line rounded-l-[28px] shadow-lift flex flex-col
             max-[1023px]:rounded-none max-[1023px]:border-l-0"
               style={{ animation: "sheetIn .34s cubic-bezier(.32,.9,.35,1) both" }}>
               <div className="flex items-center justify-between px-5 h-[62px] shrink-0">
-                <Link to="/" className="flex items-center gap-2.5"><Logo size={30} /><Brand /></Link>
+                <Link to="/" className="flex items-center gap-2.5 min-h-[36px]"><Logo size={28} /><Brand /></Link>
                 <button onClick={() => setMenu(false)} aria-label="Close menu"
                   className="w-[34px] h-[34px] rounded-full grid place-items-center border border-line text-cocoa hover:bg-card hover:text-ink transition-colors cursor-pointer">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><path d="M5 5l14 14M19 5 5 19" /></svg>
@@ -149,16 +178,16 @@ export default function Nav() {
               </div>
               <div className="flex-1 overflow-y-auto px-3.5 pb-4">
                 <p className="px-2.5 pt-1 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">BROWSE</p>
-                <div className="grid gap-1">
+                <div className="grid gap-0.5">
                   {LINKS.map((l) => (
                     <NavLink key={l.to} to={l.to} end={l.to === "/"}
-                      className={`px-3.5 py-3 rounded-[14px] text-[14.5px] font-semibold transition-colors ${pillCls(active(l.to))}`}>
+                      className={`px-3.5 py-2.5 rounded-[14px] text-[14.5px] font-semibold transition-colors ${pillCls(active(l.to))}`}>
                       {l.label}
                     </NavLink>
                   ))}
                 </div>
-                <p className="px-2.5 pt-5 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">PLATFORM</p>
-                <div className="grid gap-1">
+                <p className="px-2.5 pt-4 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">PLATFORM</p>
+                <div className="grid gap-0.5">
                   {PLAT.map(([slug, label, desc, d, tone]) => (
                     <Link key={slug} to={`/platform/${slug}`}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] hover:bg-peach transition-colors">
@@ -273,7 +302,7 @@ export function ThemeToggle() {
   return (
     <button role="switch" aria-checked={dark} aria-label="Toggle dark theme" onClick={toggleTheme}
       title={dark ? "Switch to light theme" : "Switch to dark theme"}
-      className="group relative w-[68px] h-[34px] rounded-full cursor-pointer shrink-0 border transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      className="group relative w-[70px] h-[36px] rounded-full cursor-pointer shrink-0 border transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       style={{
         borderColor: dark ? "#2a2d31" : "#d8dde0",
         background: dark ? "#1d2023" : "#e9ebee",
@@ -281,15 +310,15 @@ export function ThemeToggle() {
       }}>
       {/* idle icon resting on the track (opposite side from the knob) */}
       <svg aria-hidden width="17" height="17" viewBox="0 0 24 24"
-        className="absolute top-[8.5px] transition-opacity duration-300" style={{ right: "9px", opacity: dark ? 0 : 1 }}>
+        className="absolute top-[9.5px] transition-opacity duration-300" style={{ right: "9px", opacity: dark ? 0 : 1 }}>
         {MOON("#8b9298")}
       </svg>
       <svg aria-hidden width="17" height="17" viewBox="0 0 24 24"
-        className="absolute top-[8.5px] transition-opacity duration-300" style={{ left: "9px", opacity: dark ? 1 : 0 }}>
+        className="absolute top-[9.5px] transition-opacity duration-300" style={{ left: "9px", opacity: dark ? 1 : 0 }}>
         {SUN("#fbbf24")}
       </svg>
       {/* knob: a clean white circle carrying the active glyph */}
-      <span aria-hidden className="absolute top-[3px] left-[3px] w-[26px] h-[26px] rounded-full bg-white grid place-items-center transition-transform duration-400 ease-[cubic-bezier(.55,1.6,.45,1)] group-hover:scale-[1.06]"
+      <span aria-hidden className="absolute top-[5px] left-[5px] w-[26px] h-[26px] rounded-full bg-white grid place-items-center transition-transform duration-400 ease-[cubic-bezier(.55,1.6,.45,1)] group-hover:scale-[1.06]"
         style={{ boxShadow: "0 2px 6px rgba(58, 40, 22,.22), 0 0 0 1px rgba(58, 40, 22,.04)", transform: dark ? "translateX(34px)" : "none" }}>
         <svg width="19" height="19" viewBox="0 0 24 24" style={{ opacity: dark ? 0 : 1, position: "absolute", transition: "opacity .3s" }}>
           <circle cx="12" cy="12" r="4.8" fill="#fbbf24" />

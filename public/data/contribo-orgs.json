@@ -1,0 +1,192 @@
+{
+ "generated": "2026-10-25",
+ "source": "https://contribo-one.vercel.app/api/organizations",
+ "note": "Organization records published by Contribo for each program: logo, description, sector, technologies and the years that organization took part. Programs whose rows are per-project (LFX Mentorship, Summer of Bitcoin) are grouped by the foundation that ran them, so nothing on an organization card is a project title. Rows live one file per program under /data/contribo-orgs/.",
+ "programs": {
+  "gsoc": {
+   "contriboSlug": "gsoc",
+   "rowKind": "org",
+   "orgs": 625,
+   "projects": 0,
+   "logos": 625,
+   "techs": 3426
+  },
+  "lfx": {
+   "contriboSlug": "lfx",
+   "rowKind": "project",
+   "orgs": 7,
+   "projects": 511,
+   "logos": 7,
+   "techs": 39
+  },
+  "outreachy": {
+   "contriboSlug": "outreachy",
+   "rowKind": "org",
+   "orgs": 53,
+   "projects": 0,
+   "logos": 23,
+   "techs": 201
+  },
+  "esoc": {
+   "contriboSlug": "esoc",
+   "rowKind": "org",
+   "orgs": 26,
+   "projects": 0,
+   "logos": 25,
+   "techs": 126
+  },
+  "mlh": {
+   "contriboSlug": "mlh-fellowship",
+   "rowKind": "org",
+   "orgs": 27,
+   "projects": 0,
+   "logos": 27,
+   "techs": 121
+  },
+  "gssoc": {
+   "contriboSlug": "gssoc",
+   "rowKind": "org",
+   "orgs": 1,
+   "projects": 0,
+   "logos": 0,
+   "techs": 4
+  },
+  "oct": {
+   "contriboSlug": "hacktoberfest",
+   "rowKind": "org",
+   "orgs": 12,
+   "projects": 0,
+   "logos": 12,
+   "techs": 69
+  },
+  "nsoc": {
+   "contriboSlug": "nsoc",
+   "rowKind": "org",
+   "orgs": 2,
+   "projects": 0,
+   "logos": 1,
+   "techs": 10
+  },
+  "sob": {
+   "contriboSlug": "summer-of-bitcoin",
+   "rowKind": "project",
+   "orgs": 0,
+   "projects": 0,
+   "logos": 0,
+   "techs": 0
+  }
+ },
+ "stats": {
+  "gsoc": {
+   "orgs": 612,
+   "projects": 13093,
+   "years": 11,
+   "techs": 1716,
+   "sectors": 17,
+   "logos": 612,
+   "profiles": 284,
+   "from": "contribo + archive"
+  },
+  "outreachy": {
+   "orgs": 220,
+   "projects": 507,
+   "years": 7,
+   "techs": 65,
+   "sectors": 8,
+   "logos": 87,
+   "profiles": 74,
+   "from": "contribo + archive"
+  },
+  "lfx": {
+   "orgs": 51,
+   "projects": 1695,
+   "years": 9,
+   "techs": 26,
+   "sectors": 3,
+   "logos": 28,
+   "profiles": 15,
+   "from": "contribo + archive"
+  },
+  "esoc": {
+   "orgs": 26,
+   "projects": 32,
+   "years": 7,
+   "techs": 127,
+   "sectors": 3,
+   "logos": 25,
+   "profiles": 1,
+   "from": "contribo"
+  },
+  "mlh": {
+   "orgs": 146,
+   "projects": 235,
+   "years": 7,
+   "techs": 106,
+   "sectors": 12,
+   "logos": 146,
+   "profiles": 7,
+   "from": "contribo + archive"
+  },
+  "gssoc": {
+   "orgs": 421,
+   "projects": 425,
+   "years": 1,
+   "techs": 6,
+   "sectors": 2,
+   "logos": 420,
+   "profiles": 0,
+   "from": "contribo + archive"
+  },
+  "kde": {
+   "orgs": 40,
+   "projects": 85,
+   "years": 8,
+   "techs": 0,
+   "sectors": 1,
+   "logos": 0,
+   "profiles": 0,
+   "from": "archive"
+  },
+  "sob": {
+   "orgs": 32,
+   "projects": 66,
+   "years": 1,
+   "techs": 0,
+   "sectors": 1,
+   "logos": 14,
+   "profiles": 14,
+   "from": "contribo + archive"
+  },
+  "nsoc": {
+   "orgs": 2,
+   "projects": 5,
+   "years": 2,
+   "techs": 12,
+   "sectors": 2,
+   "logos": 1,
+   "profiles": 0,
+   "from": "contribo"
+  },
+  "oct": {
+   "orgs": 12,
+   "projects": 16,
+   "years": 2,
+   "techs": 61,
+   "sectors": 9,
+   "logos": 12,
+   "profiles": 2,
+   "from": "contribo"
+  },
+  "24pr": {
+   "orgs": 10079,
+   "projects": 306,
+   "years": 0,
+   "techs": 0,
+   "sectors": 1,
+   "logos": 10079,
+   "profiles": 62,
+   "from": "archive"
+  }
+ },
+ "statsGenerated": "2026-10-25"
+}

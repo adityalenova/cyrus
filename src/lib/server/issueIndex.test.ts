@@ -4,7 +4,7 @@ import { gunzipSync } from "node:zlib";
 import { describe, expect, it } from "vitest";
 import { CRAWL } from "@/data/crawlStats";
 import {
-  EMPTY_QUERY, facets, filterIssues, issueUrl, parseQuery, scoreRow,
+  EMPTY_QUERY, facetKey, facets, filterIssues, issueUrl, parseQuery, scoreRow,
   type IssueQuery, type IssueRow,
 } from "./issueIndex";
 
@@ -136,6 +136,61 @@ describe("facets", () => {
     expect(f.langs.find((l) => l.value === "Go")?.count).toBe(1);
     expect(f.orgs[0]).toEqual({ value: "kubernetes", count: 1 });
     expect(f.labels.find((l) => l.value === "good first issue")?.count).toBe(2);
+  });
+
+  it("is the same as before when the query has no filters", () => {
+    expect(facets(FIXTURE, q({}))).toEqual(facets(FIXTURE));
+    expect(facets(FIXTURE, q({ sort: "stars", page: 4, per: 1 }))).toEqual(facets(FIXTURE));
+  });
+
+  it("narrows the other rails with a language, but keeps the language rail's siblings", () => {
+    const f = facets(FIXTURE, q({ langs: ["python"] }));
+    /* only the pytorch row is Python: orgs and labels describe that row */
+    expect(f.orgs).toEqual([{ value: "pytorch", count: 1 }]);
+    expect(f.labels).toEqual([{ value: "good first issue", count: 1 }]);
+    /* the language rail ignores its own filter, so Go and Rust stay pickable */
+    expect(f.langs.map((l) => l.value).sort()).toEqual(["Go", "Python", "Rust", "TypeScript"]);
+    expect(f.langs.every((l) => l.count === 1)).toBe(true);
+  });
+
+  it("applies the other rails' filters to a rail", () => {
+    /* label "good first" leaves rows 1 and 3, so Go and Rust drop off the language rail */
+    const f = facets(FIXTURE, q({ label: "good first" }));
+    expect(f.langs.map((l) => l.value).sort()).toEqual(["Python", "TypeScript"]);
+    /* and the label rail itself still counts rows without that label */
+    expect(f.labels.find((l) => l.value === "help wanted")?.count).toBe(1);
+    expect(f.labels.find((l) => l.value === "a-compiler")?.count).toBe(1);
+    /* a language and an org together: each rail ignores only its own */
+    const both = facets(FIXTURE, q({ langs: ["go"], org: "pytorch" }));
+    expect(both.langs).toEqual([{ value: "Python", count: 1 }]);
+    expect(both.orgs).toEqual([{ value: "kubernetes", count: 1 }]);
+    expect(both.labels).toEqual([]);
+  });
+
+  it("follows the text query, repo and the two toggles", () => {
+    const f = facets(FIXTURE, q({ q: "docs" }));
+    expect(f.langs.map((l) => l.value).sort()).toEqual(["Python", "TypeScript"]);
+    expect(facets(FIXTURE, q({ unassigned: true })).langs.map((l) => l.value)).not.toContain("Python");
+    expect(facets(FIXTURE, q({ beginner: true })).langs.map((l) => l.value)).not.toContain("Rust");
+    expect(facets(FIXTURE, q({ repo: "rust-lang" })).orgs).toEqual([{ value: "rust-lang", count: 1 }]);
+  });
+
+  it("agrees with filterIssues on the total when no rail filter is active", () => {
+    const query = q({ q: "docs", unassigned: true });
+    const total = filterIssues(FIXTURE, query).total;
+    const f = facets(FIXTURE, query);
+    expect(f.orgs.reduce((n, o) => n + o.count, 0)).toBe(total);
+  });
+});
+
+describe("facetKey", () => {
+  it("ignores sort and paging but not the filters", () => {
+    expect(facetKey(q({ sort: "stars", page: 3, per: 50 }))).toBe(facetKey(q({})));
+    expect(facetKey(q({ langs: ["go", "rust"] }))).toBe(facetKey(q({ langs: ["rust", "go"] })));
+    expect(facetKey(q({ q: "Docs   typo" }))).toBe(facetKey(q({ q: "docs typo" })));
+    expect(facetKey(q({ langs: ["go"] }))).not.toBe(facetKey(q({})));
+    expect(facetKey(q({ org: "a" }))).not.toBe(facetKey(q({ org: "b" })));
+    expect(facetKey(q({ beginner: true }))).not.toBe(facetKey(q({ unassigned: true })));
   });
 });
 

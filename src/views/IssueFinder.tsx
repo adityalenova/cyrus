@@ -14,7 +14,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "@/lib/router";
 import { CRAWL } from "../data/crawlStats";
-import { avatarOf, fmt, levelOf, LANG_COLORS } from "../lib/util";
+import { avatarOf, fmtCompact, levelOf, LANG_COLORS } from "../lib/util";
 import { useStore } from "../lib/store";
 import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
 import type { Sort } from "../lib/server/issueIndex";
@@ -68,7 +68,7 @@ function IssueCard({ i, onTrack, tracked }: { i: Found; onTrack: (i: Found) => v
       </div>
 
       <div className="flex gap-[7px] flex-wrap">
-        <Chip tone="stars">★ {fmt(i.stars)}</Chip>
+        <Chip tone="stars">★ {fmtCompact(i.stars)}</Chip>
         {i.lang && (
           <Chip tone="lang">
             <i className="w-2 h-2 rounded-full shrink-0" style={{ background: LANG_COLORS[i.lang] ?? "currentColor" }} aria-hidden />
@@ -117,6 +117,7 @@ export default function IssueFinder() {
   const [more, setMore] = useState(false);
   const [appending, setAppending] = useState(false);
   const [taken, setTaken] = useState(1);
+  const [retryCount, setRetryCount] = useState(0);
   const typing = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* the page number is deliberately not in the URL: Show more is a local
@@ -156,7 +157,7 @@ export default function IssueFinder() {
       })
       .catch(() => { if (live) setStatus("error"); });
     return () => { live = false; };
-  }, [query]);
+  }, [query, retryCount]);
 
   /* keep the text box honest when the URL changes from a link or the back button */
   useEffect(() => { setTerm(params.get("q") ?? ""); }, [params]);
@@ -250,7 +251,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.langs.map((f) => (
                     <button key={f.value} className={fchip(langs.has(f.value))} aria-pressed={langs.has(f.value)} onClick={() => toggleLang(f.value)}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>
@@ -263,7 +264,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.orgs.map((f) => (
                     <button key={f.value} className={fchip(org === f.value)} aria-pressed={org === f.value} onClick={() => push({ org: org === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>
@@ -276,7 +277,7 @@ export default function IssueFinder() {
                 <div className="flex flex-wrap gap-[7px]">
                   {body.facets.labels.map((f) => (
                     <button key={f.value} className={fchip(label === f.value)} aria-pressed={label === f.value} onClick={() => push({ label: label === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmt(f.count)}</span>
+                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
                     </button>
                   ))}
                 </div>
@@ -317,7 +318,7 @@ export default function IssueFinder() {
                 It is a static snapshot, so this is a delivery problem rather than a data one. Reload, or browse the{" "}
                 <Link to="/organizations" className="text-accent font-semibold hover:underline">organizations</Link> while you wait.
               </p>
-              <button className={`${btn("outline", "sm")} mt-5`} onClick={() => setParams(new URLSearchParams(query))}>Try again</button>
+              <button className={`${btn("outline", "sm")} mt-5`} onClick={() => setRetryCount((c) => c + 1)}>Try again</button>
             </div>
           )}
 
@@ -348,6 +349,11 @@ export default function IssueFinder() {
             </div>
           ) : rows.length > 0 ? (
             <>
+              {/* the list is a section of its own: without this heading the
+                  page jumped straight from its h1 into the h3 of the first
+                  card, and a reader tabbing by headings had no way to say
+                  "go to the results". */}
+              <h2 className="sr-only">Matching issues</h2>
               <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
                 {rows.map((i) => <IssueCard key={i.url} i={i} onTrack={track} tracked={Boolean(ledger[i.url])} />)}
               </div>

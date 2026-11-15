@@ -31,6 +31,42 @@ describe("GET /api/issues", () => {
     expect(loadIndex).toHaveBeenCalledWith("http://x/");
   });
 
+  it("counts facets for the query that was asked, not the whole snapshot", async () => {
+    const mixed = {
+      meta: { generated: "2026-01-01" },
+      items: [
+        { ...row(1, "fix the parser"), r: "a/x", g: "Python", l: ["bug"] },
+        { ...row(2, "add docs"), r: "b/y", g: "Java", l: ["docs"] },
+        { ...row(3, "docs for py"), r: "c/z", g: "Python", l: ["docs"] },
+      ],
+    };
+    loadIndex.mockResolvedValue(mixed);
+    const all = await (await get()).json();
+    expect(all.facets.langs).toEqual([{ value: "Python", count: 2 }, { value: "Java", count: 1 }]);
+    expect(all.facets.orgs.length).toBe(3);
+
+    const py = await (await get("?lang=Python")).json();
+    expect(py.total).toBe(2);
+    /* siblings stay on the language rail, the other rails narrow */
+    expect(py.facets.langs).toEqual([{ value: "Python", count: 2 }, { value: "Java", count: 1 }]);
+    expect(py.facets.orgs.map((o: { value: string }) => o.value).sort()).toEqual(["a", "c"]);
+    expect(py.facets.labels).toEqual([{ value: "bug", count: 1 }, { value: "docs", count: 1 }]);
+
+    const search = await (await get("?q=docs")).json();
+    expect(search.facets.langs).toEqual([{ value: "Java", count: 1 }, { value: "Python", count: 1 }]);
+
+    /* sort and page do not change the facets */
+    expect((await (await get("?lang=Python&sort=stars&page=2")).json()).facets).toEqual(py.facets);
+  });
+
+  it("does not serve a cached facet result after the index is reloaded", async () => {
+    await get("?lang=Python");
+    loadIndex.mockResolvedValue({ meta: index.meta, items: [{ ...row(9, "other"), g: "Go", l: [] }] });
+    const body = await (await get("?lang=Python")).json();
+    /* the old entry for ?lang=Python would say Python, the new index only has Go */
+    expect(body.facets.langs).toEqual([{ value: "Go", count: 1 }]);
+  });
+
   it("is 503 when the index is not available", async () => {
     loadIndex.mockResolvedValue(null);
     const res = await get();

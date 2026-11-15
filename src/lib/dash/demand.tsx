@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { buildDemand, pulse, type ArchRow } from "../demand";
-import { fmt } from "../util";
+import { fmtCompact } from "../util";
 import { btn } from "../../components/ui";
 import { Card, DashHead, Ic } from "./shell";
 import { DP } from "./shared";
@@ -90,7 +90,7 @@ export function DemandSection({ d }: { d: Dash }) {
     <>
       <Card>
         <DashHead title="Demand radar"
-          sub={idx ? `${fmt(idx.projects)} accepted projects, ${fmt(idx.tags)} organizer skill tags folded into ${idx.techs.length} named technologies.` : "Reading the five-year archives."} />
+          sub={idx ? `${fmtCompact(idx.projects)} accepted projects, ${fmtCompact(idx.tags)} organizer skill tags folded into ${idx.techs.length} named technologies.` : "Reading the five-year archives."} />
         <div className="flex flex-wrap gap-1.5 mt-5" role="group" aria-label="Which archive to read">
           {OWN.map((label, i) => (
             <button key={label} type="button" onClick={() => { setProg(i); setPick(null); }} aria-pressed={prog === i}
@@ -101,8 +101,8 @@ export function DemandSection({ d }: { d: Dash }) {
         </div>
         {idx && (
           <p className={`${MON} mt-4 leading-[1.8]`}>
-            {fmt(idx.matched)} of {fmt(idx.tags)} tags named a technology we could fold ({Math.round((idx.matched / idx.tags) * 100)}%).
-            The other {fmt(idx.unmatched)} are soft skills, project-specific tooling or typos, and are left out of every count below.
+            {fmtCompact(idx.matched)} of {fmtCompact(idx.tags)} tags named a technology we could fold ({Math.round((idx.matched / idx.tags) * 100)}%).
+            The other {fmtCompact(idx.unmatched)} are soft skills, project-specific tooling or typos, and are left out of every count below.
             A project counts once per technology, no matter how many tags mention it.
           </p>
         )}
@@ -142,7 +142,7 @@ export function DemandSection({ d }: { d: Dash }) {
                     <tr key={t.tech} onClick={() => setPick(pick === t.tech ? null : t.tech)}
                       className={`border-b border-liness last:border-0 cursor-pointer transition-colors ${pick === t.tech ? "bg-peach" : "hover:bg-cream"}`}>
                       <td className="py-2.5 px-4 md:px-5 text-[13px] font-semibold text-ink">{t.tech}</td>
-                      <td className="text-right font-mono text-[12.5px] text-cocoa tabular-nums">{fmt(t.projects)}</td>
+                      <td className="text-right font-mono text-[12.5px] text-cocoa tabular-nums">{fmtCompact(t.projects)}</td>
                       <td className="text-right font-mono text-[11px] text-dim tabular-nums">{((t.projects / idx.projects) * 100).toFixed(1)}%</td>
                       <td className="py-2.5 pl-4"><Spark byYear={t.byYear} years={idx.years} max={max} /></td>
                       <td className={`py-2.5 px-4 md:px-5 text-right font-mono text-[11.5px] tabular-nums ${p.delta > 0 ? "text-leaf" : p.delta < 0 ? "text-rust" : "text-dim"}`}>
@@ -173,7 +173,7 @@ export function DemandSection({ d }: { d: Dash }) {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mt-4">
             {[
-              ["Projects", fmt(detail.projects)],
+              ["Projects", fmtCompact(detail.projects)],
               ["Cycles it appears in", String(Object.keys(detail.byYear).length)],
               ["Top cycle", (() => { const y = Object.entries(detail.byYear).sort((a, b) => b[1] - a[1])[0]; return y ? `${y[0]} · ${y[1]}` : "-"; })()],
               ["Share of the archive", `${((detail.projects / (idx?.projects ?? 1)) * 100).toFixed(1)}%`],
@@ -214,7 +214,7 @@ export function DemandSection({ d }: { d: Dash }) {
               <b className={`${MON} block mt-4 mb-2`}>Which archive</b>
               <div className="flex flex-wrap gap-1.5">
                 {Object.entries(detail.byProgram).sort((a, b) => b[1] - a[1]).map(([k, n]) => (
-                  <span key={k} className="font-mono text-[10px] rounded-full border border-line bg-cream px-2.5 py-1 text-cocoa">{k} · {fmt(n)}</span>
+                  <span key={k} className="font-mono text-[10px] rounded-full border border-line bg-cream px-2.5 py-1 text-cocoa">{k} · {fmtCompact(n)}</span>
                 ))}
               </div>
             </div>
@@ -237,7 +237,7 @@ export function DemandSection({ d }: { d: Dash }) {
               {movers.up.map((x) => (
                 <li key={x.t.tech} className="flex items-center gap-3 py-1.5 border-b border-liness last:border-0">
                   <span className="text-[13px] font-semibold text-ink min-w-0 truncate">{x.t.tech}</span>
-                  <span className="ml-auto font-mono text-[11px] text-dim shrink-0">{fmt(x.t.projects)} total · {x.share}% now</span>
+                  <span className="ml-auto font-mono text-[11px] text-dim shrink-0">{fmtCompact(x.t.projects)} total · {x.share}% now</span>
                   <span className="font-mono text-[11.5px] font-bold text-leaf shrink-0 w-[58px] text-right">+{x.delta} pts</span>
                 </li>
               ))}
@@ -251,7 +251,7 @@ export function DemandSection({ d }: { d: Dash }) {
                 {movers.down.map((x) => (
                   <li key={x.t.tech} className="flex items-center gap-3 py-1.5 border-b border-liness last:border-0">
                     <span className="text-[13px] font-semibold text-ink min-w-0 truncate">{x.t.tech}</span>
-                    <span className="ml-auto font-mono text-[11px] text-dim shrink-0">{fmt(x.t.projects)} total · {x.share}% now</span>
+                    <span className="ml-auto font-mono text-[11px] text-dim shrink-0">{fmtCompact(x.t.projects)} total · {x.share}% now</span>
                     <span className="font-mono text-[11.5px] font-bold text-rust shrink-0 w-[58px] text-right">{x.delta} pts</span>
                   </li>
                 ))}

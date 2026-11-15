@@ -23,7 +23,11 @@ beforeEach(() => {
   vi.stubEnv("SESSION_SECRET", "a-secret-longer-than-16");
   addSubmission.mockReset().mockResolvedValue({ id: "s1", createdAt: "now" });
 });
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
 
 describe("POST /api/submissions", () => {
   it("answers 503 when the backend is offline", async () => {
@@ -68,5 +72,35 @@ describe("POST /api/submissions", () => {
     for (let i = 0; i < 6; i++) expect((await post(feedback, "9.9.9.9")).status).toBe(200);
     expect((await post(feedback, "9.9.9.9")).status).toBe(429);
     expect((await post(feedback, "8.8.8.8")).status).toBe(200);
+  });
+
+  it("prunes expired IPs above 5,000 entries while preserving active limits and the window boundary", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2030-01-01T00:00:00Z"));
+    // Reload the route so the threshold starts with an empty limiter map.
+    vi.resetModules();
+    const { POST: isolatedPost } = await import("./route");
+    const submit = (ip: string) => isolatedPost(new Request("http://x/api/submissions", {
+      method: "POST",
+      headers: { "x-forwarded-for": ip },
+      body: JSON.stringify(feedback),
+    }));
+    const deleted = vi.spyOn(Map.prototype, "delete");
+    for (let i = 0; i < 5_000; i++) {
+      expect((await submit(`stale-${i}`)).status).toBe(200);
+    }
+    vi.advanceTimersByTime(1);
+    for (let i = 0; i < 6; i++) expect((await submit("active")).status).toBe(200);
+    vi.advanceTimersByTime(599_999);
+    expect((await submit("active")).status).toBe(429);
+    expect(deleted).not.toHaveBeenCalledWith("stale-0");
+    vi.advanceTimersByTime(1);
+    expect((await submit("active")).status).toBe(429);
+    const deletedKeys = new Set(deleted.mock.calls.map(([key]) => key));
+    for (let i = 0; i < 5_000; i++) expect(deletedKeys.has(`stale-${i}`)).toBe(true);
+    expect(deletedKeys.has("active")).toBe(false);
+    vi.advanceTimersByTime(1);
+    expect((await submit("active")).status).toBe(200);
+    expect((await submit("stale-0")).status).toBe(200);
   });
 });

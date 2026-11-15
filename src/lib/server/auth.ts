@@ -1,8 +1,11 @@
 /* ══ auth.ts — server-side sessions + user upsert ═══════════════════
    Sessions are stateless signed JWTs (jose) kept in an httpOnly cookie,
    so no extra table is needed and the Neon HTTP driver stays request-scoped.
-   Without SESSION_SECRET or DATABASE_URL every route treats the backend
-   as offline (503) and the frontend keeps working on localStorage.   ═ */
+   SESSION_SECRET alone is enough to finish a sign-in: with no DATABASE_URL
+   the user is described by the provider's own verified claims rather than a
+   row, and the database only adds cross-device saved items on top. Without
+   SESSION_SECRET every route treats the backend as offline (503) and the
+   frontend keeps working on localStorage.                            ═ */
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
@@ -30,7 +33,50 @@ export function backendReady(): boolean {
   return Boolean(secretKey()) && Boolean(process.env.DATABASE_URL);
 }
 
+/** true when the deploy can sign a session cookie. The database is not part
+    of this: it adds cross-device saved items, it is not what makes a sign-in
+    complete, and plenty of deploys (including this one) run without it. */
+export function sessionsReady(): boolean {
+  return Boolean(secretKey());
+}
+
+/** can /api/auth/google finish a sign-in on this server? */
+export const googleReady = (): boolean =>
+  sessionsReady() && Boolean(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+
+/** can /api/auth/github finish a sign-in? Needs the app id and its secret. */
+export const githubReady = (): boolean =>
+  sessionsReady() &&
+  Boolean(process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET);
+
 export const OFFLINE = () => Response.json({ error: "backend offline" }, { status: 503 });
+
+export type ProviderIdentity = {
+  provider: "google" | "github" | "email"; providerId: string;
+  login?: string | null; name: string; email?: string | null; picture?: string | null;
+};
+
+/** the id a deploy without a database gives an identity: the provider's own
+    stable subject, so the same account resolves to the same id everywhere */
+export const identityId = (p: ProviderIdentity) => `${p.provider}:${p.providerId}`;
+
+/** Complete a sign-in: store the user when there is a database, then always
+    mint the httpOnly session cookie from SESSION_SECRET. Returns the shape
+    the client renders. */
+export async function issueSession(p: ProviderIdentity): Promise<PublicUser> {
+  const db = getDb();
+  if (db) {
+    const row = await upsertUser(p);
+    await setSession({ uid: row.id, name: row.name, provider: row.provider });
+    return publicUser(row);
+  }
+  const uid = identityId(p);
+  await setSession({ uid, name: p.name, provider: p.provider });
+  return {
+    id: uid, name: p.name, login: p.login ?? null,
+    email: p.email ?? null, picture: p.picture ?? null, provider: p.provider,
+  };
+}
 
 export async function setSession(user: SessionUser): Promise<void> {
   const key = secretKey();
@@ -75,6 +121,17 @@ export async function currentUser(): Promise<UserRow | null> {
   if (!db) return null;
   const rows = await db.select().from(users).where(eq(users.id, s.uid)).limit(1);
   return rows[0] ?? null;
+}
+
+/** session cookie -> the public shape, from the row when a database exists
+    and from the signed claims when it does not. /api/me uses this so a cookie
+    this server minted is always worth reading back. */
+export async function currentPublicUser(): Promise<PublicUser | null> {
+  const row = await currentUser();
+  if (row) return publicUser(row);
+  const s = await readSession();
+  if (!s || getDb()) return null;
+  return { id: s.uid, name: s.name, login: null, email: null, picture: null, provider: s.provider };
 }
 
 export async function upsertUser(input: {

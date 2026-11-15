@@ -5,12 +5,12 @@
    marketing header is swapped for this one on /dashboard routes by
    Shell.tsx, so the board reads as a product and not as a page.   ══ */
 import { useState } from "react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Link } from "@/lib/router";
 import { Avatar, btn, Logo } from "../../components/ui";
 import { ThemeToggle } from "../../components/Nav";
 import { useStored } from "../util";
-import { DP, W } from "./shared";
+import { DP, ISSUE_STAGES, STAGE_LABEL, W } from "./shared";
 import type { Dash } from "./useDash";
 
 const SW = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
@@ -30,8 +30,8 @@ export function Toggle({ on, flip }: { on: boolean; flip: () => void }) {
   );
 }
 
-export const Card = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
-  <section className={`bg-card border border-line rounded-[18px] p-5 shadow-soft ${className}`}>{children}</section>
+export const Card = ({ children, className = "", style }: { children: ReactNode; className?: string; style?: CSSProperties }) => (
+  <section className={`bg-card border border-line rounded-[18px] p-5 shadow-soft ${className}`} style={style}>{children}</section>
 );
 
 /* dotted stat row: the reference card footer. Label left, value right,
@@ -59,20 +59,84 @@ export function DashGate({ dash, children }: { dash: Dash; children: ReactNode }
       </div>
     );
   if (dash.user) return <>{children}</>;
+
+  /* The board itself needs no account - it lives in this browser. So the
+     signed-out screen is not a wall: it shows what this browser already
+     holds, read from the same live state the board renders, and asks for a
+     sign-in only to sync it. Every number here is the visitor's own. */
+  const stages = ISSUE_STAGES.map((s) => [s, dash.byStage(s).length] as const);
+  const holdings: [string, number][] = [
+    ["issues on your ledger", dash.issues.length],
+    ["repositories followed", dash.saved.length],
+    ["organizations followed", dash.savedOrgs.length],
+  ];
+  const anything = holdings.some(([, n]) => n > 0);
+  const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
+
   return (
-    <div className={`${W} py-24 text-center`}>
-      <p className="eyebrow mb-4">Your board</p>
-      <h1 className="font-display font-extrabold text-[clamp(28px,4vw,44px)] tracking-[-.025em] mb-3">
-        <span className="word-accent">Sign in</span> to open the board.
-      </h1>
-      <p className="text-cocoa max-w-[430px] mx-auto text-[15.5px] leading-[1.6] mb-8">
-        Tracked issues, followed repositories and organizations - held in your browser, synced to your account when you have one.
-      </p>
-      <div className="flex gap-3 justify-center flex-wrap">
-        <button className={btn("primary", "lg")} onClick={dash.googleIn} disabled={dash.gBusy}>
-          {dash.gBusy ? "Opening Google..." : "Continue with Google"}
-        </button>
-        <button className={btn("outline", "lg")} onClick={() => dash.setAuthOpen(true)}>Use email instead</button>
+    <div className={`${W} min-h-[calc(100vh-64px)] grid items-center py-14`}>
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10 lg:gap-16 items-center">
+        {/* ── the ask ── */}
+        <div>
+          <p className="eyebrow mb-4">Your board</p>
+          <h1 className="font-display font-extrabold text-[clamp(30px,4.4vw,50px)] leading-[1.06] tracking-[-.03em] mb-4 max-w-[620px]">
+            <span className="word-accent">Sign in</span> to sync the board.
+          </h1>
+          <p className="text-cocoa max-w-[520px] text-[15.5px] leading-[1.65] mb-8">
+            Everything on the board is held in this browser and works without an account.
+            Signing in only puts the same board on any device you open next.
+          </p>
+          <div className="flex gap-3 flex-wrap">
+            <button className={btn("primary", "lg")} onClick={dash.googleIn} disabled={dash.gBusy}>
+              {dash.gBusy ? "Opening Google..." : "Continue with Google"}
+            </button>
+            <button className={btn("outline", "lg")} onClick={() => dash.setAuthOpen(true)}>Use email instead</button>
+          </div>
+          <p className="mt-6 font-mono text-[10.5px] uppercase tracking-[.14em] text-dim">
+            Or keep browsing - <Link to="/issues" className="text-cocoa hover:text-accent transition-colors normal-case tracking-[.02em] font-sans font-semibold">find an issue to track</Link>
+          </p>
+        </div>
+
+        {/* ── what this browser already holds ── */}
+        <Card className="p-0 overflow-hidden">
+          <div className="px-5 py-4 border-b border-line bg-sand flex items-center gap-2.5">
+            <span className="w-[7px] h-[7px] rounded-full bg-accent shrink-0" aria-hidden />
+            <b className="font-display font-bold text-[14px] tracking-[-.01em]">In this browser</b>
+            <span className="ml-auto font-mono text-[9.5px] uppercase tracking-[.14em] text-dim">no account needed</span>
+          </div>
+
+          <div className="p-5 grid gap-1">
+            {holdings.map(([label, n], i) => (
+              <div key={label} className={`flex items-baseline gap-3 py-2.5 ${i ? "border-t border-dashed border-line" : ""}`}>
+                <span className="text-[13.5px] text-cocoa">{label}</span>
+                <span className="flex-1 border-t border-dotted border-line self-center min-w-[24px]" aria-hidden />
+                <b className="font-mono text-[15px] font-bold text-ink">{n || "—"}</b>
+              </div>
+            ))}
+          </div>
+
+          <div className="px-5 pb-5">
+            <p className="font-mono text-[9.5px] uppercase tracking-[.16em] text-dim mb-2.5">
+              {anything ? "Ledger by stage" : "The board has four stages"}
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {stages.map(([s, n]) => (
+                <div key={s} className="flex items-center gap-2 rounded-[11px] border border-line bg-paper px-3 py-2.5">
+                  <span className={`w-[6px] h-[6px] rounded-full shrink-0 ${n ? "bg-accent" : "bg-rule"}`} aria-hidden />
+                  <span className="text-[12.5px] font-semibold text-cocoa truncate">{STAGE_LABEL[s]}</span>
+                  <b className="ml-auto font-mono text-[12px] font-bold text-ink">{n || "—"}</b>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="px-5 py-3.5 border-t border-line bg-sand text-[12px] leading-[1.55] text-cocoa">
+            {anything
+              ? <>You have {dash.issues.length} {plural(dash.issues.length, "issue", "issues")} and {dash.saved.length} {plural(dash.saved.length, "repository", "repositories")}
+                  {" "}on this device. Sign in and they move to your account; nothing is re-entered.</>
+              : <>Nothing tracked here yet. Save an issue or follow a repository and it appears on this card - then sign in whenever you want it on another device.</>}
+          </p>
+        </Card>
       </div>
     </div>
   );
@@ -99,9 +163,9 @@ function rail(d: Dash): { label: string; items: { icon: string; text: string; to
     {
       label: "Tools",
       items: [
+        { icon: DP.spark, text: "Co-pilot", to: "/dashboard/matcher" },
         { icon: DP.pulse, text: "Repo analyser", to: "/dashboard/analyser" },
         { icon: DP.file, text: "Draft studio", to: "/dashboard/drafts" },
-        { icon: DP.spark, text: "Co-pilot matcher", to: "/dashboard/matcher" },
         { icon: DP.target, text: "Mentor finder", to: "/dashboard/mentors" },
         { icon: DP.layers, text: "Compare orgs", to: "/dashboard/compare" },
         { icon: DP.code, text: "Git initializer", to: "/dashboard/gitstart" },
@@ -142,7 +206,7 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
             <Ic d={DP.collapse} size={16} />
           </button>
           <Link to="/dashboard" className="flex items-center gap-2.5 shrink-0 min-w-0">
-            <Logo size={30} />
+            <Logo size={34} />
             <span className="font-display font-extrabold text-[17px] tracking-[-.02em]">cyrus<span className="text-accent">.ai</span></span>
           </Link>
           <span className="hidden md:inline-flex items-center gap-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[.14em] text-dim border border-line rounded-full px-2.5 py-1">
@@ -227,7 +291,7 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
             <div onClick={() => setMenu(false)} aria-hidden className="lg:hidden fixed inset-0 z-[70] bg-black/55 backdrop-blur-[3px]" style={{ animation: "fadeIn .2s ease both" }} />
             <aside role="dialog" aria-label="Board menu" className="lg:hidden fixed top-0 left-0 bottom-0 z-[75] w-[min(84vw,300px)] bg-sand border-r border-line flex flex-col" style={{ animation: "sheetIn .3s cubic-bezier(.32,.9,.35,1) both" }}>
               <div className="flex items-center gap-2.5 h-[58px] px-4 border-b border-line shrink-0">
-                <Logo size={28} />
+                <Logo size={32} />
                 <b className="font-display font-extrabold text-[16px] tracking-[-.02em]">cyrus<span className="text-accent">.ai</span></b>
                 <button onClick={() => setMenu(false)} aria-label="Close menu" className="ml-auto w-[32px] h-[32px] grid place-items-center rounded-[9px] border border-line text-cocoa hover:text-ink cursor-pointer">
                   <Ic d={DP.x} size={14} />
@@ -269,7 +333,7 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
               </Link>
             ))}
           </nav>
-          <main className="mx-auto max-w-[1160px] px-4 md:px-7 py-6 md:py-8 grid gap-5 [&>*]:min-w-0">{children}</main>
+          <main className="mx-auto max-w-[1160px] px-4 md:px-7 py-6 md:py-9 grid gap-6 md:gap-7 [&>*]:min-w-0">{children}</main>
         </div>
       </div>
     </div>
@@ -277,10 +341,11 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
 }
 
 /* page header: title, one short line, and any actions the page owns */
-export function DashHead({ title, sub, action }: { title: string; sub: string; action?: ReactNode }) {
+export function DashHead({ title, sub, action, tag }: { title: string; sub: string; action?: ReactNode; tag?: string }) {
   return (
     <div className="flex items-end gap-4 flex-wrap">
       <div className="min-w-0">
+        {tag && <p className="eyebrow mb-2">{tag}</p>}
         <h1 className="font-display font-extrabold tracking-[-.025em] text-[clamp(24px,3vw,34px)]">{title}</h1>
         <p className="text-cocoa text-[14px] leading-[1.6] mt-1.5 max-w-[640px]">{sub}</p>
       </div>

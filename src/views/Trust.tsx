@@ -5,7 +5,8 @@
    populated with cyrus's real snapshot numbers.                  ═ */
 import { Link } from "@/lib/router";
 import { btn, Word } from "../components/ui";
-import { fmt } from "../lib/util";
+import { fmtCompact } from "../lib/util";
+import { STATS } from "../lib/siteStats";
 import { REPOS } from "../data/repos";
 import { ORGS, PROGRAMS } from "../data/orgs";
 import { CRAWL } from "../data/crawlStats";
@@ -22,11 +23,15 @@ const D: Record<string, string> = {
   layers: "M12 3 3 8l9 5 9-5-9-5ZM3 16l9 5 9-5M3 12l9 5 9-5",
 };
 
-/* the three archive datasets, with their real verified row counts */
+/* every roster dataset, with its real verified row count */
 const VERIFIED: [string, string, string, number, string, string][] = [
-  ["Google Summer of Code", "Programs.google.com API + org proposals", "Accepted project records, 2022–2026", 5238, "leaf", "gsoc api"],
-  ["LFX Mentorship", "mentorship.lfx.linuxfoundation.net listings", "Completed + active mentored projects", 941, "denim", "lfx api"],
-  ["Outreachy + Summer of Bitcoin", "Outreachy archives + event organizers", "Accepted intern and participant projects", 503, "plum", "org pages"],
+  ["Google Summer of Code", "gsocorganizations.dev - a community mirror of Google's per-year org pages", "Accepted project records, 519 organizations, 2016-2026", 12095, "leaf", "all-time mirror"],
+  ["LFX Mentorship", "api.mentorship.lfx.linuxfoundation.org - every published project", "1,303 mentored projects hosted by 47 Linux Foundation projects", 1303, "denim", "platform API"],
+  ["Outreachy + Summer of Bitcoin", "Outreachy archives, its call for participation, and event organizers", "437 internships across 179 communities, plus 66 Bitcoin projects", 503, "plum", "org pages"],
+  ["GSSoC'26", "gssoc.girlscript.org/api - projects, mentors and leaderboard", "423 projects in 420 repositories, 47,896 contributors on the board", 423, "leaf", "season board"],
+  ["24 Pull Requests", "24pullrequests.com projects.json + organisations.json", "Organizations that took part, plus 306 curated wishlist repositories", 10080, "denim", "wishlist + orgs"],
+  ["MLH Fellowship + Season of KDE", "Every MLH fork and the upstream it came from; the KDE wiki ideas pages", "120 upstream organizations behind MLH's forks, 87 KDE ideas with their mentors", 285, "plum", "forks + listing"],
+  ["Per-program project archive", "public/data/program-projects/ - one shard per program, indexed by scripts/build-program-projects.mjs", "12 programs' own records, each row keeping the source it was read from", STATS.archive, "leaf", "12 archives"],
 ];
 
 const FOUNDATIONS: [string, string, string][] = [
@@ -39,9 +44,9 @@ const FOUNDATIONS: [string, string, string][] = [
 ];
 
 const SOURCES: [string, string, string][] = [
-  ["GitHub REST API", "Every 14 days", "Stars, forks, open issues, language, license and last push for all " + fmt(REPOS.length) + " catalog repos and " + fmt(ORGS.length) + " org profiles."],
-  ["GSoC + mentorship APIs", "Each season window", "Accepted-project records for GSoC, LFX, Outreachy and Summer of Bitcoin - titles, orgs, stacks, sizes, mentors."],
-  ["GitHub search API (issues)", `Crawled ${CRAWL.crawledAt}`, fmt(CRAWL.issues) + " open issues read live out of " + fmt(CRAWL.reposWithIssues) + " catalog repositories - title, labels, age and the thread URL. Only issues GitHub still reports open make the cut."],
+  ["GitHub REST API", "Every 14 days", "Stars, forks, open issues, language, license and last push for all " + fmtCompact(REPOS.length) + " catalog repos and " + fmtCompact(ORGS.length) + " org profiles."],
+  ["Program archives and open APIs", "Each season window", "Accepted-project records for GSoC, LFX, Outreachy and Summer of Bitcoin - titles, orgs, stacks, sizes, mentors - plus the live boards GSSoC, 24 Pull Requests and MLH publish themselves, and the Linux Foundation's member directory."],
+  ["GitHub search API (issues)", `Crawled ${CRAWL.crawledAt}`, fmtCompact(CRAWL.issues) + " open issues read live out of " + fmtCompact(CRAWL.reposWithIssues) + " catalog repositories - title, labels, age and the thread URL. Only issues GitHub still reports open make the cut."],
   ["Program organizer pages", "Each season window", "Application and coding windows for all " + PROGRAMS.length + " tracked programs are re-read from the organizer's own site; anything unpublished is marked as an estimate."],
 ];
 
@@ -52,7 +57,7 @@ export default function Trust() {
       <div className="relative">
         {/* ── hero + status bar (image 8) ── */}
         <section className={`${W} pt-[64px]`}>
-          <CenterHead pill="Live verification network"
+          <CenterHead as="h1" pill="Live verification network"
             h2={<>Data, sources <Word>&amp; trust engine.</Word></>}
             sub="cyrus is a static index with a live conscience: every number below was pulled from a public API, regenerated on a schedule, and can be re-verified by you in one click. Here is exactly what is running, and on what cadence." />
           <div className="mt-11 bg-card border border-line rounded-[22px] p-6 shadow-soft flex items-center gap-5 flex-wrap max-[700px]:flex-col max-[700px]:items-start">
@@ -75,7 +80,7 @@ export default function Trust() {
         <section className={`${W} mt-[54px]`}>
           <div className="flex items-baseline gap-3 flex-wrap mb-7">
             <h2 className="font-display font-extrabold tracking-[-.02em] text-[clamp(24px,3vw,34px)]">Active snapshot verifications</h2>
-            <span className="font-mono text-[11px] tracking-[.12em] uppercase text-dim">running now · 6,682 records under review each cycle</span>
+            <span className="font-mono text-[11px] tracking-[.12em] uppercase text-dim">running now · {fmtCompact(STATS.archive)} archived program projects · {fmtCompact(STATS.orgRoster)} organizations named by a program archive</span>
           </div>
           <div className="grid grid-cols-3 gap-5 max-[900px]:grid-cols-1">
             {VERIFIED.map(([b, src, sub, n, tone, badge]) => (
@@ -84,7 +89,7 @@ export default function Trust() {
                   <span className="flex items-center gap-1.5 font-mono text-[9.5px] font-bold tracking-[.14em] uppercase text-leaf bg-leaf/10 border border-leaf/25 rounded-full px-3 py-1.5"><Check /> Verified</span>
                   <span className={`ml-auto font-mono text-[9.5px] font-bold tracking-[.12em] uppercase ${tone === "leaf" ? "text-leaf" : tone === "denim" ? "text-denim" : "text-plum"}`}>{badge}</span>
                 </div>
-                <b className="font-mono font-bold text-[34px] tracking-[-.02em] block text-ink">{fmt(n)}</b>
+                <b className="font-mono font-bold text-[34px] tracking-[-.02em] block text-ink">{fmtCompact(n)}</b>
                 <span className="block font-display font-bold text-[15px] mt-1.5 mb-1">{b}</span>
                 <p className="text-cocoa text-[12.5px] leading-[1.6]">{sub}</p>
                 <p className="font-mono text-[10.5px] text-dim mt-4 pt-4 border-t border-liness break-words">Source: {src}</p>
@@ -132,13 +137,13 @@ export default function Trust() {
         <Rule />
         {/* ── snapshot ledger stats ── */}
         <section className={`${W} mt-[54px]`}>
-          <div className="rounded-[26px] bg-coffee text-foam border border-bean shadow-lift px-8 py-10">
+          <div className="on-dark rounded-[26px] bg-coffee text-foam border border-bean shadow-lift px-8 py-10">
             <p className="text-center font-mono text-[10.5px] font-bold tracking-[.18em] uppercase text-ember mb-8">The current snapshot, in plain numbers</p>
             <div className="grid grid-cols-5 gap-6 text-center max-[900px]:grid-cols-2 max-[520px]:grid-cols-1">
               {[
-                [fmt(REPOS.length), "catalog repos"],
-                [fmt(CRAWL.issues), "open issues crawled"],
-                ["6,682", "archive projects"],
+                [fmtCompact(REPOS.length), "catalog repos"],
+                [fmtCompact(CRAWL.issues), "open issues crawled"],
+                [fmtCompact(STATS.archive), "archive projects"],
                 [String(ORGS.length), "org profiles"],
                 [String(PROGRAMS.length), "programs tracked"],
               ].map(([v, l]) => (

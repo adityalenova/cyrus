@@ -7,14 +7,16 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "@/lib/router";
 import { btn, Chip, Tag } from "../../components/ui";
-import { avatarOf, fmt } from "../util";
+import { avatarOf, fmtCompact } from "../util";
 import { ISSUE_SIGNALS } from "../../data/issueSignals";
 import { Card, DashHead, Ic, StatRow } from "./shell";
+import { ArtLedger } from "./art";
 import {
   DP, ISSUE_STAGES, STAGE_CLS, STAGE_LABEL, STAGE_NEXT,
   daysAgo, isStale, type IssueStage, type TrackedIssue,
 } from "./shared";
 import type { Dash } from "./useDash";
+import { trackedIssuesCsvBlob } from "./csvExport";
 
 const ROW = "flex items-start gap-3.5 px-4 py-3.5 rounded-[14px] border transition-colors";
 
@@ -23,13 +25,19 @@ export function AttentionList({ d, limit }: { d: Dash; limit?: number }) {
   if (!rows.length) {
     return (
       <Card>
-        <h2 className="panel-h-lg flex items-center gap-2.5">
-          <Ic d={DP.check} size={16} /> Nothing needs you
-        </h2>
-        <p className="text-cocoa text-[13.5px] mt-2">
-          Every tracked issue is accounted for, and you follow at least one
-          repository and one organization.
-        </p>
+        <div className="flex items-center gap-4 flex-wrap">
+          <span className="w-[34px] h-[34px] grid place-items-center rounded-[10px] border border-leaf/40 bg-leaf/10 text-leaf shrink-0">
+            <Ic d={DP.check} size={15} />
+          </span>
+          <div className="min-w-[220px] flex-1">
+            <h2 className="panel-h-lg">Nothing needs you</h2>
+            <p className="text-cocoa text-[13.5px] mt-1">
+              Every tracked issue is accounted for, and you follow at least one
+              repository and one organization.
+            </p>
+          </div>
+          <Link to="/dashboard/issues" className={btn("outline", "sm") + " shrink-0"}>Open My Issues</Link>
+        </div>
       </Card>
     );
   }
@@ -37,7 +45,7 @@ export function AttentionList({ d, limit }: { d: Dash; limit?: number }) {
     <Card className="p-0 overflow-hidden">
       <div className="flex items-baseline gap-3 px-5 pt-5 pb-3">
         <h2 className="panel-h-lg">Needs your attention</h2>
-        <span className="ml-auto font-mono text-[10.5px] text-dim">
+        <span className="ml-auto font-mono text-[10.5px] text-dim tabular-nums">
           {d.attention.length} open
         </span>
       </div>
@@ -47,15 +55,15 @@ export function AttentionList({ d, limit }: { d: Dash; limit?: number }) {
             ? "text-honey bg-honey/10 border-honey/35"
             : "text-denim bg-denim/8 border-denim/30";
           return (
-            <div key={a.title} className={"flex gap-4 px-5 py-4" + (i ? " border-t border-liness" : "")}>
+            <div key={a.title} className={"flex items-start gap-x-4 gap-y-3 px-5 py-4 max-[680px]:flex-wrap" + (i ? " border-t border-liness" : "")}>
               <span className={"mt-0.5 w-[26px] h-[26px] grid place-items-center rounded-[8px] shrink-0 border " + tone}>
                 <Ic d={a.tone === "warn" ? DP.clock : DP.issue} size={13} />
               </span>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-[200px] flex-1">
                 <b className="block text-[13.5px] font-semibold leading-snug">{a.title}</b>
                 <p className="text-cocoa text-[12.5px] leading-[1.55] mt-1">{a.body}</p>
               </div>
-              <Link to={a.to} className={btn("outline", "sm") + " shrink-0 max-[680px]:hidden"}>
+              <Link to={a.to} className={btn("outline", "sm") + " shrink-0 max-[680px]:basis-full max-[680px]:ml-[42px]"}>
                 {a.cta}
               </Link>
             </div>
@@ -79,7 +87,7 @@ function IssueRow({ d, issue }: { d: Dash; issue: TrackedIssue }) {
   const stats: [string, ReactNode][] = [
     ["issue", "#" + issue.number],
     ...(issue.lang ? [["lang", issue.lang] as [string, ReactNode]] : []),
-    ...(issue.stars ? [["stars", fmt(issue.stars)] as [string, ReactNode]] : []),
+    ...(issue.stars ? [["stars", fmtCompact(issue.stars)] as [string, ReactNode]] : []),
     ...(issue.updated ? [["touched", daysAgo(issue.updated) + "d ago"] as [string, ReactNode]] : []),
     ["on board", daysAgo(issue.added) === 0 ? "today" : daysAgo(issue.added) + "d ago"],
   ];
@@ -142,6 +150,61 @@ export function IssuesSection({ d }: { d: Dash }) {
   const shown = stage === "all" ? d.issues : d.byStage(stage);
   const offered = ISSUE_SIGNALS.filter((s) => !d.ledger[s.url]).slice(0, 6);
 
+  const exportCsv = () => {
+    if (!d.issues.length) return;
+    const payload = d.issues.map((i) => ({
+      repo: i.repo,
+      number: i.number,
+      title: i.title,
+      url: i.url,
+      stage: STAGE_LABEL[d.stageOf(i.url)],
+      lang: i.lang ?? null,
+      stars: i.stars ?? 0,
+      labels: i.labels ?? [],
+      beginner: Boolean(i.beginner),
+      added: i.added,
+      updated: i.updated ?? null,
+    }));
+    const blob = trackedIssuesCsvBlob(payload);
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = `cyrus-tracked-issues-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    d.toast(`Exported ${payload.length} tracked issues as CSV`);
+  };
+
+  const exportJson = () => {
+    if (!d.issues.length) return;
+    const payload = d.issues.map((i) => ({
+      repo: i.repo,
+      number: i.number,
+      title: i.title,
+      url: i.url,
+      stage: d.stageOf(i.url),
+      stageLabel: STAGE_LABEL[d.stageOf(i.url)],
+      lang: i.lang ?? null,
+      stars: i.stars ?? 0,
+      labels: i.labels ?? [],
+      beginner: Boolean(i.beginner),
+      added: i.added,
+      updated: i.updated ?? null,
+    }));
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const u = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = `cyrus-tracked-issues-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    d.toast(`Exported ${payload.length} tracked issues as JSON`);
+  };
+
   return (
     <>
       <DashHead title="My Issues"
@@ -176,12 +239,27 @@ export function IssuesSection({ d }: { d: Dash }) {
             </span>
           </button>
         ))}
+        {d.issues.length > 0 && (
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={exportCsv}
+              className="px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
+              Export CSV
+            </button>
+            <button onClick={exportJson}
+              className="px-3.5 py-2 rounded-full border border-line bg-card text-[12px] font-mono uppercase tracking-[.06em] text-cocoa hover:border-accent hover:text-accent transition-colors cursor-pointer">
+              Export JSON
+            </button>
+          </div>
+        )}
       </div>
 
       {shown.length ? (
         <div className="grid gap-2.5">{shown.map((i) => <IssueRow key={i.url} d={d} issue={i} />)}</div>
       ) : (
         <Card className="text-center py-10">
+          <div className="flex justify-center mb-4 text-dim">
+            <ArtLedger className="max-w-[210px]" />
+          </div>
           <p className="text-[14px] font-semibold">
             {stage === "all" ? "No issues tracked yet" : "Nothing in " + STAGE_LABEL[stage]}
           </p>
@@ -212,7 +290,7 @@ export function IssuesSection({ d }: { d: Dash }) {
                   </a>
                   <StatRow items={[
                     ["lang", s.lang ?? "-"],
-                    ["stars", fmt(s.stars)],
+                    ["stars", fmtCompact(s.stars)],
                     ["updated", daysAgo(s.updated) + "d ago"],
                     ...(s.beginner ? [["signal", "good first issue"] as [string, ReactNode]] : []),
                   ]} />
@@ -225,8 +303,8 @@ export function IssuesSection({ d }: { d: Dash }) {
             ))}
           </div>
           <p className="text-dim text-[12px] mt-4">
-            A sample of the {fmt(d.index.issues)} open issues read from{" "}
-            {fmt(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
+            A sample of the {fmtCompact(d.index.issues)} open issues read from{" "}
+            {fmtCompact(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
             snapshot is searchable on the{" "}
             <Link to="/issues" className="text-accent font-semibold hover:underline">issue finder</Link>.
           </p>

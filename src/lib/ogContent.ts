@@ -5,8 +5,8 @@
    this file may state a fact the record does not carry.                ══ */
 import { REPOS } from "@/data/repos";
 import type { Program } from "@/lib/types";
-import { REAL_ORGS } from "@/data/realOrgs";
-import { fmt, STATS } from "@/lib/siteStats";
+import { ORGS } from "@/data/orgs";
+import { fmtFull, STATS } from "@/lib/siteStats";
 
 export type OgRow = { k: string; v: string };
 
@@ -43,12 +43,12 @@ export function homeCard(): OgCard {
     eyebrow: "Open source, indexed",
     title: ["Find your", "next contribution"],
     rows: [
-      { k: "Open issues", v: `${fmt(STATS.issues)} across ${fmt(STATS.issueRepos)} repositories` },
+      { k: "Open issues", v: `${fmtFull(STATS.issues)} across ${fmtFull(STATS.issueRepos)} repositories` },
       { k: "Programs", v: `${STATS.programs} tracked, all on the 2026 calendar` },
-      { k: "Projects", v: `${fmt(STATS.archive)} mentored program projects` },
-      { k: "Organizations", v: `${REAL_ORGS.length} profiles from live GitHub data` },
+      { k: "Projects", v: `${fmtFull(STATS.archive)} program projects, ${STATS.archivePrograms} archives` },
+      { k: "Organizations", v: `${ORGS.length} profiles, each named by a program` },
     ],
-    foot: `Refreshed nightly from GitHub - ${SNAPSHOT}`,
+    foot: SNAPSHOT,
     alt: "cyrus.ai - the open-source contribution index: issues, programs, projects and organizations.",
   };
 }

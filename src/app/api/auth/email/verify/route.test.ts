@@ -1,16 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const m = vi.hoisted(() => ({
-  backendReady: vi.fn(),
-  upsertUser: vi.fn(),
-  setSession: vi.fn(),
+  sessionsReady: vi.fn(),
+  issueSession: vi.fn(),
   checkCode: vi.fn(),
 }));
+/* the route only ever asks two questions of the session layer: can this
+   deploy sign a cookie, and if so hand it the verified identity. */
 vi.mock("@/lib/server/auth", () => ({
-  backendReady: m.backendReady,
-  upsertUser: m.upsertUser,
-  setSession: m.setSession,
-  publicUser: (u: { id: string; name: string }) => ({ id: u.id, name: u.name }),
+  sessionsReady: m.sessionsReady,
+  issueSession: m.issueSession,
 }));
 vi.mock("@/lib/server/email", async (orig) => ({
   ...(await orig<typeof import("@/lib/server/email")>()),
@@ -24,9 +23,8 @@ const post = (body: unknown) =>
 const good = { email: "Sam@Example.com", code: "123456" };
 
 beforeEach(() => {
-  m.backendReady.mockReset().mockReturnValue(true);
-  m.upsertUser.mockReset().mockResolvedValue({ id: "u1", name: "Sam" });
-  m.setSession.mockReset().mockResolvedValue(undefined);
+  m.sessionsReady.mockReset().mockReturnValue(true);
+  m.issueSession.mockReset().mockResolvedValue({ id: "u1", name: "Sam", provider: "email" });
   m.checkCode.mockReset().mockResolvedValue({ ok: true });
 });
 
@@ -42,20 +40,19 @@ describe("POST /api/auth/email/verify", () => {
     m.checkCode.mockResolvedValue({ ok: false, reason: "wrong", challenge: "new-env" });
     expect(await (await post({ ...good, challenge: "old-env" })).json()).toEqual({ ok: false, reason: "wrong", challenge: "new-env" });
     expect(m.checkCode).toHaveBeenCalledWith("sam@example.com", "123456", "old-env");
-    expect(m.setSession).not.toHaveBeenCalled();
+    expect(m.issueSession).not.toHaveBeenCalled();
   });
 
-  it("creates the user and a session when the backend is ready", async () => {
+  it("starts a session from the verified address when the deploy can sign cookies", async () => {
     const res = await post({ ...good, name: " Sam S " });
-    expect(await res.json()).toEqual({ ok: true, user: { id: "u1", name: "Sam" } });
-    expect(m.upsertUser).toHaveBeenCalledWith({ provider: "email", providerId: "sam@example.com", name: "Sam S", email: "sam@example.com" });
-    expect(m.setSession).toHaveBeenCalledWith({ uid: "u1", name: "Sam", provider: "email" });
+    expect(await res.json()).toEqual({ ok: true, user: { id: "u1", name: "Sam", provider: "email" } });
+    expect(m.issueSession).toHaveBeenCalledWith({ provider: "email", providerId: "sam@example.com", name: "Sam S", email: "sam@example.com" });
   });
 
-  it("signs in locally (offline) when there is no backend", async () => {
-    m.backendReady.mockReturnValue(false);
+  it("signs in locally (offline) when there is no session secret", async () => {
+    m.sessionsReady.mockReturnValue(false);
     const body = await (await post(good)).json();
     expect(body).toMatchObject({ ok: true, offline: true, user: { id: "email:sam@example.com", name: "sam", provider: "email" } });
-    expect(m.upsertUser).not.toHaveBeenCalled();
+    expect(m.issueSession).not.toHaveBeenCalled();
   });
 });

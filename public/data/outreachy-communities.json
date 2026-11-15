@@ -1,0 +1,908 @@
+{
+ "generated": "2026-10-24",
+ "source": "https://www.outreachy.org/communities/cfp/",
+ "round": "December 2026",
+ "note": "Outreachy publishes this list itself. current means approved for the named round, declined means signed up but cut from it, and past covers communities that ran an earlier round or applied to participate - the site says so rather than implying every one shipped an intern.",
+ "communities": [
+  {
+   "slug": "an-open-practices-toolkit-for-research",
+   "name": "An Open Practices Toolkit for Research",
+   "section": "declined"
+  },
+  {
+   "slug": "ancientech-cybersecurity-academy",
+   "name": "Ancientech CyberSecurity Academy",
+   "section": "current"
+  },
+  {
+   "slug": "artificial-intelligence",
+   "name": "Artificial intelligence",
+   "section": "declined"
+  },
+  {
+   "slug": "asf",
+   "name": "ASF",
+   "section": "past"
+  },
+  {
+   "slug": "bahmni",
+   "name": "Bahmni",
+   "section": "past"
+  },
+  {
+   "slug": "betterdev",
+   "name": "Betterdev",
+   "section": "current"
+  },
+  {
+   "slug": "binaya-koirala",
+   "name": "Binaya Koirala",
+   "section": "declined"
+  },
+  {
+   "slug": "bioconductor",
+   "name": "Bioconductor",
+   "section": "current"
+  },
+  {
+   "slug": "bokeh",
+   "name": "Bokeh",
+   "section": "past"
+  },
+  {
+   "slug": "brainstorm",
+   "name": "BRAINSTORM",
+   "section": "past"
+  },
+  {
+   "slug": "cadasta",
+   "name": "Cadasta",
+   "section": "past"
+  },
+  {
+   "slug": "camicroscope",
+   "name": "caMicroscope",
+   "section": "past"
+  },
+  {
+   "slug": "centos-project",
+   "name": "CentOS Project",
+   "section": "past"
+  },
+  {
+   "slug": "ceph",
+   "name": "Ceph",
+   "section": "past"
+  },
+  {
+   "slug": "chaoss",
+   "name": "CHAOSS",
+   "section": "past"
+  },
+  {
+   "slug": "chisel",
+   "name": "Chisel",
+   "section": "past"
+  },
+  {
+   "slug": "the-chris-project",
+   "name": "ChRIS Project",
+   "section": "past"
+  },
+  {
+   "slug": "cncf-tracing",
+   "name": "CNCF OpenTelemetry",
+   "section": "past"
+  },
+  {
+   "slug": "common-workflow-language",
+   "name": "Common Workflow Language",
+   "section": "past"
+  },
+  {
+   "slug": "conda",
+   "name": "conda",
+   "section": "past"
+  },
+  {
+   "slug": "conda-forge",
+   "name": "conda-forge",
+   "section": "past"
+  },
+  {
+   "slug": "confidential-computing-consortium",
+   "name": "Confidential Computing Consortium",
+   "section": "past"
+  },
+  {
+   "slug": "copyleftorg",
+   "name": "Copyleft.org",
+   "section": "past"
+  },
+  {
+   "slug": "creative-africa",
+   "name": "Creative Africa",
+   "section": "past"
+  },
+  {
+   "slug": "creative-commons",
+   "name": "Creative Commons",
+   "section": "past"
+  },
+  {
+   "slug": "data-analysis",
+   "name": "Data analysis",
+   "section": "declined"
+  },
+  {
+   "slug": "debian",
+   "name": "Debian",
+   "section": "current"
+  },
+  {
+   "slug": "deltacloud",
+   "name": "Deltacloud",
+   "section": "past"
+  },
+  {
+   "slug": "devrhylme-foundation",
+   "name": "DEVRhylme Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "discourse",
+   "name": "Discourse",
+   "section": "past"
+  },
+  {
+   "slug": "drupal",
+   "name": "Drupal",
+   "section": "past"
+  },
+  {
+   "slug": "eclipse-adoptium",
+   "name": "Eclipse Adoptium",
+   "section": "past"
+  },
+  {
+   "slug": "eclipse-vertx",
+   "name": "Eclipse Vert.x",
+   "section": "past"
+  },
+  {
+   "slug": "edam-ontology",
+   "name": "EDAM Ontology",
+   "section": "past"
+  },
+  {
+   "slug": "electronic-frontier-foundation",
+   "name": "Electronic Frontier Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "empyrean-community",
+   "name": "Empyrean Community",
+   "section": "current"
+  },
+  {
+   "slug": "ersilia-open-source-initiative",
+   "name": "Ersilia Open Source Initiative",
+   "section": "past"
+  },
+  {
+   "slug": "evergreen",
+   "name": "Evergreen",
+   "section": "past"
+  },
+  {
+   "slug": "f-software-foundation",
+   "name": "F# Software Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "f3d",
+   "name": "F3D",
+   "section": "past"
+  },
+  {
+   "slug": "f4pga",
+   "name": "F4PGA",
+   "section": "past"
+  },
+  {
+   "slug": "fedora",
+   "name": "Fedora",
+   "section": "past"
+  },
+  {
+   "slug": "fedora-project",
+   "name": "Fedora",
+   "section": "past"
+  },
+  {
+   "slug": "ffmpeg",
+   "name": "FFmpeg",
+   "section": "past"
+  },
+  {
+   "slug": "firefox",
+   "name": "Firefox",
+   "section": "past"
+  },
+  {
+   "slug": "firefox-data-team",
+   "name": "Firefox Data Team",
+   "section": "past"
+  },
+  {
+   "slug": "foreman",
+   "name": "Foreman",
+   "section": "past"
+  },
+  {
+   "slug": "free-software-foundation",
+   "name": "Free Software Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "galaxy-community",
+   "name": "Galaxy Community",
+   "section": "past"
+  },
+  {
+   "slug": "git",
+   "name": "Git",
+   "section": "current"
+  },
+  {
+   "slug": "gluster",
+   "name": "Gluster",
+   "section": "past"
+  },
+  {
+   "slug": "gnome",
+   "name": "GNOME",
+   "section": "current"
+  },
+  {
+   "slug": "gnu-guix",
+   "name": "GNU Guix",
+   "section": "past"
+  },
+  {
+   "slug": "gstreamer",
+   "name": "GStreamer",
+   "section": "past"
+  },
+  {
+   "slug": "guac",
+   "name": "GUAC",
+   "section": "past"
+  },
+  {
+   "slug": "haiku",
+   "name": "Haiku",
+   "section": "past"
+  },
+  {
+   "slug": "homebrew",
+   "name": "Homebrew",
+   "section": "past"
+  },
+  {
+   "slug": "humanitarian-openstreetmap-team",
+   "name": "Humanitarian OpenStreetMap Team",
+   "section": "past"
+  },
+  {
+   "slug": "igdore",
+   "name": "IGDORE",
+   "section": "past"
+  },
+  {
+   "slug": "inkscape",
+   "name": "Inkscape",
+   "section": "past"
+  },
+  {
+   "slug": "intermine",
+   "name": "InterMine",
+   "section": "past"
+  },
+  {
+   "slug": "irdest",
+   "name": "Irdest",
+   "section": "past"
+  },
+  {
+   "slug": "jboss",
+   "name": "JBoss",
+   "section": "past"
+  },
+  {
+   "slug": "jenkins",
+   "name": "Jenkins",
+   "section": "past"
+  },
+  {
+   "slug": "jenkins-x",
+   "name": "Jenkins X",
+   "section": "past"
+  },
+  {
+   "slug": "joomla",
+   "name": "Joomla",
+   "section": "past"
+  },
+  {
+   "slug": "jupyterhub",
+   "name": "JupyterHub",
+   "section": "past"
+  },
+  {
+   "slug": "kde",
+   "name": "KDE",
+   "section": "past"
+  },
+  {
+   "slug": "kernel-development-learning-pipeline",
+   "name": "Kernel Development Learning Pipeline",
+   "section": "past"
+  },
+  {
+   "slug": "kernelci",
+   "name": "KernelCI",
+   "section": "past"
+  },
+  {
+   "slug": "kiwix",
+   "name": "Kiwix",
+   "section": "declined"
+  },
+  {
+   "slug": "knetvis",
+   "name": "Knetvis",
+   "section": "past"
+  },
+  {
+   "slug": "kubernetes",
+   "name": "Kubernetes",
+   "section": "past"
+  },
+  {
+   "slug": "kubevirt",
+   "name": "KubeVirt",
+   "section": "past"
+  },
+  {
+   "slug": "kudoai",
+   "name": "KudoAI",
+   "section": "past"
+  },
+  {
+   "slug": "lagom",
+   "name": "Lagom",
+   "section": "past"
+  },
+  {
+   "slug": "les-fruits-defendus",
+   "name": "Les Fruits défendus",
+   "section": "past"
+  },
+  {
+   "slug": "libav",
+   "name": "Libav",
+   "section": "past"
+  },
+  {
+   "slug": "librehealth",
+   "name": "LibreHealth",
+   "section": "past"
+  },
+  {
+   "slug": "libreoffice",
+   "name": "LibreOffice",
+   "section": "past"
+  },
+  {
+   "slug": "linux-kernel",
+   "name": "Linux Kernel",
+   "section": "current"
+  },
+  {
+   "slug": "llvm",
+   "name": "LLVM",
+   "section": "past"
+  },
+  {
+   "slug": "marcel",
+   "name": "Marcel",
+   "section": "declined"
+  },
+  {
+   "slug": "matrix",
+   "name": "Matrix",
+   "section": "past"
+  },
+  {
+   "slug": "mboalab",
+   "name": "Mboalab",
+   "section": "past"
+  },
+  {
+   "slug": "mdanalysis",
+   "name": "MDAnalysis",
+   "section": "past"
+  },
+  {
+   "slug": "measurement-lab",
+   "name": "Measurement Lab",
+   "section": "past"
+  },
+  {
+   "slug": "mediagoblin",
+   "name": "MediaGoblin",
+   "section": "past"
+  },
+  {
+   "slug": "mesos-aurora-finagle-and-pants",
+   "name": "Mesos, Aurora, Finagle, and Pants",
+   "section": "past"
+  },
+  {
+   "slug": "metal3",
+   "name": "Metal3",
+   "section": "past"
+  },
+  {
+   "slug": "mifos",
+   "name": "Mifos",
+   "section": "past"
+  },
+  {
+   "slug": "mixxx-dj-software",
+   "name": "Mixxx DJ Software",
+   "section": "past"
+  },
+  {
+   "slug": "modeci",
+   "name": "ModECI",
+   "section": "past"
+  },
+  {
+   "slug": "moja-global",
+   "name": "moja global",
+   "section": "past"
+  },
+  {
+   "slug": "mozilla",
+   "name": "Mozilla",
+   "section": "past"
+  },
+  {
+   "slug": "muhammad-moazzan-imran",
+   "name": "Muhammad Moazzan Imran",
+   "section": "past"
+  },
+  {
+   "slug": "muzima",
+   "name": "mUzima",
+   "section": "past"
+  },
+  {
+   "slug": "national-evolutionary-synthesis-center",
+   "name": "National Evolutionary Synthesis Center",
+   "section": "past"
+  },
+  {
+   "slug": "networkx",
+   "name": "NetworkX",
+   "section": "past"
+  },
+  {
+   "slug": "nixos-foundation",
+   "name": "NixOS",
+   "section": "past"
+  },
+  {
+   "slug": "nodejs",
+   "name": "Node.js",
+   "section": "past"
+  },
+  {
+   "slug": "numfocus",
+   "name": "NumFOCUS",
+   "section": "past"
+  },
+  {
+   "slug": "numpy",
+   "name": "NumPy",
+   "section": "past"
+  },
+  {
+   "slug": "ocaml",
+   "name": "OCaml",
+   "section": "current"
+  },
+  {
+   "slug": "odk-x",
+   "name": "ODK-X",
+   "section": "past"
+  },
+  {
+   "slug": "onyinye12",
+   "name": "Onyinye12_",
+   "section": "declined"
+  },
+  {
+   "slug": "open-bioinformatics-foundation",
+   "name": "Open Bioinformatics Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "open-data-hub",
+   "name": "Open Data Hub",
+   "section": "past"
+  },
+  {
+   "slug": "open-data-kit",
+   "name": "Open Data Kit",
+   "section": "past"
+  },
+  {
+   "slug": "open-humans",
+   "name": "Open Humans",
+   "section": "past"
+  },
+  {
+   "slug": "the-open-information-security-foundation",
+   "name": "Open Information Security Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "open-life-science",
+   "name": "Open Life Science",
+   "section": "past"
+  },
+  {
+   "slug": "open-science-community-saudi-arabia-oscsa",
+   "name": "Open Science Community Saudi Arabia (OSCSA)",
+   "section": "past"
+  },
+  {
+   "slug": "open-source-robotics-foundation",
+   "name": "Open Source Robotics Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "open-technology-institute",
+   "name": "Open Technology Institute",
+   "section": "past"
+  },
+  {
+   "slug": "openarchive",
+   "name": "OpenArchive",
+   "section": "past"
+  },
+  {
+   "slug": "openastronomy-astropy",
+   "name": "OpenAstronomy - Astropy &amp; SunPy",
+   "section": "past"
+  },
+  {
+   "slug": "openaustralia-foundation",
+   "name": "OpenAustralia Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "openitp",
+   "name": "OpenITP",
+   "section": "past"
+  },
+  {
+   "slug": "openlmis",
+   "name": "OpenLMIS",
+   "section": "past"
+  },
+  {
+   "slug": "openmrs",
+   "name": "OpenMRS",
+   "section": "past"
+  },
+  {
+   "slug": "openrefine",
+   "name": "OpenRefine",
+   "section": "past"
+  },
+  {
+   "slug": "openshift-origin",
+   "name": "OpenShift Origin",
+   "section": "past"
+  },
+  {
+   "slug": "openstack",
+   "name": "OpenStack",
+   "section": "current"
+  },
+  {
+   "slug": "opensuse-project",
+   "name": "openSUSE Project",
+   "section": "past"
+  },
+  {
+   "slug": "oppia",
+   "name": "Oppia",
+   "section": "past"
+  },
+  {
+   "slug": "ovirt",
+   "name": "oVirt",
+   "section": "past"
+  },
+  {
+   "slug": "owncloud",
+   "name": "ownCloud",
+   "section": "past"
+  },
+  {
+   "slug": "pak-community",
+   "name": "Pak community",
+   "section": "declined"
+  },
+  {
+   "slug": "pakistani",
+   "name": "Pakistani",
+   "section": "declined"
+  },
+  {
+   "slug": "palisadoes-foundation",
+   "name": "Palisadoes Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "parsl",
+   "name": "Parsl",
+   "section": "past"
+  },
+  {
+   "slug": "perl",
+   "name": "Perl &amp; Raku",
+   "section": "past"
+  },
+  {
+   "slug": "personal-genome-project-informatics-pgpi",
+   "name": "Personal Genome Project Informatics (PGPi)",
+   "section": "past"
+  },
+  {
+   "slug": "play-framework",
+   "name": "Play Framework",
+   "section": "past"
+  },
+  {
+   "slug": "public-lab",
+   "name": "Public Lab",
+   "section": "past"
+  },
+  {
+   "slug": "pymc",
+   "name": "PyMC",
+   "section": "past"
+  },
+  {
+   "slug": "python",
+   "name": "Python",
+   "section": "past"
+  },
+  {
+   "slug": "qc-devs",
+   "name": "QC-Devs",
+   "section": "past"
+  },
+  {
+   "slug": "qemu",
+   "name": "QEMU",
+   "section": "past"
+  },
+  {
+   "slug": "qgisorg",
+   "name": "QGIS.org",
+   "section": "past"
+  },
+  {
+   "slug": "qubes-os",
+   "name": "Qubes OS",
+   "section": "past"
+  },
+  {
+   "slug": "rook",
+   "name": "Rook",
+   "section": "past"
+  },
+  {
+   "slug": "scikit-image",
+   "name": "scikit-image",
+   "section": "past"
+  },
+  {
+   "slug": "scyberlink",
+   "name": "ScyberLink",
+   "section": "past"
+  },
+  {
+   "slug": "securedrop",
+   "name": "SecureDrop",
+   "section": "past"
+  },
+  {
+   "slug": "servo",
+   "name": "Servo",
+   "section": "current"
+  },
+  {
+   "slug": "sktime",
+   "name": "sktime",
+   "section": "past"
+  },
+  {
+   "slug": "software-heritage",
+   "name": "Software Heritage",
+   "section": "past"
+  },
+  {
+   "slug": "subversion",
+   "name": "Subversion",
+   "section": "past"
+  },
+  {
+   "slug": "sugar-labs",
+   "name": "Sugar Labs",
+   "section": "past"
+  },
+  {
+   "slug": "systemd",
+   "name": "systemd",
+   "section": "past"
+  },
+  {
+   "slug": "systers",
+   "name": "Systers",
+   "section": "past"
+  },
+  {
+   "slug": "tekton",
+   "name": "Tekton",
+   "section": "past"
+  },
+  {
+   "slug": "tensorflow",
+   "name": "TensorFlow",
+   "section": "past"
+  },
+  {
+   "slug": "the-terasology-foundation",
+   "name": "Terasology Foundation",
+   "section": "past"
+  },
+  {
+   "slug": "the-aesara-project",
+   "name": "The Aesara Project",
+   "section": "past"
+  },
+  {
+   "slug": "the-r-project-for-statistical-computing",
+   "name": "The R Project for Statistical Computing",
+   "section": "past"
+  },
+  {
+   "slug": "the-rust-project",
+   "name": "The Rust Project",
+   "section": "current"
+  },
+  {
+   "slug": "the-steamers",
+   "name": "THE-STEAMERS",
+   "section": "past"
+  },
+  {
+   "slug": "tor-project",
+   "name": "Tor Project",
+   "section": "past"
+  },
+  {
+   "slug": "twisted",
+   "name": "Twisted",
+   "section": "past"
+  },
+  {
+   "slug": "typelevel",
+   "name": "Typelevel",
+   "section": "past"
+  },
+  {
+   "slug": "unicef",
+   "name": "UNICEF Innovation",
+   "section": "past"
+  },
+  {
+   "slug": "unstructured-studio",
+   "name": "Unstructured Studio",
+   "section": "past"
+  },
+  {
+   "slug": "ushahidi",
+   "name": "Ushahidi",
+   "section": "past"
+  },
+  {
+   "slug": "videolan",
+   "name": "VideoLAN",
+   "section": "past"
+  },
+  {
+   "slug": "wagtail",
+   "name": "Wagtail",
+   "section": "past"
+  },
+  {
+   "slug": "wikimedia",
+   "name": "Wikimedia Foundation",
+   "section": "current"
+  },
+  {
+   "slug": "wine",
+   "name": "Wine",
+   "section": "past"
+  },
+  {
+   "slug": "wordpress",
+   "name": "WordPress",
+   "section": "past"
+  },
+  {
+   "slug": "worksphere",
+   "name": "WorkSphere",
+   "section": "current"
+  },
+  {
+   "slug": "xorg",
+   "name": "X.Org",
+   "section": "past"
+  },
+  {
+   "slug": "xarray",
+   "name": "xarray",
+   "section": "past"
+  },
+  {
+   "slug": "xen-project",
+   "name": "Xen Project",
+   "section": "past"
+  },
+  {
+   "slug": "xmpp-extensible-messaging-and-presence-protocol",
+   "name": "XMPP - Extensible Messaging and Presence Protocol",
+   "section": "past"
+  },
+  {
+   "slug": "yocto-project",
+   "name": "Yocto Project",
+   "section": "past"
+  },
+  {
+   "slug": "zarr",
+   "name": "Zarr",
+   "section": "past"
+  },
+  {
+   "slug": "zeek",
+   "name": "Zeek",
+   "section": "past"
+  },
+  {
+   "slug": "zulip",
+   "name": "Zulip",
+   "section": "past"
+  }
+ ]
+}

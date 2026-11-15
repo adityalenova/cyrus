@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Open a [private vulnerability report](https://github.com/adityalenova/cyrus-ai/security/advisories/new).
+Open a [private vulnerability report](https://github.com/adityalenova/cyrus/security/advisories/new).
 Please do not file a public issue, and do not open a pull request that fixes a
 security problem before it is reported privately.
 

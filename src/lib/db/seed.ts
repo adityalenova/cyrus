@@ -13,7 +13,8 @@ import {
   repos, resources, savedItems, submissions, users,
 } from "./schema";
 import { REPOS } from "../../data/repos";
-import { REAL_ORGS, REAL_REPOS, REAL_STATS } from "../../data/realOrgs";
+import { REAL_REPOS, REAL_STATS } from "../../data/realOrgs";
+import { ORGS } from "../../data/orgs";
 import { CRAWL } from "../../data/crawlStats";
 
 const here = fileURLToPath(new URL(".", import.meta.url));
@@ -76,8 +77,10 @@ async function main() {
     await db.insert(repos).values(repoRows.slice(i, i + 500)).onConflictDoNothing();
   }
 
-  console.log(`Orgs: ${REAL_ORGS.length} (+ top repos)…`);
-  await db.insert(orgs).values(REAL_ORGS.map((o) => ({
+  /* the directory the site publishes, not the raw fetch: an organization with
+     no program record has no page here, so it gets no row either */
+  console.log(`Orgs: ${ORGS.length} (+ top repos)…`);
+  await db.insert(orgs).values(ORGS.map((o) => ({
     login: o.login,
     name: o.name,
     domain: o.domain,
@@ -131,7 +134,7 @@ async function main() {
 
   const counts = {
     repos: REPOS.length,
-    orgs: REAL_ORGS.length,
+    orgs: ORGS.length,
     programProjects: projRows.length,
     /* the crawl total is a count of GitHub issues, not of DB rows, so it
        is kept in meta rather than reported by /api/catalog/counts */

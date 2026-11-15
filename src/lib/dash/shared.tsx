@@ -46,7 +46,11 @@ export interface TrackedIssue {
    Everything else about an issue comes from the crawl. */
 export function parseIssueUrl(raw: string): { url: string; repo: string; number: number } | null {
   try {
-    const u = new URL(raw.trim());
+    let s = raw.trim();
+    if (!s) return null;
+    if (s.startsWith("//")) s = "https:" + s;
+    else if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(s)) s = "https://" + s;
+    const u = new URL(s);
     if (u.hostname !== "github.com") return null;
     const m = u.pathname.match(/^\/([^/]+)\/([^/]+)\/issues\/(\d+)\/?$/);
     if (!m) return null;
@@ -73,7 +77,7 @@ export const FEATURES: { id: FeatureId; title: string; icon: string; desc: strin
   { id: "issues", title: "My Issues", icon: "issue", desc: "Every issue you took, held at the stage you left it: saved, interested, working, done." },
   { id: "repos", title: "My Repositories", icon: "repo", desc: "The repositories you follow, with the stars, open issues and last update that decide where you contribute." },
   { id: "calendar", title: "Season calendar", icon: "calendar", desc: "Application windows and coding periods for all thirteen programs on one grid, with Google Calendar and .ics export." },
-  { id: "matcher", title: "Co-pilot matcher", icon: "spark", desc: "Pick the skills you already have; it shortlists catalog repositories asking for exactly those, with their open issues." },
+  { id: "matcher", title: "Co-pilot", icon: "spark", desc: "Four steps: the skills you write, what you want from a season, what fits, and the organizations, repositories and live open issues that come out of it." },
   { id: "mentors", title: "Mentor finder", icon: "target", desc: "Search the people who actually mentored a GSoC project, by name, organization or technology, straight from the archive." },
   { id: "compare", title: "Compare orgs", icon: "layers", desc: "Two organizations, every public number we track for them, side by side - stars, repos, issues and the programs each runs." },
   { id: "gitstart", title: "Git initializer", icon: "code", desc: "Paste the issue you claimed and get the seven commands that turn it into a branch, a commit and an open pull request." },

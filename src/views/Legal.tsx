@@ -1,8 +1,8 @@
 "use client"
 /* ══ Legal.tsx — privacy, terms, cookies, affiliations ══════
    One honest article template; the four documents live in DOCS.
-   Copy is written for what this site actually does: a static
-   client-side catalog that keeps everything in localStorage.   */
+   Copy is written for what this site actually does: a catalog with a
+   real sign-in server, and everything else still kept in localStorage.   */
 import { Link } from "@/lib/router";
 import type { ReactNode } from "react";
 
@@ -31,10 +31,10 @@ const C = ({ children }: { children: ReactNode }) => (
 const DOCS: Record<LegalKind, Doc> = {
   privacy: {
     title: "Privacy policy",
-    kicker: "Your data stays in your browser",
-    updated: "Last updated: 3 October 2026",
+    kicker: "What a sign-in touches, and what stays on your device",
+    updated: "Last updated: 24 October 2026",
     intro:
-      "cyrus.ai is a static, client-side catalog. There is no backend, no database of users, and no analytics tracker watching you. Almost everything you do on this site - saves, theme, dashboard preferences - lives only on your device, in your browser's local storage, and only you can read it.",
+      "cyrus.ai is a catalog you can browse with no account at all. Sign-in is the one part that involves our server: it checks your Google token or your emailed code and hands your browser a session cookie. Everything else - saves, theme, dashboard preferences, application drafts - lives only on your device, in your browser's local storage, and only you can read it.",
     secs: [
       {
         id: "what-we-store", h: "What is stored, and where",
@@ -42,15 +42,18 @@ const DOCS: Record<LegalKind, Doc> = {
           <P>These items are written to your browser's <C>localStorage</C> under keys prefixed <C>agenthub.*</C>. They never leave your device and clearing your browser data removes them permanently:</P>
           <UL items={[
             <>Saved projects and organizations - the stars and follows you tap on cards.</>,
-            <>Your session - the display name and provider ("guest", "Email", or "Google") used to greet you on the dashboard.</>,
+            <>A local copy of your signed-in display name and provider, so the dashboard can greet you and still work offline.</>,
             <>Preferences - light or dark theme and the dashboard notification toggles.</>,
+            <>Application drafts and watchlists you build in the dashboard.</>,
           ]} />
+          <P>On the server side, signing in stores one thing: a signed session cookie (<C>cyrus.session</C>, <C>httpOnly</C>, valid 30 days) holding your display name, your sign-in provider and an id derived from your account. It is not a profile, it is not readable without the server's signing secret, and signing out deletes it. If a database is attached to the deployment, an account row is also kept with the name, email, avatar and provider your provider sent us, so saves can follow you between devices; that is currently <b className="text-ink">not</b> attached, so nothing about you is kept in a database.</P>
         </>),
       },
       {
         id: "google-sign-in", h: "If you sign in with Google",
         body: (<>
-          <P>Google sign-in is optional and, when configured, runs entirely in your browser through Google Identity Services. We request your basic profile only, then read your name, email and profile-picture URL from the token Google hands us. That information is kept in your local session so the dashboard can greet you; it is not transmitted to or stored by any server we control. We do not see your Google password or any other Google data.</P>
+          <P>Google sign-in is optional and uses the standard OAuth redirect. Google returns a token to the site; that token is sent to <C>/api/auth/google</C>, where the server checks with Google that it was really issued for this client before anything is stored. We receive your name, email address, profile-picture URL and Google account id - basic profile, nothing more. Those go into the session cookie and into the local session copy; a database row is only written when one is attached to the deployment. We never see your Google password, and we do not request access to any other Google data.</P>
+          <P>Email sign-in is the same trade in the other direction: you type an address, the server keeps a one-way hash of the six-digit code it sends (through Resend, an email provider, for ten minutes with a capped number of tries) and, once you enter the code, issues the cookie above. The address itself is what identifies your account on that path; nothing else about your browsing is attached to it.</P>
         </>),
       },
       {
@@ -59,15 +62,16 @@ const DOCS: Record<LegalKind, Doc> = {
           <P>Because this is a catalog of real open-source work, pages load some assets from third parties, which means your browser makes requests to them (your IP address is visible to them, as with any website visit):</P>
           <UL items={[
             <>GitHub - organization and repository avatars are fetched from GitHub's image CDN.</>,
-            <>Google - the sign-in script and profile pictures, only if you use Google sign-in.</>,
+            <>Google - <C>accounts.google.com</C> serves the consent page while you are signing in, and your profile picture is loaded from Google's image CDN afterwards.</>,
             <>Outbound links - program and repository cards link to organizers' and maintainers' own sites; their privacy practices are theirs, not ours.</>,
+            <>Our own server - only the sign-in endpoints are called by name. Those requests go to the site's host (Vercel), which records ordinary request metadata such as an IP address in its platform logs; the catalog pages themselves are served without any per-visitor storage.</>,
           ]} />
         </>),
       },
       {
         id: "no-tracking", h: "What we do not do",
         body: (<>
-          <P>No advertising networks, no analytics scripts, no heatmaps, no session recording, no email collection beyond what you type into the local sign-up form (which is not sent anywhere), and no sale or sharing of personal data. There simply is no personal data on our side to share.</P>
+          <P>No advertising networks, no analytics scripts, no heatmaps, no session recording, no email marketing list, and no sale or sharing of personal data. The only address that ever reaches us is the one you type into email sign-in, and the only use made of it is sending your code. Sign in with Google instead and no email address is stored by us at all beyond the claims in your session.</P>
         </>),
       },
       {
@@ -77,7 +81,7 @@ const DOCS: Record<LegalKind, Doc> = {
       {
         id: "changes", h: "Changes to this policy",
         body: (<>
-          <P>If the site ever grows a real backend or accounts system, this page will be rewritten and dated before any such feature goes live. For questions, reach out through the links at the bottom of this page or open an issue on the project's GitHub.</P>
+          <P>This page is rewritten and re-dated whenever the data flow changes, not after. Signing out clears the session cookie; if a database is ever attached, deleting your account will also delete its row - ask through the links at the bottom of this page or an issue on the project's GitHub, and the same route works today for anything that is already stored.</P>
         </>),
       },
     ],
@@ -118,7 +122,7 @@ const DOCS: Record<LegalKind, Doc> = {
       },
       {
         id: "your-saves", h: "Your saves and session",
-        body: (<P>Saved projects, followed organizations, preferences and guest sessions are stored only in your browser (see the <Link to="/privacy" className="text-accent font-semibold hover:underline">privacy policy</Link>). You can remove any of them with the controls on the dashboard; clearing browser data removes the rest. We cannot recover them for you, and you are responsible for the content of your local session.</P>),
+        body: (<P>Saved projects, followed organizations and preferences are stored only in your browser (see the <Link to="/privacy" className="text-accent font-semibold hover:underline">privacy policy</Link>). You can remove any of them with the controls on the dashboard; clearing browser data removes the rest. We cannot recover them for you, and you are responsible for the content of your local session.</P>),
       },
       {
         id: "no-warranty", h: "No warranty",
@@ -136,33 +140,33 @@ const DOCS: Record<LegalKind, Doc> = {
   },
   cookies: {
     title: "Cookie policy",
-    kicker: "Short page, because there is little to say",
-    updated: "Last updated: 3 October 2026",
+    kicker: "One cookie, and only if you sign in",
+    updated: "Last updated: 24 October 2026",
     intro:
-      "cyrus.ai does not use cookies. Not strictly-necessary ones, not analytics ones, not advertising ones. There is no consent banner because there is nothing to consent to.",
+      "cyrus.ai sets exactly one cookie, and only when you sign in: cyrus.session, the signed record that you are logged in. There are no analytics cookies, no advertising cookies, no consent banner - browsing the catalog drops nothing on your device.",
     secs: [
       {
         id: "local-storage", h: "What we use instead: localStorage",
         body: (<>
-          <P>Your experience is persisted with the browser's <C>localStorage</C> API, under keys prefixed <C>agenthub.*</C>. The difference matters: these values are sent to no server automatically, cannot be read cross-domain, and are deleted the moment you clear site data.</P>
+          <P>Apart from the session cookie, everything is persisted with the browser's <C>localStorage</C> API, under keys prefixed <C>agenthub.*</C>. The difference matters: those values are sent to no server automatically, cannot be read cross-domain, and are deleted the moment you clear site data.</P>
           <UL items={[
             <>Saved projects and followed organizations.</>,
-            <>Your lightweight session (display name and sign-in provider).</>,
+            <>A local copy of your display name and sign-in provider, so the dashboard opens for you offline.</>,
             <>Theme and dashboard notification preferences.</>,
           ]} />
         </>),
       },
       {
         id: "third-party-storage", h: "Third-party storage",
-        body: (<P>If you sign in with Google, Google Identity Services may use its own storage mechanisms on google.com's domain while the sign-in window is open. That storage is governed by Google's privacy policy, not ours, and the only data we keep from it is your name, email and profile-picture URL in your local session.</P>),
+        body: (<P>The Google redirect lets accounts.google.com use its own cookies and storage while you are on Google's page; that is governed by Google's privacy policy, not ours, and the only things we keep afterwards are your name, email, avatar URL and account id in the session we sign. Email sign-in loads nothing third-party unless a Cloudflare verification widget is configured on the deployment, and it is not configured today.</P>),
       },
       {
         id: "manage-data", h: "Managing or deleting your data",
-        body: (<P>Everything is one action away: open your browser's site settings for this domain and clear storage, or use the remove buttons on the dashboard for individual saves. No request to us is needed - we hold nothing server-side.</P>),
+        body: (<P>Everything local is one action away: open your browser's site settings for this domain and clear storage, or use the remove buttons on the dashboard for individual saves. The session cookie is one action away too - press sign out. Nothing else of yours sits on a server.</P>),
       },
       {
         id: "future", h: "If this ever changes",
-        body: (<P>If a future version of the site introduces cookies or tracking technologies, this page will be rewritten first, and a proper consent mechanism will go live with it. Until then: no cookies, no tracking, no banner.</P>),
+        body: (<P>If a future version introduces a cookie that is not the session, or any tracking technology, this page is rewritten first and a real consent mechanism goes live with it. Today: one cookie, only on sign-in, nothing that follows you anywhere else.</P>),
       },
     ],
   },

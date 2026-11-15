@@ -19,6 +19,19 @@ export const googleConfigured = () => !!GOOGLE_CLIENT_ID;
 export type GoogleProfile = { name: string; email: string; picture: string; sub: string; idToken?: string };
 
 const NONCE_KEY = "cyrus.google.nonce";
+const RETURN_KEY = "cyrus.google.return";
+
+/** where to drop someone once the redirect has finished: the page they were
+   on when they clicked, because Google always returns to the site root */
+export function takeGoogleReturn(): string {
+  try {
+    const v = sessionStorage.getItem(RETURN_KEY);
+    sessionStorage.removeItem(RETURN_KEY);
+    return v && v.startsWith("/") && !v.startsWith("//") ? v : "/dashboard";
+  } catch {
+    return "/dashboard";
+  }
+}
 
 const rand = (bytes: number) => {
   const a = new Uint8Array(bytes);
@@ -45,7 +58,10 @@ function decodeJwtPayload(jwt: string): Record<string, unknown> {
 export function startGoogleSignIn(): void {
   if (!GOOGLE_CLIENT_ID) throw new Error("Google client id is not configured.");
   const nonce = rand(16);
-  try { sessionStorage.setItem(NONCE_KEY, nonce); } catch { /* private mode - proceed anyway */ }
+  try {
+    sessionStorage.setItem(NONCE_KEY, nonce);
+    sessionStorage.setItem(RETURN_KEY, window.location.pathname + window.location.search);
+  } catch { /* private mode - proceed anyway */ }
   const p = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
     redirect_uri: window.location.origin + "/",

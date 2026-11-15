@@ -1,6 +1,7 @@
 /* ══ layout.tsx — root server layout: metadata, fonts, shell ═══════════ */
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Dancing_Script, Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Shell from "@/components/Shell";
 import { statsLine } from "@/lib/siteStats";
 import { SITE_ORIGIN } from "@/lib/seo";
@@ -25,6 +26,14 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-jbmono",
+  display: "swap",
+});
+/* The hand that signs the testimonial cards. One face, used at one size, in
+   one place - everywhere else on the site stays in the three above. */
+const sign = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-signature",
   display: "swap",
 });
 
@@ -61,7 +70,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${inter.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${jakarta.variable} ${inter.variable} ${mono.variable} ${sign.variable}`} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {/* dark is the default, so only an explicit stored "light" adds a class;
@@ -74,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Shell>{children}</Shell>
+        <Analytics />
       </body>
     </html>
   );

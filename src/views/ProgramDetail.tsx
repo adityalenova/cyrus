@@ -1,13 +1,15 @@
 "use client"
 /* ══ ProgramDetail.tsx — one open source program, deep ══════ */
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
 import { TOPIC_ID_OF, useRoster } from "../lib/programRoster";
+import { publishesAreas, useProgramOrgs } from "../lib/contriboOrgs";
 import { PROGRAM_META, PROGRAM_REPOS } from "../data/programRepos";
 import type { ProgramName } from "../data/programRepos";
 import { PROGRAM_DETAILS, programLink } from "../data/programDetails";
-import { byStars, fmt, avatarOf } from "../lib/util";
+import { filterNameOf, useArchiveIndex } from "../lib/programProjects";
+import { byStars, fmtCompact, avatarOf, inkOn } from "../lib/util";
 import type { Program } from "../lib/types";
 import { btn, Chip, OrgImg, SectionHead, Tag, Word } from "../components/ui";
 import NotFound from "./NotFound";
@@ -27,7 +29,11 @@ function MonthBar({ p }: { p: Program }) {
           <div key={i} title={`${ph.label} - ${mon(ph.s)} to ${mon(ph.e)}`}
             className={`absolute top-0 bottom-0 grid place-items-center transition-opacity ${ph.active ? "opacity-100" : "opacity-55"}`}
             style={{ left: `${(ph.s / 12) * 100}%`, width: `${((ph.e - ph.s) / 12) * 100}%`, background: ph.c }}>
-            <span className="font-mono text-[9.5px] font-bold uppercase tracking-[.08em] text-white px-1 truncate max-w-full">{ph.label}</span>
+            {/* the band colour comes from the program record, so the ink has to
+                be decided against it: white on the amber season marker was
+                3.8:1, and near-black is what that fill can actually carry. */}
+            <span className="font-mono text-[9.5px] font-bold uppercase tracking-[.08em] px-1 truncate max-w-full"
+              style={{ color: inkOn(ph.c) }}>{ph.label}</span>
           </div>
         ))}
         <div className="absolute top-0 bottom-0 w-[2px] bg-coffee" style={{ left: `${(now / 12) * 100}%` }} aria-hidden />
@@ -51,28 +57,6 @@ function MonthBar({ p }: { p: Program }) {
   );
 }
 
-/* ── annual bar chart ──────────────────────────────────────── */
-function YearChart({ data, unit }: { data: { year: number; n: number }[]; unit: string }) {
-  const max = Math.max(...data.map((d) => d.n), 1);
-  return (
-    <div>
-      <div className="flex items-end gap-2 h-[150px]">
-        {data.map((d, i) => (
-          <div key={d.year} className="flex-1 flex flex-col items-center justify-end gap-1.5 h-full">
-            <span className="font-mono text-[10px] font-bold text-cocoa">{fmt(d.n)}</span>
-            <i className="w-full rounded-t-[6px] pulse-bar block"
-              style={{ height: `${Math.max(6, (d.n / max) * 100)}%`, background: i === data.length - 1 ? "linear-gradient(180deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 14%, var(--color-card)))" : "linear-gradient(180deg, var(--color-denim), color-mix(in srgb, var(--color-denim) 14%, var(--color-card)))", animationDelay: `${i * 55}ms` }} />
-          </div>
-        ))}
-      </div>
-      <div className="flex gap-2 mt-2">
-        {data.map((d) => <span key={d.year} className="flex-1 text-center font-mono text-[10px] text-dim">{String(d.year).slice(2)}</span>)}
-      </div>
-      <p className="font-mono text-[10px] uppercase tracking-[.11em] text-dim mt-2.5">in {unit}</p>
-    </div>
-  );
-}
-
 const MetaRow = ({ k, v }: { k: string; v: string }) => (
   <div className="flex justify-between gap-4 py-2.5 border-b border-liness last:border-0">
     <span className="font-mono text-[9.5px] uppercase tracking-[.11em] text-dim shrink-0 pt-0.5">{k}</span>
@@ -80,101 +64,81 @@ const MetaRow = ({ k, v }: { k: string; v: string }) => (
   </div>
 );
 
-const PAGE = 60;
-
-/* ── every organization that took part, from the real record ── */
-function RosterSection({ id, topicId, name }: { id: string; topicId?: string; name: string }) {
+/* ── the organization directory: one compact band, the list lives on its own page ──
+   This used to unroll every row of a program's record inline, which pushed the
+   timeline, the mentors and the projects off the screen. The band keeps the
+   invitation and points to /programs/<id>/organizations, where the same rows
+   are cards with logos, sectors, technologies and filters. No counts here:
+   the explorer is the place that shows them, and a number on this page would
+   only be a worse version of the list behind the button.                  ═ */
+function OrgDirectoryBand({ id, topicId, name }: { id: string; topicId?: string; name: string }) {
   const r = useRoster(id, topicId);
-  const [q, setQ] = useState("");
-  const [shown, setShown] = useState(PAGE);
+  const merged = useProgramOrgs(id);
 
-  const hits = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    if (!needle) return r.orgs;
-    return r.orgs.filter((o) => o.name.toLowerCase().includes(needle) || o.category.toLowerCase().includes(needle));
-  }, [r.orgs, q]);
-
-  if (!r.ready) {
+  if (!r.ready || !merged.ready) {
     return (
       <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
         <h2 className="panel-h text-[17px]">Organizations</h2>
-        <p className="text-cocoa text-[13px] mt-2">Loading the participation record…</p>
+        <p className="text-cocoa text-[13px] mt-2">Reading the participation record...</p>
       </section>
     );
   }
 
-  if (!r.orgs.length) {
+  if (!merged.rows.length) {
     return (
       <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
         <h2 className="panel-h text-[17px] mb-2">Organizations in {name}</h2>
         <p className="text-cocoa text-[13px] leading-[1.65]">
-          {name} does not publish a list of the projects or organizations that took part, so there is
-          nothing here we could show you honestly. Its own program page is the only source for that -
-          the button above opens it.
+          {name} publishes the people it accepted and the project each of them worked on, not a list of
+          participating organizations - so there is nothing here we could show you honestly. The
+          organizer's own page, linked above, is the only source for that.
         </p>
       </section>
     );
   }
 
-  const fromArchive = r.source === "archive";
+  const areas = publishesAreas(id);
+  const unit = areas ? "project area" : "organization";
+
   return (
-    <section>
-      <div className="flex items-end justify-between gap-4 flex-wrap mb-3">
-        <div>
-          <h2 className="font-display font-extrabold text-[22px] tracking-[-.02em]">
-            Every organization in <Word>{name}</Word>
-          </h2>
-          <p className="text-cocoa text-[12.5px] mt-1">
-            {r.orgs.length.toLocaleString()} organizations · {fmt(r.projects)}{" "}
-            {fromArchive ? "accepted projects" : "tracked repositories"}
-            {fromArchive && r.years.length > 1 ? <> · {r.years[0]}-{r.years[r.years.length - 1]}</> : null}
+    <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
+      <div className="flex items-start justify-between gap-5 flex-wrap">
+        <div className="min-w-0 max-w-[620px]">
+          <h2 className="font-mono text-[9.5px] uppercase tracking-[.14em] text-dim mb-2">Organization directory</h2>
+          <h3 className="font-display font-extrabold text-[21px] tracking-[-.02em] leading-[1.15]">
+            Explore the {areas ? "areas" : "organizations"} of <Word>{name}</Word>
+          </h3>
+          <p className="text-cocoa text-[13px] leading-[1.65] mt-2">
+            Every {unit} this program's own record names, as a card with its logo, its field and the
+            projects it took. Filter by year, technology and field on that page - and where a row
+            carries no logo or no blurb, it shows nothing rather than inventing one.
           </p>
         </div>
-        <span className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim border border-line rounded-full px-2.5 py-1">
-          {fromArchive ? `from the project archive · ${r.generated}` : "from GitHub topics on their repositories"}
-        </span>
+        <div className="flex flex-col gap-2.5 shrink-0 w-[212px] max-[560px]:w-full">
+          <Link to={`/programs/${id}/organizations`} className={btn("primary", "md", "w-full")}>
+            {areas ? "Explore the areas" : "Explore organizations"}
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
+              <path d="M5 12h13m-5-6 6 6-6 6" />
+            </svg>
+          </Link>
+          <Link to="/dashboard/matcher" className={btn("outline", "md", "w-full")}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden>
+              <path d="M12 3.5 13.9 8l4.6 1.6-4.6 1.6L12 15.7 10.1 11.2 5.5 9.6 10.1 8z" />
+              <path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" />
+            </svg>
+            AI project matcher
+          </Link>
+        </div>
       </div>
 
-      <div className="flex items-center gap-2.5 mb-4">
-        <input value={q} onChange={(e) => { setQ(e.target.value); setShown(PAGE); }} placeholder="Search these organizations"
-          aria-label="Search organizations"
-          className="flex-1 min-w-0 max-w-[340px] bg-card border border-line rounded-xl px-3.5 py-2.5 text-[13.5px] outline-none transition-all focus:border-accent" />
-        <span className="font-mono text-[10.5px] text-dim">{fmt(hits.length)} shown</span>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3 max-[1080px]:grid-cols-2 max-[620px]:grid-cols-1">
-        {hits.slice(0, shown).map((o) => {
-          const inner = (
-            <>
-              <span className="flex items-center gap-2.5 min-w-0">
-                <OrgImg src={avatarOf(o.login ?? o.name, 64)} name={o.login ?? o.name}
-                  className="w-[26px] h-[26px] rounded-[8px] object-cover bg-clay shrink-0" />
-                <b className="text-[13px] font-semibold truncate">{o.name}</b>
-              </span>
-              <span className="flex items-center gap-2 mt-2 font-mono text-[9.5px] text-dim">
-                <b className="text-accent font-bold">{fmt(o.n)}</b>
-                {fromArchive ? (o.years.length > 1 ? `projects · ${o.years.length} years` : "projects") : "repos with the topic"}
-                {o.category && <span className="truncate">· {o.category}</span>}
-              </span>
-            </>
-          );
-          const cls = "bg-card border border-line rounded-[16px] p-4 block shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40";
-          return o.to.startsWith("/")
-            ? <Link key={o.name} to={o.to} className={cls}>{inner}</Link>
-            : <a key={o.name} href={o.href} target="_blank" rel="noopener" className={cls}>{inner}</a>;
-        })}
-      </div>
-
-      {hits.length > shown && (
-        <button type="button" onClick={() => setShown((s) => s + PAGE * 2)}
-          className={btn("outline", "md", "mt-5")}>
-          Show more · {fmt(hits.length - shown)} left
-        </button>
+      {r.meta?.note && (
+        <p className="text-dim text-[11px] leading-[1.6] mt-4 max-w-[860px]">
+          {r.meta.note} <span className="text-dim">Source: {r.meta.source}.</span>
+        </p>
       )}
     </section>
   );
 }
-
 
 export default function ProgramDetail() {
   const { id } = useParams();
@@ -188,15 +152,32 @@ export default function ProgramDetail() {
     shelfName ? PROGRAM_REPOS.filter((r) => r.programs.includes(shelfName)).sort(byStars).slice(0, 6) : [],
     [shelfName]);
 
+  /* The label /projects matches ?prog= against for this program. It is the
+     archive index's own word, not the marketing name - "GSoC" rather than
+     "Google Summer of Code" - because that is the string the rows carry, and a
+     link built from anything else opens an empty listing. */
+  const arcIdx = useArchiveIndex();
+  const arcEntry = p ? arcIdx?.programs?.[p.id] : undefined;
+  const toArchive = (extra: Record<string, string> = {}) => {
+    const q = new URLSearchParams(extra);
+    const f = arcEntry ? filterNameOf(p!.id, arcEntry.label) : "";
+    if (f) q.set("prog", f);
+    const s = q.toString();
+    return `/projects${s ? `?${s}` : ""}`;
+  };
+
   if (!p || !d) return <NotFound />;
   const others = PROGRAMS.filter((x) => x.id !== p.id);
 
   return (
     <>
       {/* ── cover banner ── */}
-      <header className="relative overflow-hidden bg-coffee">
-        {p.img && <img src={p.img} alt="" className="absolute inset-0 w-full h-full object-cover opacity-30" />}
-        <span aria-hidden className="absolute inset-0 bg-gradient-to-b from-[#0f1012]/55 via-[#0f1012]/75 to-[#0f1012]/95" />
+      <header className="on-dark relative overflow-hidden bg-coffee">
+        {p.img && <img src={p.img} alt="" className="absolute inset-0 w-full h-full object-cover opacity-75" />}
+        {/* the cover has to stay readable under white text, but it was sitting at
+            30% under a 95% black wash - i.e. invisible. Reveal the photo on the
+            top-right and keep the shade where the words are. */}
+        <span aria-hidden className="absolute inset-0 bg-gradient-to-tr from-[#0f1012]/92 via-[#0f1012]/62 to-[#0f1012]/25" />
         <div className={`${W} py-14 relative z-[1]`}>
           <p className="font-mono text-[10.5px] tracking-[.14em] uppercase text-foam/55 mb-5">
             <Link to="/" className="hover:text-white">Home</Link> / <Link to="/programs" className="hover:text-white">Programs</Link> / <span className="text-foam/80">{p.name}</span>
@@ -295,28 +276,12 @@ export default function ProgramDetail() {
             <MonthBar p={p} />
           </section>
 
-          {d.projectsPerYear?.length ? (
-            <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
-              <h2 className="panel-h text-[17px] mb-1">{d.chartTitle}</h2>
-              <p className="text-cocoa text-[12.5px] mb-5">Program-level totals across recent cycles, blended from organizer reports and archive counts.</p>
-              <YearChart data={d.projectsPerYear} unit={d.chartUnit} />
-            </section>
-          ) : (
-            <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
-              <h2 className="panel-h text-[17px] mb-1">{d.chartTitle}</h2>
-              <p className="text-cocoa text-[13px] leading-[1.65] mt-2">
-                {p.name} publishes no per-cycle project table, so this page shows no chart. The
-                organizer's own page, linked above, is the only source for its numbers.
-              </p>
-            </section>
-          )}
-
-          <RosterSection id={p.id} topicId={TOPIC_ID_OF[p.id]} name={p.name} />
+          <OrgDirectoryBand id={p.id} topicId={TOPIC_ID_OF[p.id]} name={p.name} />
 
           {shelf.length > 0 && (            <section>
               <div className="flex items-end justify-between gap-4 flex-wrap mb-4">
                 <h2 className="font-display font-extrabold text-[22px] tracking-[-.02em]">Flagship <Word>{p.name}</Word> projects</h2>
-                <Link to="/projects" className={btn("ghost", "sm")}>Browse all program projects</Link>
+                <Link to={toArchive()} className={btn("ghost", "sm")}>Browse all program projects</Link>
               </div>
               <div className="grid grid-cols-3 gap-4 max-[980px]:grid-cols-2 max-[640px]:grid-cols-1">
                 {shelf.map((r) => (
@@ -325,7 +290,7 @@ export default function ProgramDetail() {
                     <div className="flex items-center gap-2.5 min-w-0">
                       <OrgImg src={avatarOf(r.repo.split("/")[0], 64)} name={r.repo} className="w-8 h-8 rounded-[9px] object-cover bg-clay shrink-0" />
                       <b className="card-title text-[13.5px] truncate">{r.repo.split("/")[1]}</b>
-                      <span className="ml-auto font-mono text-[10.5px] text-honey font-bold shrink-0">★ {fmt(r.stars)}</span>
+                      <span className="ml-auto font-mono text-[10.5px] text-honey font-bold shrink-0">★ {fmtCompact(r.stars)}</span>
                     </div>
                     <p className="text-cocoa text-[12px] leading-[1.55] line-clamp-2">{r.desc}</p>
                     <div className="flex gap-1.5"><Chip tone="lang">{r.lang}</Chip><Chip tone={PROGRAM_META[shelfName as ProgramName]?.tone ?? ""}>{PROGRAM_META[shelfName as ProgramName]?.label}</Chip></div>
@@ -346,9 +311,8 @@ export default function ProgramDetail() {
             <MetaRow k="Tier" v={d.tier} />
             <MetaRow k="Difficulty" v={d.difficulty} />
             <MetaRow k="Eligibility" v={d.eligibility} />
-            <MetaRow k="Scale" v={`${p.orgs} · ${p.slots}`} />
             <div className="grid gap-2.5 mt-4">
-              {shelf.length > 0 && <Link to="/projects" className={btn("primary", "md", "w-full")}>Browse {PROGRAM_META[shelfName as ProgramName].label} projects</Link>}
+              {shelf.length > 0 && <Link to={toArchive()} className={btn("primary", "md", "w-full")}>Browse {PROGRAM_META[shelfName as ProgramName].label} projects</Link>}
               <Link to="/organizations" className={btn("outline", "md", "w-full")}>View organizations</Link>
               <a href={p.url} target="_blank" rel="noopener" className={btn("dark", "md", "w-full")}>Official website</a>
             </div>

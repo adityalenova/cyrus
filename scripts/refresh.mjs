@@ -3,15 +3,17 @@
    node scripts/refresh.mjs gsoc       # the same, named explicitly
 
    Writes:
-     public/data/gsoc-projects.json (fetched at runtime by /opensource)
+     public/data/gsoc-projects.json (fetched at runtime by /projects)
    The open-issue index is not here: that is crawl-github.mjs, and it has to
    be run with a GitHub token, so it stays a scheduled job rather than this one.
-   Cron example (daily 06:00): 0 6 * * * cd ~/Desktop/agent-skills && npm run refresh -- gsoc
+   Cron example (daily 06:00): 0 6 * * * cd /path/to/cyrus && npm run refresh
    ═════════════════════════════════════════════════════════════════════ */
 import { writeFileSync, mkdirSync } from "fs";
-import { updateReadmeSnapshot } from "./readme-snapshot.mjs";
+import { fileURLToPath } from "url";
+import { join } from "path";
+// import { updateReadmeSnapshot } from "./readme-snapshot.mjs";
 
-const ROOT = new URL("..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const EMOJI = /[\p{Extended_Pictographic}\p{Emoji_Presentation}\uFE0F\u200D]/gu;
 const clean = (s) => (s || "").replace(EMOJI, "").replace(/[—–]/g, "-").replace(/\s+/g, " ").trim();
 const today = new Date().toISOString().slice(0, 10);
@@ -28,13 +30,15 @@ async function get(url, tries = 3) {
 }
 
 /* ── 1. GSoC archive → public/data/gsoc-projects.json ──────────────────
-     Accepted projects are the archive /opensource reads; the open-issue
+     Accepted projects are the archive /projects reads; the open-issue
      crawl lives in scripts/crawl-github.mjs and scripts/build-crawl-data.mjs.
 */
 async function refreshGsoc() {
   const BASE = "https://summerofcode.withgoogle.com/api";
-  const YEARS = [2022, 2023, 2024, 2025, 2026];
+  const FIRST_YEAR = 2022; // the archive starts here; the window runs on to the current year
+  const YEARS = Array.from({ length: new Date().getFullYear() - FIRST_YEAR + 1 }, (_, i) => FIRST_YEAR + i);
   const projects = [], orgs = {};
+  const skipped = {}; // year -> rows dropped for falling outside YEARS
   const seenUids = new Set(); // NOTE: the live API currently ignores year= and returns the same
                                // mixed 2022-2026 archive page, so dedupe uids across passes.
   for (const year of YEARS) {
@@ -50,9 +54,9 @@ async function refreshGsoc() {
         const p = j?.entities?.projects?.[0];
         if (!p || p.status !== "passed") continue;
         const yr = +p.program_slug || year; // trust the entity's program year when present
-        if (!YEARS.includes(yr)) continue;
         if (seenUids.has(p.uid)) continue;
         seenUids.add(p.uid);
+        if (!YEARS.includes(yr)) { skipped[yr] = (skipped[yr] || 0) + 1; continue; }
         const orgEnt = (j.entities.organizations || []).find((o) => o.uid === p.organization_id) || (j.entities.organizations || [])[0];
         const orgName = clean(orgEnt?.name || p.organization || "").slice(0, 80);
         if (orgEnt?.name) orgs[orgName] = { url: orgEnt.url || "", category: orgEnt.category || "" };
@@ -68,14 +72,16 @@ async function refreshGsoc() {
     }
     console.log(`gsoc ${year}: ${kept}/${done} accepted kept`);
   }
+  const dropped = Object.entries(skipped).map(([y, n]) => `${y}: ${n}`).join(", ");
+  if (dropped) console.log(`gsoc: skipped rows outside ${YEARS[0]}-${YEARS.at(-1)} (${dropped})`);
   if (projects.length < 5000) { console.log(`gsoc: only ${projects.length} projects - archive looks degraded, keeping the existing file`); return; }
-  mkdirSync(`${ROOT}public/data`, { recursive: true });
-  writeFileSync(`${ROOT}public/data/gsoc-projects.json`, JSON.stringify({ projects, orgs }));
+  mkdirSync(join(ROOT, "public/data"), { recursive: true });
+  writeFileSync(join(ROOT, "public/data/gsoc-projects.json"), JSON.stringify({ projects, orgs }));
   console.log(`gsoc: ${projects.length} projects, ${Object.keys(orgs).length} orgs → public/data/gsoc-projects.json`);
 }
 
 const which = (process.argv[2] || "all").toLowerCase();
 if (which === "gsoc" || which === "all") await refreshGsoc();
 if (which !== "gsoc" && which !== "all") console.log("usage: node scripts/refresh.mjs [gsoc|all]");
-updateReadmeSnapshot(ROOT);
+// updateReadmeSnapshot(ROOT);
 console.log("refresh done", today);

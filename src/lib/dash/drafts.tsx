@@ -15,6 +15,7 @@ import { repoById } from "../util";
 import { docsFor, emptyDoc, LICENSES, missingFields, type DocInput, type LicenseId } from "../docgen";
 import { btn } from "../../components/ui";
 import { Card, DashHead, Ic } from "./shell";
+import { ArtSheets } from "./art";
 import { DP } from "./shared";
 import type { Dash } from "./useDash";
 
@@ -148,7 +149,8 @@ export function DraftsSection({ d }: { d: Dash }) {
   return (
     <>
       <Card>
-        <DashHead title="Draft studio" sub="README, CONTRIBUTING, LICENSE and CODE_OF_CONDUCT, built from what you tell it. Start from a repository you follow or type it in." />
+        <DashHead title="Draft studio" sub="README, CONTRIBUTING, LICENSE and CODE_OF_CONDUCT, built from what you tell it. Start from a repository you follow or type it in."
+          action={!i.name && !i.repo ? <div className="w-[168px] text-dim max-[820px]:hidden"><ArtSheets /></div> : undefined} />
         {followed.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-5" role="group" aria-label="Fill the form from a repository you follow">
             <span className="font-mono text-[9px] uppercase tracking-[.14em] text-dim self-center mr-1.5">Fill from</span>

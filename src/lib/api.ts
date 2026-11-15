@@ -13,6 +13,13 @@ export type EmailStartRes = {
   ok: boolean; sent?: boolean; demo?: boolean; code?: string; challenge?: string | null;
   reason?: string; error?: string; expires_in_seconds?: number;
 };
+export type Health = {
+  ok: boolean; db: boolean; auth: boolean;
+  /** can this server finish a Google / GitHub sign-in (booleans, never keys) */
+  google?: boolean; github?: boolean; captcha?: boolean;
+  /** email sign-in: no key, a key with no verified sender, or ready */
+  email?: "missing_key" | "unverified_from" | "ok";
+};
 export type EmailVerifyRes = {
   ok: boolean; user?: ServerUser; offline?: boolean; reason?: string; challenge?: string | null;
 };
@@ -51,7 +58,7 @@ async function fire(url: string, body: unknown, method: "POST" | "DELETE"): Prom
 }
 
 export const api = {
-  health: () => getJson<{ ok: boolean; db: boolean; auth: boolean }>("/api/health"),
+  health: () => getJson<Health>("/api/health"),
   me: () => getJson<{ user: ServerUser | null }>("/api/me"),
   logout: () => fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }).then((r) => r.ok).catch(() => false),
 
@@ -81,11 +88,20 @@ export const api = {
   appDelete: (id: string) => postJson<{ ok: boolean }>("/api/me/applications", { id }, "DELETE"),
 };
 
-/** can this deployment actually run server sessions? (cached per page load) */
-let readyCache: boolean | null = null;
+/* What this deploy can do, asked once per page load. `/api/health` answers
+   with booleans only, so the sign-in sheet and the OAuth helpers can tell the
+   difference between "the server will finish this" and "this button has no
+   backend yet" instead of discovering it from a failed request. */
+let healthCache: Promise<Health | null> | null = null;
+export const getHealth = (): Promise<Health | null> => (healthCache ??= api.health());
+
+/** can the server mint a real session cookie? (a database is not required) */
 export async function serverAuthReady(): Promise<boolean> {
-  if (readyCache !== null) return readyCache;
-  const h = await api.health();
-  readyCache = Boolean(h?.db && h?.auth);
-  return readyCache;
+  return Boolean((await getHealth())?.auth);
+}
+
+/** can this server complete a provider's exchange, secret and all? */
+export async function providerReady(p: "google" | "github"): Promise<boolean> {
+  const h = await getHealth();
+  return Boolean(h?.auth && h?.[p]);
 }

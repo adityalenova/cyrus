@@ -9,6 +9,10 @@ import { ImageResponse } from "next/og";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { OgCard as OgCardData } from "@/lib/ogContent";
+/* the brand mark - the same seven-petal rosette Logo() draws; the petal paths
+   are already in their final positions, which suits satori, since it does not
+   lay out an SVG group transform */
+import { PETALS as OG_PETALS } from "@/lib/mark";
 
 const PAPER = "#0e0f10";
 const CREAM = "#17191b";
@@ -17,9 +21,7 @@ const INK = "#eceef0";
 const COCOA = "#a2a8ad";
 const DIM = "#71787e";
 const RULE = "#2a2d31";
-const ARC = "#3f454a";
 const ACCENT = "#4ade80";
-const EMBER = "#86efac";
 const RUST = "#7ee7a4";
 const FOAM = "#eceef0";
 
@@ -68,25 +70,25 @@ function layoutTitle(title: string[]): { lines: string[]; size: number } {
   return { lines: [words.slice(0, cut).join(" "), words.slice(cut).join(" ")], size: name.length <= 30 ? 62 : 52 };
 }
 
-/** The mark from components/ui.tsx, scaled up and cropped by the corner. */
+/** The mark from components/ui.tsx, watermarked into the corner. Sized so the
+ *  rosette still reads as a rosette - all seven petals, not a crop - with only
+ *  its outer edge cut by the card's border. */
 function Stamp() {
   return (
     <div
       style={{
         position: "absolute",
-        right: -34,
-        bottom: -132,
-        width: 520,
-        height: 520,
+        right: -74,
+        bottom: -92,
+        width: 400,
+        height: 400,
         display: "flex",
       }}
     >
-      <svg width={520} height={520} viewBox="0 0 100 100">
-        <path d="M68 34a21.5 21.5 0 1 0 .9 32" fill="none" stroke={ARC} strokeWidth="11" strokeLinecap="round" />
-        <path
-          d="M76 22c1.6 8.4 5.2 12 13.5 13.6C81.2 37.2 77.6 40.8 76 49.2 74.4 40.8 70.8 37.2 62.4 35.6 70.8 34 74.4 30.4 76 22z"
-          fill={EMBER}
-        />
+      <svg width={400} height={400} viewBox="0 0 100 100">
+        {OG_PETALS.map((d) => (
+          <path key={d} d={d} fill={FOAM} opacity={0.13} />
+        ))}
       </svg>
     </div>
   );
@@ -96,12 +98,9 @@ function Mark() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
       <svg width={54} height={54} viewBox="0 0 100 100">
-        <rect width="100" height="100" rx="27" fill={INK} />
-        <path d="M68 34a21.5 21.5 0 1 0 .9 32" fill="none" stroke={FOAM} strokeWidth="11" strokeLinecap="round" />
-        <path
-          d="M76 22c1.6 8.4 5.2 12 13.5 13.6C81.2 37.2 77.6 40.8 76 49.2 74.4 40.8 70.8 37.2 62.4 35.6 70.8 34 74.4 30.4 76 22z"
-          fill={EMBER}
-        />
+        {OG_PETALS.map((d) => (
+          <path key={d} d={d} fill={FOAM} />
+        ))}
       </svg>
       <span style={{ fontSize: 33, fontWeight: 800, color: INK, letterSpacing: -0.8 }}>cyrus.ai</span>
     </div>

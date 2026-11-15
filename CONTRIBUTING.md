@@ -19,8 +19,8 @@ saves everyone an afternoon.
 
 ### Claiming an issue
 
-1. Pick an [open issue](https://github.com/adityalenova/cyrus-ai/issues). If
-   nothing fits, [open one](https://github.com/adityalenova/cyrus-ai/issues/new/choose)
+1. Pick an [open issue](https://github.com/adityalenova/cyrus/issues). If
+   nothing fits, [open one](https://github.com/adityalenova/cyrus/issues/new/choose)
    and wait for it to be accepted before asking to work on it.
 2. Comment `/assign` on the issue. A maintainer assigns it to you or explains
    why it is not a good fit.
@@ -38,10 +38,10 @@ saves everyone an afternoon.
 
 ## What we are looking for
 
-Issues labelled [`enhancement`](https://github.com/adityalenova/cyrus-ai/labels/enhancement),
-[`seo`](https://github.com/adityalenova/cyrus-ai/labels/seo),
-[`performance`](https://github.com/adityalenova/cyrus-ai/labels/performance)
-and [`accessibility`](https://github.com/adityalenova/cyrus-ai/labels/accessibility)
+Issues labelled [`enhancement`](https://github.com/adityalenova/cyrus/labels/enhancement),
+[`seo`](https://github.com/adityalenova/cyrus/labels/seo),
+[`performance`](https://github.com/adityalenova/cyrus/labels/performance)
+and [`accessibility`](https://github.com/adityalenova/cyrus/labels/accessibility)
 are all good places to start. Data corrections are the most useful contribution
 of all: if a star count, deadline, prize or eligibility line is wrong, say so
 on the issue with a link to the primary source.
@@ -74,7 +74,15 @@ npm ci
 npm run dev        # http://localhost:5330
 ```
 
-Node 20.9 or newer is required; CI runs on 20.x and 22.x.
+Node 20.9 or newer is required (`engines` in `package.json`), and `.nvmrc` pins
+22 for `nvm use`. CI builds and tests on 20.x and 22.x but does not run the data
+scripts.
+
+The data scripts that import TypeScript (`build-org-class.mjs`,
+`contribo-summary.mjs`, `org-stats.mjs`) run through tsx, for example
+`npx tsx scripts/org-stats.mjs`. Plain `node` fails on Node 20 through 24 with
+`ERR_MODULE_NOT_FOUND` (`ERR_UNKNOWN_FILE_EXTENSION` before Node 22.18), and
+neither error mentions tsx.
 
 Optional local services, only when your issue needs them:
 
@@ -100,6 +108,11 @@ npm run build
 TypeScript is strict and `noUnusedLocals` is on, so a leftover import fails the
 build. Add or update a Vitest test when you change behaviour, not only when it
 is convenient.
+
+CI also runs `npm run readme:check`, which compares the figures quoted in
+`README.md` and `docs/readme/hero.svg` (route and test counts, catalog totals)
+with the data. If it fails after you add a page, a route or tests, run
+`npm run readme:stats` and commit what it changes.
 
 ## Pull request checklist
 
@@ -127,6 +140,11 @@ By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 Found a problem with how the repo is run?
 [SECURITY.md](SECURITY.md) covers vulnerabilities; anything else can go to the
 maintainer through GitHub.
+
+Program question, or an idea you want to talk through before it becomes an
+issue? Open a thread on [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/),
+or ask in the [Discord server](https://discord.gg/8S6z2Thczd) if you want an
+answer sooner.
 
 
 ## Workflow quick reference

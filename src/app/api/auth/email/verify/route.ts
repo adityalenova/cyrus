@@ -1,12 +1,12 @@
 /* ══ POST /api/auth/email/verify — check the code, start a session ══
    Asks for { email, code, name?, challenge? }. A correct code is single-use
-   (burned on success). With DATABASE_URL + SESSION_SECRET the address becomes
-   a real users row (provider "email") and gets the httpOnly cyrus.session
-   cookie; without a table the signed `challenge` from /start carries the code
+   (burned on success). With SESSION_SECRET the address gets the httpOnly
+   cyrus.session cookie, and becomes a real users row when DATABASE_URL also
+   exists; without a table the signed `challenge` from /start carries the code
    hash instead, and a miss comes back with a re-signed one holding the new
    try count. With neither, the code verifies against this instance's memory
    and the client signs in locally (offline:true).                        ═ */
-import { backendReady, publicUser, setSession, upsertUser } from "@/lib/server/auth";
+import { issueSession, sessionsReady } from "@/lib/server/auth";
 import { checkCode, normalizeEmail, validEmail } from "@/lib/server/email";
 
 export const runtime = "nodejs";
@@ -26,10 +26,11 @@ export async function POST(req: Request) {
   if (!rest.ok) return Response.json({ ...rest, ...(challenge ? { challenge } : {}) });
 
   const display = body.name?.trim() || email.split("@")[0];
-  if (backendReady()) {
-    const user = await upsertUser({ provider: "email", providerId: email, name: display, email });
-    await setSession({ uid: user.id, name: user.name, provider: "email" });
-    return Response.json({ ok: true, user: publicUser(user) });
+  if (sessionsReady()) {
+    return Response.json({
+      ok: true,
+      user: await issueSession({ provider: "email", providerId: email, name: display, email }),
+    });
   }
   return Response.json({
     ok: true, offline: true,

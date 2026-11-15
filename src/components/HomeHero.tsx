@@ -22,7 +22,8 @@ import { ORGS, PROGRAMS } from "../data/orgs";
 import { CRAWL } from "../data/crawlStats";
 import { ISSUE_SIGNALS } from "../data/issueSignals";
 import { LEADERS } from "../data/leaderboard";
-import { avatarOf, fmt, byStars } from "../lib/util";
+import { avatarOf, fmtCompact, byStars } from "../lib/util";
+import { STATS } from "../lib/siteStats";
 import { DP } from "../lib/dash/shared";
 import { useStore } from "../lib/store";
 import { Word, btn, OrgImg, Logo } from "./ui";
@@ -61,11 +62,11 @@ function matches(skills: string[]) {
 
 type PanelId = "issues" | "orgs" | "board" | "programs" | "projects" | "copilot";
 const RAIL: { id: PanelId; icon: string; text: string; count?: string }[] = [
-  { id: "issues", icon: DP.search, text: "Issue finder", count: fmt(CRAWL.issues) },
-  { id: "orgs", icon: DP.building, text: "Organizations", count: fmt(CRAWL.orgs) },
+  { id: "issues", icon: DP.search, text: "Issue finder", count: fmtCompact(CRAWL.issues) },
+  { id: "orgs", icon: DP.building, text: "Organizations", count: fmtCompact(STATS.orgs) },
   { id: "board", icon: DP.flag, text: "Leaderboard", count: "100" },
   { id: "programs", icon: DP.calendar, text: "Programs", count: String(PROGRAMS.length) },
-  { id: "projects", icon: DP.layers, text: "Projects", count: fmt(CRAWL.catalogRepos) },
+  { id: "projects", icon: DP.layers, text: "Projects", count: fmtCompact(STATS.catalog) },
   { id: "copilot", icon: DP.spark, text: "Co-pilot" },
 ];
 
@@ -94,9 +95,9 @@ const StatLine = ({ k, v }: { k: string; v: string }) => (
 function IssuesPanel() {
   return (
     <>
-      <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Issue finder</h3>
+      <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Issue finder</h2>
       <p className="text-[10.5px] md:text-[11px] leading-[1.55] text-dim mt-1 md:mt-0.5">
-        <b className="text-accent font-semibold">{fmt(CRAWL.issues)}</b> open issues from {fmt(CRAWL.reposWithIssues)} repositories.
+        <b className="text-accent font-semibold">{fmtCompact(CRAWL.issues)}</b> open issues from {fmtCompact(CRAWL.reposWithIssues)} repositories.
         <span className="hidden md:inline"> Snapshot {CRAWL.crawledAt}.</span>
       </p>
       <div className="flex items-center gap-1.5 mt-2.5 overflow-hidden">
@@ -114,7 +115,7 @@ function IssuesPanel() {
                 <span className="font-mono text-[9.5px] text-dim min-w-0 truncate">{i.repo}</span>
                 <span className="font-mono text-[9.5px] text-dim shrink-0">#{i.number}</span>
                 <span className="ml-auto shrink-0 flex items-center gap-1 font-mono text-[9.5px] text-cocoa">
-                  <Ic d={DP.star} size={11} /> {fmt(i.stars)}
+                  <Ic d={DP.star} size={11} /> {fmtCompact(i.stars)}
                 </span>
               </div>
               <p className="text-[11.5px] font-medium text-ink mt-1.5 line-clamp-1">{i.title}</p>
@@ -137,9 +138,9 @@ function IssuesPanel() {
         <span className="rounded-[5px] border border-accent/40 bg-peach px-1.5 py-px text-accent">1</span>
         <span className="hidden md:inline">2</span><span className="hidden md:inline">3</span>
         <span className="opacity-60">…</span>
-        <span>{fmt(PAGES)}</span>
+        <span>{fmtCompact(PAGES)}</span>
         <span className="ml-auto max-md:hidden">25 per page</span>
-        <span className="ml-auto md:hidden">{fmt(CRAWL.issues - 25)} more</span>
+        <span className="ml-auto md:hidden">{fmtCompact(CRAWL.issues - 25)} more</span>
       </div>
     </>
   );
@@ -148,8 +149,8 @@ function IssuesPanel() {
 function OrgsPanel() {
   return (
     <>
-      <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Organizations</h3>
-      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{fmt(CRAWL.orgs)} profiled from their public GitHub record.</p>
+      <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Organizations</h2>
+      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{fmtCompact(STATS.orgs)} profiled from their public GitHub record, every one named by a program.</p>
       <div className="grid grid-cols-2 gap-2 mt-3">
         {TOP_ORGS.map((o, k) => (
           <Row key={o.login} className={k > 1 ? "hidden md:block" : ""}>
@@ -161,9 +162,9 @@ function OrgsPanel() {
               </span>
             </div>
             <div className="flex items-center gap-2.5 pt-2 mt-2 border-t border-dashed border-line font-mono text-[9.5px] text-cocoa">
-              <span className="text-honey font-bold">★ {fmt(o.stars)}</span>
+              <span className="text-honey font-bold">★ {fmtCompact(o.stars)}</span>
               <span>{o.repos} repos</span>
-              <span className="ml-auto text-dim">{fmt(o.issues)} open</span>
+              <span className="ml-auto text-dim">{fmtCompact(o.issues)} open</span>
             </div>
           </Row>
         ))}
@@ -176,7 +177,7 @@ function BoardPanel() {
   return (
     <>
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">PR leaderboard</h3>
+        <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">PR leaderboard</h2>
         <span className="font-mono text-[9px] uppercase tracking-[.1em] text-dim">merged · all time</span>
       </div>
       <div className="grid gap-1.5 mt-3">
@@ -188,7 +189,7 @@ function BoardPanel() {
               <b className="block text-[11px] font-semibold truncate">{r.name ?? r.login}</b>
               <span className="block font-mono text-[8.5px] text-dim truncate">{r.company ?? r.location ?? r.login}</span>
             </span>
-            <span className="font-mono text-[10.5px] font-bold text-accent shrink-0">{fmt(r.merged_total ?? 0)}</span>
+            <span className="font-mono text-[10.5px] font-bold text-accent shrink-0">{fmtCompact(r.merged_total ?? 0)}</span>
           </div>
         ))}
       </div>
@@ -206,8 +207,8 @@ const PSTATUS: Record<string, string> = {
 function ProgramsPanel() {
   return (
     <>
-      <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Programs</h3>
-      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{PROGRAMS.length} funded or mentored cycles on one calendar.</p>
+      <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Programs</h2>
+      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{PROGRAMS.length} open-source programs on one calendar.</p>
       <div className="grid gap-1.5 mt-3">
         {TOP_PROGS.map((p, k) => (
           <div key={p.id} className={`flex items-center gap-2.5 rounded-[9px] border border-line bg-card px-3 py-2 ${k > 2 ? "hidden md:flex" : ""}`}>
@@ -227,8 +228,8 @@ function ProgramsPanel() {
 function ProjectsPanel() {
   return (
     <>
-      <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Project catalog</h3>
-      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{fmt(CRAWL.catalogRepos)} repositories indexed by language, topic and stars.</p>
+      <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Project catalog</h2>
+      <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">{fmtCompact(STATS.catalog)} repositories indexed by language, topic and stars.</p>
       <div className="grid gap-1.5 mt-3">
         {TOP_REPOS.map((r, k) => {
           const [owner, name] = r.repo.split("/");
@@ -239,7 +240,7 @@ function ProjectsPanel() {
                 <b className="block text-[11px] font-semibold truncate">{name}</b>
                 <span className="block font-mono text-[8.5px] text-dim truncate">{r.lang} · {r.license}</span>
               </span>
-              <span className="shrink-0 font-mono text-[10px] font-bold text-honey">★ {fmt(r.stars)}</span>
+              <span className="shrink-0 font-mono text-[10px] font-bold text-honey">★ {fmtCompact(r.stars)}</span>
             </div>
           );
         })}
@@ -253,7 +254,7 @@ function CopilotPanel() {
   const hits = useMemo(() => matches(picked), [picked]);
   return (
     <>
-      <h3 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Co-pilot</h3>
+      <h2 className="font-display font-extrabold text-[14px] md:text-[15px] tracking-[-.015em]">Co-pilot</h2>
       <p className="text-[10.5px] md:text-[11px] text-dim mt-1 md:mt-0.5">Pick what you already know. It shortlists repositories asking for exactly that.</p>
       <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
         {SKILLS.map((s) => {
@@ -274,9 +275,9 @@ function CopilotPanel() {
               <OrgImg src={avatarOf(owner, 48)} name={owner} className="w-[20px] h-[20px] rounded-[6px] object-cover bg-sand shrink-0" />
               <span className="min-w-0 flex-1">
                 <b className="block text-[11px] font-semibold truncate">{name}</b>
-                <span className="block font-mono text-[8.5px] text-dim truncate">{r.lang} · {fmt(r.issues)} open issues</span>
+                <span className="block font-mono text-[8.5px] text-dim truncate">{r.lang} · {fmtCompact(r.issues)} open issues</span>
               </span>
-              <span className="shrink-0 font-mono text-[10px] font-bold text-honey">★ {fmt(r.stars)}</span>
+              <span className="shrink-0 font-mono text-[10px] font-bold text-honey">★ {fmtCompact(r.stars)}</span>
             </div>
           );
         })}
@@ -357,7 +358,7 @@ function BoardPreview() {
             {/* right rail: the index, and the windows it is in */}
             <aside className="hidden xl:block w-[212px] shrink-0 border-l border-line bg-card px-3 py-3 overflow-hidden">
               <b className="block font-mono text-[8.5px] uppercase tracking-[.14em] text-dim mb-2">The index now</b>
-              {[[fmt(CRAWL.issues), "open issues"], [fmt(CRAWL.reposWithIssues), "repos with live issues"], [fmt(CRAWL.orgs), "organizations"], [fmt(CRAWL.beginnerLabelled), "beginner-labelled"]].map(([v, l]) => (
+              {[[fmtCompact(STATS.issues), "open issues"], [fmtCompact(STATS.issueRepos), "repos with live issues"], [fmtCompact(STATS.orgs), "organizations"], [fmtCompact(STATS.beginnerIssues), "beginner-labelled"], [fmtCompact(STATS.archiveRows), "archived projects"]].map(([v, l]) => (
                 <div key={l} className="flex items-baseline justify-between gap-2 py-[6px] border-b border-liness last:border-0">
                   <span className="font-display font-bold text-[12px] text-accent">{v}</span>
                   <span className="text-[10px] text-cocoa text-right">{l}</span>
@@ -374,14 +375,14 @@ function BoardPreview() {
                 </div>
               ))}
               <p className="mt-4 pt-3 border-t border-liness font-mono text-[8.5px] uppercase tracking-[.1em] leading-[1.9] text-dim">
-                {fmt(CRAWL.catalogRepos)} repos indexed · {CRAWL.languages} languages · rebuilt {CRAWL.crawledAt}
+                {fmtCompact(STATS.crawlRepos)} repos read in the crawl · {CRAWL.languages} languages · rebuilt {STATS.crawledAt}
               </p>
             </aside>
           </div>
         </div>
         <figcaption className="mt-3 md:mt-3.5 mb-0.5 text-center font-mono text-[9.5px] md:text-[10.5px] uppercase tracking-[.1em] md:tracking-[.12em] text-cocoa">
-          <span className="max-md:hidden">The board, live on {fmt(CRAWL.issues)} real issues · click the rail, it works</span>
-          <span className="md:hidden">{fmt(CRAWL.issues)} real issues · the rail works</span>
+          <span className="max-md:hidden">The board, live on {fmtCompact(CRAWL.issues)} real issues · click the rail, it works</span>
+          <span className="md:hidden">{fmtCompact(CRAWL.issues)} real issues · the rail works</span>
         </figcaption>
       </figure>
     </div>
@@ -403,7 +404,7 @@ export default function HomeHero() {
 
       <div className="relative z-[1] max-w-[1060px] mx-auto px-5 sm:px-6 text-center">
         <span className="reveal inline-flex items-center gap-2 rounded-full border border-line bg-card px-3.5 py-[7px] font-mono text-[10.5px] uppercase tracking-[.14em] text-cocoa max-[700px]:gap-1.5 max-[700px]:px-3 max-[700px]:py-[6px] max-[700px]:text-[8.5px] max-[700px]:tracking-[.09em]">
-          <i className="not-italic w-[6px] h-[6px] rounded-full bg-accent shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-accent)_22%,transparent)] max-[700px]:w-[5px] max-[700px]:h-[5px]" />
+          <i aria-hidden className="not-italic block w-[8px] h-[8px] shrink-0 rounded-[2px] bg-accent animate-hero-diamond shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-accent)_18%,transparent)] max-[700px]:w-[7px] max-[700px]:h-[7px]" />
           Open source discovery for GitHub developers
         </span>
 
@@ -413,13 +414,16 @@ export default function HomeHero() {
         </h1>
 
         <p className="reveal mx-auto mt-4 max-w-[560px] text-cocoa text-[15.5px] leading-[1.6] max-[700px]:mt-3 max-[700px]:text-[14px] max-[700px]:leading-[1.55]" style={{ animationDelay: ".34s" }}>
-          {fmt(CRAWL.issues)} real open issues, {PROGRAMS.length} funded programs, one contribution board.
+          {fmtCompact(STATS.issues)} real open issues, {fmtCompact(STATS.archive)} archived program projects, {PROGRAMS.length} open-source programs, one contribution board.
         </p>
 
         {/* ossium keeps its two actions on one row on phones, so the pair
             shrinks to fit instead of stacking */}
         <div className="reveal flex gap-3 justify-center flex-wrap mt-8 max-[700px]:gap-2.5 max-[700px]:mt-6" style={{ animationDelay: ".46s" }}>
-          <Link to="/issues" className={btn("dark", "lg", "max-[700px]:px-[18px] max-[700px]:py-[11px] max-[700px]:text-[13.5px] max-[700px]:gap-1.5")}>
+          {/* the dark variant exists site-wide and flips to green on hover; on
+              the hero's primary action that read as the button changing into a
+              different control, so it stays ink and moves instead */}
+          <Link to="/issues" className={btn("dark", "lg", "max-[700px]:px-[18px] max-[700px]:py-[11px] max-[700px]:text-[13.5px] max-[700px]:gap-1.5 hover:bg-ink! hover:text-paper! hover:border-ink! hover:-translate-y-px")}>
             Start searching
             <span className="grid place-items-center w-[22px] h-[22px] rounded-full bg-paper text-ink shrink-0 max-[700px]:w-[19px] max-[700px]:h-[19px]">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -435,11 +439,11 @@ export default function HomeHero() {
                 className={`w-[30px] h-[30px] rounded-full object-cover bg-sand ring-2 ring-paper ${i ? "-ml-2.5" : ""}`} />
             ))}
             <span className="-ml-2.5 w-[30px] h-[30px] rounded-full ring-2 ring-paper bg-clay grid place-items-center font-mono text-[9.5px] font-bold text-cocoa">
-              +{CRAWL.orgs - PROOF.length}
+              +{STATS.orgs - PROOF.length}
             </span>
           </span>
           <span className="text-[12.5px] text-dim">
-            Indexed from <b className="text-cocoa font-semibold">{fmt(CRAWL.orgs)} organizations</b> on GitHub
+            Indexed from <b className="text-cocoa font-semibold">{fmtCompact(STATS.orgs)} organizations</b> on GitHub
           </span>
         </div>
       </div>

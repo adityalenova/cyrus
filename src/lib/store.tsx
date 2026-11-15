@@ -1,9 +1,11 @@
 /* ══ store.tsx — auth, saved items, toasts, modals, server sync ══ */
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { useNavigate } from "./router";
 import { useStored } from "./util";
 import type { User } from "./util";
-import { api, type ServerUser } from "./api";
+import { api, providerReady, type ServerUser } from "./api";
+import { readGoogleRedirectCredential, takeGoogleReturn } from "./google";
 
 interface Store {
   user: User | null;
@@ -99,6 +101,38 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const toggleTheme = useCallback(() => setTheme(themeStored === "dark" ? "light" : "dark"), [themeStored, setTheme]);
 
   const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
+
+  /* ── Google's redirect lands here, not in the sign-in sheet ─────────
+     Google always returns to the site root with the id_token in the URL
+     fragment, on a brand-new document. Finishing the sign-in in the
+     component every page is mounted inside means the board is already
+     unlocked before a gate can ask, and the visitor lands back on the page
+     they left rather than on a sign-in door. */
+  const nav = useNavigate();
+  const navRef = useRef(nav); navRef.current = nav;
+  /* Dev's StrictMode mounts, unmounts and remounts every component, and the
+     token can only be read once - so this runs behind a "already landed"
+     guard and its timer is deliberately not cancelled. A cleanup here would
+     eat the navigation from the first pass and the second pass would have
+     nothing left to read. */
+  const landed = useRef(false);
+  useEffect(() => {
+    if (landed.current) return;
+    const g = readGoogleRedirectCredential();
+    if (!g) return;
+    landed.current = true;
+    setUser({ name: g.name, provider: "Google", email: g.email, picture: g.picture });
+    setAuthOpen(false);
+    toast(`Welcome, ${g.name.split(" ")[0]} - signed in with Google.`);
+    /* the raw token is the better credential: the server verifies issuer and
+       audience itself and answers with its own session cookie */
+    if (g.idToken) {
+      void (async () => {
+        if (await providerReady("google")) { await api.authGoogle(g.idToken!); await refreshSession(); }
+      })();
+    }
+    setTimeout(() => navRef.current(takeGoogleReturn()), 420);
+  }, [setUser, setAuthOpen, toast, refreshSession]);
 
   const signIn = useCallback((u: User) => setUser(u), [setUser]);
   const signOut = useCallback(() => {

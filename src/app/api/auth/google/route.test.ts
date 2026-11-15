@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const m = vi.hoisted(() => ({ backendReady: vi.fn(), upsertUser: vi.fn(), setSession: vi.fn() }));
-vi.mock("@/lib/server/auth", () => ({
-  OFFLINE: () => Response.json({ error: "backend offline" }, { status: 503 }),
-  backendReady: m.backendReady,
-  upsertUser: m.upsertUser,
-  setSession: m.setSession,
-  publicUser: (u: { id: string; name: string }) => ({ id: u.id, name: u.name }),
+const m = vi.hoisted(() => ({ issueSession: vi.fn() }));
+/* Only the last step gets faked. googleReady runs for real against the
+   environment, so these tests prove a deploy without SESSION_SECRET or without
+   a client id refuses to finish rather than half-signing someone in. */
+vi.mock("@/lib/server/auth", async (orig) => ({
+  ...(await orig<typeof import("@/lib/server/auth")>()),
+  issueSession: m.issueSession,
 }));
 
 import { POST } from "./route";
@@ -18,11 +18,10 @@ const tokeninfo = (data: unknown, ok = true) => fetchMock.mockResolvedValueOnce(
 const claims = { iss: "https://accounts.google.com", aud: "gid", sub: "123", name: "Sam", email: "sam@example.com", picture: "p" };
 
 beforeEach(() => {
-  m.backendReady.mockReset().mockReturnValue(true);
-  m.upsertUser.mockReset().mockResolvedValue({ id: "u1", name: "Sam" });
-  m.setSession.mockReset().mockResolvedValue(undefined);
+  m.issueSession.mockReset().mockResolvedValue({ id: "u1", name: "Sam", provider: "google" });
   fetchMock.mockReset();
   vi.stubGlobal("fetch", fetchMock);
+  vi.stubEnv("SESSION_SECRET", "a-secret-longer-than-16");
   vi.stubEnv("NEXT_PUBLIC_GOOGLE_CLIENT_ID", "gid");
 });
 afterEach(() => {
@@ -31,14 +30,13 @@ afterEach(() => {
 });
 
 describe("POST /api/auth/google", () => {
-  it("is 503 when offline", async () => {
-    m.backendReady.mockReturnValue(false);
+  it("is 503 without a session secret or without a client id", async () => {
+    vi.stubEnv("SESSION_SECRET", "");
     expect((await post({ idToken: "t" })).status).toBe(503);
-  });
-
-  it("is 500 without a client id", async () => {
+    vi.stubEnv("SESSION_SECRET", "a-secret-longer-than-16");
     vi.stubEnv("NEXT_PUBLIC_GOOGLE_CLIENT_ID", "");
-    expect((await post({ idToken: "t" })).status).toBe(500);
+    expect((await post({ idToken: "t" })).status).toBe(503);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("is 400 without an idToken", async () => {
@@ -53,15 +51,16 @@ describe("POST /api/auth/google", () => {
     expect((await post({ idToken: "t" })).status).toBe(401);
     tokeninfo({}, false);
     expect((await post({ idToken: "t" })).status).toBe(401);
-    expect(m.setSession).not.toHaveBeenCalled();
+    expect(m.issueSession).not.toHaveBeenCalled();
   });
 
-  it("verifies the token, upserts the user and starts a session", async () => {
+  it("verifies the token and starts a session from its claims", async () => {
     tokeninfo(claims);
     const res = await post({ idToken: "a b" });
-    expect(await res.json()).toEqual({ ok: true, user: { id: "u1", name: "Sam" } });
+    expect(await res.json()).toEqual({ ok: true, user: { id: "u1", name: "Sam", provider: "google" } });
     expect(fetchMock.mock.calls[0][0]).toContain("id_token=a%20b");
-    expect(m.upsertUser).toHaveBeenCalledWith(expect.objectContaining({ provider: "google", providerId: "123", email: "sam@example.com" }));
-    expect(m.setSession).toHaveBeenCalledWith({ uid: "u1", name: "Sam", provider: "google" });
+    expect(m.issueSession).toHaveBeenCalledWith(expect.objectContaining({
+      provider: "google", providerId: "123", name: "Sam", email: "sam@example.com", picture: "p",
+    }));
   });
 });

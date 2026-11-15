@@ -1,11 +1,19 @@
 /* ══ scripts/build-program-projects.mjs — one machine-readable archive per program ══
-   Run:  node scripts/build-program-projects.mjs [--offline]
+   Run:  node scripts/build-program-projects.mjs [--offline] [--thresholds <file>]
          CYRUS_READ_AT=YYYY-MM-DD node scripts/build-program-projects.mjs
+         CYRUS_QUALITY_OVERRIDE="<why this is expected>" node scripts/build-program-projects.mjs
 
    It writes, and nothing else:
 
-     public/data/program-projects/<id>.json   one archive per program
-     public/data/program-projects.json        the index of all 13 programs
+     data/quality/program-projects-<read date>.json  what this run changed, for a job
+     data/quality/program-projects-<read date>.md    the same, for a person to review
+     public/data/program-projects/<id>.json          one archive per program
+     public/data/program-projects.json               the index of all 13 programs
+
+   The report comes first and the archive only after it passes. A refresh that
+   lost a tenth of one program's rows, or read a project dated 1899, stops here
+   with both documents written and exit 1; the site keeps serving the snapshot
+   it was serving. The gate is scripts/lib/quality-gate.mjs.
 
    Every shard uses the same contract (helpers in scripts/lib/shard.mjs):
 
@@ -72,7 +80,16 @@ import {
 } from "./lib/shard.mjs";
 import { buildFosseeShard } from "./fetch-fossee.mjs";
 import { buildVercelShard } from "./fetch-vercel-oss.mjs";
-import { repoId } from "../src/lib/repoRef.mjs";
+import { reviewRefresh } from "./lib/quality-gate.mjs";
+
+/* where a run leaves its review documents; data/ is this repo's scratch space,
+   never shipped, so a blocked refresh is still readable the next morning */
+const QUALITY_DIR = join(ROOT, "data", "quality");
+/** --thresholds <file>: a maintainer's own limits for this run */
+const THRESHOLDS_FILE = (() => {
+  const at = process.argv.indexOf("--thresholds");
+  return at >= 0 && process.argv[at + 1] ? process.argv[at + 1] : null;
+})();
 
 /* the site's own display names, copied from PROGRAMS in src/data/orgs.ts so a
    shard label and the program card on screen say the same thing */
@@ -114,8 +131,12 @@ const droppedNote = (n, noun) => {
   return `${n} ${plural} no longer resolve and were dropped rather than shipped as dead links`;
 };
 
-/** a github.com reference -> "owner/repo" for the API, or "" when it is not a repo */
-const repoKey = (u) => repoId(u) ?? "";
+/** a github.com URL -> "owner/repo" for the API, or "" when it is not a repo */
+const repoKey = (u) => {
+  const m = /^https?:\/\/(?:www\.)?github\.com\/([^/]+\/[^/?#]+)/i.exec(String(u ?? ""));
+  if (!m) return "";
+  return m[1].replace(/\.git$/i, "").replace(/\/+$/, "").toLowerCase();
+};
 
 /* ── 1. reshapes of archives already on disk ───────────────────────────── */
 
@@ -291,7 +312,7 @@ async function from24pr() {
   const raw = readJson(join(ROOT, "data/24pr-raw.json"), { projects: [] });
   const archive = readJson(join(DATA, "24pr-archive.json"), { orgs: [] });
   const list = (raw.projects || []).map((p) => ({
-    key: repoKey(p.repo),
+    key: repoKey(p.repo) || String(p.repo || `${p.owner}/${p.title}`).toLowerCase().replace(/^https?:\/\/github\.com\//, "").replace(/\.git$/i, ""),
     p,
   }));
   const checked = await mapLimit(list, 5, async ({ key, p }) => {
@@ -348,7 +369,8 @@ async function fromGssoc() {
   for (const o of archive.orgs || []) if (o.login) metaByLogin[o.login] = o;
 
   const items = board.projects.map((p) => {
-    const key = repoKey(p.repo_url) || repoKey(p.owner_repo);
+    const fromOwnerRepo = String(p.owner_repo || "").replace(/\.git$/i, "").match(/^([\w.-]+)\/([\w.-]+)$/);
+    const key = repoKey(p.repo_url) || (fromOwnerRepo ? `${fromOwnerRepo[1]}/${fromOwnerRepo[2]}`.toLowerCase() : "");
     return { p, key };
   });
   const checked = await mapLimit(items, 5, async (it) => {
@@ -564,10 +586,10 @@ function nsocIndex() {
   };
 }
 
-/* ── writing, capping, indexing ────────────────────────────────────────── */
+/* ── capping, gating, publishing ──────────────────────────────────────── */
 
 /** ship a shard whole, or cap it at a stated row count under the size budget */
-function writeShard(obj) {
+function capShard(obj) {
   let out = obj;
   const bytes = Buffer.byteLength(JSON.stringify(out, null, 1));
   if (bytes > MAX_BYTES) {
@@ -586,6 +608,11 @@ function writeShard(obj) {
         `${Math.round(MAX_BYTES / 1024 / 1024)} MB file budget; \`projects\` is the number of rows on disk, not the program's total.`,
     };
   }
+  return out;
+}
+
+/** put one already-capped shard on disk; only ever called after the gate */
+function publishShard(out) {
   writeJson(join(OUT_DIR, `${out.program}.json`), out);
   return out;
 }
@@ -594,21 +621,41 @@ async function main() {
   const built = [];
   const reasons = {};
 
-  const fossee = writeShard(await buildFosseeShard({ write: false }));
-  built.push(fossee);
+  /* every builder runs in memory first: nothing below reaches public/data
+     until the report has said whether this run looks like the last one */
+  built.push(capShard(await buildFosseeShard({ write: false })));
+  built.push(capShard(await buildVercelShard({ write: false })));
 
-  const vercel = writeShard(await buildVercelShard({ write: false }));
-  built.push(vercel);
+  built.push(capShard(fromGsoc()));
+  built.push(capShard(fromLfx()));
+  built.push(capShard(fromOutreachy()));
+  built.push(capShard(fromKde()));
+  built.push(capShard(await fromSob()));
+  built.push(capShard(await from24pr()));
+  built.push(capShard(await fromGssoc()));
+  built.push(capShard(await fromMlh()));
+  built.push(capShard(await fromOct()));
 
-  built.push(writeShard(fromGsoc()));
-  built.push(writeShard(fromLfx()));
-  built.push(writeShard(fromOutreachy()));
-  built.push(writeShard(fromKde()));
-  built.push(writeShard(await fromSob()));
-  built.push(writeShard(await from24pr()));
-  built.push(writeShard(await fromGssoc()));
-  built.push(writeShard(await fromMlh()));
-  built.push(writeShard(await fromOct()));
+  /* ── the review, before the archive it judges ─────────────────────────── */
+  const gate = reviewRefresh({
+    name: "program-projects",
+    stamp: READ_AT,
+    liveDir: OUT_DIR,
+    qualityDir: QUALITY_DIR,
+    built,
+    thresholdsFile: THRESHOLDS_FILE,
+  });
+  console.log(`\ndata quality${OFFLINE ? " (offline)" : ""}`);
+  console.log(gate.text);
+  if (!gate.publish) {
+    saveGhCache();   /* the API reads this run paid for are kept; only the archive is not */
+    console.error(`\nPUBLISH BLOCKED: ${gate.report.failed.join(", ")} exceeded ${gate.report.thresholdSource}.`);
+    console.error("the archive the site serves today is unchanged. review the report above, then either");
+    console.error("fix the source or re-run with CYRUS_QUALITY_OVERRIDE=\"<why this is expected>\".");
+    process.exit(1);
+  }
+
+  for (const out of built) publishShard(out);
 
   const esoc = await probeEsoc();
   const esocJson = (esoc.probes || []).filter((p) => p.json && p.rows > 0);

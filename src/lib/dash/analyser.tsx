@@ -12,8 +12,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { btn } from "../../components/ui";
-import { fmtCompact, repoById } from "../util";
-import { repoId } from "../repoRef.mjs";
+import { fmtCompact } from "../util";
+import { repoById } from "../util";
 import { Card, DashHead, Ic } from "./shell";
 import { ArtScope } from "./art";
 import { DP } from "./shared";
