@@ -21,6 +21,7 @@ import { publishesAreas, useProgramStats } from "../lib/contriboOrgs";
 import type { ProgramStats } from "../lib/contriboOrgs";
 import { useProjectArchives } from "../lib/programProjects";
 import type { ArchiveSummary } from "../lib/programProjects";
+import { stipendText, windowText } from "../lib/programFields";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
 import type { Program } from "../lib/types";
 
@@ -75,9 +76,9 @@ function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSu
             the record table below - both numbers now live on the program's own
             page and in its organization explorer. */}
         <div className="flex gap-1.5 flex-wrap">
-          <Chip tone="green">{p.pay}</Chip>
+          <Chip tone="green">{stipendText(p.pay)}</Chip>
         </div>
-        <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim">{p.window}</p>
+        <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim">{windowText(p.window)}</p>
         <div className="flex items-center gap-3 mt-auto pt-3 border-t border-liness">
           <Link to={`/programs/${p.id}`} className="text-[12.5px] font-bold text-accent hover:text-rust transition-colors">Program page</Link>
           <Link to={s ? `/programs/${p.id}/organizations` : archived ? `/projects?prog=${encodeURIComponent(archived)}` : "/projects"}

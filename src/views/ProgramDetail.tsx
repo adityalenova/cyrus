@@ -10,6 +10,7 @@ import type { ProgramName } from "../data/programRepos";
 import { PROGRAM_DETAILS, programLink } from "../data/programDetails";
 import { filterNameOf, useArchiveIndex } from "../lib/programProjects";
 import { byStars, fmtCompact, avatarOf, inkOn } from "../lib/util";
+import { eligibilityText, stipendMeta, stipendText, windowText } from "../lib/programFields";
 import type { Program } from "../lib/types";
 import { btn, Chip, OrgImg, SectionHead, Tag, Word } from "../components/ui";
 import NotFound from "./NotFound";
@@ -305,12 +306,12 @@ export default function ProgramDetail() {
         <aside className="grid gap-5 max-[980px]:order-first sticky top-[86px] max-[980px]:static">
           <div className="bg-card border border-line rounded-[20px] p-5 shadow-soft">
             <h2 className="font-mono text-[10px] uppercase tracking-[.14em] text-dim mb-2">Program meta</h2>
-            <MetaRow k="Stipend" v={`${p.pay} (${p.payNote.toLowerCase()})`} />
+            <MetaRow k="Stipend" v={stipendMeta(p.pay, p.payNote)} />
             <MetaRow k="Duration" v={d.duration} />
-            <MetaRow k="Window" v={p.window} />
+            <MetaRow k="Window" v={windowText(p.window)} />
             <MetaRow k="Tier" v={d.tier} />
             <MetaRow k="Difficulty" v={d.difficulty} />
-            <MetaRow k="Eligibility" v={d.eligibility} />
+            <MetaRow k="Eligibility" v={eligibilityText(d.eligibility)} />
             <div className="grid gap-2.5 mt-4">
               {shelf.length > 0 && <Link to={toArchive()} className={btn("primary", "md", "w-full")}>Browse {PROGRAM_META[shelfName as ProgramName].label} projects</Link>}
               <Link to="/organizations" className={btn("outline", "md", "w-full")}>View organizations</Link>
@@ -340,7 +341,7 @@ export default function ProgramDetail() {
               <OrgImg src={avatarOf(x.owner, 64)} name={x.owner} className="w-10 h-10 rounded-[11px] object-cover bg-white border border-line shrink-0" />
               <div className="min-w-0">
                 <b className="font-display text-[14px] block truncate">{x.name}</b>
-                <span className="font-mono text-[10px] text-dim block truncate">{x.pay} · {x.window}</span>
+                <span className="font-mono text-[10px] text-dim block truncate">{stipendText(x.pay)} · {windowText(x.window)}</span>
               </div>
               <span className="ml-auto text-dim group-hover:text-accent transition-colors font-mono text-[13px]"></span>
             </Link>
