@@ -12,7 +12,9 @@ export interface ProgramDetailData {
   duration: string;
   tier: string;
   difficulty: string;
-  eligibility: string;
+  /* only set where the organizer states a rule; when they publish none the
+     field is absent and the surfaces read "Not published", never "no rule" */
+  eligibility?: string;
   tags: string[];
   about: string[];
   howItWorks: [string, string][];

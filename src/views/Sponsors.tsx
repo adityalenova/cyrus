@@ -239,9 +239,12 @@ export default function Sponsors() {
           </div>
         </div>
         <p className="font-mono text-[10px] leading-[1.8] text-dim mt-4 max-w-[720px]">
-          Method: for the most-starred repositories in the catalog we fetched
+          Method: {data?.crawledAt ? <>on {data.crawledAt}, for </> : "for "}the most-starred repositories in the catalog we read
           <code className="text-cocoa"> .github/FUNDING.yml</code> from the default branch via the GitHub contents API.
           A project appears only when that file names at least one platform; the handles shown are copied from it verbatim.
+          A project missing here has no <i className="not-italic">recognized</i> funding file in this snapshot - the file was absent,
+          arrived in a form we could not read, or the fetch itself failed (rate limit or server error) - so its absence is a fact
+          about this crawl, not a finding about the project.
           Amounts, tiers and donor lists are not public through the API, so they are not shown here.
         </p>
       </div>

@@ -46,6 +46,19 @@ describe("programEntity", () => {
       }
     }
   });
+
+  it("claims a prerequisite only where the record publishes one", () => {
+    for (const p of PROGRAMS) {
+      const data = programEntity(p);
+      const prereq = data.coursePrerequisites;
+      if (prereq !== undefined) {
+        expect(typeof prereq).toBe("string");
+        expect((prereq as string).trim().length).toBeGreaterThan(0);
+      }
+    }
+    /* an unpublished field must never serialize as an empty claim */
+    expect(PROGRAMS.some((p) => JSON.stringify(programEntity(p)).includes('"coursePrerequisites":""'))).toBe(false);
+  });
 });
 
 describe("organizationEntity", () => {
