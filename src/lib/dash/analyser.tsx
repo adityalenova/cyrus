@@ -1,5 +1,5 @@
 "use client"
-/* ══ analyser.tsx — repo analyser ══════════════════════════════════
+/* ══ analyser.tsx — repo analyser ════════════════════════════════
    Paste any public repository. Everything on the page is a live answer
    from the GitHub REST API for that repository: the stars, the last
    push, how many people have ever committed, how many commits landed
@@ -12,9 +12,11 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router";
 import { btn } from "../../components/ui";
-import { fmt } from "../util";
+import { fmtCompact } from "../util";
 import { repoById } from "../util";
+import { repoId } from "../repoRef.mjs";
 import { Card, DashHead, Ic } from "./shell";
+import { ArtScope } from "./art";
 import { DP } from "./shared";
 import type { Dash } from "./useDash";
 
@@ -149,23 +151,17 @@ const Stat = ({ k, v, sub }: { k: string; v: string; sub?: string }) => (
   </div>
 );
 
-const parseRepo = (s: string) => {
-  const t = s.trim().replace(/\.git$/, "").replace(/^https?:\/\/github\.com\//, "");
-  const m = t.match(/^([\w.-]+)\/([\w.-]+)/);
-  return m ? `${m[1]}/${m[2]}` : null;
-};
-
 export function AnalyserSection({ d }: { d: Dash }) {
   const [raw, setRaw] = useState("");
   const [busy, setBusy] = useState(false);
   const [res, setRes] = useState<Read | null>(null);
   const [asked, setAsked] = useState("");
 
-  const guess = useMemo(() => parseRepo(raw), [raw]);
+  const guess = useMemo(() => repoId(raw), [raw]);
   const catalog = guess ? repoById(guess) : undefined;
 
   const run = async (target?: string) => {
-    const full = parseRepo(target ?? raw ?? "");
+    const full = repoId(target ?? raw ?? "");
     if (!full) { d.toast("That does not look like owner/repo yet."); return; }
     setBusy(true); setAsked(full); setRes(null);
     const out = await readRepo(full);
@@ -194,17 +190,33 @@ export function AnalyserSection({ d }: { d: Dash }) {
           </button>
         </div>
         {!res && !busy && (
-          <div className="flex flex-wrap gap-1.5 mt-4" role="group" aria-label="Try one of these">
-            <span className="font-mono text-[9px] uppercase tracking-[.14em] text-dim self-center mr-1">Try</span>
-            {["vercel/next.js", "sindresorhus/ky", "rust-lang/rust", "home-assistant/core"].map((x) => (
-              <button key={x} type="button" onClick={() => { setRaw(x); run(x); }}
-                className="font-mono text-[10px] rounded-full px-2.5 py-[6px] border border-line bg-cream text-cocoa hover:border-accent/50 hover:text-accent transition-colors cursor-pointer">{x}</button>
-            ))}
-          </div>
+          <>
+            <div className="flex flex-wrap gap-1.5 mt-4" role="group" aria-label="Try one of these">
+              <span className="font-mono text-[9px] uppercase tracking-[.14em] text-dim self-center mr-1">Try</span>
+              {["vercel/next.js", "sindresorhus/ky", "rust-lang/rust", "home-assistant/core"].map((x) => (
+                <button key={x} type="button" onClick={() => { setRaw(x); run(x); }}
+                  className="font-mono text-[10px] rounded-full px-2.5 py-[6px] border border-line bg-cream text-cocoa hover:border-accent/50 hover:text-accent transition-colors cursor-pointer">{x}</button>
+              ))}
+            </div>
+            <div className="mt-7 pt-6 border-t border-liness flex items-center gap-7 flex-wrap">
+              <div className="text-dim shrink-0 w-[210px]"><ArtScope /></div>
+              <div className="min-w-[260px] flex-1">
+                <b className="block font-mono text-[9px] uppercase tracking-[.14em] text-dim mb-2.5">What one reading covers</b>
+                <ul className="grid sm:grid-cols-2 gap-x-7 gap-y-1.5 text-[12.5px] text-cocoa">
+                  <li>Stars, forks and open issues</li>
+                  <li>The day of the last push</li>
+                  <li>How many people ever committed</li>
+                  <li>Commits landed in the last month</li>
+                  <li>Open issues labelled for newcomers</li>
+                  <li>Which community files exist</li>
+                </ul>
+              </div>
+            </div>
+          </>
         )}
         {catalog && !res && (
           <p className="font-mono text-[10.5px] text-dim mt-3">
-            That one is in our catalog ({catalog.lang}, ★ {fmt(catalog.stars)} as of the 2026-10-02 crawl) - the analyser ignores the snapshot and asks GitHub instead.
+            That one is in our catalog ({catalog.lang}, ★ {fmtCompact(catalog.stars)} as of the 2026-10-02 crawl) - the analyser ignores the snapshot and asks GitHub instead.
           </p>
         )}
       </Card>
@@ -247,13 +259,13 @@ export function AnalyserSection({ d }: { d: Dash }) {
             </div>
             <p className="text-[13px] text-cocoa leading-[1.65] mt-4 max-w-[720px]">{score.bandNote}</p>
             <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2.5 mt-5">
-              <Stat k="Stars" v={fmt(m.stargazers_count)} />
-              <Stat k="Forks" v={fmt(m.forks_count)} />
-              <Stat k="Open issues + PRs" v={fmt(m.open_issues_count)} sub="GitHub counts both" />
+              <Stat k="Stars" v={fmtCompact(m.stargazers_count)} />
+              <Stat k="Forks" v={fmtCompact(m.forks_count)} />
+              <Stat k="Open issues + PRs" v={fmtCompact(m.open_issues_count)} sub="GitHub counts both" />
               <Stat k="Last push" v={ago(m.pushed_at)} />
               <Stat k="Commits / 30 days" v={res.recentCommits === null ? "?" : String(res.recentCommits)} sub="capped at 100" />
               <Stat k="Contributors" v={res.contributors === null ? "?" : String(res.contributors)} sub="first page, capped at 100" />
-              <Stat k="Good first issues" v={res.goodFirst === null ? "?" : fmt(res.goodFirst)} sub="live label search" />
+              <Stat k="Good first issues" v={res.goodFirst === null ? "?" : fmtCompact(res.goodFirst)} sub="live label search" />
             </div>
             <StatRow2 created={m.created_at} size={m.size} archived={m.archived} hasIssues={m.has_issues} health={res.community?.health_percentage ?? null} />
           </Card>
