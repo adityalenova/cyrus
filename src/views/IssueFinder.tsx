@@ -19,6 +19,7 @@ import { useStore } from "../lib/store";
 import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
 import type { Sort } from "../lib/server/issueIndex";
 import { btn, Chip, LevelChip, OrgImg, Tag, Word } from "../components/ui";
+import { describeSearch, emptyAnnouncement, resultsView } from "../lib/issueSearchState";
 import { SnapshotFreshnessCue } from "../components/SnapshotFreshnessCue";
 
 const W = "max-w-[1240px] mx-auto px-6";
@@ -120,6 +121,7 @@ export default function IssueFinder() {
   const [appending, setAppending] = useState(false);
   const [taken, setTaken] = useState(1);
   const [retryCount, setRetryCount] = useState(0);
+  const searchBox = useRef<HTMLInputElement>(null);
   const typing = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* the page number is deliberately not in the URL: Show more is a local
@@ -193,7 +195,13 @@ export default function IssueFinder() {
   };
   const anyFilter = Boolean(term || langs.size || org || label || beginner || unassigned);
   const facetOn = langs.size + (org ? 1 : 0) + (label ? 1 : 0);
-  const clearAll = () => { setTerm(""); setParams(new URLSearchParams()); };
+  /* the Clear filters button unmounts with the empty state, so focus goes to
+     the search box rather than to a removed element */
+  const clearAll = () => { setTerm(""); setParams(new URLSearchParams()); searchBox.current?.focus(); };
+
+  const active = { term: term.trim(), langs: [...langs], org, label, beginner, unassigned };
+  const view = resultsView(status, body !== null, rows.length);
+  const summary = describeSearch(active);
 
   const track = (i: Found) => {
     const meta: IssueMeta = { repo: i.repo, number: i.number, title: i.title, lang: i.lang, stars: i.stars, labels: i.labels, beginner: i.beginner, updated: i.updated };
@@ -226,7 +234,7 @@ export default function IssueFinder() {
         <aside className="sticky top-[86px] max-[980px]:static max-h-[calc(100vh-110px)] overflow-y-auto max-[980px]:max-h-none bg-card border border-line rounded-[22px] p-[22px] shadow-soft grid gap-5">
           <div>
             <span className={labelCls}>Search</span>
-            <input value={term} onChange={(e) => onTerm(e.target.value)} placeholder="memory leak, docs, flaky test…"
+            <input ref={searchBox} value={term} onChange={(e) => onTerm(e.target.value)} placeholder="memory leak, docs, flaky test…"
               aria-label="Search issue titles" autoComplete="off" className={fin} />
           </div>
 
@@ -333,9 +341,19 @@ export default function IssueFinder() {
             </div>
           )}
 
-          {status !== "error" && body && rows.length === 0 && (
+          {view === "empty" && (
             <div className="rounded-[22px] border border-dashed border-line p-10 text-center bg-cream">
-              <p className="font-display text-[20px] text-cocoa mb-2">Nothing matches all of that.</p>
+              {/* a polite live region: filtering that lands on zero is announced
+                  without moving focus off the control the visitor just used */}
+              <div role="status" aria-live="polite">
+                <p className="font-display text-[20px] text-cocoa mb-2">Nothing matches all of that.</p>
+                <span className="sr-only">{emptyAnnouncement(active)}</span>
+                {summary.length > 0 && (
+                  <p className="text-cocoa text-[13.5px] max-w-[460px] mx-auto mb-2">
+                    Searched with: {summary.join(", ")}.
+                  </p>
+                )}
+              </div>
               <p className="text-cocoa text-[13.5px] max-w-[430px] mx-auto">
                 Drop a filter or search a shorter phrase - titles are matched word by word.
                 {" "}{num(CRAWL.beginnerLabelled)} issues in the snapshot carry a beginner label.
@@ -344,7 +362,7 @@ export default function IssueFinder() {
             </div>
           )}
 
-          {status === "loading" && !body ? (
+          {view === "skeleton" ? (
             <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="rounded-[20px] border border-line bg-card/50 p-[22px] animate-pulse">
