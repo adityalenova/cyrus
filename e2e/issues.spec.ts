@@ -47,6 +47,21 @@ test.describe("issue finder", () => {
     await expect(page.getByLabel("Search issue titles")).toHaveValue("");
   });
 
+  test("zero results name the query, announce politely and clear by keyboard", async ({ page }) => {
+    const box = page.getByLabel("Search issue titles");
+    await box.fill("zzqxnotherezzqx");
+    await expect(page.getByText("Nothing matches all of that.")).toBeVisible({ timeout: 15_000 });
+    const status = page.getByRole("status").filter({ hasText: "Nothing matches" });
+    await expect(status).toContainText('search "zzqxnotherezzqx"');
+    await expect(status).toHaveAttribute("aria-live", "polite");
+    const clear = page.getByRole("button", { name: "Clear filters" });
+    await clear.focus();
+    await page.keyboard.press("Enter");
+    await expect(box).toHaveValue("");
+    await expect(box).toBeFocused();
+    await expect(page).not.toHaveURL(/q=/);
+  });
+
   test("sorting moves to the biggest project", async ({ page }) => {
     const sort = page.getByLabel("Sort results");
     await sort.selectOption("stars");
