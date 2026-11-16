@@ -16,6 +16,10 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
+  validateIssueSnapshot,
+} from "../src/lib/crawlSnapshotSchema.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = resolve(ROOT, "data/crawl/issues.jsonl");
@@ -70,8 +74,10 @@ for (const line of readFileSync(SRC, "utf8").split("\n")) {
 
 items.sort((x, y) => y.s - x.s);
 
-const payload = JSON.stringify({
+const snapshot = {
+  schemaVersion: CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
   meta: {
+    schemaVersion: CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
     generated: new Date().toISOString().slice(0, 10),
     issues: items.length,
     repos: repos.size,
@@ -81,7 +87,17 @@ const payload = JSON.stringify({
     unassigned: items.filter((i) => i.a === 0).length,
   },
   items,
-});
+};
+
+try {
+  validateIssueSnapshot(snapshot);
+} catch (err) {
+  console.error(`snapshot validation failed: ${err.message}`);
+  if (err.action) console.error(`action: ${err.action}`);
+  process.exit(1);
+}
+
+const payload = JSON.stringify(snapshot);
 const gz = gzipSync(Buffer.from(payload, "utf8"), { level: 9 });
 writeFileSync(OUT, gz);
 

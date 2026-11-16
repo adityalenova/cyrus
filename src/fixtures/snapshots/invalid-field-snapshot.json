@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "schemaVersion": 1,
+    "generated": "2026-10-21",
+    "issues": 1,
+    "repos": 1,
+    "orgs": 1,
+    "languages": 1,
+    "beginner": 1,
+    "unassigned": 1
+  },
+  "items": [
+    {
+      "r": "vercel/next.js",
+      "n": "not-a-number",
+      "t": "Invalid number type issue",
+      "a": 0,
+      "l": ["bug"],
+      "g": "TypeScript",
+      "s": 100,
+      "u": "2026-10-21",
+      "c": "2026-10-15",
+      "m": 0,
+      "b": 1
+    }
+  ]
+}

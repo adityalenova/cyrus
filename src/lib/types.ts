@@ -19,11 +19,24 @@ export interface Category { id: string; label: string }
 
 export interface Phase { label: string; s: number; e: number; c: string; active?: boolean }
 
+export interface ProgramEligibilityCountries {
+  scope: string;
+  regions: string[];
+  note: string;
+}
+
+export interface ProgramEligibilityStatus {
+  allows: string[];
+  note: string;
+}
+
 export interface Program {
   id: string; name: string; owner: string; img: string; url: string;
   tag: string; pay?: string; payNote?: string;
   status: "live" | "upcoming" | "closed";
   window?: string; orgs?: string; slots?: string;
+  eligibilityCountries?: ProgramEligibilityCountries;
+  eligibilityStatus?: ProgramEligibilityStatus;
   phases: Phase[];
 }
 

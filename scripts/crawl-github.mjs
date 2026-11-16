@@ -19,6 +19,10 @@
 import { mkdirSync, appendFileSync, readFileSync, existsSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { createCrawler } from "./lib/crawl-request.mjs";
+import {
+  CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
+  validateCrawlIssueRecord,
+} from "../src/lib/crawlSnapshotSchema.mjs";
 
 const OUT = "data/crawl";
 const PER = 100;
@@ -149,6 +153,7 @@ async function phaseIssues() {
         .filter(it => !BAD_LABELS.test((it.labels || []).map(l => l.name).join(",")))
         .filter(it => !have.has(it.id))
         .map(it => ({
+          schemaVersion: CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
           id: it.id, number: it.number, repo: repo.full_name, org: repo.owner, title: it.title,
           url: it.html_url, state: it.state, locked: it.locked, comments: it.comments,
           created_at: it.created_at, updated_at: it.updated_at, closed_at: it.closed_at,
@@ -157,7 +162,10 @@ async function phaseIssues() {
           reactions: it.reactions?.total_count ?? 0, body: (it.body || "").slice(0, 1500),
           repo_stars: repo.stars, repo_language: repo.language, repo_topics: repo.topics,
         }));
-      rows.forEach(x => have.add(x.id));
+      rows.forEach(x => {
+        validateCrawlIssueRecord(x);
+        have.add(x.id);
+      });
       write(file, rows);
       crawler.countRecords("issues", rows.length);
       n = have.size;

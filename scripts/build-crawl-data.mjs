@@ -13,6 +13,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { emitArtifact, renderCrawlStats, renderIssueSignals, selectIssueSignals } from "./lib/emit.mjs";
+import { validateCrawlIssueRecord } from "../src/lib/crawlSnapshotSchema.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const CRAWL = resolve(ROOT, "data/crawl");
@@ -21,7 +22,14 @@ const OUT = resolve(ROOT, "src/data");
 const readJsonl = (file) => {
   const p = resolve(CRAWL, file);
   if (!existsSync(p)) return [];
-  return readFileSync(p, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
+  const lines = readFileSync(p, "utf8").split("\n").filter(Boolean);
+  return lines.map((l, idx) => {
+    const parsed = JSON.parse(l);
+    if (file === "issues.jsonl" && parsed.type !== "header") {
+      validateCrawlIssueRecord(parsed, idx);
+    }
+    return parsed;
+  });
 };
 
 const issues = readJsonl("issues.jsonl");
