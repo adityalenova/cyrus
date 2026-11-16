@@ -10,7 +10,21 @@
    The pure half (`parseQuery`, `scoreRow`, `filterIssues`) is what the
    tests exercise; the I/O half (`loadIndex`) only fetches and inflates.
    ═══════════════════════════════════════════════════════════════════ */
-import { gunzipSync } from "node:zlib";
+import {
+  CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
+  SUPPORTED_CRAWL_SNAPSHOT_SCHEMA_VERSIONS,
+  SnapshotSchemaError,
+  parseAndValidateIssueSnapshot,
+  validateIssueSnapshot,
+} from "../crawlSnapshotSchema.mjs";
+
+export {
+  CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
+  SUPPORTED_CRAWL_SNAPSHOT_SCHEMA_VERSIONS,
+  SnapshotSchemaError,
+  parseAndValidateIssueSnapshot,
+  validateIssueSnapshot,
+};
 
 export type IssueRow = {
   /** owner/name */
@@ -33,6 +47,7 @@ export type IssueRow = {
 };
 
 export type IssueMeta = {
+  schemaVersion?: number;
   generated: string;
   issues: number;
   repos: number;
@@ -228,11 +243,13 @@ export async function loadIndex(originUrl: string) {
         const res = await fetch(new URL(INDEX_PATH, originUrl).href, { cache: "force-cache" });
         if (!res.ok) return null;
         const buf = Buffer.from(await res.arrayBuffer());
-        const parsed = JSON.parse(gunzipSync(buf).toString("utf8")) as { meta: IssueMeta; items: IssueRow[] };
-        if (!Array.isArray(parsed?.items)) return null;
-        cache = { meta: parsed.meta, items: parsed.items };
+        const validated = parseAndValidateIssueSnapshot(buf);
+        cache = { meta: validated.meta, items: validated.items };
         return cache;
-      } catch {
+      } catch (err) {
+        if (err instanceof SnapshotSchemaError) {
+          console.error(`[loadIndex] ${err.name} (${err.code}): ${err.message}. Action: ${err.action}`);
+        }
         return null;
       } finally {
         loading = null;

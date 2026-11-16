@@ -4,7 +4,9 @@ import { gunzipSync } from "node:zlib";
 import { describe, expect, it } from "vitest";
 import { CRAWL } from "@/data/crawlStats";
 import {
-  EMPTY_QUERY, facetKey, facets, filterIssues, issueUrl, parseQuery, scoreRow,
+  CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION,
+  EMPTY_QUERY, facetKey, facets, filterIssues, issueUrl, parseAndValidateIssueSnapshot, parseQuery, scoreRow,
+  SnapshotSchemaError,
   type IssueQuery, type IssueRow,
 } from "./issueIndex";
 
@@ -201,9 +203,18 @@ describe("the shipped index", () => {
   const file = new URL("../../../public/data/issues.json.gz", import.meta.url);
   const gz = readFileSync(file);
   const parsed = JSON.parse(gunzipSync(gz).toString("utf8")) as {
-    meta: { issues: number; repos: number; orgs: number; languages: number; generated: string };
+    schemaVersion?: number;
+    meta: { schemaVersion?: number; issues: number; repos: number; orgs: number; languages: number; generated: string };
     items: IssueRow[];
   };
+
+  it("declares schema version 1 and validates cleanly against crawl snapshot schema", () => {
+    expect(parsed.meta.schemaVersion).toBe(CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION);
+    expect(parsed.schemaVersion).toBe(CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION);
+    const validated = parseAndValidateIssueSnapshot(gz);
+    expect(validated.schemaVersion).toBe(CURRENT_CRAWL_SNAPSHOT_SCHEMA_VERSION);
+    expect(validated.items.length).toBe(CRAWL.issues);
+  });
 
   it("agrees with the crawl stats the chrome quotes", () => {
     expect(parsed.meta.issues).toBe(CRAWL.issues);
@@ -236,5 +247,19 @@ describe("the shipped index", () => {
        label or language - which is what "every token must land" promises */
     const haystack = (i: IssueRow) => `${i.t} ${i.r} ${i.l.join(" ")} ${i.g ?? ""}`.toLowerCase();
     expect(r.results.every((i) => haystack(i).includes("memory") && haystack(i).includes("leak"))).toBe(true);
+  });
+
+  it("rejects an invalid snapshot with actionable SnapshotSchemaError", () => {
+    const broken = {
+      meta: { generated: "2026-10-21", issues: 0, repos: 0, orgs: 0, languages: 0, beginner: 0, unassigned: 0 },
+      items: [],
+    };
+    expect(() => parseAndValidateIssueSnapshot(broken)).toThrow(SnapshotSchemaError);
+    expect(() => parseAndValidateIssueSnapshot(broken)).toThrowError(
+      expect.objectContaining({
+        code: "MISSING_SCHEMA_VERSION",
+        action: expect.stringMatching(/Regenerate the snapshot/i),
+      }),
+    );
   });
 });

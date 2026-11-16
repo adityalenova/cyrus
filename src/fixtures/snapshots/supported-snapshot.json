@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "schemaVersion": 1,
+    "generated": "2026-10-21",
+    "issues": 2,
+    "repos": 2,
+    "orgs": 2,
+    "languages": 2,
+    "beginner": 1,
+    "unassigned": 1
+  },
+  "items": [
+    {
+      "r": "vercel/next.js",
+      "n": 100,
+      "t": "Fix docs navigation anchor link",
+      "a": 0,
+      "l": ["documentation", "good first issue"],
+      "g": "TypeScript",
+      "s": 120000,
+      "u": "2026-10-21",
+      "c": "2026-10-15",
+      "m": 3,
+      "b": 1
+    },
+    {
+      "r": "rust-lang/rust",
+      "n": 500,
+      "t": "Improve compiler error message for lifetime bounds",
+      "a": 1,
+      "l": ["compiler", "diagnostics"],
+      "g": "Rust",
+      "s": 98000,
+      "u": "2026-10-20",
+      "c": "2026-10-10",
+      "m": 12,
+      "b": 0
+    }
+  ]
+}

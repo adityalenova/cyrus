@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "generated": "2026-10-21",
+    "issues": 1,
+    "repos": 1,
+    "orgs": 1,
+    "languages": 1,
+    "beginner": 1,
+    "unassigned": 1
+  },
+  "items": [
+    {
+      "r": "vercel/next.js",
+      "n": 100,
+      "t": "Fix docs navigation anchor link",
+      "a": 0,
+      "l": ["documentation", "good first issue"],
+      "g": "TypeScript",
+      "s": 120000,
+      "u": "2026-10-21",
+      "c": "2026-10-15",
+      "m": 3,
+      "b": 1
+    }
+  ]
+}
