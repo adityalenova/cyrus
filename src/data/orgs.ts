@@ -10,6 +10,14 @@ export const PROGRAMS: Program[] = [
     pay: "$1,500 – $3,300", payNote: "STIPEND",
     status: "closed", window: "Applications close April",
     orgs: "519 orgs archived", slots: "12,095 projects 2016-2026",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "18+ and legally able to work in your country" - open anywhere the applicant may lawfully work.',
+    },
+    eligibilityStatus: {
+      allows: ["student", "non-student"],
+      note: 'Published rule: "students and non-students alike".',
+    },
     phases: [
       { label: "Org applications", s: 0, e: 1.6, c: "#3b6ea5" },
       { label: "Student applications", s: 2.1, e: 3.8, c: "#a97b1f" },
@@ -24,6 +32,10 @@ export const PROGRAMS: Program[] = [
     pay: "$8,000 USD", payNote: "PER INTERNSHIP",
     status: "upcoming", window: "Dec cohort pairing opens Nov",
     orgs: "179 communities archived", slots: "437 internships 2022-2026",
+    eligibilityStatus: {
+      allows: ["student", "non-student"],
+      note: 'Published rule: "no degree or prior OSS work needed" - enrollment is not required, so students and non-students alike qualify.',
+    },
     phases: [
       { label: "Outreach period", s: 10.2, e: 11.2, c: "#3b6ea5" },
       { label: "Applications", s: 1.6, e: 3.1, c: "#a97b1f" },
@@ -38,6 +50,10 @@ export const PROGRAMS: Program[] = [
     pay: "$1,500 – $3,000", payNote: "PER TERM",
     status: "live", window: "Term 3 running now · Sep – Nov",
     orgs: "47 host projects", slots: "1,303 projects 2019-2026",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open worldwide".',
+    },
     phases: [
       { label: "Term 1", s: 2, e: 5, c: "#3b6ea5" },
       { label: "Term 2", s: 5, e: 8, c: "#2f7d72" },
@@ -51,6 +67,14 @@ export const PROGRAMS: Program[] = [
     pay: "€500 – €1,200", payNote: "PER PROJECT",
     status: "closed", window: "Runs May – August",
     orgs: "No published roster", slots: "Counts unpublished",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open worldwide" - the push for European students is a preference, not a limit.',
+    },
+    eligibilityStatus: {
+      allows: ["student", "non-student"],
+      note: 'Published rule: "European students and career starters" - students and those who have started work.',
+    },
     phases: [
       { label: "Project proposals", s: 2.8, e: 4.2, c: "#3b6ea5" },
       { label: "Teams formed", s: 4.2, e: 4.9, c: "#a97b1f" },
@@ -64,6 +88,10 @@ export const PROGRAMS: Program[] = [
     pay: "Paid tracks", payNote: "UP TO $2K/MO",
     status: "live", window: "Fall batch in session",
     orgs: "120 upstream orgs", slots: "198 forked repositories",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open worldwide".',
+    },
     phases: [
       { label: "Spring batch", s: 2.5, e: 5, c: "#3b6ea5" },
       { label: "Summer batch", s: 5.3, e: 7.8, c: "#2f7d72" },
@@ -77,6 +105,14 @@ export const PROGRAMS: Program[] = [
     pay: "Leaderboard prizes", payNote: "SWAG + CERTS",
     status: "live", window: "Contributions Aug – Nov",
     orgs: "420 project orgs", slots: "423 projects in the 2026 board",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open to anyone, anywhere".',
+    },
+    eligibilityStatus: {
+      allows: ["student", "non-student"],
+      note: 'Published rule: "Open to anyone, anywhere; students especially welcome" - non-students may apply too.',
+    },
     phases: [
       { label: "Registration", s: 6.3, e: 7.4, c: "#3b6ea5" },
       { label: "Contribution period", s: 7.4, e: 10.6, c: "#a97b1f", active: true },
@@ -90,6 +126,14 @@ export const PROGRAMS: Program[] = [
     pay: "€300 – €1,000", payNote: "PRIZES",
     status: "upcoming", window: "Registrations open December",
     orgs: "42 KDE project areas", slots: "87 ideas 2017-2026",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open worldwide".',
+    },
+    eligibilityStatus: {
+      allows: ["student", "non-student"],
+      note: 'Published rule: "no enrollment requirement" - students and non-students alike.',
+    },
     phases: [
       { label: "Ideas list", s: 9.4, e: 10.6, c: "#3b6ea5" },
       { label: "Registration", s: 11, e: 12, c: "#a97b1f" },
@@ -103,6 +147,10 @@ export const PROGRAMS: Program[] = [
     pay: "~$2,500 USD", payNote: "PER PROJECT",
     status: "upcoming", window: "Applications open December",
     orgs: "32 orgs archived", slots: "66 projects in 2026",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open worldwide".',
+    },
     phases: [
       { label: "Applications", s: 11, e: 12, c: "#3b6ea5" },
       { label: "Learning period", s: 0.5, e: 2.5, c: "#a97b1f" },
@@ -116,6 +164,10 @@ export const PROGRAMS: Program[] = [
     pay: "Prizes + certs", payNote: "LEADERBOARD",
     status: "upcoming", window: "Registrations open on nsoc.in",
     orgs: "Partner repos on GitHub", slots: "Open to developers",
+    eligibilityCountries: {
+      scope: "worldwide", regions: [],
+      note: 'Published rule: "Open to developers worldwide via nsoc.in".',
+    },
     phases: [
       { label: "Registrations", s: 1.5, e: 2.5, c: "#3b6ea5" },
       { label: "Project selection", s: 2.5, e: 3.2, c: "#a97b1f" },
@@ -158,6 +210,14 @@ export const PROGRAMS: Program[] = [
     pay: "Unpaid", payNote: "NO HONORARIUM",
     status: "closed", window: "2026 cycle completed 8 June",
     orgs: "IIT Bombay tracks", slots: "Cohort size unpublished",
+    eligibilityCountries: {
+      scope: "limited", regions: ["asia"],
+      note: 'Published rule: "Students applying through the FOSSEE registration desk at IIT Bombay" - a nationally run (India / Asia) fellowship.',
+    },
+    eligibilityStatus: {
+      allows: ["student"],
+      note: 'Published rule: "Students applying through the FOSSEE registration desk".',
+    },
     phases: [
       { label: "Registration", s: 2, e: 3, c: "#3b6ea5" },
       { label: "Screening tasks", s: 3, e: 4, c: "#a97b1f" },
