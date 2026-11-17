@@ -6,7 +6,7 @@ import { Logo, Brand } from "./ui";
 /* One block per column. No program links and no about links here - the
    nav above already carries both, and the user asked for them out. */
 const COLS: [string, [string, string][]][] = [
-  ["Explore", [["Issue finder", "/issues"], ["Organizations", "/organizations"], ["Skills", "/skills"], ["Projects", "/projects"], ["Sponsors", "/sponsors"]]],
+  ["Explore", [["Issue finder", "/issues"], ["Organizations", "/organizations"], ["Skills", "/skills"], ["Projects", "/projects"], ["Mentorship", "/mentorship"], ["Sponsors", "/sponsors"]]],
   ["Platform", [["Features", "/platform/features"], ["Trust centre", "/platform/trust"], ["How it works", "/platform/how"]]],
   ["Your space", [["Overview", "/dashboard"], ["My Issues", "/dashboard/issues"], ["My Repositories", "/dashboard/repos"], ["Settings", "/dashboard/settings"]]],
   ["Legal", [["Privacy policy", "/privacy"], ["Terms of service", "/terms"], ["Cookie policy", "/cookies"], ["Affiliations", "/affiliations"]]],
