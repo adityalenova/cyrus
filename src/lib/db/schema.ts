@@ -118,6 +118,27 @@ export const submissions = pgTable(
   (t) => [index("submissions_kind_idx").on(t.kind, t.status)],
 );
 
+/* One row per notification a user has been sent. The SSE stream reads the
+   freshest unread page and tails for new ids; the bell dropdown lists the
+   recent window and marks rows read here so the count survives a reload. */
+export const notifications = pgTable(
+  "notifications",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    kind: text("kind").notNull(), // hackathon | deadline | follower | mention
+    title: text("title").notNull().default(""),
+    body: text("body").notNull().default(""),
+    href: text("href").notNull().default(""),
+    read: boolean("read").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("notif_user_idx").on(t.userId, t.createdAt),
+    index("notif_user_unread_idx").on(t.userId, t.read),
+  ],
+);
+
 /* ── catalog ────────────────────────────────────────────────────────── */
 
 export const repos = pgTable(
@@ -429,6 +450,7 @@ export type EmailCodeRow = typeof emailCodes.$inferSelect;
 export type SavedItemRow = typeof savedItems.$inferSelect;
 export type ApplicationRow = typeof applications.$inferSelect;
 export type SubmissionRow = typeof submissions.$inferSelect;
+export type NotificationRow = typeof notifications.$inferSelect;
 export type RepoRow = typeof repos.$inferSelect;
 export type OrgRow = typeof orgs.$inferSelect;
 export type HackathonRow = typeof hackathons.$inferSelect;
