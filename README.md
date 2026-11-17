@@ -533,3 +533,43 @@ Every number on this site belongs to the teams who produced it: Google Summer of
 ## License & credits
 
 Private project, built by [Aditya Duggirala](https://github.com/adityalenova) · [@iaditya_offical on X](https://x.com/iaditya_offical) · the community lives on [Discord](https://discord.gg/8S6z2Thczd) and [r/Cyrusagent](https://www.reddit.com/r/Cyrusagent/). All catalog data belongs to its respective sources and is republished with attribution and links. Made with too much coffee, in the site's own palette.
+
+## 🚀 Local Development Setup Guide
+
+### Prerequisites
+- Node.js 20.x or higher
+- npm, pnpm, or bun
+- Neon Serverless Postgres account (or local PostgreSQL)
+
+### Step-by-Step Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/adityalenova/cyrus.git
+   cd cyrus
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables:**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Fill in required credentials:
+   - `DATABASE_URL`: Your Postgres connection string.
+   - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`: For GitHub OAuth sign-in.
+   - `GOOGLE_CLIENT_ID`: For Google OIDC sign-in.
+
+4. **Run migrations:**
+   ```bash
+   npm run db:push
+   ```
+
+5. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
