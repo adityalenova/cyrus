@@ -1,4 +1,4 @@
-/* ══ e2e/onboarding.spec.ts — the wizard in a browser ══════════════════
+/* ══ e2e/onboarding.spec.ts — the wizard in a browser ════════════════
    The unit tests in src/lib/onboarding.test.ts cover the rules. These cover
    the two things a pure function cannot: that the address bar really is the
    state, including a domain name whose spelling contains a comma and an
