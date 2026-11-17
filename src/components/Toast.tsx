@@ -1,6 +1,6 @@
 "use client";
 /* ══ Toast.tsx — global toast notification system and hook ═══════════ */
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 

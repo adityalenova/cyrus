@@ -4,11 +4,11 @@ interface SkeletonProps {
   className?: string;
   width?: string | number;
   height?: string | number;
-  rounded?: "sm" | "md" | "lg" | "xl" | "full" | "2xl";
+  rounded?: "sm" | "md" | "lg" | "full" | "2xl";
 }
 
 export function Skeleton({ className = "", width, height, rounded = "md" }: SkeletonProps) {
-  const roundedClass = { sm: "rounded-sm", md: "rounded-md", lg: "rounded-lg", xl: "rounded-xl", full: "rounded-full", "2xl": "rounded-2xl" };
+  const roundedClass = { sm: "rounded-sm", md: "rounded-md", lg: "rounded-lg", full: "rounded-full", "2xl": "rounded-2xl" };
   return (
     <div
       className={`animate-pulse bg-line/60 ${roundedClass[rounded]} ${className}`}

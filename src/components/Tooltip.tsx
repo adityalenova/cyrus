@@ -1,5 +1,5 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import { useState, ReactNode } from "react";
 
 export default function Tooltip({ content, children }: { content: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);
