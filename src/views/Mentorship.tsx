@@ -644,42 +644,50 @@ export default function MentorshipView() {
         </div>
 
         {/* Tab navigation matching screenshot */}
-        <div className="flex border-b border-line mb-8 gap-6 overflow-x-auto text-sm font-medium">
-          <button
-            onClick={() => setTab("find")}
-            className={`pb-3 transition-colors border-b-2 -mb-px cursor-pointer whitespace-nowrap ${
-              tab === "find"
-                ? "border-emerald-500 text-ink font-semibold"
-                : "border-transparent text-cocoa hover:text-ink"
-            }`}
-          >
-            Find a Mentor
-          </button>
-          <button
-            onClick={() => setTab("mentor")}
-            className={`pb-3 transition-colors border-b-2 -mb-px cursor-pointer whitespace-nowrap ${
-              tab === "mentor"
-                ? "border-emerald-500 text-ink font-semibold"
-                : "border-transparent text-cocoa hover:text-ink"
-            }`}
-          >
-            Become a Mentor
-          </button>
-          <button
-            onClick={() => setTab("dashboard")}
-            className={`pb-3 transition-colors border-b-2 -mb-px cursor-pointer whitespace-nowrap relative ${
-              tab === "dashboard"
-                ? "border-emerald-500 text-ink font-semibold"
-                : "border-transparent text-cocoa hover:text-ink"
-            }`}
-          >
-            My Mentorships & Sessions
-            {mentorships.length > 0 && (
-              <span className="ml-2 px-1.5 py-0.5 text-xs bg-emerald-950/40 text-emerald-400 border border-emerald-800/50 rounded-full font-bold">
-                {mentorships.length}
-              </span>
-            )}
-          </button>
+        <div className="sticky top-[74px] z-20 bg-paper/95 backdrop-blur-md border-b border-line mb-8 pt-1">
+          <div className="flex items-center gap-6 overflow-x-auto text-sm font-semibold">
+            <button
+              type="button"
+              onClick={() => setTab("find")}
+              className={`relative flex items-center h-11 transition-colors cursor-pointer whitespace-nowrap select-none ${
+                tab === "find" ? "text-ink" : "text-cocoa hover:text-ink"
+              }`}
+            >
+              <span>Find a Mentor</span>
+              {tab === "find" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("mentor")}
+              className={`relative flex items-center h-11 transition-colors cursor-pointer whitespace-nowrap select-none ${
+                tab === "mentor" ? "text-ink" : "text-cocoa hover:text-ink"
+              }`}
+            >
+              <span>Become a Mentor</span>
+              {tab === "mentor" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("dashboard")}
+              className={`relative flex items-center h-11 transition-colors cursor-pointer whitespace-nowrap select-none ${
+                tab === "dashboard" ? "text-ink" : "text-cocoa hover:text-ink"
+              }`}
+            >
+              <span>My Mentorships & Sessions</span>
+              {mentorships.length > 0 && (
+                <span className="ml-2 px-1.5 py-0.5 text-xs bg-emerald-950/40 text-emerald-400 border border-emerald-800/50 rounded-full font-bold">
+                  {mentorships.length}
+                </span>
+              )}
+              {tab === "dashboard" && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500 rounded-full" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* TAB 1: Find a Mentor */}
