@@ -643,8 +643,8 @@ export default function MentorshipView() {
           </p>
         </div>
 
-        {/* Tab navigation matching screenshot */}
-        <div className="sticky top-[74px] z-20 bg-paper/95 backdrop-blur-md border-b border-line mb-8 pt-1">
+        {/* Tab navigation fixed to its place in page flow */}
+        <div className="border-b border-line mb-8">
           <div className="flex items-center gap-6 overflow-x-auto text-sm font-semibold">
             <button
               type="button"
