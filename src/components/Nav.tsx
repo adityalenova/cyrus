@@ -92,7 +92,7 @@ export default function Nav() {
   return (
     <header>
       <nav className="sticky top-0 z-[60] bg-paper px-4 pt-3 max-[700px]:px-2.5">
-        <div className="max-w-[1340px] mx-auto bg-paper/92 backdrop-blur-[16px] saturate-[1.35] border border-liness rounded-full shadow-soft">
+        <div className="max-w-[1240px] mx-auto bg-paper/92 backdrop-blur-[16px] saturate-[1.35] border border-liness rounded-full shadow-soft">
           <div className="flex items-center gap-4 h-[62px] pl-4 pr-4 max-[1179px]:gap-3 max-[1023px]:h-[54px] max-[700px]:gap-2.5 max-[700px]:pl-2.5 max-[700px]:pr-2.5">
             {/* min-h keeps the mark's own link a 36px thumb target now that the
                 logo itself is 28px; the a11y suite measures this strip. */}
