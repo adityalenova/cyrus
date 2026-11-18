@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
 /* ══ Button.tsx — standardized multi-variant button component ═══════ */
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "danger";
