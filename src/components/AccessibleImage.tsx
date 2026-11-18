@@ -1,4 +1,4 @@
-import Image, { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 
 /* ══ AccessibleImage.tsx — accessibility-enforced image wrapper ═════ */
 interface AccessibleImageProps extends Omit<ImageProps, "alt"> {
