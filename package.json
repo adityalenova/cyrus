@@ -23,6 +23,7 @@
     "refresh:all": "npm run refresh && npm run program-projects && npm run mentors && npm run orgs && npm run org-stats",
     "crawl": "node scripts/build-crawl-data.mjs",
     "issues": "node scripts/build-issue-index.mjs",
+    "mentors:data": "node scripts/build-mentors-data.mjs",
     "mentors": "node scripts/build-mentor-index.mjs",
     "program-projects": "node scripts/build-program-projects.mjs",
     "org-stats": "tsx scripts/org-stats.mjs",
