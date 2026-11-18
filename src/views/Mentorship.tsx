@@ -890,14 +890,15 @@ export default function MentorshipView() {
 
             {/* Right side: Ranked Mentors list */}
             <div className="lg:col-span-8 space-y-4">
-              {/* Status Header matching screenshot */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
-                <div className="text-sm font-semibold text-cocoa">
+              {/* Status Header in simple single line */}
+              <div className="flex items-center flex-wrap gap-x-2 text-xs sm:text-sm text-cocoa pb-1">
+                <span className="font-semibold text-ink">
                   Ranked by Weighted Compatibility ({filteredMatches.length.toLocaleString()} mentors found)
-                </div>
-                <div className="text-xs text-cocoa">
+                </span>
+                <span className="text-cocoa/40">·</span>
+                <span className="text-xs text-cocoa">
                   Weights: Skills 45% · Interests 20% · Availability 20% · Timezone 15%
-                </div>
+                </span>
               </div>
 
               {/* Catalog Search & Program Filter Rail */}
