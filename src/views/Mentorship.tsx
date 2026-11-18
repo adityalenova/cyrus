@@ -785,7 +785,7 @@ export default function MentorshipView() {
                   <button
                     onClick={addCurrentSkill}
                     type="button"
-                    className="px-3.5 py-2 bg-card border border-line text-ink rounded-lg text-xs font-semibold hover:bg-sand/40 cursor-pointer transition-colors"
+                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-sm"
                   >
                     Add
                   </button>
@@ -826,7 +826,7 @@ export default function MentorshipView() {
                   <button
                     onClick={addInterest}
                     type="button"
-                    className="px-3.5 py-2 bg-card border border-line text-ink rounded-lg text-xs font-semibold hover:bg-sand/40 cursor-pointer transition-colors"
+                    className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-sm"
                   >
                     Add
                   </button>
@@ -1006,9 +1006,9 @@ export default function MentorshipView() {
                           <button
                             onClick={() => setRequestTargetMentor(mentor)}
                             disabled={!available}
-                            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                               available
-                                ? "bg-white hover:bg-zinc-200 text-zinc-900 shadow-sm"
+                                ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm shadow-emerald-950/20 active:scale-95"
                                 : "bg-line/40 text-cocoa/60 cursor-not-allowed"
                             }`}
                           >
@@ -1084,16 +1084,6 @@ export default function MentorshipView() {
                             </span>
                           );
                         })}
-                        {mentor.sampleUrl && (
-                          <a
-                            href={mentor.sampleUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-auto text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors inline-flex items-center gap-1"
-                          >
-                            Project Record ↗
-                          </a>
-                        )}
                       </div>
                     </div>
                   );
@@ -1112,7 +1102,7 @@ export default function MentorshipView() {
                     <button
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="px-3 py-1.5 rounded-lg border border-line bg-card text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-sand/40 cursor-pointer font-medium"
+                      className="px-3.5 py-1.5 rounded-lg border border-emerald-800/40 bg-emerald-950/20 text-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-950/40 cursor-pointer font-semibold transition-colors"
                     >
                       Previous
                     </button>
@@ -1124,7 +1114,7 @@ export default function MentorshipView() {
                     <button
                       onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                       disabled={page >= totalPages}
-                      className="px-3 py-1.5 rounded-lg border border-line bg-card text-ink disabled:opacity-40 disabled:cursor-not-allowed hover:bg-sand/40 cursor-pointer font-medium"
+                      className="px-3.5 py-1.5 rounded-lg border border-emerald-800/40 bg-emerald-950/20 text-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-950/40 cursor-pointer font-semibold transition-colors"
                     >
                       Next
                     </button>
@@ -1259,7 +1249,7 @@ export default function MentorshipView() {
               <button
                 type="submit"
                 disabled={regSubmitting}
-                className="w-full py-3 rounded-xl bg-white hover:bg-zinc-200 text-zinc-900 font-semibold text-sm transition-colors cursor-pointer disabled:opacity-50"
+                className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-colors cursor-pointer disabled:opacity-50 shadow-sm"
               >
                 {regSubmitting ? "Registering..." : "Submit Mentor Profile"}
               </button>
@@ -1359,7 +1349,7 @@ export default function MentorshipView() {
                             </button>
                             <button
                               onClick={() => setRatingTargetMentorship(m)}
-                              className="px-3.5 py-1.5 bg-card border border-line text-ink rounded-lg text-xs font-semibold hover:bg-sand/40 cursor-pointer"
+                              className="px-3.5 py-1.5 bg-emerald-950/30 border border-emerald-700/50 text-emerald-300 hover:bg-emerald-900/40 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
                             >
                               {m.feedback?.mentorRating ? "Edit Review" : "Leave Review"}
                             </button>
@@ -1471,7 +1461,7 @@ export default function MentorshipView() {
                     <button
                       onClick={submitMentorshipRequest}
                       disabled={requestSending}
-                      className="px-4 py-2 bg-white hover:bg-zinc-200 text-zinc-900 rounded-lg text-xs font-semibold cursor-pointer disabled:opacity-50"
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer disabled:opacity-50 transition-colors shadow-sm"
                     >
                       {requestSending ? "Sending..." : "Submit Request"}
                     </button>
@@ -1550,7 +1540,7 @@ export default function MentorshipView() {
                 </button>
                 <button
                   onClick={() => handleScheduleSession(activeMentorshipForSession)}
-                  className="px-4 py-2 bg-white hover:bg-zinc-200 text-zinc-900 rounded-lg text-xs font-semibold cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-sm"
                 >
                   Confirm Session
                 </button>
@@ -1616,7 +1606,7 @@ export default function MentorshipView() {
                     </button>
                     <button
                       onClick={handleFeedbackSubmit}
-                      className="px-4 py-2 bg-white hover:bg-zinc-200 text-zinc-900 rounded-lg text-xs font-semibold cursor-pointer"
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-sm"
                     >
                       Submit Feedback
                     </button>
