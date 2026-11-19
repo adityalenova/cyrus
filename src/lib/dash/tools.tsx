@@ -18,9 +18,8 @@ import { btn, OrgImg } from "../../components/ui";
 import { Card, DashHead, Ic } from "./shell";
 import { DP, parseIssueUrl } from "./shared";
 import { CoPilotSection } from "./copilot";
+import { useMentorsCatalog } from "../../lib/mentorIndex";
 import type { Dash } from "./useDash";
-
-const GSOC_URL = "https://summerofcode.withgoogle.com";
 
 const fin = "w-full bg-cream border border-line rounded-[10px] pl-9 pr-3 py-2.5 text-[13.5px] text-ink outline-none focus:border-accent/60 transition-colors placeholder:text-dim";
 const sel = "bg-cream border border-line rounded-[10px] px-3 py-2.5 text-[13px] text-ink outline-none focus:border-accent/60 cursor-pointer";
@@ -29,128 +28,207 @@ function ToolNote({ children }: { children: ReactNode }) {
   return <p className="font-mono text-[9.5px] uppercase tracking-[.1em] text-dim leading-[1.8] mt-4">{children}</p>;
 }
 
-
 /* ── 2. mentor finder ─────────────────────────────────────────── */
-type GRow = { y: number; u: string; t: string; o: string; tt?: string[]; m?: string; url?: string; program?: string };
-
-/** where a project record's own page lives: GSoC builds the url from year + uid,
-    the LFX / Outreachy / Summer of Bitcoin archive rows carry the real link. */
-const projectUrl = (p: GRow) =>
-  p.url || `${GSOC_URL}/programs/${p.y}/projects/${p.u}`;
-
-const MENTOR_PROGRAMS = ["GSoC", "LFX", "Summer of Bitcoin"];
+const MENTOR_PROGRAMS = ["GSoC", "LFX Mentorship", "Summer of Bitcoin", "Season of KDE"];
+const POPULAR_TECHS = ["python", "c++", "javascript", "typescript", "rust", "go", "react", "docker", "pytorch", "kubernetes", "linux"];
 
 function MentorsSection() {
-  const [rows, setRows] = useState<GRow[] | null>(null);
+  const { mentors, loading } = useMentorsCatalog();
   const [q, setQ] = useState("");
   const [org, setOrg] = useState("all");
   const [prog, setProg] = useState("all");
-
-  /* every archive that names its mentors. Outreachy is deliberately absent: its
-     API publishes the project and the org but not the people, so 437 Outreachy
-     projects contribute 0 mentor rows and saying so beats padding the count. */
-  useEffect(() => {
-    let live = true;
-    Promise.all([
-      fetch("/data/gsoc-projects.json").then((r) => (r.ok ? r.json() : null)),
-      fetch("/data/otherProjects.json").then((r) => (r.ok ? r.json() : null)),
-    ]).then(([g, o]) => {
-      if (!live) return;
-      const gsoc: GRow[] = (g?.projects ?? []).map((p: GRow) => ({ ...p, program: "GSoC" }));
-      const rest: GRow[] = (o?.projects ?? []).filter((p: GRow) => p.m).map((p: GRow) => ({ ...p, program: p.program ?? "LFX" }));
-      setRows([...gsoc, ...rest]);
-    }).catch(() => live && setRows([]));
-    return () => { live = false; };
-  }, []);
-
-  const mentors = useMemo(() => {
-    if (!rows) return null;
-    const map = new Map<string, { parts: Set<string>; progs: Set<string>; n: number; techs: Set<string>; last: number; sample: GRow }>();
-    for (const p of rows) {
-      if (!p.m) continue;
-      for (const raw of p.m.split(",")) {
-        const name = raw.trim().replace(/\s+/g, " ");
-        if (name.length < 3 || /^\d+$/.test(name)) continue;
-        const key = name.toLowerCase();
-        const e = map.get(key);
-        if (e) {
-          e.n++; e.parts.add(p.o); e.last = Math.max(e.last, p.y);
-          e.progs.add(p.program ?? "GSoC");
-          (p.tt ?? []).forEach((t) => e.techs.add(t));
-        } else map.set(key, { parts: new Set([p.o]), progs: new Set([p.program ?? "GSoC"]), n: 1, techs: new Set(p.tt ?? []), last: p.y, sample: p });
-      }
-    }
-    return [...map.entries()].map(([key, e]) => ({
-      name: (e.sample.m ?? "").split(",").find((x) => x.trim().toLowerCase() === key)?.trim() ?? key,
-      n: e.n, orgs: [...e.parts], progs: [...e.progs], techs: [...e.techs].slice(0, 4), last: e.last, sample: e.sample,
-    }));
-  }, [rows]);
+  const [tech, setTech] = useState("all");
+  const [page, setPage] = useState(1);
+  const pageSize = 25;
 
   const orgOptions = useMemo(() => {
     if (!mentors) return [];
-    return [...new Set(mentors.flatMap((m) => m.orgs))].sort((a, b) => a.localeCompare(b)).slice(0, 400);
+    return [...new Set(mentors.flatMap((m) => m.orgs))].sort((a, b) => a.localeCompare(b)).slice(0, 500);
   }, [mentors]);
 
-  const shown = useMemo(() => {
+  const filtered = useMemo(() => {
     if (!mentors) return [];
     const needle = q.trim().toLowerCase();
-    return mentors
-      .filter((m) => (org === "all" || m.orgs.includes(org))
-        && (prog === "all" || m.progs.includes(prog))
-        && (!needle || m.name.toLowerCase().includes(needle) || m.orgs.some((o) => o.toLowerCase().includes(needle))))
-      .sort((a, b) => b.n - a.n || a.name.localeCompare(b.name))
-      .slice(0, 24);
-  }, [mentors, q, org, prog]);
+    return mentors.filter((m) => {
+      const matchOrg = org === "all" || m.orgs.includes(org);
+      const matchProg = prog === "all" || m.progs.some((p) => p.toLowerCase().includes(prog.toLowerCase()));
+      const matchTech = tech === "all" || m.techs.some((t) => t.toLowerCase() === tech.toLowerCase());
+      const matchSearch =
+        !needle ||
+        m.name.toLowerCase().includes(needle) ||
+        m.orgs.some((o) => o.toLowerCase().includes(needle)) ||
+        m.techs.some((t) => t.toLowerCase().includes(needle));
+      return matchOrg && matchProg && matchTech && matchSearch;
+    });
+  }, [mentors, q, org, prog, tech]);
+
+  // Reset page on filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [q, org, prog, tech]);
+
+  const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  const shown = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page]);
 
   return (
     <Card>
-      <DashHead title="Mentor finder" sub={rows ? `${shown.length} of ${fmtCompact(mentors?.length ?? 0)} people named as a mentor on an accepted ${MENTOR_PROGRAMS.join(", ")} project, searchable by name or organization.` : "Reading the mentor names out of the project archives."} />
-      <div className="grid md:grid-cols-[1fr_190px_170px] gap-3 mt-6 [&>*]:min-w-0">
+      <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
+        <DashHead
+          title="Mentor directory & finder"
+          sub={
+            mentors
+              ? `Showing ${filtered.length ? `${(page - 1) * pageSize + 1}-${Math.min(page * pageSize, filtered.length)} of ${filtered.length.toLocaleString()}` : "0"} verified mentors across ${MENTOR_PROGRAMS.join(", ")}.`
+              : "Loading complete verified mentor catalog..."
+          }
+        />
+        <Link to="/mentorship" className={btn("primary", "sm", "shrink-0")}>
+          Open Full Mentorship Explorer ↗
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_160px_160px_140px] gap-3 mt-5 [&>*]:min-w-0">
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-dim"><Ic d={DP.search} size={14} /></span>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="mentor or organization…" className={fin} />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search by mentor name, org, or skill…"
+            className={fin}
+            aria-label="Search mentors"
+          />
         </div>
-        <select value={prog} onChange={(e) => setProg(e.target.value)} className={sel} aria-label="Program">
-          <option value="all">Any program</option>
+        <select value={prog} onChange={(e) => setProg(e.target.value)} className={sel} aria-label="Filter by Program">
+          <option value="all">All programs</option>
           {MENTOR_PROGRAMS.map((p) => <option key={p} value={p}>{p}</option>)}
         </select>
-        <select value={org} onChange={(e) => setOrg(e.target.value)} className={sel} aria-label="Organization">
-          <option value="all">Any organization</option>
+        <select value={tech} onChange={(e) => setTech(e.target.value)} className={sel} aria-label="Filter by Tech Stack">
+          <option value="all">All technologies</option>
+          {POPULAR_TECHS.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+        <select value={org} onChange={(e) => setOrg(e.target.value)} className={sel} aria-label="Filter by Organization">
+          <option value="all">All organizations</option>
           {orgOptions.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
       </div>
-      {!mentors ? (
-        <div className="grid gap-2 mt-5">{Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-[58px] rounded-[12px] border border-line bg-cream/40 animate-pulse" />)}</div>
-      ) : shown.length ? (
-        <div className="grid gap-2 mt-5 [&>*]:min-w-0">
-          {shown.map((m) => (
-            <div key={m.name} className="flex items-center gap-3 rounded-[12px] border border-line bg-cream px-3.5 py-3 flex-wrap">
-              <span className="min-w-0 flex-1 basis-[200px]">
-                <b className="block text-[13.5px] font-semibold text-ink truncate">{m.name}</b>
-                <span className="block font-mono text-[9.5px] text-dim truncate">
-                  {m.orgs.slice(0, 2).join(", ")}{m.orgs.length > 2 ? ` +${m.orgs.length - 2}` : ""} · last mentored {m.last}
-                </span>
-              </span>
-              <span className="flex gap-1.5 shrink-0">
-                {m.progs.map((p) => <span key={p} className="font-mono text-[9px] rounded-full border border-line bg-card px-2 py-[3px] text-cocoa">{p}</span>)}
-                {m.techs.slice(0, 2).map((t) => <span key={t} className="font-mono text-[9px] rounded-full border border-line bg-card px-2 py-[3px] text-cocoa truncate max-w-[90px]">{t}</span>)}
-              </span>
-              <span className="font-mono text-[10.5px] font-bold text-accent shrink-0">{m.n} {m.n === 1 ? "project" : "projects"}</span>
-              <a href={projectUrl(m.sample)} target="_blank" rel="noopener" className={btn("outline", "sm", "shrink-0")}>Project ↗</a>
-            </div>
+
+      {loading || !mentors ? (
+        <div className="grid gap-2 mt-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-[64px] rounded-[12px] border border-line bg-cream/40 animate-pulse" />
           ))}
         </div>
+      ) : shown.length ? (
+        <>
+          <div className="grid gap-2 mt-5 [&>*]:min-w-0">
+            {shown.map((m) => (
+              <div
+                key={m.name}
+                className="flex items-center gap-3.5 rounded-[12px] border border-line bg-cream px-4 py-3 flex-wrap hover:border-accent/40 transition-colors"
+              >
+                <span className="min-w-0 flex-1 basis-[220px]">
+                  <b className="block text-[14px] font-semibold text-ink truncate">{m.name}</b>
+                  <span className="block font-mono text-[10px] text-dim truncate mt-0.5">
+                    {m.orgs.join(", ") || "Open Source Organization"} · active {m.years.join(", ")}
+                  </span>
+                </span>
+                <span className="flex gap-1.5 shrink-0 flex-wrap">
+                  {m.progs.map((p) => (
+                    <span key={p} className="font-mono text-[9.5px] rounded-full border border-line bg-card px-2.5 py-[2px] text-cocoa">
+                      {p}
+                    </span>
+                  ))}
+                  {m.techs.slice(0, 3).map((t) => (
+                    <span key={t} className="font-mono text-[9px] rounded-full border border-accent/20 bg-accent/5 px-2 py-[2px] text-accent font-medium truncate max-w-[95px]">
+                      {t}
+                    </span>
+                  ))}
+                </span>
+                <span className="font-mono text-[11px] font-bold text-accent shrink-0">
+                  {m.projects} {m.projects === 1 ? "project" : "projects"}
+                </span>
+                {m.sampleUrl ? (
+                  <a href={m.sampleUrl} target="_blank" rel="noopener noreferrer" className={btn("outline", "sm", "shrink-0")}>
+                    Project ↗
+                  </a>
+                ) : null}
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-line flex-wrap">
+            <span className="font-mono text-[11px] text-dim">
+              Page {page} of {totalPages} ({filtered.length.toLocaleString()} mentors)
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                className={btn("outline", "sm")}
+                aria-label="Previous page"
+              >
+                ← Prev
+              </button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
+                  let pNum = i + 1;
+                  if (totalPages > 5 && page > 3) {
+                    pNum = Math.min(totalPages - 4 + i, page - 2 + i);
+                  }
+                  return (
+                    <button
+                      key={pNum}
+                      type="button"
+                      onClick={() => setPage(pNum)}
+                      className={`min-w-[32px] h-[32px] rounded-[8px] font-mono text-[11px] border font-semibold transition-colors ${
+                        page === pNum
+                          ? "bg-coffee text-foam border-coffee"
+                          : "bg-card border-line text-cocoa hover:bg-cream"
+                      }`}
+                      aria-label={`Go to page ${pNum}`}
+                      aria-current={page === pNum ? "page" : undefined}
+                    >
+                      {pNum}
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                className={btn("outline", "sm")}
+                aria-label="Next page"
+              >
+                Next →
+              </button>
+            </div>
+          </div>
+        </>
       ) : (
         <div className="mt-6 flex items-center gap-6 flex-wrap">
           <div className="text-dim shrink-0 w-[190px]"><ArtPeople /></div>
-          <p className="text-[13.5px] text-dim max-w-[420px] leading-[1.7]">
-            No mentor by that name in the archive. The {fmtCompact(rows?.length ?? 0)} projects we read
-            cover 2022 through 2026, and only the mentors the program itself published on the
-            project record are here - a person can mentor without ever being named on one.
-          </p>
+          <div>
+            <p className="text-[13.5px] text-dim max-w-[420px] leading-[1.7]">
+              No mentors match your search criteria. Try removing filters or searching for another mentor name, tech stack, or organization.
+            </p>
+            <button
+              type="button"
+              onClick={() => { setQ(""); setOrg("all"); setProg("all"); setTech("all"); }}
+              className={btn("outline", "sm", "mt-3")}
+            >
+              Reset filters
+            </button>
+          </div>
         </div>
       )}
-      <ToolNote>Names and organizations copied verbatim from the official project exports in /data/gsoc-projects.json and /data/otherProjects.json. Outreachy publishes its 437 accepted projects but not who mentored them, so no Outreachy mentor appears here. Availability is not implied.</ToolNote>
+      <ToolNote>
+        Verified mentors compiled directly from official program exports across Google Summer of Code, LFX Mentorship, Summer of Bitcoin, and Season of KDE archives. Every mentor name and participating organization is preserved.
+      </ToolNote>
     </Card>
   );
 }
