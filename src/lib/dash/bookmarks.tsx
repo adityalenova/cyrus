@@ -11,7 +11,7 @@ import { btn } from "../../components/ui";
 import { Card, DashHead } from "./shell";
 
 export function BookmarksSection() {
-  const { saved, savedOrgs, savedPrograms, serverUser, toggleSaved, toggleSavedOrg, toggleSavedProgram, refreshSession } = useStore();
+  const { saved, savedOrgs, savedPrograms, serverUser, toggleSaved, toggleSavedOrg, toggleSavedProgram, refreshSession, flushBookmarks } = useStore();
   const [items, setItems] = useState<Bookmark[]>([]), [collections, setCollections] = useState<BookmarkCollection[]>([]);
   const [loading, setLoading] = useState(false), [error, setError] = useState("");
   const [q, setQ] = useState(""), [type, setType] = useState("all"), [sort, setSort] = useState("newest"), [selection, setSelection] = useState("all");
@@ -23,10 +23,13 @@ export function BookmarksSection() {
     if (busy.current) return;
     const version = ++request.current; setLoading(true); setError("");
     try {
+      await flushBookmarks();
+      if (version !== request.current || accountRef.current !== owner) return;
       const [response, list] = await Promise.all([fetch("/api/me/bookmark-collections", { cache: "no-store" }), api.savedList()]);
       if (version !== request.current || accountRef.current !== owner) return;
       if (!response.ok || !list) throw new Error("Could not load cross-device bookmarks. Try refreshing when the server is available.");
       const data = await response.json() as { collections: BookmarkCollection[] };
+      if (version !== request.current || accountRef.current !== owner) return;
       setCollections(data.collections); setItems(list.items);
     } catch (failure) { if (version === request.current && accountRef.current === owner) setError((failure as Error).message); }
     finally { if (version === request.current) setLoading(false); }
@@ -53,15 +56,19 @@ export function BookmarksSection() {
     const owner = account, previous = collections; busy.current = true;
     request.current++; setLoading(false); setError(""); optimistic?.();
     startTransition(async () => {
+      let reload = false;
       try {
+        if (change.action === "member") await flushBookmarks();
+        if (accountRef.current !== owner) return;
         const result = await updateBookmarkCollection(change);
         if (accountRef.current !== owner) return;
         if ("error" in result) throw new Error(result.error);
-        setCollections(result.collections);
+        if ("committed" in result) { setError(result.warning); reload = true; }
+        else setCollections(result.collections);
         if (change.action === "create") setName("");
         if (change.action === "delete") setSelection("all");
       } catch (failure) { if (accountRef.current === owner) { setCollections(previous); setError((failure as Error).message); } }
-      finally { busy.current = false; }
+      finally { busy.current = false; if (reload && accountRef.current === owner) void load(owner); }
     });
   }
   const field = "rounded-[10px] bg-cream border border-line px-3 py-2 text-ink min-w-0 text-[13px]";
@@ -98,7 +105,15 @@ export function BookmarksSection() {
           if (item.itemType === "repo") toggleSaved(item.itemId);
           else if (item.itemType === "org") toggleSavedOrg(item.itemId);
           else if (item.itemType === "program") toggleSavedProgram(item.itemId);
-          else { setItems(current => current.filter(value => bookmarkKey(value) !== key)); void api.savedRemove(item.itemType, item.itemId).then(ok => { if (!ok && account) { setError("Could not remove that bookmark."); void load(account); } }); }
+          else if (account && !busy.current) {
+            const owner = account; busy.current = true; request.current++; setLoading(false);
+            setItems(current => current.filter(value => bookmarkKey(value) !== key));
+            startTransition(async () => {
+              const ok = await api.savedRemove(item.itemType, item.itemId).catch(() => false);
+              busy.current = false;
+              if (!ok && accountRef.current === owner) { void load(owner); setError("Could not remove that bookmark."); }
+            });
+          }
         }}>Remove bookmark</button>
       </Card>;
     })}</div>}

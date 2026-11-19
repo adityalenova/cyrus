@@ -1120,7 +1120,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 
 /* ── mobile menu: hamburger sheet + backdrop ── */
 
-@keyframes sheetIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes sheetIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 

@@ -11,6 +11,7 @@ import { GET as privateGET } from "@/app/api/me/bookmark-collections/route";
 import { GET as publicGET } from "@/app/api/bookmark-collections/[token]/route";
 import { POST as saveBookmark, DELETE as removeBookmark } from "@/app/api/me/saved/route";
 import { listBookmarkCollections } from "./bookmarkCollections";
+import * as collectionQueries from "./bookmarkCollections";
 
 const state = vi.hoisted(() => ({ db: null as Db | null, cookie: "" }));
 vi.mock("../db", () => ({ getDb: () => state.db }));
@@ -42,6 +43,33 @@ async function create(name = "GSoC Ideas") {
 }
 
 describe("real PostgreSQL bookmark ownership and sharing", () => {
+  it("acknowledges a committed change when the subsequent collection read fails", async () => {
+    await sign();
+    const read = vi.spyOn(collectionQueries, "listBookmarkCollections").mockRejectedValueOnce(new Error("read unavailable"));
+    try {
+      expect(await updateBookmarkCollection({ action: "create", name: "Persisted despite failed read" })).toMatchObject({ committed: true });
+      expect(await database.select().from(schema.bookmarkCollections)).toHaveLength(1);
+    } finally { read.mockRestore(); }
+    expect((await listBookmarkCollections(owner))[0].name).toBe("Persisted despite failed read");
+  });
+  it("preserves empty collections and treats already-unsaved membership removal as complete", async () => {
+    await sign(); const collection = await create();
+    expect((await listBookmarkCollections(owner))[0].itemKeys).toEqual([]);
+    const change = { action: "member", id: collection.id, itemType: "program", itemId: "not-saved", enabled: false };
+    expect(await updateBookmarkCollection(change)).not.toHaveProperty("error");
+    expect(await updateBookmarkCollection({ ...change, enabled: true })).toMatchObject({ status: 404 });
+    expect(await database.select().from(schema.bookmarkCollectionItems)).toEqual([]);
+  });
+  it("reports owner-scoped updates that affect no row", async () => {
+    await sign(); const collection = await create();
+    await client.exec(`CREATE FUNCTION suppress_collection_update() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RETURN NULL; END $$;
+      CREATE TRIGGER suppress_update BEFORE UPDATE ON bookmark_collections FOR EACH ROW EXECUTE FUNCTION suppress_collection_update();`);
+    try {
+      expect(await updateBookmarkCollection({ action: "rename", id: collection.id, name: "Not applied" })).toMatchObject({ status: 404 });
+      expect(await updateBookmarkCollection({ action: "share", id: collection.id, enabled: true })).toMatchObject({ status: 404 });
+      expect((await listBookmarkCollections(owner))[0]).toMatchObject({ name: "GSoC Ideas", shareToken: null });
+    } finally { await client.exec("DROP TRIGGER suppress_update ON bookmark_collections; DROP FUNCTION suppress_collection_update();"); }
+  });
   it("reports unavailable storage without pretending that local bookmarks are synced", async () => {
     const previous = state.db; state.db = null;
     try {
@@ -85,7 +113,7 @@ describe("real PostgreSQL bookmark ownership and sharing", () => {
     await sign(); const collection = await create();
     await saveBookmark(request({ itemType: "program", itemId: "gsoc", title: "GSoC" }));
     const change = { action: "member", id: collection.id, itemType: "program", itemId: "gsoc", enabled: true };
-    await updateBookmarkCollection(change); await updateBookmarkCollection(change);
+    await collectionQueries.changeBookmarkCollection(owner, change); await updateBookmarkCollection(change);
     expect((await listBookmarkCollections(owner))[0].itemKeys).toEqual(['["program","gsoc"]']);
     expect((await database.select().from(schema.bookmarkCollectionItems))).toHaveLength(1);
     await removeBookmark(request({ itemType: "program", itemId: "gsoc" }));

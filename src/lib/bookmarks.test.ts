@@ -20,6 +20,17 @@ it("constructs known catalog links and never trusts saved metadata as a destinat
 });
 
 describe("ordered optimistic bookmark sync", () => {
+  it("serializes an initial import before a subsequent removal and lets refresh wait for both", async () => {
+    let finish!: (ok: boolean) => void;
+    const send = vi.fn().mockImplementationOnce(() => new Promise<boolean>(resolve => { finish = resolve; })).mockResolvedValue(true);
+    const sync = createBookmarkSync(send, () => "owner", vi.fn());
+    const imported = sync.enqueue("program", "gsoc", true, vi.fn());
+    const removed = sync.enqueue("program", "gsoc", false, vi.fn());
+    await vi.waitFor(() => expect(send).toHaveBeenCalledTimes(1));
+    let done = false; const flush = sync.flush().then(() => { done = true; });
+    expect(done).toBe(false); finish(true); expect(await imported).toBe(true); expect(await removed).toBe(true);
+    await flush; expect(done).toBe(true); expect(send.mock.calls.map(call => call[2])).toEqual([true, false]);
+  });
   it("restores the last confirmed state when two consecutive choices both fail", async () => {
     const rollback = vi.fn(), failed = vi.fn(), send = vi.fn(async () => false);
     const sync = createBookmarkSync(send, () => "owner", failed);

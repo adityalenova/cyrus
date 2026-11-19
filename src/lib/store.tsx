@@ -37,6 +37,7 @@ interface Store {
   boardReady: boolean;
   /** re-probe /api/me and merge saved items; call after a server sign-in */
   refreshSession: () => Promise<void>;
+  flushBookmarks: () => Promise<void>;
 }
 
 const Ctx = createContext<Store>(null!);
@@ -50,6 +51,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [savedOwner, setSavedOwner] = useStored<string | null>("agenthub.savedowner", null);
   const [downloadsStored, setDownloads, dlReady] = useStored<Record<string, number>>("agenthub.downloads", {});
   const [toastMsg, setToastMsg] = useState<{ msg: string; k: number } | null>(null);
+  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
   const [authOpen, setAuthOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [themeStored, setTheme, themeReady] = useStored<"light" | "dark">("agenthub.theme", "dark");
@@ -99,16 +101,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const nextRepos = [...new Set([...sRepos, ...(migrate ? mine : [])])];
     const nextOrgs = [...new Set([...sOrgs, ...(migrate ? ours : [])])];
     const nextPrograms = [...new Set([...sPrograms, ...(migrate ? programsRef.current : [])])];
+    if (!migrate && (mine.some(id => !sRepos.includes(id)) || ours.some(id => !sOrgs.includes(id)) || programsRef.current.some(id => !sPrograms.includes(id)))) toast("Your account's saved bookmarks replaced this browser's local selections. Save any local-only items again while signed in to keep them on this account.");
     savedRef.current = nextRepos; orgsRef.current = nextOrgs; programsRef.current = nextPrograms;
     setSaved(nextRepos); setSavedOrgs(nextOrgs); setPrograms(nextPrograms);
     // push anything this browser has that the server hasn't seen
     const synced = await Promise.all([
-      ...nextRepos.filter((r) => !sRepos.includes(r)).map(id => api.savedAdd("repo", id, titleFor(id))),
-      ...nextOrgs.filter((o) => !sOrgs.includes(o)).map(id => api.savedAdd("org", id, titleFor(id))),
-      ...nextPrograms.filter((p) => !sPrograms.includes(p)).map(id => api.savedAdd("program", id, id)),
+      ...nextRepos.filter((r) => !sRepos.includes(r)).map(id => sync.current!.enqueue("repo", id, true, () => {}, titleFor(id))),
+      ...nextOrgs.filter((o) => !sOrgs.includes(o)).map(id => sync.current!.enqueue("org", id, true, () => {}, titleFor(id))),
+      ...nextPrograms.filter((p) => !sPrograms.includes(p)).map(id => sync.current!.enqueue("program", id, true, () => {}, id)),
     ]);
     if (version === sessionVersion.current && synced.every(Boolean)) { ownerRef.current = me.user.id; setSavedOwner(me.user.id); }
-  }, [setSaved, setSavedOrgs, setPrograms, setSavedOwner]);
+  }, [setSaved, setSavedOrgs, setPrograms, setSavedOwner, toast]);
 
   useEffect(() => { void refreshSession(); }, [refreshSession]);
   useEffect(() => () => { serverId.current = null; sessionVersion.current++; }, []);
@@ -122,7 +125,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [themeStored]);
   const toggleTheme = useCallback(() => setTheme(themeStored === "dark" ? "light" : "dark"), [themeStored, setTheme]);
 
-  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
   if (!sync.current) sync.current = createBookmarkSync((type, id, added, title) => added ? api.savedAdd(type, id, title) : api.savedRemove(type, id), () => serverId.current, () => toast("Could not sync that bookmark. Your previous selection was restored."));
 
   /* ── Google's redirect lands here, not in the sign-in sheet ─────────
@@ -224,7 +226,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, unfollowAll,
       downloads, countDownload,
       toast: (m: string) => toast(m), authOpen, setAuthOpen, paletteOpen, setPaletteOpen,
-      theme, toggleTheme, serverUser, refreshSession, boardReady: userReady,
+      theme, toggleTheme, serverUser, refreshSession, flushBookmarks: () => sync.current!.flush(), boardReady: userReady,
     }}>
       {children}
       {toastMsg && (

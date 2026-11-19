@@ -24,6 +24,11 @@ describe("removalNotice", () => {
 });
 
 describe("listByKind", () => {
+  it("includes a program-only selection in the removal confirmation", () => {
+    const programs: TrackedEntry[] = [{ kind: "program", key: "gsoc", label: "GSoC" }];
+    expect(listByKind(programs)).toEqual(["Programs: GSoC"]);
+    expect(removalNotice(programs)).toContain("GSoC");
+  });
   it("groups by kind in a stable order and skips empty kinds", () => {
     expect(listByKind(entries)).toEqual([
       "Issues: a/b #1, c/d #2",

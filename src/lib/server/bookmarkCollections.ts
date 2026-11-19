@@ -11,10 +11,17 @@ const db = () => { const value = getDb(); if (!value) throw new CollectionError(
 
 export async function listBookmarkCollections(userId: string): Promise<BookmarkCollection[]> {
   const database = db();
-  const rows = await database.select().from(collections).where(eq(collections.userId, userId)).orderBy(asc(collections.createdAt));
-  const items = await database.select({ collectionId: members.collectionId, itemType: savedItems.itemType, itemId: savedItems.itemId }).from(members)
-    .innerJoin(savedItems, and(eq(members.savedItemId, savedItems.id), eq(members.userId, savedItems.userId))).where(eq(members.userId, userId));
-  return rows.map(row => ({ id: row.id, name: row.name, shareToken: row.shareToken, createdAt: row.createdAt.toISOString(), itemKeys: items.filter(item => item.collectionId === row.id).map(bookmarkKey) }));
+  const rows = await database.select({ id: collections.id, name: collections.name, shareToken: collections.shareToken, createdAt: collections.createdAt, itemType: savedItems.itemType, itemId: savedItems.itemId })
+    .from(collections).leftJoin(members, and(eq(members.collectionId, collections.id), eq(members.userId, collections.userId)))
+    .leftJoin(savedItems, and(eq(members.savedItemId, savedItems.id), eq(savedItems.userId, collections.userId)))
+    .where(eq(collections.userId, userId)).orderBy(asc(collections.createdAt), asc(savedItems.createdAt), asc(savedItems.id));
+  const result = new Map<string, BookmarkCollection>();
+  for (const row of rows) {
+    let collection = result.get(row.id);
+    if (!collection) { collection = { id: row.id, name: row.name, shareToken: row.shareToken, createdAt: row.createdAt.toISOString(), itemKeys: [] }; result.set(row.id, collection); }
+    if (row.itemType !== null && row.itemId !== null) collection.itemKeys.push(bookmarkKey({ itemType: row.itemType, itemId: row.itemId }));
+  }
+  return [...result.values()];
 }
 
 export async function changeBookmarkCollection(userId: string, input: unknown) {
@@ -28,20 +35,24 @@ export async function changeBookmarkCollection(userId: string, input: unknown) {
   const owned = and(eq(collections.userId, userId), eq(collections.id, change.id));
   const [existing] = await database.select({ id: collections.id }).from(collections).where(owned).limit(1);
   if (!existing) throw new CollectionError(404, "Collection not found.");
-  if (change.action === "rename") await database.update(collections).set({ name: change.name }).where(owned);
+  if (change.action === "rename") {
+    if (!(await database.update(collections).set({ name: change.name }).where(owned).returning({ id: collections.id })).length) throw new CollectionError(404, "Collection not found.");
+  }
   else if (change.action === "delete") await database.delete(collections).where(owned);
-  else if (change.action === "share") await database.update(collections).set({ shareToken: change.enabled ? randomUUID() : null }).where(owned);
+  else if (change.action === "share") {
+    if (!(await database.update(collections).set({ shareToken: change.enabled ? randomUUID() : null }).where(owned).returning({ id: collections.id })).length) throw new CollectionError(404, "Collection not found.");
+  }
   else {
     const selected = and(eq(savedItems.userId, userId), eq(savedItems.itemType, change.itemType), eq(savedItems.itemId, change.itemId));
     const [saved] = await database.select({ id: savedItems.id }).from(savedItems).where(selected).limit(1);
-    if (!saved) throw new CollectionError(404, "Save this bookmark before adding it to a collection.");
     if (change.enabled) {
-      // One statement rechecks ownership; concurrent deletion cannot orphan a row.
-      await database.execute(sql`insert into bookmark_collection_items (user_id, collection_id, saved_item_id)
-        select ${userId}::uuid, c.id, s.id from bookmark_collections c join saved_items s on s.user_id = c.user_id
-        where c.id = ${change.id}::uuid and c.user_id = ${userId}::uuid and s.id = ${saved.id}::uuid
-        on conflict do nothing`);
-    } else await database.delete(members).where(and(eq(members.userId, userId), eq(members.collectionId, change.id), eq(members.savedItemId, saved.id)));
+      // Resolve the stable key at write time; duplicate memberships still return a row.
+      const added = await database.insert(members).select(database.select({ userId: sql<string>`${userId}::uuid`.as("user_id"), collectionId: collections.id, savedItemId: savedItems.id })
+        .from(collections).innerJoin(savedItems, eq(savedItems.userId, collections.userId))
+        .where(and(owned, selected)))
+        .onConflictDoUpdate({ target: [members.userId, members.collectionId, members.savedItemId], set: { savedItemId: sql`excluded.saved_item_id` } }).returning({ id: members.savedItemId });
+      if (!added.length) throw new CollectionError(404, "The collection or saved bookmark no longer exists. Refresh before retrying.");
+    } else if (saved) await database.delete(members).where(and(eq(members.userId, userId), eq(members.collectionId, change.id), eq(members.savedItemId, saved.id)));
   }
 }
 

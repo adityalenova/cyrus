@@ -1,7 +1,7 @@
 /* == dataControls.ts - wording and grouping for the Settings data controls ==
    Pure functions so the confirmation text can be tested without a browser. == */
 
-export type TrackedKind = "issue" | "repository" | "organization";
+export type TrackedKind = "issue" | "repository" | "organization" | "program";
 
 export interface TrackedEntry {
   kind: TrackedKind;
@@ -15,11 +15,12 @@ const KIND_PLURAL: Record<TrackedKind, string> = {
   issue: "issues",
   repository: "repositories",
   organization: "organizations",
+  program: "programs",
 };
 
 /** One line per kind, naming every item, e.g. "Issues: a/b #1, c/d #2". */
 export function listByKind(entries: TrackedEntry[]): string[] {
-  const kinds: TrackedKind[] = ["issue", "repository", "organization"];
+  const kinds: TrackedKind[] = ["issue", "repository", "organization", "program"];
   return kinds
     .map((k) => {
       const names = entries.filter((e) => e.kind === k).map((e) => e.label);
@@ -47,7 +48,7 @@ export function removalNotice(entries: TrackedEntry[]): string {
 
 export const OWNERSHIP_COPY = {
   account:
-    "Yours: the issues, repositories and organizations you chose to track, and the stage you gave each issue. " +
+    "Yours: the issues, repositories, organizations and programs you chose to track, and the stage you gave each issue. " +
     "Only your account can read, change or delete these.",
   crawl:
     "Public: issue counts, labels, stars and dates crawled from GitHub. " +

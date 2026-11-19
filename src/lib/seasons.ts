@@ -142,3 +142,64 @@ export function monthGrid(ms: number): MonthCell[] {
 }
 
 export const overlaps = (e: SeasonEvent, from: number, to: number) => e.start < to && e.end > from;
+
+/* ── week geometry for the week view ──────────────────────────── */
+
+/** local midnight on the Monday that opens the week holding `ms` */
+export function weekStartOf(ms: number): number {
+  const d = new Date(ms);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); // Mon=0 … Sun=6
+  return d.getTime();
+}
+
+/** the seven midnights (Mon…Sun) of the week that starts at `weekStartMs` */
+export function weekDays(weekStartMs: number): number[] {
+  return Array.from({ length: 7 }, (_, i) => weekStartMs + i * DAY);
+}
+
+/** every event overlapping [from, to), earliest first - the week columns
+    and the agenda both read their rows from here */
+export function eventsIn(events: readonly SeasonEvent[], from: number, to: number): SeasonEvent[] {
+  return events
+    .filter((e) => overlaps(e, from, to))
+    .sort((a, b) => a.start - b.start || a.program.localeCompare(b.program));
+}
+
+/* ── colour-coding by program phase category ────────────────────
+   The phase hexes in orgs.ts all fall into four season categories;
+   mapping a window onto its category is what lets the calendar colour,
+   legend and group by type instead of one colour per program.        */
+export type PhaseCategory = "applications" | "selection" | "bonding" | "coding";
+
+export const CATEGORY_META: Record<PhaseCategory, { color: string; label: string }> = {
+  applications: { color: "#3b6ea5", label: "Applications" },
+  selection: { color: "#a97b1f", label: "Selection" },
+  bonding: { color: "#2f7d72", label: "Bonding / outreach" },
+  coding: { color: "#3e7d4f", label: "Coding & internships" },
+};
+
+const CATEGORY_BY_COLOR: Record<string, PhaseCategory> = {
+  "#3b6ea5": "applications",
+  "#a97b1f": "selection",
+  "#2f7d72": "bonding",
+  "#3e7d4f": "coding",
+};
+
+/* keyword fallback - checked in this order so "community bonding" lands on
+   bonding, "coding period" on coding, "proposals accepted" on selection */
+const CATEGORY_BY_WORD: [RegExp, PhaseCategory][] = [
+  [/bond|outreach/, "bonding"],
+  [/cod|intern|mentorship|period|summer/, "coding"],
+  [/selec|proposal|accept|interview|result/, "selection"],
+  [/applicat|submis|register|contrib|organi[sz]ation appl/, "applications"],
+];
+
+export function categoryOf(e: Pick<SeasonEvent, "color" | "phase">): PhaseCategory {
+  const byColor = CATEGORY_BY_COLOR[e.color.toLowerCase()];
+  if (byColor) return byColor;
+  const t = e.phase.toLowerCase();
+  for (const [re, c] of CATEGORY_BY_WORD) if (re.test(t)) return c;
+  return "applications";
+}
+
