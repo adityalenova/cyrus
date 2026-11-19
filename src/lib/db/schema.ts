@@ -234,6 +234,83 @@ export const catalogMeta = pgTable("catalog_meta", {
   value: jsonb("value").notNull(),
 });
 
+/* ── mentorship ──────────────────────────────────────────────────────── */
+
+export const mentors = pgTable(
+  "mentors",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    bio: text("bio"),
+    expertise: text("expertise").array().notNull().default([]), // skills, stacks
+    interests: text("interests").array().notNull().default([]), // domains, topics
+    timezone: text("timezone").notNull().default("UTC"),
+    availabilityHours: integer("availability_hours").notNull().default(5),
+    maxMentees: integer("max_mentees").notNull().default(2),
+    currentMentees: integer("current_mentees").notNull().default(0),
+    status: text("status").notNull().default("active"), // active | busy | inactive
+    rating: integer("rating").notNull().default(0), // average rating scaled (e.g. 50 = 5.0)
+    reviewCount: integer("review_count").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("mentors_status_idx").on(t.status),
+    index("mentors_timezone_idx").on(t.timezone),
+  ],
+);
+
+export const mentees = pgTable(
+  "mentees",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    bio: text("bio"),
+    goals: text("goals").notNull(),
+    skillLevel: text("skill_level").notNull().default("beginner"), // beginner | intermediate | advanced
+    interests: text("interests").array().notNull().default([]),
+    currentSkills: text("current_skills").array().notNull().default([]),
+    desiredSkills: text("desired_skills").array().notNull().default([]),
+    timezone: text("timezone").notNull().default("UTC"),
+    availabilityHours: integer("availability_hours").notNull().default(5),
+    status: text("status").notNull().default("seeking"), // seeking | matched | inactive
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("mentees_status_idx").on(t.status),
+    index("mentees_skill_level_idx").on(t.skillLevel),
+  ],
+);
+
+export const mentorships = pgTable(
+  "mentorships",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    mentorId: uuid("mentor_id").notNull().references(() => mentors.id, { onDelete: "cascade" }),
+    menteeId: uuid("mentee_id").notNull().references(() => mentees.id, { onDelete: "cascade" }),
+    status: text("status").notNull().default("pending"), // pending | accepted | declined | active | completed | cancelled
+    compatibilityScore: integer("compatibility_score").notNull().default(0), // 0 to 100
+    matchDetails: jsonb("match_details"),
+    message: text("message"),
+    responseMessage: text("response_message"),
+    sessions: jsonb("sessions").notNull().default([]),
+    feedback: jsonb("feedback"),
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("mentorships_mentor_idx").on(t.mentorId, t.status),
+    index("mentorships_mentee_idx").on(t.menteeId, t.status),
+  ],
+);
+
 /* ── inferred row types ─────────────────────────────────────────────── */
 
 export type UserRow = typeof users.$inferSelect;
@@ -246,3 +323,6 @@ export type OrgRow = typeof orgs.$inferSelect;
 export type HackathonRow = typeof hackathons.$inferSelect;
 export type ProgramProjectRow = typeof programProjects.$inferSelect;
 export type ResourceRow = typeof resources.$inferSelect;
+export type MentorRow = typeof mentors.$inferSelect;
+export type MenteeRow = typeof mentees.$inferSelect;
+export type MentorshipRow = typeof mentorships.$inferSelect;

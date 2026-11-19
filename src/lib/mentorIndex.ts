@@ -84,3 +84,45 @@ export function useMentors(id: string): Mentors {
     two programs that publish a mentor list of their own (GSSoC's board, the
     Season of KDE ideas pages). Outreachy names its mentors nowhere. */
 export const MENTOR_IDS = ["gsoc", "lfx", "sob", "gssoc", "kde"] as const;
+
+export type MentorCatalogItem = {
+  name: string;
+  projects: number;
+  orgs: string[];
+  progs: string[];
+  techs: string[];
+  years: number[];
+  sampleUrl?: string;
+  sampleTitle?: string;
+};
+
+let catalogCache: Promise<MentorCatalogItem[] | null> | null = null;
+
+export function loadMentorsCatalog(): Promise<MentorCatalogItem[] | null> {
+  if (!catalogCache) {
+    catalogCache = fetch("/data/mentors-catalog.json")
+      .then((r) => (r.ok ? (r.json() as Promise<MentorCatalogItem[]>) : null))
+      .catch(() => null);
+  }
+  return catalogCache;
+}
+
+export function useMentorsCatalog() {
+  const [mentors, setMentors] = useState<MentorCatalogItem[] | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    loadMentorsCatalog().then((res) => {
+      if (!active) return;
+      setMentors(res || []);
+      setLoading(false);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return { mentors, loading };
+}
+

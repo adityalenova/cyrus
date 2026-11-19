@@ -1,5 +1,5 @@
 "use client";
-import { Component, ReactNode } from "react";
+import { Component, type ReactNode } from "react";
 
 export default class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
   state = { hasError: false };
