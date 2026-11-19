@@ -41,7 +41,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
+      { url: "/favicon.svg" },
+    ],
     apple: "/apple-touch-icon.png",
   },
   title: {
@@ -72,12 +76,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${jakarta.variable} ${inter.variable} ${mono.variable} ${sign.variable}`} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-light.svg" media="(prefers-color-scheme: light)" type="image/svg+xml" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         {/* dark is the default, so only an explicit stored "light" adds a class;
            this keeps the stored choice out of the first paint */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("agenthub.theme");if(t&&JSON.parse(t)==="light")document.documentElement.classList.add("light");}catch(e){}`,
+            __html: `try{var t=localStorage.getItem("agenthub.theme");var l=t&&JSON.parse(t)==="light";if(l){document.documentElement.classList.add("light");}else{document.documentElement.classList.remove("light");}var i=document.querySelector('link[rel="icon"]:not([media])');if(i){i.href=l?'/favicon-light.svg':'/favicon-dark.svg';}}catch(e){}`,
           }}
         />
       </head>
