@@ -166,9 +166,9 @@ export default function Nav() {
             <div onClick={() => setMenu(false)} aria-hidden
               className="lg:hidden fixed inset-0 z-[80] bg-ink/45 backdrop-blur-[3px]"
               style={{ animation: "fadeIn .25s ease both" }} />
-            <aside ref={sheetRef} role="dialog" aria-modal="true" aria-label="Site menu" className="lg:hidden fixed top-0 right-0 bottom-0 z-[85] w-[min(86vw,340px)]
-            bg-paper border-l border-line rounded-l-[28px] shadow-lift flex flex-col
-            max-[1023px]:rounded-none max-[1023px]:border-l-0"
+            <aside ref={sheetRef} role="dialog" aria-modal="true" aria-label="Site menu" className="lg:hidden fixed top-0 left-0 bottom-0 z-[85] w-[min(86vw,340px)]
+            bg-paper border-r border-line rounded-r-[28px] shadow-lift flex flex-col
+            max-[1023px]:rounded-none max-[1023px]:border-r-0"
               style={{ animation: "sheetIn .34s cubic-bezier(.32,.9,.35,1) both" }}>
               <div className="flex items-center justify-between px-5 h-[62px] shrink-0">
                 <Link to="/" className="flex items-center gap-2.5 min-h-[36px]"><Logo size={28} /><Brand /></Link>
