@@ -17,8 +17,9 @@ export function SettingsSection({ d }: { d: Dash }) {
     issues: d.issues.map((i) => ({ url: i.url, repo: i.repo, number: i.number, stage: d.stageOf(i.url), added: i.added })),
     repositories: d.saved,
     organizations: d.savedOrgs,
+    programs: d.savedPrograms,
   };
-  const nothingFollowed = !board.repositories.length && !board.organizations.length;
+  const nothingFollowed = !board.repositories.length && !board.organizations.length && !board.programs.length;
 
   const entries: TrackedEntry[] = [
     ...d.issues.map((i): TrackedEntry => ({ kind: "issue", key: i.url, label: `${i.repo} #${i.number}` })),

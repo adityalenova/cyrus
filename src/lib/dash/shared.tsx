@@ -72,8 +72,9 @@ export const greet = () => {
 };
 
 /* ── the board's own pages. Everything else lives outside it. ───── */
-export type FeatureId = "issues" | "repos" | "calendar" | "matcher" | "mentors" | "compare" | "gitstart" | "drafts" | "analyser" | "demand" | "settings";
+export type FeatureId = "issues" | "repos" | "bookmarks" | "calendar" | "matcher" | "mentors" | "compare" | "gitstart" | "drafts" | "analyser" | "demand" | "settings";
 export const FEATURES: { id: FeatureId; title: string; icon: string; desc: string }[] = [
+  { id: "bookmarks", title: "My Bookmarks", icon: "bookmark", desc: "Organize saved projects, programs and organizations into private or shared collections." },
   { id: "issues", title: "My Issues", icon: "issue", desc: "Every issue you took, held at the stage you left it: saved, interested, working, done." },
   { id: "repos", title: "My Repositories", icon: "repo", desc: "The repositories you follow, with the stars, open issues and last update that decide where you contribute." },
   { id: "calendar", title: "Season calendar", icon: "calendar", desc: "Application windows and coding periods for all thirteen programs on one grid, with Google Calendar and .ics export." },

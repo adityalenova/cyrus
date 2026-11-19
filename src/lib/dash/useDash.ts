@@ -20,7 +20,7 @@ const SHELF = new Map(ISSUE_SIGNALS.map((i) => [i.url, i]));
 const STALE_MS = 90 * 864e5;
 
 export function useDash() {
-  const { user, signIn, signOut, setAuthOpen, saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll, toast, setPaletteOpen, serverUser, theme, toggleTheme, boardReady } = useStore();
+  const { user, signIn, signOut, setAuthOpen, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, unfollowAll, toast, setPaletteOpen, serverUser, theme, toggleTheme, boardReady } = useStore();
   const nav = useNavigate();
   const [gBusy, setGBusy] = useState(false);
 
@@ -201,7 +201,7 @@ export function useDash() {
 
   return {
     user, signIn, signOut, setAuthOpen, toast, serverUser, nav, gBusy, googleIn, theme, toggleTheme, boardReady,
-    saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll, setPaletteOpen,
+    saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, unfollowAll, setPaletteOpen,
     ledger, issues, byStage, stageOf, trackIssue, toggleIssue, setStage, removeIssue, clearIssues,
     savedRepos, orgList, stars, openIssues, langs,
     index, attention, steps, stepsDone, pct, snapshotMeta,

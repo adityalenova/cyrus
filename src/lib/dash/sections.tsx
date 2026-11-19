@@ -16,6 +16,7 @@ import { AnalyserSection } from "./analyser";
 import { DemandSection } from "./demand";
 import { TOOL_SECTIONS } from "./tools";
 import type { Dash } from "./useDash";
+import { BookmarksSection } from "./bookmarks";
 
 export { AttentionList, IssuesSection } from "./issues";
 export { ReposSection } from "./repos";
@@ -23,6 +24,7 @@ export { SettingsSection } from "./settings";
 
 /* the board's own tool pages, in the order the sidebar shows them */
 const OWN: Record<string, (p: { d: Dash }) => React.ReactNode> = {
+  bookmarks: BookmarksSection,
   calendar: CalendarSection,
   drafts: DraftsSection,
   analyser: AnalyserSection,
@@ -35,6 +37,7 @@ export function FeaturePage({ d, id }: { d: Dash; id: string }) {
   if (f.id === "issues") return <IssuesSection d={d} />;
   if (f.id === "repos") return <ReposSection d={d} />;
   if (f.id === "settings") return <SettingsSection d={d} />;
+  if (f.id === "bookmarks") return <BookmarksSection key={d.serverUser?.id ?? "local"} />;
   const Own = OWN[f.id];
   if (Own) return <Own d={d} />;
   const Tool = TOOL_SECTIONS[f.id];

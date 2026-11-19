@@ -24,6 +24,7 @@ import type { ArchiveSummary } from "../lib/programProjects";
 import { stipendText, windowText } from "../lib/programFields";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
 import type { Program } from "../lib/types";
+import { useStore } from "../lib/store";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -56,6 +57,8 @@ const EVIDENCE_WORD: Record<Evidence, string> = {
 type RosterSlot = { orgs: number; projects: number; source: Evidence };
 
 function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSummary }) {
+  const { user, savedPrograms, toggleSavedProgram, setAuthOpen } = useStore();
+  const saved = savedPrograms.includes(p.id);
   const archived = arc?.filter;
   return (
     <article className="group bg-card border border-line rounded-[20px] overflow-hidden flex flex-col shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift hover:border-accent/45">
@@ -69,6 +72,7 @@ function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSu
         <div className="flex items-center gap-2.5 min-w-0">
           <OrgImg src={avatarOf(p.owner, 64)} name={p.owner} className="w-7 h-7 rounded-[8px] object-cover bg-white border border-line shrink-0" />
           <h3 className="card-title text-[15.5px] truncate">{p.name}</h3>
+          <button type="button" aria-label={`${saved ? "Remove bookmark for" : "Bookmark"} ${p.name}`} aria-pressed={saved} className="ml-auto text-accent p-2 rounded-lg focus-visible:outline-2" onClick={() => user ? toggleSavedProgram(p.id, p.name) : setAuthOpen(true)}><svg width="17" height="17" viewBox="0 0 24 24" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" aria-hidden><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-3.6L6 20V5a1 1 0 0 1 1-1z" /></svg></button>
         </div>
         <p className="text-cocoa text-[12.5px] leading-[1.55] line-clamp-2">{p.tag}</p>
         {/* one chip, the stipend. The org and project counts used to sit here as
