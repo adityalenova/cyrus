@@ -60,9 +60,7 @@ export function seasonEvents(year: number): SeasonEvent[] {
 
 export const programsOfSeason = () => PROGRAMS.map((p) => ({ id: p.id, name: p.name, owner: p.owner }));
 
-/* ── calendar exports ───────────────────────────────────────────
-   Both formats use all-day semantics: a Google `dates=A/B` pair and an
-   iCal DTEND are exclusive, so the raw span end is used as-is.       ═ */
+/* ── calendar exports ───────────────────────────────────────────── */
 
 const ymd = (ms: number) => {
   const d = new Date(ms);
