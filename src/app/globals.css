@@ -1,788 +1,1621 @@
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════*
+
    cyrus.ai — Tailwind v4 theme (graphite + signal green)
 
+
+
    Dark is the default mode: near-black graphite surfaces, cool grey
+
    ink, one signal green as the accent. Light mode is a cool neutral
+
    variant, not a warm paper one. Every token keeps the name the rest
+
    of the codebase already uses, so pages follow the new system without
+
    needing per-file color edits.
 
+
+
    Signature device: dashed hairline frames with "+" registration marks
+
    (.frame), hairline rules that carry their own label (.rule-label), and
+
    monospaced uppercase eyebrows (.eyebrow).
-   ═══════════════════════════════════════════════════════════ */
+
+*   ═══════════════════════════════════════════════════════════ */
+
 @import "tailwindcss";
 
+
+
 @theme {
-  /* ── dark graphite surfaces (the default) ──
+
+  /* ── dark graphite surfaces (the default) ──*
+
      Neutral by construction: R = G = B on every one of these, so no surface
+
      carries the green cast the old blue-grey ramp picked up under the signal
+
      green accent. The page sits near black; the bands lift off it in steps of
-     the same hueless grey. */
+
+*     the same hueless grey. */
+
   --color-paper: #090909;
+
   --color-sand: #0e0e0e;
+
   --color-cream: #151515;
+
   --color-card: #101010;
+
   --color-clay: #1a1a1a;
+
   --color-line: #262626;
+
   --color-liness: #1d1d1d;
+
   --color-rule: #3c3c3c;
+
   --color-ink: #f0f0f0;
+
   --color-cocoa: #a3a3a3;
-  /* The quiet end of the text ramp, and it has a floor: on these near-black
+
+  /* The quiet end of the text ramp, and it has a floor: on these near-black*
+
      surfaces #747474 measured 3.6:1, which is unreadable at the 9-12px sizes
+
      the eyebrows and stat labels actually use. #8c8c8c is the same grey, one
-     step up, at 5.4:1 - still recedes behind cocoa, still passes AA small. */
+
+*     step up, at 5.4:1 - still recedes behind cocoa, still passes AA small. */
+
   --color-dim: #8c8c8c;
 
-  /* ── hero horizon ridges (see HorizonBackdrop.tsx) ──
+
+
+  /* ── hero horizon ridges (see HorizonBackdrop.tsx) ──*
+
      far catches the sky, near sinks back into paper. Held a few steps
+
      above --color-paper on purpose: on a #0e0f10 page a ridge that is
-     only one value darker simply disappears. */
+
+*     only one value darker simply disappears. */
+
   --ridge-far: #2b2f33;
+
   --ridge-mid: #1d2022;
+
   --ridge-near: #131415;
+
   --star: #f0f0f0;
 
+
+
   /* ── signal green family ── */
+
   --color-accent: #4ade80;
+
   --color-accentd: #22c55e;
+
   --color-ember: #86efac;
+
   --color-peach: #10241a;
+
   --color-rust: #7ee7a4;
-  /* text that sits on a filled accent surface - near-black on the bright
-     green of dark mode, white on the deeper green of light mode */
+
+  /* text that sits on a filled accent surface - near-black on the bright*
+
+*     green of dark mode, white on the deeper green of light mode */
+
   --color-accentfg: #07150c;
 
+
+
   /* ── category hues: cool, desaturated, used for badges and charts ── */
+
   --color-leaf: #4ade80;
+
   --color-denim: #60a5fa;
+
   --color-plum: #a78bfa;
+
   --color-brick: #f87171;
+
   --color-honey: #fbbf24;
 
-  /* ── the island family (code panels, closing CTA, footer, dark bands) ──
-     In light mode these are real graphite. In dark mode they lift *above*
+
+
+  /* ── the island family (code panels, closing CTA, footer, dark bands) ──*
+
+     In light mode these are real graphite. In dark mode they lift \above**
+
      the page instead of sinking below it, because a band one step darker
-     than #0e0f10 is simply invisible. */
+
+*     than #0e0f10 is simply invisible. */
+
   --color-coffee: #0d0d0d;
+
   --color-bean: #141414;
+
   --color-bark: #1a1a1a;
+
   --color-roast: #282828;
+
   --color-foam: #f0f0f0;
+
   --color-steam: #9a9a9a;
-  /* the muted blue-grey for text that sits on the coffee/island bands;
+
+  /* the muted blue-grey for text that sits on the coffee/island bands;*
+
      #6b7280 was 3.6:1 on #0d0d0d, so the footer column labels and code-panel
-     line numbers were the quietest text on the page. */
+
+*     line numbers were the quietest text on the page. */
+
   --color-dimdk: #7d8593;
 
-  /* next/font declares --font-jakarta, --font-inter, --font-jbmono and
-     --font-signature on <html> and ships the files from our own origin; the
+
+
+  /* next/font declares --font-jakarta, --font-inter, --font-jbmono and*
+
+     --font-signature on \<html> and ships the files from our own origin; the
+
      old family names stay as the fallback so the page still renders in the
-     same faces if a file is missing. */
+
+*     same faces if a file is missing. */
+
   --font-display: var(--font-jakarta), "Plus Jakarta Sans", "Inter", -apple-system, sans-serif;
+
   --font-sans: var(--font-inter), "Inter", -apple-system, sans-serif;
+
   --font-mono: var(--font-jbmono), "JetBrains Mono", ui-monospace, monospace;
+
   --font-sign: var(--font-signature), "Dancing Script", cursive;
 
+
+
   --shadow-soft: 0 4px 18px -8px rgba(0, 0, 0, 0.55);
+
   --shadow-lift: 0 18px 46px -18px rgba(0, 0, 0, 0.7);
+
   --shadow-dark: 0 26px 60px -24px rgba(0, 0, 0, 0.75);
+
+
 
   --ease-silk: cubic-bezier(0.22, 0.8, 0.36, 1);
 
+
+
   --animate-floaty: floaty 6.5s ease-in-out infinite;
+
   --animate-marq: marqLeft 46s linear infinite;
+
   --animate-marq-slow: marqLeft 38s linear infinite;
+
   --animate-blink: blink 1s steps(1) infinite;
+
   --animate-blink-soft: blink 1.6s infinite;
+
   --animate-diamond: diamondTurn 9s ease-in-out infinite;
+
   --animate-hero-diamond: heroDiamond 5.4s cubic-bezier(.62,.02,.38,.98) infinite;
+
   --animate-rise: riseIn 0.6s cubic-bezier(0.22, 0.8, 0.36, 1) both;
+
   --animate-grow-x: growX 0.9s cubic-bezier(0.22, 0.8, 0.36, 1) backwards;
+
   --animate-grow-bar: growBar 0.9s cubic-bezier(0.22, 0.8, 0.36, 1) backwards;
 
+
+
   @keyframes floaty { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+
   @keyframes marqLeft { from { transform: translateX(0); } to { transform: translateX(var(--marq-shift, -50%)); } }
+
   @keyframes blink { 50% { opacity: 0; } }
+
   @keyframes riseIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
   @keyframes growX { from { transform: scaleX(0); } }
+
   @keyframes growBar { from { transform: scaleY(0); } }
+
   @keyframes diamondTurn {
+
     0% { transform: rotate(0deg) scale(1); }
+
     50% { transform: rotate(180deg) scale(.82); }
+
     100% { transform: rotate(360deg) scale(1); }
+
   }
-  /* the hero marker: a square held at 45deg so it reads as a diamond at
-     both ends of the spin, easing through the flat part of the turn */
+
+  /* the hero marker: a square held at 45deg so it reads as a diamond at*
+
+*     both ends of the spin, easing through the flat part of the turn */
+
   @keyframes heroDiamond {
+
     0% { transform: rotate(45deg) scale(1); }
+
     50% { transform: rotate(225deg) scale(.72); }
+
     100% { transform: rotate(405deg) scale(1); }
+
   }
+
 }
 
-/* ── light theme: remap the surface + text tokens ───────────────
+
+
+/* ── light theme: remap the surface + text tokens ───────────────*
+
    Utilities compile to var(--color-x), so overriding the custom
+
    properties under .light flips the whole site in one cascade.
+
    Dark is the default, so the unclassed document needs no remap;
-   .dark is kept as an alias for anything that still sets it. */
+
+*   .dark is kept as an alias for anything that still sets it. */
+
 .light {
+
   --color-paper: #f7f8f8;
+
   --color-sand: #f0f1f2;
+
   --color-cream: #fdfdfd;
+
   --color-card: #ffffff;
+
   --color-clay: #e9ebee;
+
   --color-line: #d8dde0;
+
   --color-liness: #e4e7ea;
+
   --color-rule: #b6bcc2;
+
   --color-ink: #0f1214;
+
   --color-cocoa: #4b5158;
+
   --color-dim: #626a73;
-  /* Light mode's green is the dark mode's green, two steps down the scale.
+
+  /* Light mode's green is the dark mode's green, two steps down the scale.*
+
      #16a34a measured 3.3:1 on white and 3.0:1 on the mint chip it sits in -
+
      and in this theme the accent is not decoration, it is the number, the
+
      link and the button label. #166534 keeps the hue and clears 6:1, so the
-     same component code is legible in both themes. */
+
+*     same component code is legible in both themes. */
+
   --color-accent: #166534;
+
   --color-accentd: #14532d;
+
   --color-ember: #15803d;
+
   --color-peach: #e8f7ee;
+
   --color-rust: #14532d;
+
   --color-accentfg: #ffffff;
+
   --color-leaf: #166534;
+
   --color-denim: #1d4ed8;
+
   --color-plum: #6d28d9;
+
   --color-brick: #b91c1c;
+
   --color-honey: #92400e;
+
   --color-coffee: #101112;
+
   --color-bean: #16181a;
+
   --color-bark: #1d2023;
+
   --color-roast: #2a2d31;
+
   --color-foam: #eceef0;
+
   --color-steam: #9aa1a7;
+
   --color-dimdk: #9aa1a7;
 
-  /* the horizon goes pale with everything else: a light-mode hero should not
-     carry three bands of near-black across the page */
+
+
+  /* the horizon goes pale with everything else: a light-mode hero should not*
+
+*     carry three bands of near-black across the page */
+
   --ridge-far: #e4e8ea;
+
   --ridge-mid: #d6dbdf;
+
   --ridge-near: #c8cfd4;
+
   --star: #b6bcc2;
 
+
+
   --shadow-soft: 0 4px 18px -10px rgba(15, 18, 20, 0.12);
+
   --shadow-lift: 0 18px 46px -20px rgba(15, 18, 20, 0.2);
+
   --shadow-dark: 0 26px 60px -24px rgba(15, 18, 20, 0.3);
+
 }
+
 .light body { background: var(--color-paper); }
+
 .light ::selection { background: rgba(22, 163, 74, 0.2); }
+
 .light .hero-glow {
+
   background:
+
     radial-gradient(640px 380px at 12% 0%, rgba(34, 197, 94, 0.1), transparent 70%),
+
     radial-gradient(700px 420px at 88% 10%, rgba(15, 23, 42, 0.05), transparent 70%),
+
     radial-gradient(900px 480px at 50% 118%, rgba(96, 165, 250, 0.07), transparent 70%);
+
 }
+
 .light .frame::before, .light .frame::after { color: var(--color-rule); }
+
 .light .tl-phase {
+
   color: color-mix(in srgb, var(--pc) 72%, #0f1214);
+
   background: color-mix(in srgb, var(--pc) 10%, white);
+
 }
+
 .light .tl-phase.is-active { background: color-mix(in srgb, var(--pc) 18%, white); }
 
+
+
 html { scroll-behavior: smooth; overflow-x: clip; color-scheme: dark; }
+
 html.light { color-scheme: light; }
+
 /* theme-aware hairline colour for the page background grids */
+
 html { --gl: rgba(236, 238, 240, 0.055); }
+
 html.light { --gl: rgba(15, 18, 20, 0.05); }
 
-/* The island bands (footer, companies panel, testimonials rail, closing CTA,
+
+
+/* The island bands (footer, companies panel, testimonials rail, closing CTA,*
+
    program headers) stay graphite in light mode - they are the one dark thing
+
    in that theme. Text inside them cannot use the light theme's darkened
+
    accent: #166534 on #101112 measured 2.4:1. A band that keeps a dark fill
-   carries `on-dark` and re-adopts the dark accent family locally, so the same
-   component code reads correctly in both themes. */
+
+   carries \`on-dark\` and re-adopts the dark accent family locally, so the same
+
+*   component code reads correctly in both themes. */
+
 .light .on-dark {
+
   --color-accent: #4ade80;
+
   --color-accentd: #22c55e;
+
   --color-ember: #86efac;
+
   --color-peach: #10241a;
+
   --color-rust: #7ee7a4;
+
   --color-accentfg: #07150c;
+
   --color-leaf: #4ade80;
+
   --color-denim: #60a5fa;
+
   --color-plum: #a78bfa;
+
   --color-brick: #f87171;
+
   --color-honey: #fbbf24;
+
 }
+
 body { @apply bg-paper text-ink font-sans antialiased; overflow-x: clip; }
 
-/* ── display typography polish ────────────────────────────────
-   headings wrap evenly instead of orphaning one word */
+
+
+/* ── display typography polish ────────────────────────────────*
+
+*   headings wrap evenly instead of orphaning one word */
+
 h1, h2 { text-wrap: balance; }
+
 h3, h4 { text-wrap: pretty; }
+
 p { text-wrap: pretty; }
+
 .font-display { text-rendering: optimizeLegibility; font-variant-numeric: tabular-nums; }
-/* The signature on a testimonial card: the name written by a hand, not set in
-   a face. Tilted a little off the baseline because a pen never sits straight. */
+
+/* The signature on a testimonial card: the name written by a hand, not set in*
+
+*   a face. Tilted a little off the baseline because a pen never sits straight. */
+
 .sign {
+
   display: inline-block;
+
   font-family: var(--font-sign);
+
   font-size: 29px;
+
   font-weight: 700;
+
   line-height: 0.9;
+
   letter-spacing: .004em;
+
   transform: rotate(-2.4deg);
+
   transform-origin: left bottom;
+
 }
+
 ::selection { background: rgba(74, 222, 128, 0.26); }
+
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: 6px; }
 
+
+
 .skip-link {
+
   position: fixed;
+
   top: 12px;
+
   left: 12px;
+
   z-index: 100;
+
   padding: 12px 16px;
+
   border-radius: 8px;
+
   background: var(--color-coffee);
+
   color: var(--color-foam);
+
   font-weight: 700;
+
   text-decoration: none;
+
   transform: translateY(calc(-100% - 24px));
+
 }
+
+
 
 .skip-link:focus {
+
   transform: translateY(0);
+
 }
+
+
 
 /* text fields never get the outline box - their surrounding pill shows focus instead */
+
 input:focus-visible, textarea:focus-visible, select:focus-visible { outline: none; }
 
+
+
 /* ── accent word in headlines (color only, no underline) ──── */
+
 .word-accent { color: var(--color-accent); }
 
-/* ── card & panel type system ───────────────────────────────
+
+
+/* ── card & panel type system ───────────────────────────────*
+
    One scale for every card title, description and panel header
+
    so browsing and detail pages share the same voice. Utilities
-   (text-[..]) still win over these since they layer later. */
+
+*   (text-[..]) still win over these since they layer later. */
+
 @layer components {
+
   .card-title { font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -.011em; line-height: 1.3; color: var(--color-ink); }
+
   .card-title-xl { font-family: var(--font-display); font-weight: 700; font-size: 22px; letter-spacing: -.018em; line-height: 1.15; }
+
   .card-desc { color: var(--color-cocoa); font-size: 13.5px; line-height: 1.62; }
+
   .panel-h { font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -.012em; }
+
   .panel-h-lg { font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: -.016em; }
+
 }
 
-/* ── signature: dashed frame with registration marks ──────────
+
+
+/* ── signature: dashed frame with registration marks ──────────*
+
    A hairline dashed border plus a small "+" at two opposite corners,
+
    drawn with pseudo-elements so it costs no extra markup. Use on panels
-   and shelves that should read as a measured field rather than a card. */
+
+*   and shelves that should read as a measured field rather than a card. */
+
 .frame {
+
   position: relative;
+
   border: 1px dashed var(--color-line);
+
   border-radius: 14px;
+
 }
+
 .frame::before, .frame::after {
+
   content: "+";
+
   position: absolute;
+
   font-family: var(--font-mono);
+
   font-size: 13px;
+
   line-height: 1;
+
   font-weight: 500;
+
   color: var(--color-rule);
+
   pointer-events: none;
+
 }
+
 .frame::before { top: -7px; left: -6px; }
+
 .frame::after { bottom: -7px; right: -6px; }
 
-/* ── signature: hairline rule that carries its own label ──────
+
+
+/* ── signature: hairline rule that carries its own label ──────*
+
    Replaces a plain section divider when the divider should say what
-   the section is. The label sits on the line, not above it. */
+
+*   the section is. The label sits on the line, not above it. */
+
 .rule-label {
+
   display: flex;
+
   align-items: center;
+
   gap: 14px;
+
   color: var(--color-dim);
+
   font-family: var(--font-mono);
+
   font-size: 10.5px;
+
   font-weight: 500;
+
   letter-spacing: .14em;
+
   text-transform: uppercase;
+
 }
+
 .rule-label::before, .rule-label::after {
+
   content: "";
+
   height: 1px;
+
   flex: 1;
+
   background: var(--color-line);
+
 }
+
 .rule-label::after { flex: none; width: 0; }
 
+
+
 /* ── signature: monospaced eyebrow ──────────────────────────── */
+
 .eyebrow {
+
   font-family: var(--font-mono);
+
   font-size: 10.5px;
+
   font-weight: 500;
+
   letter-spacing: .16em;
+
   text-transform: uppercase;
+
+  color: var(--color-dim);
+
+}
+
+
+
+/* a panel that scrolls without a visible bar */
+
+.panel-scroll { scrollbar-width: thin; scrollbar-color: var(--color-line) transparent; }
+
+.panel-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+
+.panel-scroll::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 99px; }
+
+
+
+/* ── edge-faded marquee track ─────────────────────────────── */
+
+.marq-mask {
+
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+
+}
+
+.marq-track { display: flex; gap: 14px; width: max-content; }
+
+.marq-track:hover { animation-play-state: paused; }
+
+
+
+/* ── hero grid pattern overlay ────────────────────────────── */
+
+.hero-pattern {
+
+  position: absolute; inset: 0; z-index: 0; opacity: 0.6; pointer-events: none;
+
+  background-image:
+
+    linear-gradient(rgba(236, 238, 240, 0.045) 1px, transparent 1px),
+
+    linear-gradient(90deg, rgba(236, 238, 240, 0.045) 1px, transparent 1px);
+
+  background-size: 46px 46px;
+
+  mask-image: radial-gradient(720px 430px at 76% 34%, #000, transparent 75%);
+
+  -webkit-mask-image: radial-gradient(720px 430px at 76% 34%, #000, transparent 75%);
+
+}
+
+.hero-glow {
+
+  position: absolute; inset: -220px 0 0; z-index: 0; pointer-events: none;
+
+  background:
+
+    /* no green wash: the hero light is neutral, so the page reads as black*
+
+*       and the accent green stays on the things that are actually interactive */
+
+    radial-gradient(640px 380px at 12% 0%, rgba(255, 255, 255, 0.045), transparent 70%),
+
+    radial-gradient(700px 420px at 88% 10%, rgba(255, 255, 255, 0.03), transparent 70%),
+
+    radial-gradient(900px 480px at 50% 118%, rgba(255, 255, 255, 0.028), transparent 70%);
+
+}
+
+
+
+/* ── hero stage: the dashboard embedded in a landscape ─────────*
+
+   Three nested rectangles, the way ossium frames its console: a dashed
+
+   hairline with "+" registration marks drawn on the page background, the
+
+   landscape photograph inset inside that, and the dashboard sitting on the
+
+*   photograph with room around it so the image shows on every side. */
+
+.hero-stage { position: relative; }
+
+.hero-field {
+
+  border-radius: 22px;
+
+  padding: clamp(9px, 1.3vw, 15px);
+
+  /* the dotted registration line: white dots on the night page */
+
+  border-color: color-mix(in srgb, var(--color-foam) 34%, transparent);
+
+}
+
+.hero-field::before, .hero-field::after, .hero-field .mark {
+
+  color: color-mix(in srgb, var(--color-foam) 46%, transparent);
+
+}
+
+/* on the paper page the same registration is drawn in ink instead */
+
+.light .hero-field { border-color: color-mix(in srgb, var(--color-ink) 30%, transparent); }
+
+.light .hero-field::before, .light .hero-field::after, .light .hero-field .mark {
+
+  color: color-mix(in srgb, var(--color-ink) 42%, transparent);
+
+}
+
+.hero-photo {
+
+  position: relative; overflow: hidden; border-radius: 15px;
+
+  border: 1px solid var(--color-line);
+
+  background: var(--color-bean);
+
+}
+
+/* only the scene layer, never the avatars inside the board */
+
+.hero-scene { position: absolute; inset: 0; }
+
+.hero-scene img {
+
+  width: 100%; height: 100%; display: block;
+
+  object-fit: cover; object-position: 50% 100%; opacity: .92;
+
+}
+
+/* a paper scrim so the photograph never fights the board on top of it */
+
+.hero-photo::after {
+
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+
+  background: linear-gradient(180deg,
+
+    color-mix(in srgb, var(--color-paper) 40%, transparent) 0%, transparent 24%,
+
+    transparent 58%, color-mix(in srgb, var(--color-paper) 46%, transparent) 100%);
+
+}
+
+.hero-photo-inner { position: relative; z-index: 1; padding: clamp(13px, 2.6vw, 38px) clamp(13px, 2.6vw, 34px); }
+
+/* the six scenes are night-weighted photographs; on a light page they would*
+
+*   read as a dark slab, so lay them over a pale ground and wash them up */
+
+.light .hero-photo { background: var(--color-sand); }
+
+/* the dawn photograph is already a light scene, so the light theme only*
+
+*   lifts it a little rather than washing it out */
+
+.light .hero-scene img {
+
+  opacity: .86;
+
+  filter: saturate(.92) brightness(1.06) contrast(.94);
+
+}
+
+
+
+/* ── the line around the dashboard ────────────────────────────*
+
+   The board sits on the photograph inside one steady hairline: white in the
+
+   dark theme, ink in the light one. Nothing glows and nothing travels round
+
+*   it - the ring only separates the board from the landscape behind it. */
+
+.board-ring { position: relative; }
+
+.board-ring::before {
+
+  content: ""; position: absolute; inset: -9px; border-radius: 20px;
+
+  pointer-events: none;
+
+  border: 1px solid color-mix(in srgb, var(--color-foam) 33%, transparent);
+
+}
+
+@media (min-width: 768px) {
+
+  .board-ring::before { inset: -13px; border-radius: 22px; }
+
+}
+
+.light .board-ring::before {
+
+  border-color: color-mix(in srgb, var(--color-coffee) 24%, transparent);
+
+}
+
+
+
+/* ── the stage on a phone ─────────────────────────────────────*
+
+   Three nested rectangles cost a phone about 90px of width, which leaves
+
+   the console too narrow to read its own rows. Below 700px the landscape
+
+   goes edge to edge and the console sits inside it with one small inset,
+
+   so the window gets the whole screen and the photograph still shows
+
+   above and below it. The registration dashes are a desktop detail and
+
+*   are dropped rather than squeezed. */
+
+@media (max-width: 700px) {
+
+  .hero-stage > div { padding-left: 0; padding-right: 0; }
+
+  .hero-field { border: 0; border-radius: 0; padding: 0; }
+
+  .hero-field::before, .hero-field::after, .hero-field .mark { display: none; }
+
+  .hero-photo { border-left: 0; border-right: 0; border-radius: 0; }
+
+  .hero-photo-inner { padding: 15px 13px 17px; }
+
+  .board-ring::before { inset: -7px; border-radius: 15px; }
+
+  /* the rail scrolls, so say so instead of cutting a label in half */
+
+  .hero-rail {
+
+    -webkit-mask-image: linear-gradient(90deg, #000 0 calc(100% - 30px), transparent 100%);
+
+            mask-image: linear-gradient(90deg, #000 0 calc(100% - 30px), transparent 100%);
+
+  }
+
+}
+
+
+
+/* the other two corners of the registration frame: .frame draws the*
+
+   top-left and bottom-right with pseudo-elements, and the markup adds a
+
+*   pair of marks for the corners it cannot reach. */
+
+.frame .mark {
+
+  position: absolute; font-family: var(--font-mono); font-size: 13px;
+
+  line-height: 1; font-weight: 500; color: var(--color-rule); pointer-events: none;
+
+}
+
+.frame .mark.tr { top: -7px; right: -6px; }
+
+.frame .mark.bl { bottom: -7px; left: -6px; }
+
+
+
+/* ── logocell float (per-cell rotation + delay via CSS vars) ─ */
+
+.logocell {
+
+  transform: rotate(var(--r, 0deg));
+
+  animation: floaty 6.5s var(--d, 0s) ease-in-out infinite;
+
+  transition: transform 0.25s var(--ease-silk), box-shadow 0.25s, border-color 0.25s;
+
+}
+
+.logocell:hover { animation-play-state: paused; transform: rotate(0deg) scale(1.07); }
+
+
+
+/* ── code panel (graphite island, GitHub-dark syntax hues) ─── */
+
+.t-k { color: #79c0ff; } .t-s { color: #a5d6ff; } .t-f { color: #d2a8ff; }
+
+.t-c { color: var(--color-dimdk); font-style: italic; } .t-g { color: #7ee787; }
+
+.t-y { color: #e3b341; } .t-o { color: #ffa657; }
+
+.cp-line { display: flex; gap: 16px; white-space: pre-wrap; word-break: break-word; }
+
+.cp-line::before { content: attr(data-n); color: var(--color-dimdk); user-select: none; min-width: 16px; text-align: right; }
+
+.caret { display: inline-block; width: 8px; height: 15px; background: #7ee787; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+
+.mock-lights i { display: block; width: 10px; height: 10px; border-radius: 50%; }
+
+.mock-lights i:nth-child(1) { background: #f87171; }
+
+.mock-lights i:nth-child(2) { background: #e3b341; }
+
+.mock-lights i:nth-child(3) { background: #7ee787; }
+
+
+
+/* ── timeline (Gantt) ─────────────────────────────────────── */
+
+.tl-track {
+
+  position: relative; height: 44px; border-radius: 12px; background:
+
+    repeating-linear-gradient(90deg, transparent 0, transparent calc(8.3333% - 1px), var(--color-liness) calc(8.3333% - 1px), var(--color-liness) 8.3333%),
+
+    var(--color-paper);
+
+}
+
+.tl-phase {
+
+  position: absolute; top: 7px; bottom: 7px; border-radius: 999px;
+
+  display: flex; align-items: center; padding: 0 12px; overflow: hidden;
+
+  font-size: 10.5px; font-weight: 700; white-space: nowrap;
+
+  color: color-mix(in srgb, var(--pc) 82%, #eceef0);
+
+  background: color-mix(in srgb, var(--pc) 16%, #17191b);
+
+  border: 1px dashed color-mix(in srgb, var(--pc) 45%, transparent);
+
+  transition: transform 0.18s var(--ease-silk), box-shadow 0.18s;
+
+}
+
+.tl-phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); z-index: 3; }
+
+.tl-phase.is-active { border-style: solid; border-width: 1.5px; background: color-mix(in srgb, var(--pc) 26%, #17191b); }
+
+.tl-phase.is-done { opacity: 0.45; }
+
+.tl-dot::before {
+
+  content: ""; width: 8px; height: 8px; border-radius: 50%; flex: none;
+
+  background: var(--pc, var(--color-accent));
+
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc, var(--color-accent)) 18%, transparent);
+
+}
+
+
+
+/* ── charts ───────────────────────────────────────────────── */
+
+.donut svg { transform: rotate(-90deg); }
+
+.donut circle { fill: none; stroke-width: 15; stroke-linecap: round; }
+
+.pulse-bar { transform-origin: bottom; animation: growBar 0.9s var(--ease-silk) backwards; }
+
+.grow-x { transform-origin: left; animation: growX 0.9s var(--ease-silk) backwards; }
+
+
+
+/* active phase on the program timeline */
+
+.timeline-active { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .timeline-active { animation: activeGlow 2.4s var(--ease-silk) infinite; }
+
+  @keyframes activeGlow {
+
+    0%, 100% { box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 14%, transparent); }
+
+    50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 26%, transparent); }
+
+  }
+
+}
+
+
+
+/* ── theme toggle mini sky ────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .tg-star { animation: twinkle 2.6s ease-in-out infinite; }
+
+  .tg-cloud { animation: drift 9s ease-in-out infinite alternate; }
+
+  .tg-rays { animation: raySpin 14s linear infinite; transform-origin: center; }
+
+  @keyframes twinkle { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+  @keyframes drift { from { transform: translateX(-3px); } to { transform: translateX(4px); } }
+
+  @keyframes raySpin { to { transform: rotate(360deg); } }
+
+}
+
+
+
+/* ── misc component-ish bits ──────────────────────────────── */
+
+.select-warm {
+
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http\://www\.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2371787e' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat; background-position: right 14px center;
+
+}
+
+.faq details summary { list-style: none; cursor: pointer; }
+
+.faq details summary::-webkit-details-marker { display: none; }
+
+.faq details summary::after { content: "+"; font-family: var(--font-mono); font-size: 20px; color: var(--color-accent); transition: transform 0.2s; }
+
+.faq details[open] summary::after { transform: rotate(45deg); }
+
+.faq details[open] summary { border-bottom: 1px solid var(--color-liness); }
+
+.reveal { animation: riseIn 0.6s var(--ease-silk) both; }
+
+
+
+/* ── board artwork (src/lib/dash/art.tsx) ─────────────────────*
+
+   The scenes are built in three depth layers - draw\ is the structure,*
+
+   pop\ is the node that carries meaning - and each layer arrives 120ms*
+
+   after the one before it. A fade-and-settle, not a stroke chase: the
+
+   dashed rails in these drawings would slide rather than draw, and the
+
+*   board is a working surface, not a showpiece.                    ── */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .art .draw, .art .draw-2, .art .draw-3,
+
+  .art .pop, .art .pop-2, .art .pop-3 { animation: artIn 0.55s var(--ease-silk) both; }
+
+  .art .draw-2, .art .pop-2 { animation-delay: 0.12s; }
+
+  .art .draw-3, .art .pop-3 { animation-delay: 0.24s; }
+
+  @keyframes artIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+}
+
+
+
+/* ── orbit glow — a green comet arc that travels along the border ── */
+
+@property --orbit { syntax: "\<angle>"; inherits: false; initial-value: 0deg; }
+
+@keyframes orbitSpin { to { --orbit: 360deg; } }
+
+
+
+/* ── mobile menu: hamburger sheet + backdrop ── */
+
+@keyframes sheetIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+
+.search-pulse, .pulse-grid > * { position: relative; }
+
+.search-pulse::after,
+
+.pulse-grid > *::after {
+
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
+
+  background: conic-gradient(from var(--orbit),
+
+    transparent 0% 58%,
+
+    color-mix(in srgb, var(--color-ember) 42%, transparent) 72%,
+
+    var(--color-accent) 86%,
+
+    color-mix(in srgb, var(--color-ember) 42%, transparent) 94%,
+
+    transparent 100%);
+
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+
+  mask-composite: exclude;
+
+  pointer-events: none;
+
+  animation: orbitSpin 5s linear infinite;
+
+}
+
+.search-pulse::after { animation-duration: 6.5s; }
+
+.pulse-grid > *::after { animation-duration: 7.5s; }
+
+.pulse-grid > :nth-child(3n+2)::after { animation-delay: -2.5s; }
+
+.pulse-grid > :nth-child(3n)::after { animation-delay: -5s; }
+
+
+
+/* ── site splash: one-time intro curtain ─────────────────────────────*
+
+   The curtain's own motion (it lifts) is framer-motion's, in Shell.tsx; this
+
+*   rule only places it. The mark inside draws itself - see Logo(). */
+
+.splash {
+
+  position: fixed; inset: 0; z-index: 95; background: var(--color-paper);
+
+  display: grid; place-items: center; pointer-events: none;
+
+  will-change: transform;
+
+}
+
+
+
+/* ── the brand mark: a rosette that is always turning ────────────────*
+
+   One motion, on purpose. \`.mark-spin\` is a single revolution every 14s,
+
+   linear, forever. The rosette is deliberately uneven - seven petals, gaps from
+
+   43.5° to 55°, the bottom pair a fifth smaller - so the turn never lands on
+
+   itself and the eye keeps reading the same seven petals rather than a spinner.
+
+   That irregularity is why a constant revolution is legible here and was not
+
+   worth it for a symmetric mark. There is no entrance wind and no hover breath
+
+   on top of it any more: the mark's whole personality is that it is always
+
+*   moving, and two one-shot gestures stacked on it only made it busy. */
+
+.mark-spin {
+
+  transform-box: view-box;
+
+  transform-origin: 50px 50px;
+
+  animation: markSpin 14s linear infinite;
+
+}
+
+@keyframes markSpin { to { transform: rotate(360deg); } }
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  /* a mark that turns forever is exactly the animation a reduced-motion*
+
+*     visitor is asking not to have: it stops, and sits at its drawn angle. */
+
+  .mark-spin { animation: none; }
+
+}
+
+
+
+/* ── the sign-in plate (components/AuthCanvas.tsx) ──────────────────*
+
+   Numbers come from the reference screenshot, not from eye - see the header
+
+   comment in that file. The plate is deliberately fixed to graphite in both
+
+   themes: it is a lit object on a dark ground, and the form column beside it
+
+*   keeps the visitor's theme. */
+
+.auth-plate {
+
+  --tile: clamp(154px, 21vh, 194px);
+
+  background:
+
+    radial-gradient(54% 40% at 50% 50%, rgba(255, 255, 255, .05), transparent 72%),
+
+    radial-gradient(115% 78% at 50% 45%, #1d1d18 0%, #161612 46%, #101010 100%);
+
+}
+
+/* the field fades at the plate borders: a grid that runs to the very edge turns*
+
+   the panel into graph paper, while a grid that dissolves turns it into a
+
+*   lit surface with an instrument on it */
+
+.auth-field {
+
+  -webkit-mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
+
+  mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
+
+}
+
+/* the optical axis, one hairline each way. Both are phased by the same*
+
+   measurement that phases the grid, so they cross where the tile sits and the
+
+*   tile's own opacity ends each line at its edge. */
+
+.auth-axis { position: absolute; pointer-events: none; background: rgba(255, 255, 255, .085); }
+
+.auth-axis-h {
+
+  left: 0; right: 0; top: 50%; height: 1px;
+
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+
+}
+
+.auth-axis-v {
+
+  top: 0; bottom: 0; left: 50%; width: 1px;
+
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+
+}
+
+/* four corner brackets, one fixed measure off the tile at every size. They are*
+
+   static while the tile blooms up into them, which is what makes the centring
+
+*   read as deliberate rather than as a coincidence of flexbox. */
+
+.auth-brackets {
+
+  --arm: 15px;
+
+  --th: 1px;
+
+  --brk: rgba(255, 255, 255, .22);
+
+  position: absolute;
+
+  inset: -17px;
+
+  pointer-events: none;
+
+  background:
+
+    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--arm) var(--th),
+
+    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--th) var(--arm),
+
+    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--arm) var(--th),
+
+    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--th) var(--arm),
+
+    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--arm) var(--th),
+
+    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--th) var(--arm),
+
+    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--arm) var(--th),
+
+    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--th) var(--arm);
+
+  background-repeat: no-repeat;
+
+}
+
+/* the tile is the object on the plate, so it is the one thing here built as a*
+
+   lit solid: top edge catching light, bottom edge falling away, the inside
+
+   darkening toward its own walls, and two shadows - a tight contact one and a
+
+*   wide throw that lifts it off the grid */
+
+.mark-tile {
+
+  width: var(--tile);
+
+  height: var(--tile);
+
+  border-radius: calc(var(--tile) * .17);
+
+  background:
+
+    radial-gradient(120% 92% at 30% 10%, rgba(255, 255, 255, .055), transparent 58%),
+
+    linear-gradient(178deg, #1a1816 0%, #100e0d 40%, #0a0908 100%);
+
+  border: 1px solid rgba(255, 255, 255, .075);
+
+  box-shadow:
+
+    inset 0 1px 0 rgba(255, 255, 255, .1),
+
+    inset 0 -1px 0 rgba(0, 0, 0, .55),
+
+    inset 0 0 46px rgba(0, 0, 0, .5),
+
+    0 2px 3px rgba(0, 0, 0, .45),
+
+    0 12px 26px -14px rgba(0, 0, 0, .8),
+
+    0 34px 66px -26px rgba(0, 0, 0, .95);
+
+  color: #fff;
+
+  transition: border-color .4s ease;
+
+}
+
+.mark-tile:hover { border-color: rgba(255, 255, 255, .13); }
+
+/* 60% of the tile, sized from the tile rather than passed in px, so the mark*
+
+*   keeps the reference's proportion at every viewport */
+
+.mark-tile > svg { width: 60%; height: 60%; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .6)); }
+
+.auth-halo {
+
+  position: absolute;
+
+  inset: -58%;
+
+  pointer-events: none;
+
+  background:
+
+    radial-gradient(closest-side circle at 50% 50%, rgba(255, 255, 255, .08), rgba(255, 255, 255, .022) 46%, transparent 72%),
+
+    radial-gradient(closest-side circle at 50% 52%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 62%);
+
+}
+
+/* out of the centring flow and pinned under the tile's own bottom edge - past*
+
+   the brackets, so the label never crowds the frame it names. Centred on the
+
+*   plate's centre line, so it can never drag the mark off the middle again. */
+
+.auth-caption {
+
+  top: calc(50% + var(--tile) / 2 + 42px);
+
+  color: rgba(255, 255, 255, .32);
+
+  white-space: nowrap;
+
+}
+
+
+
+/* ── the intro ──────────────────────────────────────────────────────*
+
+   The mark in the curtain does only what it does everywhere else: it turns
+
+   (\`.mark-spin\` above). The intro is built around it rather than on top of it -
+
+   the rosette fades up already mid-revolution, one soft green bloom swells once
+
+   behind it, the wordmark rises letter by letter, and a hairline rule grows
+
+   under that before the whole thing lifts.
+
+
+
+   The bloom is a fixed-size circle scaling about its own centre, and the rule
+
+   scales on the axis it grows along; both are stopped for reduced-motion
+
+*   visitors below, and the curtain is skipped outright for them in Shell.tsx. */
+
+
+
+/* one bloom, swelling behind the mark while it arrives */
+
+.bloom {
+
+  position: absolute;
+
+  width: 300px; height: 300px; border-radius: 50%;
+
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 62%);
+
+  animation: bloom 2.1s cubic-bezier(.22, 1, .36, 1) .1s both;
+
+}
+
+@keyframes bloom {
+
+  0% { transform: scale(.3); opacity: 0; }
+
+  30% { opacity: .48; }
+
+  100% { transform: scale(1.18); opacity: 0; }
+
+}
+
+
+
+/* the rule that grows between the wordmark and what the site is */
+
+.splash-rule {
+
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+
+  transform-origin: center;
+
+  animation: ruleGrow .9s cubic-bezier(.22, 1, .36, 1) 1.02s both;
+
+}
+
+@keyframes ruleGrow { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: .5; } }
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .bloom, .splash-rule { animation: none; }
+
+  .bloom { opacity: 0; }
+
+  .splash-rule { opacity: .35; }
+
+}
+
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.no-scrollbar { scrollbar-width: none; }
+
+
+
+/* ── footer strip: one green sweep, 4px core + soft bloom ──── */
+
+@keyframes footFlow { to { background-position: 200% 0; } }
+
+.footer-arc {
+
+  position: relative;
+
+  height: 2px;
+
+  background: linear-gradient(90deg,
+
+    var(--color-accentd), var(--color-accent), var(--color-ember),
+
+    var(--color-accent), var(--color-accentd));
+
+  background-size: 200% 100%;
+
+  animation: footFlow 8s linear infinite;
+
+}
+
+.footer-arc::after {
+
+  content: "";
+
+  position: absolute; inset: 0;
+
+  background: inherit;
+
+  background-size: inherit;
+
+  animation: inherit;
+
+  filter: blur(7px);
+
+  opacity: .5;
+
+}
+
+/* the home closing CTA is the same graphite as the footer - drop the*
+
+*   gap so the strip reads as the seam between them */
+
+.cta-close + footer { margin-top: 0; }
+
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .marq-track, .logocell, .caret, .pulse-bar, .grow-x, .reveal, .tg-star, .tg-cloud, .tg-rays, .footer-arc, .footer-arc::after, .animate-diamond, .animate-hero-diamond { animation: none !important; }
+
+  /* parked at the diamond end of the turn rather than flat on its corners */
+
+  .animate-hero-diamond { transform: rotate(45deg); }
+
+  .search-pulse::after, .pulse-grid > *::after { display: none; }
+
+  \, \::before, *::after { transition-duration: 0.01ms !important; }
+
+  html { scroll-behavior: auto; }
+
+}
+
+
+/* ── WCAG AA contrast refinements ───────────────────────────────
+   Keep the existing graphite + signal-green identity. These overrides
+   address low-contrast states without changing layout or component styling. */
+
+/* Placeholders and secondary labels must remain readable in both themes. */
+input::placeholder,
+textarea::placeholder,
+[data-placeholder] {
+  color: var(--color-dim);
+  opacity: 1;
+}
+
+/* Keep keyboard focus visible on form controls as well as other elements. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Timeline labels use the theme text token instead of arbitrary category mixes. */
+.tl-phase,
+.light .tl-phase {
+  color: var(--color-ink);
+}
+
+/* Completed timeline items stay legible; indicate completion through styling,
+   not by fading the entire label below the text-contrast threshold. */
+.tl-phase.is-done {
+  opacity: 1;
   color: var(--color-dim);
 }
 
-/* a panel that scrolls without a visible bar */
-.panel-scroll { scrollbar-width: thin; scrollbar-color: var(--color-line) transparent; }
-.panel-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
-.panel-scroll::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 99px; }
-
-/* ── edge-faded marquee track ─────────────────────────────── */
-.marq-mask {
-  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-}
-.marq-track { display: flex; gap: 14px; width: max-content; }
-.marq-track:hover { animation-play-state: paused; }
-
-/* ── hero grid pattern overlay ────────────────────────────── */
-.hero-pattern {
-  position: absolute; inset: 0; z-index: 0; opacity: 0.6; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(236, 238, 240, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(236, 238, 240, 0.045) 1px, transparent 1px);
-  background-size: 46px 46px;
-  mask-image: radial-gradient(720px 430px at 76% 34%, #000, transparent 75%);
-  -webkit-mask-image: radial-gradient(720px 430px at 76% 34%, #000, transparent 75%);
-}
-.hero-glow {
-  position: absolute; inset: -220px 0 0; z-index: 0; pointer-events: none;
-  background:
-    /* no green wash: the hero light is neutral, so the page reads as black
-       and the accent green stays on the things that are actually interactive */
-    radial-gradient(640px 380px at 12% 0%, rgba(255, 255, 255, 0.045), transparent 70%),
-    radial-gradient(700px 420px at 88% 10%, rgba(255, 255, 255, 0.03), transparent 70%),
-    radial-gradient(900px 480px at 50% 118%, rgba(255, 255, 255, 0.028), transparent 70%);
-}
-
-/* ── hero stage: the dashboard embedded in a landscape ─────────
-   Three nested rectangles, the way ossium frames its console: a dashed
-   hairline with "+" registration marks drawn on the page background, the
-   landscape photograph inset inside that, and the dashboard sitting on the
-   photograph with room around it so the image shows on every side. */
-.hero-stage { position: relative; }
-.hero-field {
-  border-radius: 22px;
-  padding: clamp(9px, 1.3vw, 15px);
-  /* the dotted registration line: white dots on the night page */
-  border-color: color-mix(in srgb, var(--color-foam) 34%, transparent);
-}
-.hero-field::before, .hero-field::after, .hero-field .mark {
-  color: color-mix(in srgb, var(--color-foam) 46%, transparent);
-}
-/* on the paper page the same registration is drawn in ink instead */
-.light .hero-field { border-color: color-mix(in srgb, var(--color-ink) 30%, transparent); }
-.light .hero-field::before, .light .hero-field::after, .light .hero-field .mark {
-  color: color-mix(in srgb, var(--color-ink) 42%, transparent);
-}
-.hero-photo {
-  position: relative; overflow: hidden; border-radius: 15px;
-  border: 1px solid var(--color-line);
-  background: var(--color-bean);
-}
-/* only the scene layer, never the avatars inside the board */
-.hero-scene { position: absolute; inset: 0; }
-.hero-scene img {
-  width: 100%; height: 100%; display: block;
-  object-fit: cover; object-position: 50% 100%; opacity: .92;
-}
-/* a paper scrim so the photograph never fights the board on top of it */
-.hero-photo::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg,
-    color-mix(in srgb, var(--color-paper) 40%, transparent) 0%, transparent 24%,
-    transparent 58%, color-mix(in srgb, var(--color-paper) 46%, transparent) 100%);
-}
-.hero-photo-inner { position: relative; z-index: 1; padding: clamp(13px, 2.6vw, 38px) clamp(13px, 2.6vw, 34px); }
-/* the six scenes are night-weighted photographs; on a light page they would
-   read as a dark slab, so lay them over a pale ground and wash them up */
-.light .hero-photo { background: var(--color-sand); }
-/* the dawn photograph is already a light scene, so the light theme only
-   lifts it a little rather than washing it out */
-.light .hero-scene img {
-  opacity: .86;
-  filter: saturate(.92) brightness(1.06) contrast(.94);
-}
-
-/* ── the line around the dashboard ────────────────────────────
-   The board sits on the photograph inside one steady hairline: white in the
-   dark theme, ink in the light one. Nothing glows and nothing travels round
-   it - the ring only separates the board from the landscape behind it. */
-.board-ring { position: relative; }
-.board-ring::before {
-  content: ""; position: absolute; inset: -9px; border-radius: 20px;
-  pointer-events: none;
-  border: 1px solid color-mix(in srgb, var(--color-foam) 33%, transparent);
-}
-@media (min-width: 768px) {
-  .board-ring::before { inset: -13px; border-radius: 22px; }
-}
-.light .board-ring::before {
-  border-color: color-mix(in srgb, var(--color-coffee) 24%, transparent);
-}
-
-/* ── the stage on a phone ─────────────────────────────────────
-   Three nested rectangles cost a phone about 90px of width, which leaves
-   the console too narrow to read its own rows. Below 700px the landscape
-   goes edge to edge and the console sits inside it with one small inset,
-   so the window gets the whole screen and the photograph still shows
-   above and below it. The registration dashes are a desktop detail and
-   are dropped rather than squeezed. */
-@media (max-width: 700px) {
-  .hero-stage > div { padding-left: 0; padding-right: 0; }
-  .hero-field { border: 0; border-radius: 0; padding: 0; }
-  .hero-field::before, .hero-field::after, .hero-field .mark { display: none; }
-  .hero-photo { border-left: 0; border-right: 0; border-radius: 0; }
-  .hero-photo-inner { padding: 15px 13px 17px; }
-  .board-ring::before { inset: -7px; border-radius: 15px; }
-  /* the rail scrolls, so say so instead of cutting a label in half */
-  .hero-rail {
-    -webkit-mask-image: linear-gradient(90deg, #000 0 calc(100% - 30px), transparent 100%);
-            mask-image: linear-gradient(90deg, #000 0 calc(100% - 30px), transparent 100%);
-  }
-}
-
-/* the other two corners of the registration frame: .frame draws the
-   top-left and bottom-right with pseudo-elements, and the markup adds a
-   pair of marks for the corners it cannot reach. */
-.frame .mark {
-  position: absolute; font-family: var(--font-mono); font-size: 13px;
-  line-height: 1; font-weight: 500; color: var(--color-rule); pointer-events: none;
-}
-.frame .mark.tr { top: -7px; right: -6px; }
-.frame .mark.bl { bottom: -7px; left: -6px; }
-
-/* ── logocell float (per-cell rotation + delay via CSS vars) ─ */
-.logocell {
-  transform: rotate(var(--r, 0deg));
-  animation: floaty 6.5s var(--d, 0s) ease-in-out infinite;
-  transition: transform 0.25s var(--ease-silk), box-shadow 0.25s, border-color 0.25s;
-}
-.logocell:hover { animation-play-state: paused; transform: rotate(0deg) scale(1.07); }
-
-/* ── code panel (graphite island, GitHub-dark syntax hues) ─── */
-.t-k { color: #79c0ff; } .t-s { color: #a5d6ff; } .t-f { color: #d2a8ff; }
-.t-c { color: var(--color-dimdk); font-style: italic; } .t-g { color: #7ee787; }
-.t-y { color: #e3b341; } .t-o { color: #ffa657; }
-.cp-line { display: flex; gap: 16px; white-space: pre-wrap; word-break: break-word; }
-.cp-line::before { content: attr(data-n); color: var(--color-dimdk); user-select: none; min-width: 16px; text-align: right; }
-.caret { display: inline-block; width: 8px; height: 15px; background: #7ee787; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
-.mock-lights i { display: block; width: 10px; height: 10px; border-radius: 50%; }
-.mock-lights i:nth-child(1) { background: #f87171; }
-.mock-lights i:nth-child(2) { background: #e3b341; }
-.mock-lights i:nth-child(3) { background: #7ee787; }
-
-/* ── timeline (Gantt) ─────────────────────────────────────── */
-.tl-track {
-  position: relative; height: 44px; border-radius: 12px; background:
-    repeating-linear-gradient(90deg, transparent 0, transparent calc(8.3333% - 1px), var(--color-liness) calc(8.3333% - 1px), var(--color-liness) 8.3333%),
-    var(--color-paper);
-}
-.tl-phase {
-  position: absolute; top: 7px; bottom: 7px; border-radius: 999px;
-  display: flex; align-items: center; padding: 0 12px; overflow: hidden;
-  font-size: 10.5px; font-weight: 700; white-space: nowrap;
-  color: color-mix(in srgb, var(--pc) 82%, #eceef0);
-  background: color-mix(in srgb, var(--pc) 16%, #17191b);
-  border: 1px dashed color-mix(in srgb, var(--pc) 45%, transparent);
-  transition: transform 0.18s var(--ease-silk), box-shadow 0.18s;
-}
-.tl-phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); z-index: 3; }
-.tl-phase.is-active { border-style: solid; border-width: 1.5px; background: color-mix(in srgb, var(--pc) 26%, #17191b); }
-.tl-phase.is-done { opacity: 0.45; }
-.tl-dot::before {
-  content: ""; width: 8px; height: 8px; border-radius: 50%; flex: none;
-  background: var(--pc, var(--color-accent));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc, var(--color-accent)) 18%, transparent);
-}
-
-/* ── charts ───────────────────────────────────────────────── */
-.donut svg { transform: rotate(-90deg); }
-.donut circle { fill: none; stroke-width: 15; stroke-linecap: round; }
-.pulse-bar { transform-origin: bottom; animation: growBar 0.9s var(--ease-silk) backwards; }
-.grow-x { transform-origin: left; animation: growX 0.9s var(--ease-silk) backwards; }
-
-/* active phase on the program timeline */
-.timeline-active { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent); }
-@media (prefers-reduced-motion: no-preference) {
-  .timeline-active { animation: activeGlow 2.4s var(--ease-silk) infinite; }
-  @keyframes activeGlow {
-    0%, 100% { box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 14%, transparent); }
-    50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 26%, transparent); }
-  }
-}
-
-/* ── theme toggle mini sky ────────────────────────────────── */
-@media (prefers-reduced-motion: no-preference) {
-  .tg-star { animation: twinkle 2.6s ease-in-out infinite; }
-  .tg-cloud { animation: drift 9s ease-in-out infinite alternate; }
-  .tg-rays { animation: raySpin 14s linear infinite; transform-origin: center; }
-  @keyframes twinkle { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
-  @keyframes drift { from { transform: translateX(-3px); } to { transform: translateX(4px); } }
-  @keyframes raySpin { to { transform: rotate(360deg); } }
-}
-
-/* ── misc component-ish bits ──────────────────────────────── */
-.select-warm {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2371787e' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center;
-}
-.faq details summary { list-style: none; cursor: pointer; }
-.faq details summary::-webkit-details-marker { display: none; }
-.faq details summary::after { content: "+"; font-family: var(--font-mono); font-size: 20px; color: var(--color-accent); transition: transform 0.2s; }
-.faq details[open] summary::after { transform: rotate(45deg); }
-.faq details[open] summary { border-bottom: 1px solid var(--color-liness); }
-.reveal { animation: riseIn 0.6s var(--ease-silk) both; }
-
-/* ── board artwork (src/lib/dash/art.tsx) ─────────────────────
-   The scenes are built in three depth layers - draw* is the structure,
-   pop* is the node that carries meaning - and each layer arrives 120ms
-   after the one before it. A fade-and-settle, not a stroke chase: the
-   dashed rails in these drawings would slide rather than draw, and the
-   board is a working surface, not a showpiece.                    ── */
-@media (prefers-reduced-motion: no-preference) {
-  .art .draw, .art .draw-2, .art .draw-3,
-  .art .pop, .art .pop-2, .art .pop-3 { animation: artIn 0.55s var(--ease-silk) both; }
-  .art .draw-2, .art .pop-2 { animation-delay: 0.12s; }
-  .art .draw-3, .art .pop-3 { animation-delay: 0.24s; }
-  @keyframes artIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
-}
-
-/* ── orbit glow — a green comet arc that travels along the border ── */
-@property --orbit { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@keyframes orbitSpin { to { --orbit: 360deg; } }
-
-/* ── mobile menu: hamburger sheet + backdrop ── */
-@keyframes sheetIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.search-pulse, .pulse-grid > * { position: relative; }
-.search-pulse::after,
-.pulse-grid > *::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
-  background: conic-gradient(from var(--orbit),
-    transparent 0% 58%,
-    color-mix(in srgb, var(--color-ember) 42%, transparent) 72%,
-    var(--color-accent) 86%,
-    color-mix(in srgb, var(--color-ember) 42%, transparent) 94%,
-    transparent 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: orbitSpin 5s linear infinite;
-}
-.search-pulse::after { animation-duration: 6.5s; }
-.pulse-grid > *::after { animation-duration: 7.5s; }
-.pulse-grid > :nth-child(3n+2)::after { animation-delay: -2.5s; }
-.pulse-grid > :nth-child(3n)::after { animation-delay: -5s; }
-
-/* ── site splash: one-time intro curtain ─────────────────────────────
-   The curtain's own motion (it lifts) is framer-motion's, in Shell.tsx; this
-   rule only places it. The mark inside draws itself - see Logo(). */
-.splash {
-  position: fixed; inset: 0; z-index: 95; background: var(--color-paper);
-  display: grid; place-items: center; pointer-events: none;
-  will-change: transform;
-}
-
-/* ── the brand mark: a rosette that is always turning ────────────────
-   One motion, on purpose. `.mark-spin` is a single revolution every 14s,
-   linear, forever. The rosette is deliberately uneven - seven petals, gaps from
-   43.5° to 55°, the bottom pair a fifth smaller - so the turn never lands on
-   itself and the eye keeps reading the same seven petals rather than a spinner.
-   That irregularity is why a constant revolution is legible here and was not
-   worth it for a symmetric mark. There is no entrance wind and no hover breath
-   on top of it any more: the mark's whole personality is that it is always
-   moving, and two one-shot gestures stacked on it only made it busy. */
-.mark-spin {
-  transform-box: view-box;
-  transform-origin: 50px 50px;
-  animation: markSpin 14s linear infinite;
-}
-@keyframes markSpin { to { transform: rotate(360deg); } }
-
-@media (prefers-reduced-motion: reduce) {
-  /* a mark that turns forever is exactly the animation a reduced-motion
-     visitor is asking not to have: it stops, and sits at its drawn angle. */
-  .mark-spin { animation: none; }
-}
-
-/* ── the sign-in plate (components/AuthCanvas.tsx) ──────────────────
-   Numbers come from the reference screenshot, not from eye - see the header
-   comment in that file. The plate is deliberately fixed to graphite in both
-   themes: it is a lit object on a dark ground, and the form column beside it
-   keeps the visitor's theme. */
-.auth-plate {
-  --tile: clamp(154px, 21vh, 194px);
-  background:
-    radial-gradient(54% 40% at 50% 50%, rgba(255, 255, 255, .05), transparent 72%),
-    radial-gradient(115% 78% at 50% 45%, #1d1d18 0%, #161612 46%, #101010 100%);
-}
-/* the field fades at the plate borders: a grid that runs to the very edge turns
-   the panel into graph paper, while a grid that dissolves turns it into a
-   lit surface with an instrument on it */
-.auth-field {
-  -webkit-mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
-  mask-image: radial-gradient(74% 62% at 50% 50%, #000 38%, rgba(0, 0, 0, .5) 74%, transparent 100%);
-}
-/* the optical axis, one hairline each way. Both are phased by the same
-   measurement that phases the grid, so they cross where the tile sits and the
-   tile's own opacity ends each line at its edge. */
-.auth-axis { position: absolute; pointer-events: none; background: rgba(255, 255, 255, .085); }
-.auth-axis-h {
-  left: 0; right: 0; top: 50%; height: 1px;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
-}
-.auth-axis-v {
-  top: 0; bottom: 0; left: 50%; width: 1px;
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
-  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
-}
-/* four corner brackets, one fixed measure off the tile at every size. They are
-   static while the tile blooms up into them, which is what makes the centring
-   read as deliberate rather than as a coincidence of flexbox. */
-.auth-brackets {
-  --arm: 15px;
-  --th: 1px;
-  --brk: rgba(255, 255, 255, .22);
-  position: absolute;
-  inset: -17px;
-  pointer-events: none;
-  background:
-    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--arm) var(--th),
-    linear-gradient(var(--brk), var(--brk)) 0 0 / var(--th) var(--arm),
-    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--arm) var(--th),
-    linear-gradient(var(--brk), var(--brk)) 100% 0 / var(--th) var(--arm),
-    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--arm) var(--th),
-    linear-gradient(var(--brk), var(--brk)) 0 100% / var(--th) var(--arm),
-    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--arm) var(--th),
-    linear-gradient(var(--brk), var(--brk)) 100% 100% / var(--th) var(--arm);
-  background-repeat: no-repeat;
-}
-/* the tile is the object on the plate, so it is the one thing here built as a
-   lit solid: top edge catching light, bottom edge falling away, the inside
-   darkening toward its own walls, and two shadows - a tight contact one and a
-   wide throw that lifts it off the grid */
-.mark-tile {
-  width: var(--tile);
-  height: var(--tile);
-  border-radius: calc(var(--tile) * .17);
-  background:
-    radial-gradient(120% 92% at 30% 10%, rgba(255, 255, 255, .055), transparent 58%),
-    linear-gradient(178deg, #1a1816 0%, #100e0d 40%, #0a0908 100%);
-  border: 1px solid rgba(255, 255, 255, .075);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .1),
-    inset 0 -1px 0 rgba(0, 0, 0, .55),
-    inset 0 0 46px rgba(0, 0, 0, .5),
-    0 2px 3px rgba(0, 0, 0, .45),
-    0 12px 26px -14px rgba(0, 0, 0, .8),
-    0 34px 66px -26px rgba(0, 0, 0, .95);
-  color: #fff;
-  transition: border-color .4s ease;
-}
-.mark-tile:hover { border-color: rgba(255, 255, 255, .13); }
-/* 60% of the tile, sized from the tile rather than passed in px, so the mark
-   keeps the reference's proportion at every viewport */
-.mark-tile > svg { width: 60%; height: 60%; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .6)); }
-.auth-halo {
-  position: absolute;
-  inset: -58%;
-  pointer-events: none;
-  background:
-    radial-gradient(closest-side circle at 50% 50%, rgba(255, 255, 255, .08), rgba(255, 255, 255, .022) 46%, transparent 72%),
-    radial-gradient(closest-side circle at 50% 52%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 62%);
-}
-/* out of the centring flow and pinned under the tile's own bottom edge - past
-   the brackets, so the label never crowds the frame it names. Centred on the
-   plate's centre line, so it can never drag the mark off the middle again. */
+/* The authentication caption was previously rendered at 32% white opacity. */
 .auth-caption {
-  top: calc(50% + var(--tile) / 2 + 42px);
-  color: rgba(255, 255, 255, .32);
-  white-space: nowrap;
+  color: var(--color-dimdk);
 }
 
-/* ── the intro ──────────────────────────────────────────────────────
-   The mark in the curtain does only what it does everywhere else: it turns
-   (`.mark-spin` above). The intro is built around it rather than on top of it -
-   the rosette fades up already mid-revolution, one soft green bloom swells once
-   behind it, the wordmark rises letter by letter, and a hairline rule grows
-   under that before the whole thing lifts.
-
-   The bloom is a fixed-size circle scaling about its own centre, and the rule
-   scales on the axis it grows along; both are stopped for reduced-motion
-   visitors below, and the curtain is skipped outright for them in Shell.tsx. */
-
-/* one bloom, swelling behind the mark while it arrives */
-.bloom {
-  position: absolute;
-  width: 300px; height: 300px; border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent 62%);
-  animation: bloom 2.1s cubic-bezier(.22, 1, .36, 1) .1s both;
-}
-@keyframes bloom {
-  0% { transform: scale(.3); opacity: 0; }
-  30% { opacity: .48; }
-  100% { transform: scale(1.18); opacity: 0; }
-}
-
-/* the rule that grows between the wordmark and what the site is */
-.splash-rule {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-  transform-origin: center;
-  animation: ruleGrow .9s cubic-bezier(.22, 1, .36, 1) 1.02s both;
-}
-@keyframes ruleGrow { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: .5; } }
-
-@media (prefers-reduced-motion: reduce) {
-  .bloom, .splash-rule { animation: none; }
-  .bloom { opacity: 0; }
-  .splash-rule { opacity: .35; }
-}
-.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { scrollbar-width: none; }
-
-/* ── footer strip: one green sweep, 4px core + soft bloom ──── */
-@keyframes footFlow { to { background-position: 200% 0; } }
-.footer-arc {
-  position: relative;
-  height: 2px;
-  background: linear-gradient(90deg,
-    var(--color-accentd), var(--color-accent), var(--color-ember),
-    var(--color-accent), var(--color-accentd));
-  background-size: 200% 100%;
-  animation: footFlow 8s linear infinite;
-}
-.footer-arc::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: inherit;
-  background-size: inherit;
-  animation: inherit;
-  filter: blur(7px);
-  opacity: .5;
-}
-/* the home closing CTA is the same graphite as the footer - drop the
-   gap so the strip reads as the seam between them */
-.cta-close + footer { margin-top: 0; }
-
-@media (prefers-reduced-motion: reduce) {
-  .marq-track, .logocell, .caret, .pulse-bar, .grow-x, .reveal, .tg-star, .tg-cloud, .tg-rays, .footer-arc, .footer-arc::after, .animate-diamond, .animate-hero-diamond { animation: none !important; }
-  /* parked at the diamond end of the turn rather than flat on its corners */
-  .animate-hero-diamond { transform: rotate(45deg); }
-  .search-pulse::after, .pulse-grid > *::after { display: none; }
-  *, *::before, *::after { transition-duration: 0.01ms !important; }
-  html { scroll-behavior: auto; }
+/* Disabled controls retain readable labels while still signalling their state. */
+:where(button, input, textarea, select, [role="button"]):disabled,
+:where(button, input, textarea, select, [role="button"])[aria-disabled="true"] {
+  color: var(--color-dim);
+  cursor: not-allowed;
 }
