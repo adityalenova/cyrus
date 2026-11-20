@@ -1,6 +1,47 @@
 import { describe, expect, it, vi } from "vitest";
 import { bookmarkHref, bookmarkKey, filterBookmarks } from "./bookmarks";
 import { createBookmarkSync } from "./bookmarkSync";
+import { createImportCheckpoints, pendingImports, planImports, type BookmarkImport } from "./bookmarkImports";
+
+describe("per-account import checkpoints", () => {
+  const a: BookmarkImport = { itemType: "repo", itemId: "import/a" }, b: BookmarkImport = { itemType: "repo", itemId: "import/b" };
+  it("keeps independently completed imports across stale tabs and a fresh reload", () => {
+    const values = new Map<string, string>(), storage = () => ({ getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } });
+    const first = createImportCheckpoints(storage), second = createImportCheckpoints(storage);
+    expect(first.finish("owner", a)).toBe(true); expect(second.finish("owner", b)).toBe(true);
+    const reload = createImportCheckpoints(storage), complete = (item: BookmarkImport) => reload.has("owner", item);
+    // A stale tab writes [A] over [B], and the remote account removes A.
+    expect(planImports([a, b], [b], [a], false, complete)).toEqual({ pending: [], items: [b] });
+    expect(planImports([a, b], [], [a, b], true, complete)).toEqual({ pending: [], items: [] });
+    expect(planImports([a], [], [a], false, item => reload.has("another", item)).pending).toEqual([a]);
+  });
+  it("isolates completion keys and keeps a tab-local checkpoint when storage is denied", () => {
+    const values = new Map<string, string>(), storage = () => ({ getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } });
+    const checkpoints = createImportCheckpoints(storage);
+    checkpoints.finish('owner,"repo', a);
+    expect(checkpoints.has("owner", { itemType: "repo", itemId: 'repo,"import/a' })).toBe(false);
+    expect(checkpoints.has('owner,"repo', { ...a, itemType: "program" })).toBe(false);
+    const denied = createImportCheckpoints(() => { throw new Error("denied"); });
+    expect(denied.has("owner", a)).toBe(false); expect(denied.finish("owner", a)).toBe(false);
+    expect(denied.has("owner", a)).toBe(true); expect(denied.has("another", a)).toBe(false);
+  });
+  it("retries only a failed import after another device removes a successful import", () => {
+    expect(planImports([a, b], [], [], true).pending).toEqual([a, b]);
+    const partial = planImports([a, b], [], [b], false);
+    expect(partial.pending).toEqual([b]); expect(partial.items).toEqual([b]);
+    expect(planImports([a, b], [b], [b], false)).toEqual({ pending: [], items: [b] });
+  });
+  it("never imports cached account items on later refreshes or confuses item types", () => {
+    const program: BookmarkImport = { itemType: "program", itemId: a.itemId };
+    expect(planImports([a], [], [], false).items).toEqual([]);
+    expect(planImports([a, program, a], [], [], true).pending).toEqual([a, program]);
+  });
+  it("scopes retry metadata to its owner and ignores malformed entries", () => {
+    expect(pendingImports({ one: [a, null, {}, { itemType: "issue", itemId: "x" }] }, "one")).toEqual([a]);
+    expect(pendingImports({ one: [a] }, "two")).toEqual([]);
+    expect(pendingImports(null, "one")).toEqual([]);
+  });
+});
 
 it("filters and sorts saved items without mutating the input or confusing item types", () => {
   const items = [{ itemType: "repo", itemId: "a/repo", title: "Zeta", createdAt: "2026-01-01" }, { itemType: "program", itemId: "gsoc", title: "Alpha", createdAt: "2026-02-01" }];

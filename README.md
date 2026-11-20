@@ -416,7 +416,7 @@ A `vercel.json` pins the Next.js preset, so importing the repository is all it t
 | Visualization | hand-rolled canvas + SVG | catalog charts, program bars, sparklines - no chart library |
 | Motion | Framer Motion | section reveals and the hero, both behind `prefers-reduced-motion` |
 | Email | Resend | one-tap sign-in codes; only the hash of a code is stored |
-| Tests | Vitest | <!--stat:testFiles-->59<!--/stat--> files, <!--stat:tests-->769<!--/stat--> tests - unit, API-route and data-integrity suites |
+| Tests | Vitest | <!--stat:testFiles-->59<!--/stat--> files, <!--stat:tests-->774<!--/stat--> tests - unit, API-route and data-integrity suites |
 | Hosting | Vercel | `vercel.json` pins the Next.js preset |
 
 ## Contribute & support
