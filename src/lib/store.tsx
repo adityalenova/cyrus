@@ -6,15 +6,18 @@ import { useStored } from "./util";
 import type { User } from "./util";
 import { api, providerReady, type ServerUser } from "./api";
 import { readGoogleRedirectCredential, takeGoogleReturn } from "./google";
+import { createBookmarkSync } from "./bookmarkSync";
 
 interface Store {
   user: User | null;
   signIn: (u: User) => void;
   signOut: () => void;
   saved: string[];
-  toggleSaved: (id: string) => boolean;
+  toggleSaved: (id: string, title?: string) => boolean;
   savedOrgs: string[];
   toggleSavedOrg: (login: string) => boolean;
+  savedPrograms: string[];
+  toggleSavedProgram: (id: string, title?: string) => boolean;
   /** drop every followed repository and organization, locally and on the server */
   unfollowAll: () => void;
   downloads: Record<string, number>;
@@ -34,6 +37,7 @@ interface Store {
   boardReady: boolean;
   /** re-probe /api/me and merge saved items; call after a server sign-in */
   refreshSession: () => Promise<void>;
+  flushBookmarks: () => Promise<void>;
 }
 
 const Ctx = createContext<Store>(null!);
@@ -43,8 +47,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [userStored, setUser, userReady] = useStored<User | null>("agenthub.user", null);
   const [savedStored, setSaved, savedReady] = useStored<string[]>("agenthub.saved", []);
   const [savedOrgsStored, setSavedOrgs, orgsReady] = useStored<string[]>("agenthub.savedorgs", []);
+  const [programsStored, setPrograms, programsReady] = useStored<string[]>("agenthub.savedprograms", []);
+  const [savedOwner, setSavedOwner] = useStored<string | null>("agenthub.savedowner", null);
   const [downloadsStored, setDownloads, dlReady] = useStored<Record<string, number>>("agenthub.downloads", {});
   const [toastMsg, setToastMsg] = useState<{ msg: string; k: number } | null>(null);
+  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
   const [authOpen, setAuthOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [themeStored, setTheme, themeReady] = useStored<"light" | "dark">("agenthub.theme", "dark");
@@ -61,35 +68,53 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const user = userReady ? userStored : null;
   const saved = savedReady ? savedStored : [];
   const savedOrgs = orgsReady ? savedOrgsStored : [];
+  const savedPrograms = programsReady ? programsStored : [];
   const downloads = dlReady ? downloadsStored : {};
 
   /* ── server sync layer (safe no-op when the backend is offline) ── */
   const [serverUser, setServerUser] = useState<ServerUser | null>(null);
   const savedRef = useRef(savedStored); savedRef.current = savedStored;
   const orgsRef = useRef(savedOrgsStored); orgsRef.current = savedOrgsStored;
+  const programsRef = useRef(programsStored); programsRef.current = programsStored;
+  const ownerRef = useRef(savedOwner); ownerRef.current = savedOwner;
+  const serverId = useRef<string | null>(null), sessionVersion = useRef(0), bookmarkVersion = useRef(0);
+  const sync = useRef<ReturnType<typeof createBookmarkSync> | null>(null);
   const titleFor = (id: string) => id.split("/")[1] ?? id;
 
   const refreshSession = useCallback(async () => {
+    const version = ++sessionVersion.current;
+    await sync.current?.flush();
+    if (version !== sessionVersion.current) return;
+    const savedVersion = bookmarkVersion.current;
     const me = await api.me();
-    if (!me?.user) { setServerUser(null); return; }
+    if (version !== sessionVersion.current) return;
+    if (!me?.user) { serverId.current = null; setServerUser(null); return; }
+    serverId.current = me.user.id;
     setServerUser(me.user);
     const list = await api.savedList();
-    if (!list) return;
+    if (!list || version !== sessionVersion.current || savedVersion !== bookmarkVersion.current) return;
     const sRepos = [...new Set(list.items.filter((i) => i.itemType === "repo").map((i) => i.itemId))];
     const sOrgs = [...new Set(list.items.filter((i) => i.itemType === "org").map((i) => i.itemId))];
+    const sPrograms = [...new Set(list.items.filter((i) => i.itemType === "program").map((i) => i.itemId))];
     const mine = savedRef.current, ours = orgsRef.current;
-    const nextRepos = [...new Set([...sRepos, ...mine])];
-    const nextOrgs = [...new Set([...sOrgs, ...ours])];
-    if (nextRepos.length !== mine.length || nextOrgs.length !== ours.length) {
-      setSaved(nextRepos);
-      setSavedOrgs(nextOrgs);
-    }
+    const migrate = ownerRef.current === null;
+    const nextRepos = [...new Set([...sRepos, ...(migrate ? mine : [])])];
+    const nextOrgs = [...new Set([...sOrgs, ...(migrate ? ours : [])])];
+    const nextPrograms = [...new Set([...sPrograms, ...(migrate ? programsRef.current : [])])];
+    if (!migrate && (mine.some(id => !sRepos.includes(id)) || ours.some(id => !sOrgs.includes(id)) || programsRef.current.some(id => !sPrograms.includes(id)))) toast("Your account's saved bookmarks replaced this browser's local selections. Save any local-only items again while signed in to keep them on this account.");
+    savedRef.current = nextRepos; orgsRef.current = nextOrgs; programsRef.current = nextPrograms;
+    setSaved(nextRepos); setSavedOrgs(nextOrgs); setPrograms(nextPrograms);
     // push anything this browser has that the server hasn't seen
-    for (const id of nextRepos.filter((r) => !sRepos.includes(r))) void api.savedAdd("repo", id, titleFor(id));
-    for (const id of nextOrgs.filter((o) => !sOrgs.includes(o))) void api.savedAdd("org", id, titleFor(id));
-  }, [setSaved, setSavedOrgs]);
+    const synced = await Promise.all([
+      ...nextRepos.filter((r) => !sRepos.includes(r)).map(id => sync.current!.enqueue("repo", id, true, () => {}, titleFor(id))),
+      ...nextOrgs.filter((o) => !sOrgs.includes(o)).map(id => sync.current!.enqueue("org", id, true, () => {}, titleFor(id))),
+      ...nextPrograms.filter((p) => !sPrograms.includes(p)).map(id => sync.current!.enqueue("program", id, true, () => {}, id)),
+    ]);
+    if (version === sessionVersion.current && synced.every(Boolean)) { ownerRef.current = me.user.id; setSavedOwner(me.user.id); }
+  }, [setSaved, setSavedOrgs, setPrograms, setSavedOwner, toast]);
 
   useEffect(() => { void refreshSession(); }, [refreshSession]);
+  useEffect(() => () => { serverId.current = null; sessionVersion.current++; }, []);
 
   /* dark is the default token set; the light variant is opt-out by adding
      .light to <html>, so no class is needed for the default mode */
@@ -100,7 +125,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [themeStored]);
   const toggleTheme = useCallback(() => setTheme(themeStored === "dark" ? "light" : "dark"), [themeStored, setTheme]);
 
-  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
+  if (!sync.current) sync.current = createBookmarkSync((type, id, added, title) => added ? api.savedAdd(type, id, title) : api.savedRemove(type, id), () => serverId.current, () => toast("Could not sync that bookmark. Your previous selection was restored."));
 
   /* ── Google's redirect lands here, not in the sign-in sheet ─────────
      Google always returns to the site root with the id_token in the URL
@@ -136,33 +161,41 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback((u: User) => setUser(u), [setUser]);
   const signOut = useCallback(() => {
+    sessionVersion.current++; serverId.current = null;
     setUser(null);
     if (serverUser) { void api.logout(); setServerUser(null); }
     toast("Signed out");
   }, [setUser, toast, serverUser]);
 
-  const toggleSaved = useCallback((id: string) => {
-    const added = !savedStored.includes(id);
-    setSaved(added ? [...savedStored, id] : savedStored.filter((x) => x !== id));
-    if (serverUser) void (added ? api.savedAdd("repo", id, id.split("/")[1]) : api.savedRemove("repo", id));
+  const toggleSaved = useCallback((id: string, title?: string) => {
+    bookmarkVersion.current++;
+    const added = !savedRef.current.includes(id);
+    savedRef.current = added ? [...savedRef.current, id] : savedRef.current.filter(x => x !== id); setSaved(savedRef.current);
+    sync.current!.enqueue("repo", id, added, confirmed => { savedRef.current = confirmed ? [...new Set([...savedRef.current, id])] : savedRef.current.filter(x => x !== id); setSaved(savedRef.current); }, title ?? id.split("/")[1]);
     return added;
-  }, [savedStored, setSaved, serverUser]);
+  }, [setSaved]);
 
   const toggleSavedOrg = useCallback((login: string) => {
-    const added = !savedOrgsStored.includes(login);
-    setSavedOrgs(added ? [...savedOrgsStored, login] : savedOrgsStored.filter((x) => x !== login));
-    if (serverUser) void (added ? api.savedAdd("org", login, login) : api.savedRemove("org", login));
+    bookmarkVersion.current++;
+    const added = !orgsRef.current.includes(login);
+    orgsRef.current = added ? [...orgsRef.current, login] : orgsRef.current.filter(x => x !== login); setSavedOrgs(orgsRef.current);
+    sync.current!.enqueue("org", login, added, confirmed => { orgsRef.current = confirmed ? [...new Set([...orgsRef.current, login])] : orgsRef.current.filter(x => x !== login); setSavedOrgs(orgsRef.current); }, login);
     return added;
-  }, [savedOrgsStored, setSavedOrgs, serverUser]);
+  }, [setSavedOrgs]);
+
+  const toggleSavedProgram = useCallback((id: string, title?: string) => {
+    bookmarkVersion.current++;
+    const added = !programsRef.current.includes(id);
+    programsRef.current = added ? [...programsRef.current, id] : programsRef.current.filter(x => x !== id); setPrograms(programsRef.current);
+    sync.current!.enqueue("program", id, added, confirmed => { programsRef.current = confirmed ? [...new Set([...programsRef.current, id])] : programsRef.current.filter(x => x !== id); setPrograms(programsRef.current); }, title ?? id);
+    return added;
+  }, [setPrograms]);
 
   const unfollowAll = useCallback(() => {
-    if (serverUser) {
-      for (const id of savedRef.current) void api.savedRemove("repo", id);
-      for (const login of orgsRef.current) void api.savedRemove("org", login);
-    }
-    setSaved([]);
-    setSavedOrgs([]);
-  }, [setSaved, setSavedOrgs, serverUser]);
+    for (const id of [...savedRef.current]) toggleSaved(id);
+    for (const login of [...orgsRef.current]) toggleSavedOrg(login);
+    for (const id of [...programsRef.current]) toggleSavedProgram(id);
+  }, [toggleSaved, toggleSavedOrg, toggleSavedProgram]);
 
   const countDownload = useCallback((id: string) => {
     setDownloads({ ...downloadsStored, [id]: (downloadsStored[id] || 0) + 1 });
@@ -190,10 +223,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={{
-      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll,
+      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, unfollowAll,
       downloads, countDownload,
       toast: (m: string) => toast(m), authOpen, setAuthOpen, paletteOpen, setPaletteOpen,
-      theme, toggleTheme, serverUser, refreshSession, boardReady: userReady,
+      theme, toggleTheme, serverUser, refreshSession, flushBookmarks: () => sync.current!.flush(), boardReady: userReady,
     }}>
       {children}
       {toastMsg && (

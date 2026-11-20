@@ -152,6 +152,7 @@ function rail(d: Dash): { label: string; items: { icon: string; text: string; to
         { icon: DP.grid, text: "Overview", to: "/dashboard" },
         { icon: DP.issue, text: "My Issues", to: "/dashboard/issues", count: String(d.issues.length) },
         { icon: DP.repo, text: "My Repositories", to: "/dashboard/repos", count: String(d.saved.length) },
+        { icon: DP.bookmark, text: "My Bookmarks", to: "/dashboard/bookmarks" },
       ],
     },
     {

@@ -130,6 +130,7 @@ export default function Nav() {
                       <Link to="/dashboard" className="flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-[13.5px] font-medium text-cocoa hover:bg-peach hover:text-rust"><MenuIcon d="M4 18v-6M10 18V7M16 18v-4M22 18H2" /> Dashboard</Link>
                       <Link to="/dashboard/issues" className="flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-[13.5px] font-semibold text-rust hover:bg-peach"><MenuIcon d="M12 8.5v4.5M12 16.6v.1M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" /> My Issues</Link>
                       <Link to="/dashboard/repos" className="flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-[13.5px] font-medium text-cocoa hover:bg-peach hover:text-rust"><MenuIcon d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9L3.5 9.7l5.9-.9z" /> Followed ({saved.length + savedOrgs.length})</Link>
+                      <Link to="/dashboard/bookmarks" className="flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-[13.5px] font-medium text-cocoa hover:bg-peach hover:text-rust"><MenuIcon d="M7 4h10v16l-5-3-5 3V4z" /> My Bookmarks</Link>
                       <button onClick={signOut} className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-[10px] text-[13.5px] font-medium text-cocoa hover:bg-peach hover:text-rust"><MenuIcon d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 8l-4 4 4 4M6 12h10" /> Sign out</button>
                     </div>
                   )}
