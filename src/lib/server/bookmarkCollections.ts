@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import { getDb } from "../db";
 import { bookmarkCollections as collections, bookmarkCollectionItems as members, savedItems } from "../db/schema";
 import { bookmarkKey, collectionChange, collectionId, type BookmarkCollection } from "../bookmarks";
@@ -44,7 +44,6 @@ export async function changeBookmarkCollection(userId: string, input: unknown) {
   }
   else {
     const selected = and(eq(savedItems.userId, userId), eq(savedItems.itemType, change.itemType), eq(savedItems.itemId, change.itemId));
-    const [saved] = await database.select({ id: savedItems.id }).from(savedItems).where(selected).limit(1);
     if (change.enabled) {
       // Resolve the stable key at write time; duplicate memberships still return a row.
       const added = await database.insert(members).select(database.select({ userId: sql<string>`${userId}::uuid`.as("user_id"), collectionId: collections.id, savedItemId: savedItems.id })
@@ -52,7 +51,7 @@ export async function changeBookmarkCollection(userId: string, input: unknown) {
         .where(and(owned, selected)))
         .onConflictDoUpdate({ target: [members.userId, members.collectionId, members.savedItemId], set: { savedItemId: sql`excluded.saved_item_id` } }).returning({ id: members.savedItemId });
       if (!added.length) throw new CollectionError(404, "The collection or saved bookmark no longer exists. Refresh before retrying.");
-    } else if (saved) await database.delete(members).where(and(eq(members.userId, userId), eq(members.collectionId, change.id), eq(members.savedItemId, saved.id)));
+    } else await database.delete(members).where(and(eq(members.userId, userId), eq(members.collectionId, change.id), inArray(members.savedItemId, database.select({ id: savedItems.id }).from(savedItems).where(selected))));
   }
 }
 

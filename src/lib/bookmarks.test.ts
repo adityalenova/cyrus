@@ -1,6 +1,27 @@
 import { describe, expect, it, vi } from "vitest";
 import { bookmarkHref, bookmarkKey, filterBookmarks } from "./bookmarks";
 import { createBookmarkSync } from "./bookmarkSync";
+import { pendingImports, planImports, type BookmarkImport } from "./bookmarkImports";
+
+describe("per-account import checkpoints", () => {
+  const a: BookmarkImport = { itemType: "repo", itemId: "import/a" }, b: BookmarkImport = { itemType: "repo", itemId: "import/b" };
+  it("retries only a failed import after another device removes a successful import", () => {
+    expect(planImports([a, b], [], [], true).pending).toEqual([a, b]);
+    const partial = planImports([a, b], [], [b], false);
+    expect(partial.pending).toEqual([b]); expect(partial.items).toEqual([b]);
+    expect(planImports([a, b], [b], [b], false)).toEqual({ pending: [], items: [b] });
+  });
+  it("never imports cached account items on later refreshes or confuses item types", () => {
+    const program: BookmarkImport = { itemType: "program", itemId: a.itemId };
+    expect(planImports([a], [], [], false).items).toEqual([]);
+    expect(planImports([a, program, a], [], [], true).pending).toEqual([a, program]);
+  });
+  it("scopes retry metadata to its owner and ignores malformed entries", () => {
+    expect(pendingImports({ one: [a, null, {}, { itemType: "issue", itemId: "x" }] }, "one")).toEqual([a]);
+    expect(pendingImports({ one: [a] }, "two")).toEqual([]);
+    expect(pendingImports(null, "one")).toEqual([]);
+  });
+});
 
 it("filters and sorts saved items without mutating the input or confusing item types", () => {
   const items = [{ itemType: "repo", itemId: "a/repo", title: "Zeta", createdAt: "2026-01-01" }, { itemType: "program", itemId: "gsoc", title: "Alpha", createdAt: "2026-02-01" }];
