@@ -8,7 +8,7 @@
    (domain / models / format / frameworks) as nullable columns; the
    classifier fills them in. ═══════════════════════════════════════════ */
 import {
-  boolean, date, index, integer, jsonb, pgTable, serial, text,
+  boolean, date, foreignKey, index, integer, jsonb, pgTable, primaryKey, serial, text,
   timestamp, uniqueIndex, uuid,
 } from "drizzle-orm/pg-core";
 
@@ -56,9 +56,33 @@ export const savedItems = pgTable(
   },
   (t) => [
     uniqueIndex("saved_unique_idx").on(t.userId, t.itemType, t.itemId),
+    uniqueIndex("saved_owner_id_idx").on(t.userId, t.id),
     index("saved_user_idx").on(t.userId),
   ],
 );
+
+export const bookmarkCollections = pgTable("bookmark_collections", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  shareToken: uuid("share_token"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [
+  uniqueIndex("collection_owner_id_idx").on(t.userId, t.id),
+  uniqueIndex("collection_name_idx").on(t.userId, t.name),
+  uniqueIndex("collection_share_idx").on(t.shareToken),
+]);
+
+// Composite references prohibit cross-account memberships even outside the API.
+export const bookmarkCollectionItems = pgTable("bookmark_collection_items", {
+  userId: uuid("user_id").notNull(),
+  collectionId: uuid("collection_id").notNull(),
+  savedItemId: uuid("saved_item_id").notNull(),
+}, (t) => [
+  primaryKey({ columns: [t.userId, t.collectionId, t.savedItemId] }),
+  foreignKey({ columns: [t.userId, t.collectionId], foreignColumns: [bookmarkCollections.userId, bookmarkCollections.id] }).onDelete("cascade"),
+  foreignKey({ columns: [t.userId, t.savedItemId], foreignColumns: [savedItems.userId, savedItems.id] }).onDelete("cascade"),
+]);
 
 export const applications = pgTable(
   "applications",

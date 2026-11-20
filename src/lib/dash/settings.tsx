@@ -17,13 +17,15 @@ export function SettingsSection({ d }: { d: Dash }) {
     issues: d.issues.map((i) => ({ url: i.url, repo: i.repo, number: i.number, stage: d.stageOf(i.url), added: i.added })),
     repositories: d.saved,
     organizations: d.savedOrgs,
+    programs: d.savedPrograms,
   };
-  const nothingFollowed = !board.repositories.length && !board.organizations.length;
+  const nothingFollowed = !board.repositories.length && !board.organizations.length && !board.programs.length;
 
   const entries: TrackedEntry[] = [
     ...d.issues.map((i): TrackedEntry => ({ kind: "issue", key: i.url, label: `${i.repo} #${i.number}` })),
     ...d.savedRepos.map((r): TrackedEntry => ({ kind: "repository", key: r.repo, label: r.repo })),
     ...d.orgList.map((o): TrackedEntry => ({ kind: "organization", key: o.login, label: o.login })),
+    ...d.savedPrograms.map((id): TrackedEntry => ({ kind: "program", key: id, label: id })),
   ];
   const [picked, setPicked] = useState<string[]>([]);
   const [confirming, setConfirming] = useState(false);
@@ -37,6 +39,7 @@ export function SettingsSection({ d }: { d: Dash }) {
     for (const e of selected) {
       if (e.kind === "issue") d.removeIssue(e.key);
       else if (e.kind === "repository") d.toggleSaved(e.key);
+      else if (e.kind === "program") d.toggleSavedProgram(e.key);
       else d.toggleSavedOrg(e.key);
     }
     d.toast(`Removed ${selected.length} from your board. GitHub is unchanged.`);
@@ -103,6 +106,7 @@ export function SettingsSection({ d }: { d: Dash }) {
           {board.issues.length} tracked issue{board.issues.length === 1 ? "" : "s"},{" "}
           {board.repositories.length} repositor{board.repositories.length === 1 ? "y" : "ies"},{" "}
           {board.organizations.length} organization{board.organizations.length === 1 ? "" : "s"}.
+          {" "}{board.programs.length} program{board.programs.length === 1 ? "" : "s"}.
           {d.serverUser ? " Mirrored to the private rows on your account." : " Stored in this browser only."}
         </p>
         <div className="flex gap-2.5 flex-wrap">
@@ -123,7 +127,7 @@ export function SettingsSection({ d }: { d: Dash }) {
         {entries.length === 0 ? (
           <p className="text-cocoa text-[13px]">Nothing is tracked on this account.</p>
         ) : (
-          <ul className="border-t border-liness" aria-label="Tracked issues, repositories and organizations">
+          <ul className="border-t border-liness" aria-label="Tracked issues, repositories, organizations and programs">
             {entries.map((e) => (
               <li key={idOf(e)} className="border-b border-liness">
                 <label className="flex items-center gap-3 py-2.5 text-[13px] cursor-pointer">

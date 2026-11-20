@@ -8,7 +8,7 @@ export type ServerUser = {
   id: string; name: string; login: string | null;
   email: string | null; picture: string | null; provider: string;
 };
-export type SavedRow = { itemType: string; itemId: string; title?: string | null };
+export type SavedRow = { itemType: string; itemId: string; title?: string | null; createdAt?: string };
 export type EmailStartRes = {
   ok: boolean; sent?: boolean; demo?: boolean; code?: string; challenge?: string | null;
   reason?: string; error?: string; expires_in_seconds?: number;

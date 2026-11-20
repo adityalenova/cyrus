@@ -6,15 +6,19 @@ import { useStored } from "./util";
 import type { User } from "./util";
 import { api, providerReady, type ServerUser } from "./api";
 import { readGoogleRedirectCredential, takeGoogleReturn } from "./google";
+import { createBookmarkSync } from "./bookmarkSync";
+import { createImportCheckpoints, pendingImports, planImports, type ImportLedger } from "./bookmarkImports";
 
 interface Store {
   user: User | null;
   signIn: (u: User) => void;
   signOut: () => void;
   saved: string[];
-  toggleSaved: (id: string) => boolean;
+  toggleSaved: (id: string, title?: string) => boolean;
   savedOrgs: string[];
   toggleSavedOrg: (login: string) => boolean;
+  savedPrograms: string[];
+  toggleSavedProgram: (id: string, title?: string) => boolean;
   /** drop every followed repository and organization, locally and on the server */
   unfollowAll: () => void;
   downloads: Record<string, number>;
@@ -34,6 +38,7 @@ interface Store {
   boardReady: boolean;
   /** re-probe /api/me and merge saved items; call after a server sign-in */
   refreshSession: () => Promise<void>;
+  flushBookmarks: () => Promise<void>;
 }
 
 const Ctx = createContext<Store>(null!);
@@ -43,8 +48,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [userStored, setUser, userReady] = useStored<User | null>("agenthub.user", null);
   const [savedStored, setSaved, savedReady] = useStored<string[]>("agenthub.saved", []);
   const [savedOrgsStored, setSavedOrgs, orgsReady] = useStored<string[]>("agenthub.savedorgs", []);
+  const [programsStored, setPrograms, programsReady] = useStored<string[]>("agenthub.savedprograms", []);
+  const [importsStored, setImports] = useStored<ImportLedger>("agenthub.bookmarkimports", {});
+  const [savedOwner, setSavedOwner] = useStored<string | null>("agenthub.savedowner", null);
   const [downloadsStored, setDownloads, dlReady] = useStored<Record<string, number>>("agenthub.downloads", {});
   const [toastMsg, setToastMsg] = useState<{ msg: string; k: number } | null>(null);
+  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
   const [authOpen, setAuthOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [themeStored, setTheme, themeReady] = useStored<"light" | "dark">("agenthub.theme", "dark");
@@ -61,35 +70,88 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const user = userReady ? userStored : null;
   const saved = savedReady ? savedStored : [];
   const savedOrgs = orgsReady ? savedOrgsStored : [];
+  const savedPrograms = programsReady ? programsStored : [];
   const downloads = dlReady ? downloadsStored : {};
 
   /* ── server sync layer (safe no-op when the backend is offline) ── */
   const [serverUser, setServerUser] = useState<ServerUser | null>(null);
   const savedRef = useRef(savedStored); savedRef.current = savedStored;
   const orgsRef = useRef(savedOrgsStored); orgsRef.current = savedOrgsStored;
+  const programsRef = useRef(programsStored); programsRef.current = programsStored;
+  const ownerRef = useRef(savedOwner); ownerRef.current = savedOwner;
+  const importsRef = useRef(importsStored); importsRef.current = importsStored;
+  const identityPending = useRef(true), identityEdits = useRef<{ write: () => void; discard: () => void }[]>([]);
+  const importCheckpoints = useRef<ReturnType<typeof createImportCheckpoints> | null>(null);
+  if (!importCheckpoints.current) importCheckpoints.current = createImportCheckpoints(() => window.localStorage);
+  const checkpointWarning = useRef(false);
+  const serverId = useRef<string | null>(null), sessionVersion = useRef(0), bookmarkVersion = useRef(0);
+  const sync = useRef<ReturnType<typeof createBookmarkSync> | null>(null);
   const titleFor = (id: string) => id.split("/")[1] ?? id;
-
-  const refreshSession = useCallback(async () => {
-    const me = await api.me();
-    if (!me?.user) { setServerUser(null); return; }
-    setServerUser(me.user);
-    const list = await api.savedList();
-    if (!list) return;
-    const sRepos = [...new Set(list.items.filter((i) => i.itemType === "repo").map((i) => i.itemId))];
-    const sOrgs = [...new Set(list.items.filter((i) => i.itemType === "org").map((i) => i.itemId))];
-    const mine = savedRef.current, ours = orgsRef.current;
-    const nextRepos = [...new Set([...sRepos, ...mine])];
-    const nextOrgs = [...new Set([...sOrgs, ...ours])];
-    if (nextRepos.length !== mine.length || nextOrgs.length !== ours.length) {
-      setSaved(nextRepos);
-      setSavedOrgs(nextOrgs);
+  function checkpointImports(owner: string, items: ReturnType<typeof pendingImports>) {
+    items = items.filter(item => !importCheckpoints.current!.has(owner, item));
+    const next = { ...importsRef.current }; if (items.length) next[owner] = items; else delete next[owner];
+    importsRef.current = next; setImports(next);
+  }
+  function completeImport(owner: string, type: string, id: string) {
+    const pending = pendingImports(importsRef.current, owner);
+    const item = pending.find(item => item.itemType === type && item.itemId === id);
+    if (!item) return;
+    if (!importCheckpoints.current!.finish(owner, item) && !checkpointWarning.current) {
+      checkpointWarning.current = true;
+      toast("Could not save import retry checkpoints in this browser. They are kept only in this tab until browser storage is available.");
     }
+    checkpointImports(owner, pending.filter(item => item.itemType !== type || item.itemId !== id));
+  }
+  function enqueueEdit(type: string, id: string, added: boolean, rollback: (saved: boolean) => void, title?: string) {
+    const write = () => { void sync.current!.enqueue(type, id, added, rollback, title); };
+    const owner = ownerRef.current;
+    const discard = () => { if (!added && owner) completeImport(owner, type, id); };
+    if (serverId.current) write();
+    else if (identityPending.current) identityEdits.current.push({ write, discard });
+    else discard();
+  }
+
+  const refreshSession = useCallback(async (): Promise<void> => {
+    const version = ++sessionVersion.current;
+    await sync.current?.flush();
+    if (version !== sessionVersion.current) return;
+    if (!serverId.current) identityPending.current = true;
+    const me = await api.me();
+    if (version !== sessionVersion.current) return;
+    identityPending.current = false;
+    const edits = identityEdits.current; identityEdits.current = [];
+    if (!me?.user) { serverId.current = null; for (const edit of edits) edit.discard(); setServerUser(null); return; }
+    const owner = me.user.id;
+    serverId.current = owner;
+    setServerUser(me.user);
+    for (const edit of edits) edit.write();
+    await sync.current?.flush();
+    if (version !== sessionVersion.current) return;
+    const savedVersion = bookmarkVersion.current;
+    const list = await api.savedList();
+    if (!list || version !== sessionVersion.current) return;
+    if (savedVersion !== bookmarkVersion.current) { await refreshSession(); return; }
+    const mine = savedRef.current, ours = orgsRef.current;
+    const migrate = ownerRef.current === null;
+    const planned = planImports([
+      ...mine.map(itemId => ({ itemType: "repo" as const, itemId, title: titleFor(itemId) })),
+      ...ours.map(itemId => ({ itemType: "org" as const, itemId, title: itemId })),
+      ...programsRef.current.map(itemId => ({ itemType: "program" as const, itemId, title: itemId })),
+    ], list.items, pendingImports(importsRef.current, owner), migrate, item => importCheckpoints.current!.has(owner, item));
+    checkpointImports(owner, planned.pending);
+    ownerRef.current = owner; setSavedOwner(owner);
+    const nextRepos = [...new Set(planned.items.filter(item => item.itemType === "repo").map(item => item.itemId))];
+    const nextOrgs = [...new Set(planned.items.filter(item => item.itemType === "org").map(item => item.itemId))];
+    const nextPrograms = [...new Set(planned.items.filter(item => item.itemType === "program").map(item => item.itemId))];
+    if (!migrate && (mine.some(id => !nextRepos.includes(id)) || ours.some(id => !nextOrgs.includes(id)) || programsRef.current.some(id => !nextPrograms.includes(id)))) toast("Your account's saved bookmarks replaced this browser's local selections. Save any local-only items again while signed in to keep them on this account.");
+    savedRef.current = nextRepos; orgsRef.current = nextOrgs; programsRef.current = nextPrograms;
+    setSaved(nextRepos); setSavedOrgs(nextOrgs); setPrograms(nextPrograms);
     // push anything this browser has that the server hasn't seen
-    for (const id of nextRepos.filter((r) => !sRepos.includes(r))) void api.savedAdd("repo", id, titleFor(id));
-    for (const id of nextOrgs.filter((o) => !sOrgs.includes(o))) void api.savedAdd("org", id, titleFor(id));
-  }, [setSaved, setSavedOrgs]);
+    await Promise.all(planned.pending.filter(item => !importCheckpoints.current!.has(owner, item)).map(item => sync.current!.enqueue(item.itemType, item.itemId, true, () => {}, item.title)));
+  }, [setSaved, setSavedOrgs, setPrograms, setSavedOwner, setImports, toast]);
 
   useEffect(() => { void refreshSession(); }, [refreshSession]);
+  useEffect(() => () => { serverId.current = null; sessionVersion.current++; }, []);
 
   /* dark is the default token set; the light variant is opt-out by adding
      .light to <html>, so no class is needed for the default mode */
@@ -100,7 +162,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [themeStored]);
   const toggleTheme = useCallback(() => setTheme(themeStored === "dark" ? "light" : "dark"), [themeStored, setTheme]);
 
-  const toast = useCallback((msg: string) => setToastMsg({ msg, k: Date.now() }), []);
+  if (!sync.current) sync.current = createBookmarkSync(async (type, id, added, title) => {
+    const owner = serverId.current;
+    const ok = await (added ? api.savedAdd(type, id, title) : api.savedRemove(type, id));
+    if (ok && owner) completeImport(owner, type, id);
+    return ok;
+  }, () => serverId.current, () => toast("Could not sync that bookmark. Rejected changes were not confirmed; refresh bookmarks to retry."));
 
   /* ── Google's redirect lands here, not in the sign-in sheet ─────────
      Google always returns to the site root with the id_token in the URL
@@ -136,33 +203,44 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback((u: User) => setUser(u), [setUser]);
   const signOut = useCallback(() => {
+    sessionVersion.current++; serverId.current = null;
+    identityPending.current = false;
+    const edits = identityEdits.current; identityEdits.current = [];
+    for (const edit of edits) edit.discard();
     setUser(null);
     if (serverUser) { void api.logout(); setServerUser(null); }
     toast("Signed out");
   }, [setUser, toast, serverUser]);
 
-  const toggleSaved = useCallback((id: string) => {
-    const added = !savedStored.includes(id);
-    setSaved(added ? [...savedStored, id] : savedStored.filter((x) => x !== id));
-    if (serverUser) void (added ? api.savedAdd("repo", id, id.split("/")[1]) : api.savedRemove("repo", id));
+  const toggleSaved = useCallback((id: string, title?: string) => {
+    bookmarkVersion.current++;
+    const added = !savedRef.current.includes(id);
+    savedRef.current = added ? [...savedRef.current, id] : savedRef.current.filter(x => x !== id); setSaved(savedRef.current);
+    enqueueEdit("repo", id, added, confirmed => { savedRef.current = confirmed ? [...new Set([...savedRef.current, id])] : savedRef.current.filter(x => x !== id); setSaved(savedRef.current); }, title ?? id.split("/")[1]);
     return added;
-  }, [savedStored, setSaved, serverUser]);
+  }, [setSaved]);
 
   const toggleSavedOrg = useCallback((login: string) => {
-    const added = !savedOrgsStored.includes(login);
-    setSavedOrgs(added ? [...savedOrgsStored, login] : savedOrgsStored.filter((x) => x !== login));
-    if (serverUser) void (added ? api.savedAdd("org", login, login) : api.savedRemove("org", login));
+    bookmarkVersion.current++;
+    const added = !orgsRef.current.includes(login);
+    orgsRef.current = added ? [...orgsRef.current, login] : orgsRef.current.filter(x => x !== login); setSavedOrgs(orgsRef.current);
+    enqueueEdit("org", login, added, confirmed => { orgsRef.current = confirmed ? [...new Set([...orgsRef.current, login])] : orgsRef.current.filter(x => x !== login); setSavedOrgs(orgsRef.current); }, login);
     return added;
-  }, [savedOrgsStored, setSavedOrgs, serverUser]);
+  }, [setSavedOrgs]);
+
+  const toggleSavedProgram = useCallback((id: string, title?: string) => {
+    bookmarkVersion.current++;
+    const added = !programsRef.current.includes(id);
+    programsRef.current = added ? [...programsRef.current, id] : programsRef.current.filter(x => x !== id); setPrograms(programsRef.current);
+    enqueueEdit("program", id, added, confirmed => { programsRef.current = confirmed ? [...new Set([...programsRef.current, id])] : programsRef.current.filter(x => x !== id); setPrograms(programsRef.current); }, title ?? id);
+    return added;
+  }, [setPrograms]);
 
   const unfollowAll = useCallback(() => {
-    if (serverUser) {
-      for (const id of savedRef.current) void api.savedRemove("repo", id);
-      for (const login of orgsRef.current) void api.savedRemove("org", login);
-    }
-    setSaved([]);
-    setSavedOrgs([]);
-  }, [setSaved, setSavedOrgs, serverUser]);
+    for (const id of [...savedRef.current]) toggleSaved(id);
+    for (const login of [...orgsRef.current]) toggleSavedOrg(login);
+    for (const id of [...programsRef.current]) toggleSavedProgram(id);
+  }, [toggleSaved, toggleSavedOrg, toggleSavedProgram]);
 
   const countDownload = useCallback((id: string) => {
     setDownloads({ ...downloadsStored, [id]: (downloadsStored[id] || 0) + 1 });
@@ -190,10 +268,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={{
-      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll,
+      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, unfollowAll,
       downloads, countDownload,
       toast: (m: string) => toast(m), authOpen, setAuthOpen, paletteOpen, setPaletteOpen,
-      theme, toggleTheme, serverUser, refreshSession, boardReady: userReady,
+      theme, toggleTheme, serverUser, refreshSession, flushBookmarks: () => sync.current!.flush(), boardReady: userReady,
     }}>
       {children}
       {toastMsg && (

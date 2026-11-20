@@ -134,7 +134,7 @@ function ProjCard({ p }: { p: Proj }) {
             className="font-mono text-[10px] font-bold tracking-[.08em] uppercase text-cocoa border border-line rounded-[9px] px-2.5 py-1.5 hover:border-accent hover:text-rust transition-colors">Org</a>
         )}
         <button aria-label={on ? "Stop tracking" : "Track project"} title={on ? "Stop tracking" : "Track on dashboard"} onClick={() => {
-          const added = toggleSaved(p.url);
+          const added = toggleSaved(p.url, p.title);
           toast(added ? "Added to your dashboard" : "Removed from dashboard");
         }} className={`ml-auto w-[30px] h-[30px] rounded-[9px] border grid place-items-center text-[13px] transition-all cursor-pointer ${on ? "bg-accent border-accent text-accentfg" : "bg-cream border-line text-dim hover:border-accent hover:text-accent"}`}>
           {on ? "★" : "☆"}
