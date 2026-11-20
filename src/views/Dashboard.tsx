@@ -6,6 +6,7 @@
    Every number is either your own board state or a row from the
    GitHub crawl.                                                   == */
 import { Link } from "@/lib/router";
+import PdfExport, { ProjectPdfBatch } from "@/components/PdfExport";
 import { btn } from "../components/ui";
 import { fmtCompact } from "../lib/util";
 import { ISSUE_SIGNALS } from "../data/issueSignals";
@@ -71,6 +72,7 @@ function Overview({ d }: { d: Dash }) {
             </>
           }
         />
+        <div className="mb-5"><PdfExport request={{ kind: "activity" }} label="Export my recent activity" /></div>
       </div>
 
       {/* the opening band: your numbers, on the graphite island */}
@@ -203,6 +205,7 @@ function Overview({ d }: { d: Dash }) {
             </Link>
           )}
         </div>
+        {d.savedRepos.length > 0 && <ProjectPdfBatch projects={d.savedRepos} />}
         {topRepos.length > 0 ? (
           <div className="grid gap-2.5">
             {topRepos.map((r) => (

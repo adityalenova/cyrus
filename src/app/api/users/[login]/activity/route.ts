@@ -44,7 +44,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ login: 
   try {
     const upstream = await fetch(
       `https://api.github.com/users/${encodeURIComponent(user)}/events/public?per_page=100`,
-      { headers, cache: "no-store" },
+      { headers, cache: "no-store", signal: AbortSignal.timeout(8_000) },
     );
     if (upstream.status === 404) return Response.json({ error: "no such user" }, { status: 404 });
     if (!upstream.ok) return Response.json({ error: `github returned ${upstream.status}` }, { status: 502 });

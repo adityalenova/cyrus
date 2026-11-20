@@ -1,4 +1,5 @@
 "use client"
+import PdfExport from "@/components/PdfExport";
 /* ══ Programs.tsx — the program directory.
    All tracked mentored seasons as cards (status, stipend, window, scale),
    plus the five-year archive band: accepted-project counts pulled at
@@ -278,6 +279,7 @@ export default function Programs() {
       {!rst.ready && (
         <p className="font-mono text-[10.5px] uppercase tracking-[.11em] text-dim mt-3">Loading the participation record…</p>
       )}
+      <div className="mt-4"><PdfExport request={{ kind: "programs", status: status as "all" | "live" | "upcoming" | "closed" }} label="Export filtered programs" /></div>
 
       {/* the cards */}
       <h2 className="sr-only">Programs</h2>

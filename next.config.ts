@@ -6,6 +6,9 @@ const root = fileURLToPath(new URL(".", import.meta.url));
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   turbopack: { root },
+  outputFileTracingIncludes: {
+    "/api/reports": ["./public/assets/fonts/PlusJakartaSans-400.ttf", "./public/assets/fonts/PlusJakartaSans-800.ttf"],
+  },
   async redirects() {
     return [
       // close the bare-route dead end: /platform lands on Features
