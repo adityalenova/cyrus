@@ -7,7 +7,7 @@ import type { User } from "./util";
 import { api, providerReady, type ServerUser } from "./api";
 import { readGoogleRedirectCredential, takeGoogleReturn } from "./google";
 import { createBookmarkSync } from "./bookmarkSync";
-import { pendingImports, planImports, type ImportLedger } from "./bookmarkImports";
+import { createImportCheckpoints, pendingImports, planImports, type ImportLedger } from "./bookmarkImports";
 
 interface Store {
   user: User | null;
@@ -80,23 +80,35 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const programsRef = useRef(programsStored); programsRef.current = programsStored;
   const ownerRef = useRef(savedOwner); ownerRef.current = savedOwner;
   const importsRef = useRef(importsStored); importsRef.current = importsStored;
-  const identityPending = useRef(true), identityEdits = useRef<(() => void)[]>([]);
+  const identityPending = useRef(true), identityEdits = useRef<{ write: () => void; discard: () => void }[]>([]);
+  const importCheckpoints = useRef<ReturnType<typeof createImportCheckpoints> | null>(null);
+  if (!importCheckpoints.current) importCheckpoints.current = createImportCheckpoints(() => window.localStorage);
+  const checkpointWarning = useRef(false);
   const serverId = useRef<string | null>(null), sessionVersion = useRef(0), bookmarkVersion = useRef(0);
   const sync = useRef<ReturnType<typeof createBookmarkSync> | null>(null);
   const titleFor = (id: string) => id.split("/")[1] ?? id;
   function checkpointImports(owner: string, items: ReturnType<typeof pendingImports>) {
+    items = items.filter(item => !importCheckpoints.current!.has(owner, item));
     const next = { ...importsRef.current }; if (items.length) next[owner] = items; else delete next[owner];
     importsRef.current = next; setImports(next);
   }
   function completeImport(owner: string, type: string, id: string) {
     const pending = pendingImports(importsRef.current, owner);
-    if (pending.some(item => item.itemType === type && item.itemId === id)) checkpointImports(owner, pending.filter(item => item.itemType !== type || item.itemId !== id));
+    const item = pending.find(item => item.itemType === type && item.itemId === id);
+    if (!item) return;
+    if (!importCheckpoints.current!.finish(owner, item) && !checkpointWarning.current) {
+      checkpointWarning.current = true;
+      toast("Could not save import retry checkpoints in this browser. They are kept only in this tab until browser storage is available.");
+    }
+    checkpointImports(owner, pending.filter(item => item.itemType !== type || item.itemId !== id));
   }
   function enqueueEdit(type: string, id: string, added: boolean, rollback: (saved: boolean) => void, title?: string) {
     const write = () => { void sync.current!.enqueue(type, id, added, rollback, title); };
+    const owner = ownerRef.current;
+    const discard = () => { if (!added && owner) completeImport(owner, type, id); };
     if (serverId.current) write();
-    else if (identityPending.current) identityEdits.current.push(write);
-    else if (!added && ownerRef.current) completeImport(ownerRef.current, type, id);
+    else if (identityPending.current) identityEdits.current.push({ write, discard });
+    else discard();
   }
 
   const refreshSession = useCallback(async (): Promise<void> => {
@@ -107,10 +119,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const me = await api.me();
     if (version !== sessionVersion.current) return;
     identityPending.current = false;
-    if (!me?.user) { serverId.current = null; identityEdits.current = []; setServerUser(null); return; }
-    serverId.current = me.user.id;
+    const edits = identityEdits.current; identityEdits.current = [];
+    if (!me?.user) { serverId.current = null; for (const edit of edits) edit.discard(); setServerUser(null); return; }
+    const owner = me.user.id;
+    serverId.current = owner;
     setServerUser(me.user);
-    const edits = identityEdits.current; identityEdits.current = []; for (const write of edits) write();
+    for (const edit of edits) edit.write();
     await sync.current?.flush();
     if (version !== sessionVersion.current) return;
     const savedVersion = bookmarkVersion.current;
@@ -123,9 +137,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       ...mine.map(itemId => ({ itemType: "repo" as const, itemId, title: titleFor(itemId) })),
       ...ours.map(itemId => ({ itemType: "org" as const, itemId, title: itemId })),
       ...programsRef.current.map(itemId => ({ itemType: "program" as const, itemId, title: itemId })),
-    ], list.items, pendingImports(importsRef.current, me.user.id), migrate);
-    checkpointImports(me.user.id, planned.pending);
-    ownerRef.current = me.user.id; setSavedOwner(me.user.id);
+    ], list.items, pendingImports(importsRef.current, owner), migrate, item => importCheckpoints.current!.has(owner, item));
+    checkpointImports(owner, planned.pending);
+    ownerRef.current = owner; setSavedOwner(owner);
     const nextRepos = [...new Set(planned.items.filter(item => item.itemType === "repo").map(item => item.itemId))];
     const nextOrgs = [...new Set(planned.items.filter(item => item.itemType === "org").map(item => item.itemId))];
     const nextPrograms = [...new Set(planned.items.filter(item => item.itemType === "program").map(item => item.itemId))];
@@ -133,7 +147,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     savedRef.current = nextRepos; orgsRef.current = nextOrgs; programsRef.current = nextPrograms;
     setSaved(nextRepos); setSavedOrgs(nextOrgs); setPrograms(nextPrograms);
     // push anything this browser has that the server hasn't seen
-    await Promise.all(planned.pending.map(item => sync.current!.enqueue(item.itemType, item.itemId, true, () => {}, item.title)));
+    await Promise.all(planned.pending.filter(item => !importCheckpoints.current!.has(owner, item)).map(item => sync.current!.enqueue(item.itemType, item.itemId, true, () => {}, item.title)));
   }, [setSaved, setSavedOrgs, setPrograms, setSavedOwner, setImports, toast]);
 
   useEffect(() => { void refreshSession(); }, [refreshSession]);
@@ -190,7 +204,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const signIn = useCallback((u: User) => setUser(u), [setUser]);
   const signOut = useCallback(() => {
     sessionVersion.current++; serverId.current = null;
-    identityPending.current = false; identityEdits.current = [];
+    identityPending.current = false;
+    const edits = identityEdits.current; identityEdits.current = [];
+    for (const edit of edits) edit.discard();
     setUser(null);
     if (serverUser) { void api.logout(); setServerUser(null); }
     toast("Signed out");

@@ -1,10 +1,30 @@
 import { describe, expect, it, vi } from "vitest";
 import { bookmarkHref, bookmarkKey, filterBookmarks } from "./bookmarks";
 import { createBookmarkSync } from "./bookmarkSync";
-import { pendingImports, planImports, type BookmarkImport } from "./bookmarkImports";
+import { createImportCheckpoints, pendingImports, planImports, type BookmarkImport } from "./bookmarkImports";
 
 describe("per-account import checkpoints", () => {
   const a: BookmarkImport = { itemType: "repo", itemId: "import/a" }, b: BookmarkImport = { itemType: "repo", itemId: "import/b" };
+  it("keeps independently completed imports across stale tabs and a fresh reload", () => {
+    const values = new Map<string, string>(), storage = () => ({ getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } });
+    const first = createImportCheckpoints(storage), second = createImportCheckpoints(storage);
+    expect(first.finish("owner", a)).toBe(true); expect(second.finish("owner", b)).toBe(true);
+    const reload = createImportCheckpoints(storage), complete = (item: BookmarkImport) => reload.has("owner", item);
+    // A stale tab writes [A] over [B], and the remote account removes A.
+    expect(planImports([a, b], [b], [a], false, complete)).toEqual({ pending: [], items: [b] });
+    expect(planImports([a, b], [], [a, b], true, complete)).toEqual({ pending: [], items: [] });
+    expect(planImports([a], [], [a], false, item => reload.has("another", item)).pending).toEqual([a]);
+  });
+  it("isolates completion keys and keeps a tab-local checkpoint when storage is denied", () => {
+    const values = new Map<string, string>(), storage = () => ({ getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); } });
+    const checkpoints = createImportCheckpoints(storage);
+    checkpoints.finish('owner,"repo', a);
+    expect(checkpoints.has("owner", { itemType: "repo", itemId: 'repo,"import/a' })).toBe(false);
+    expect(checkpoints.has('owner,"repo', { ...a, itemType: "program" })).toBe(false);
+    const denied = createImportCheckpoints(() => { throw new Error("denied"); });
+    expect(denied.has("owner", a)).toBe(false); expect(denied.finish("owner", a)).toBe(false);
+    expect(denied.has("owner", a)).toBe(true); expect(denied.has("another", a)).toBe(false);
+  });
   it("retries only a failed import after another device removes a successful import", () => {
     expect(planImports([a, b], [], [], true).pending).toEqual([a, b]);
     const partial = planImports([a, b], [], [b], false);
