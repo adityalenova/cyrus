@@ -17,6 +17,8 @@ test.describe("recent user-facing features", () => {
 
   test("exports tracked issues as a CSV download", async ({ page }) => {
     await page.addInitScript(() => {
+      /* The board sits behind the signed-in shell; a guest session is how a browser holds it without an account. */
+      localStorage.setItem("agenthub.user", JSON.stringify({ name: "Guest", provider: "guest" }));
       localStorage.setItem("cyrus.issues.v1", JSON.stringify({
         "https://github.com/vercel/next.js/issues/123": {
           stage: "saved",
