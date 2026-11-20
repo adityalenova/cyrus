@@ -50,5 +50,7 @@ describe("report requests and source data", () => {
     expect(reportText("a\u0000b")).toBe("a b");
     expect(reportText("x".repeat(2000))).toHaveLength(1612);
     expect(reportText("x".repeat(2000))).toMatch(/\[truncated\]$/);
+    expect(reportText("a".repeat(139) + "🚀", 140)).toBe("a".repeat(139) + " [truncated]");
+    expect(reportText("a".repeat(138) + "🚀", 140)).toBe("a".repeat(138) + "🚀");
   });
 });

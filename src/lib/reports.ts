@@ -27,7 +27,8 @@ const unique = (ids: string[]) => [...new Set(ids.map((id) => id.toLowerCase()))
 // Bounds keep both the layout and renderer work finite; omitted text is explicitly marked.
 export const reportText = (value: string, max = 1600) => {
   const text = value.normalize("NFC").replace(/\p{Cc}/gu, " ").replace(/[\u2010-\u2015]/g, "-");
-  return text.length > max ? `${text.slice(0, max)} [truncated]` : text;
+  // Keep the UTF-16 bound without retaining half of a surrogate pair.
+  return text.length > max ? `${text.slice(0, max).replace(/[\uD800-\uDBFF]$/, "")} [truncated]` : text;
 };
 
 export function catalogReport(input: Exclude<z.output<typeof reportRequest>, { kind: "activity" }>, now = new Date()): PdfReport {
