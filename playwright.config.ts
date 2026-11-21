@@ -71,7 +71,8 @@ export default defineConfig({
     { name: "desktop", use: { viewport: { width: 1280, height: 900 } } },
   ],
   webServer: {
-    command: "npm run dev",
+    /* CI serves the artifact its own build just produced; a laptop keeps the dev server. */
+    command: process.env.CI ? "npm run start" : "npm run dev",
     url: process.env.E2E_BASE ?? "http://localhost:5330",
     reuseExistingServer: true,
     timeout: 180_000,

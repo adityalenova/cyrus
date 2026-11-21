@@ -5,7 +5,14 @@
    what a visitor actually gets: picks rewrite the address, the link reopens
    the same columns, an attribute nobody publishes is labelled rather than
    guessed at, and at 390px the table becomes blocks.                      ═ */
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+/* Choose the first candidate and wait for the address to hold that many picks, so the next
+   click never lands on a list that has not re-rendered yet. */
+async function pickFirst(page: Page, picks: number) {
+  await page.getByRole("listitem").nth(0).getByRole("button").click();
+  await expect.poll(() => new URL(page.url()).searchParams.getAll("c").length).toBe(picks);
+}
 
 test.describe("side-by-side project comparison", () => {
   test("an empty comparison says so instead of showing an empty table", async ({ page }) => {
@@ -25,9 +32,8 @@ test.describe("side-by-side project comparison", () => {
 
   test("a shared link reopens the same selection", async ({ page }) => {
     await page.goto("/compare");
-    const items = page.getByRole("listitem");
-    await items.nth(0).getByRole("button").click();
-    await items.nth(0).getByRole("button").click();
+    await pickFirst(page, 1);
+    await pickFirst(page, 2);
     const url = page.url();
     await expect(page).toHaveURL(/c=.+&c=.+/);
 
@@ -39,8 +45,7 @@ test.describe("side-by-side project comparison", () => {
 
   test("the third pick at the cap drops the oldest column, never adds a fourth", async ({ page }) => {
     await page.goto("/compare");
-    const items = page.getByRole("listitem");
-    for (let i = 0; i < 4; i++) await items.nth(0).getByRole("button").click();
+    for (let i = 0; i < 4; i++) await pickFirst(page, Math.min(i + 1, 3));
     await expect(page).toHaveURL(/^(?!.*&c=.*&c=.*&c=.*&c=)/);
     await expect(page.getByRole("columnheader")).toHaveCount(4); // attribute column + 3 projects
     await expect(page.getByRole("status")).toContainText(/drops the oldest/i);
@@ -82,6 +87,6 @@ test.describe("side-by-side project comparison", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/compare?c=https%3A%2F%2Fgithub.com%2Fa%2Fb");
     await expect(page.getByRole("table")).toBeHidden();
-    await expect(page.getByRole("list", { name: /build a comparison/i })).toBeVisible();
+    await expect(page.getByRole("region", { name: /build a comparison/i })).toBeVisible();
   });
 });
