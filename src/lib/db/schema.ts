@@ -335,6 +335,93 @@ export const mentorships = pgTable(
   ],
 );
 
+/* ── access control (RBAC) ───────────────────────────────────────────── */
+
+export const roles = pgTable("roles", {
+  id: text("id").primaryKey(), // "super_admin" | "org_admin" | "maintainer" | "contributor" | "viewer"
+  name: text("name").notNull().unique(),
+  description: text("description"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const permissions = pgTable("permissions", {
+  id: text("id").primaryKey(), // "manage_users" | "manage_org" | "edit_projects" | "view_analytics" | "moderate"
+  name: text("name").notNull().unique(),
+  description: text("description"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const rolePermissions = pgTable(
+  "role_permissions",
+  {
+    roleId: text("role_id").notNull().references(() => roles.id, { onDelete: "cascade" }),
+    permissionId: text("permission_id").notNull().references(() => permissions.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.roleId, t.permissionId] }),
+  ],
+);
+
+export const userRoles = pgTable(
+  "user_roles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    roleId: text("role_id").notNull().references(() => roles.id, { onDelete: "cascade" }),
+    orgId: text("org_id").references(() => orgs.login, { onDelete: "cascade" }), // null for global super_admin
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("user_roles_user_idx").on(t.userId),
+    index("user_roles_org_idx").on(t.orgId),
+    uniqueIndex("user_role_org_unique_idx").on(t.userId, t.roleId, t.orgId),
+  ],
+);
+
+export const invitations = pgTable(
+  "invitations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: text("org_id").notNull().references(() => orgs.login, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    roleId: text("role_id").notNull().references(() => roles.id, { onDelete: "cascade" }),
+    token: uuid("token").notNull().defaultRandom(),
+    invitedBy: uuid("invited_by").notNull().references(() => users.id, { onDelete: "cascade" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("invitations_token_idx").on(t.token),
+    index("invitations_org_idx").on(t.orgId),
+    index("invitations_email_idx").on(t.email),
+  ],
+);
+
+export const roleAuditLogs = pgTable(
+  "role_audit_logs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    actorId: uuid("actor_id").references(() => users.id, { onDelete: "set null" }),
+    targetUserId: uuid("target_user_id").references(() => users.id, { onDelete: "set null" }),
+    orgId: text("org_id"),
+    previousRole: text("previous_role"),
+    newRole: text("new_role"),
+    action: text("action").notNull(), // "ASSIGN_ROLE" | "REVOKE_ROLE" | "UPDATE_ROLE" | "CREATE_INVITATION" | "ACCEPT_INVITATION" | "REVOKE_INVITATION"
+    ipAddress: text("ip_address"),
+    details: jsonb("details"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("role_audit_org_idx").on(t.orgId),
+    index("role_audit_actor_idx").on(t.actorId),
+    index("role_audit_target_idx").on(t.targetUserId),
+    index("role_audit_created_idx").on(t.createdAt),
+  ],
+);
+
 /* ── inferred row types ─────────────────────────────────────────────── */
 
 export type UserRow = typeof users.$inferSelect;
@@ -350,3 +437,9 @@ export type ResourceRow = typeof resources.$inferSelect;
 export type MentorRow = typeof mentors.$inferSelect;
 export type MenteeRow = typeof mentees.$inferSelect;
 export type MentorshipRow = typeof mentorships.$inferSelect;
+export type RoleRow = typeof roles.$inferSelect;
+export type PermissionRow = typeof permissions.$inferSelect;
+export type RolePermissionRow = typeof rolePermissions.$inferSelect;
+export type UserRoleRow = typeof userRoles.$inferSelect;
+export type InvitationRow = typeof invitations.$inferSelect;
+export type RoleAuditLogRow = typeof roleAuditLogs.$inferSelect;

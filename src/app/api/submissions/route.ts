@@ -1,9 +1,15 @@
 /* ══ POST /api/submissions — public inbox (nominations, fixes, feedback) ══
    No sign-in needed. Basic guards only: known kind, sane payload size,
    soft per-IP rate limit. Emails stay optional so feedback can be anonymous. */
+import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
+import { submissions } from "@/lib/db/schema";
 import { OFFLINE, backendReady } from "@/lib/server/auth";
 import { addSubmission, smallJson, validEmail, validId, validSubmissionKind } from "@/lib/server/queries";
+import {
+  ForbiddenError, requirePermission, UnauthorizedError,
+  unauthorizedResponse, forbiddenResponse,
+} from "@/lib/server/rbac";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,4 +49,47 @@ export async function POST(req: Request) {
   }
   const row = await addSubmission({ kind: body.kind, name, email, payload: body.payload });
   return Response.json({ ok: true, id: row.id, createdAt: row.createdAt });
+}
+
+export async function GET() {
+  try {
+    await requirePermission("moderate", null);
+  } catch (err) {
+    if (err instanceof UnauthorizedError) return unauthorizedResponse();
+    if (err instanceof ForbiddenError) return forbiddenResponse(err.message);
+    return Response.json({ error: "Authorization error" }, { status: 500 });
+  }
+
+  const db = getDb();
+  if (!db) return Response.json({ error: "Database offline" }, { status: 503 });
+
+  const rows = await db.select().from(submissions).orderBy(desc(submissions.createdAt)).limit(100);
+  return Response.json({ submissions: rows });
+}
+
+export async function PATCH(req: Request) {
+  try {
+    await requirePermission("moderate", null);
+  } catch (err) {
+    if (err instanceof UnauthorizedError) return unauthorizedResponse();
+    if (err instanceof ForbiddenError) return forbiddenResponse(err.message);
+    return Response.json({ error: "Authorization error" }, { status: 500 });
+  }
+
+  const db = getDb();
+  if (!db) return Response.json({ error: "Database offline" }, { status: 503 });
+
+  let body: { id?: unknown; status?: unknown };
+  try { body = await req.json(); } catch { return Response.json({ error: "JSON body required" }, { status: 400 }); }
+
+  const id = typeof body.id === "string" ? body.id : null;
+  const status = typeof body.status === "string" ? body.status : null;
+  if (!id || !status || !["new", "seen", "done", "wont_fix"].includes(status)) {
+    return Response.json({ error: "id and valid status (new|seen|done|wont_fix) are required" }, { status: 400 });
+  }
+
+  const updated = await db.update(submissions).set({ status }).where(eq(submissions.id, id)).returning();
+  if (updated.length === 0) return Response.json({ error: "Submission not found" }, { status: 404 });
+
+  return Response.json({ ok: true, submission: updated[0] });
 }
