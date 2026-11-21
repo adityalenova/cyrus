@@ -17,10 +17,9 @@ import { CRAWL } from "../data/crawlStats";
 import { avatarOf, fmtCompact, levelOf, LANG_COLORS } from "../lib/util";
 import { useStore } from "../lib/store";
 import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
+import { isEmptySearch, normaliseFilters, searchNameError, unknownFilterKeys } from "../lib/savedSearches";
 import type { Sort } from "../lib/server/issueIndex";
 import { btn, Chip, LevelChip, OrgImg, Tag, Word } from "../components/ui";
-import { describeSearch, emptyAnnouncement, resultsView } from "../lib/issueSearchState";
-import { SnapshotFreshnessCue } from "../components/SnapshotFreshnessCue";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -35,8 +34,7 @@ type Found = {
 };
 type Facet = { value: string; count: number };
 type Body = {
-  meta: { generated: string; issues: number; repos: number; orgs: number; languages: number; serverTime?: string };
-  serverTime?: string;
+  meta: { generated: string; issues: number; repos: number; orgs: number; languages: number };
   total: number; page: number; per: number; pages: number;
   facets: { langs: Facet[]; orgs: Facet[]; labels: Facet[] };
   issues: Found[];
@@ -112,7 +110,7 @@ function IssueCard({ i, onTrack, tracked }: { i: Found; onTrack: (i: Found) => v
 
 export default function IssueFinder() {
   const [params, setParams] = useSearchParams();
-  const { toast } = useStore();
+  const { toast, saveSearch } = useStore();
   const { ledger, toggle } = useIssueLedger();
   const [body, setBody] = useState<Body | null>(null);
   const [rows, setRows] = useState<Found[]>([]);
@@ -121,7 +119,6 @@ export default function IssueFinder() {
   const [appending, setAppending] = useState(false);
   const [taken, setTaken] = useState(1);
   const [retryCount, setRetryCount] = useState(0);
-  const searchBox = useRef<HTMLInputElement>(null);
   const typing = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* the page number is deliberately not in the URL: Show more is a local
@@ -181,27 +178,53 @@ export default function IssueFinder() {
       .finally(() => setAppending(false));
   };
 
-  const langs = new Set((params.get("lang") ?? "").split(",").filter(Boolean));
-  const org = params.get("org") ?? "";
-  const label = params.get("label") ?? "";
+  /* The controls read the URL through the saved-search decoder: trimmed,
+     lowercased and clamped exactly as the index does it, so a link and a
+     reopened saved search light the same chips. Unknown keys are collected
+     on the side and named - a search saved before a filter was retired has
+     to still open, not fail the page. */
+  const langs = useMemo(
+    () => new Set((params.get("lang") ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)),
+    [params],
+  );
+  const org = (params.get("org") ?? "").trim().toLowerCase();
+  const label = (params.get("label") ?? "").trim().toLowerCase();
   const beginner = params.get("beginner") === "1";
   const unassigned = params.get("unassigned") === "1";
-  const sort = (params.get("sort") ?? "relevance") as Sort;
+  const sortRaw = (params.get("sort") ?? "").trim().toLowerCase();
+  const sort = (SORTS.some(([v]) => v === sortRaw) ? sortRaw : "relevance") as Sort;
+  const skipped = useMemo(() => unknownFilterKeys(params), [params]);
 
   const toggleLang = (v: string) => {
+    const key = v.toLowerCase();
     const next = new Set(langs);
-    if (next.has(v)) next.delete(v); else next.add(v);
+    if (next.has(key)) next.delete(key); else next.add(key);
     push({ lang: [...next].join(",") });
   };
   const anyFilter = Boolean(term || langs.size || org || label || beginner || unassigned);
   const facetOn = langs.size + (org ? 1 : 0) + (label ? 1 : 0);
-  /* the Clear filters button unmounts with the empty state, so focus goes to
-     the search box rather than to a removed element */
-  const clearAll = () => { setTerm(""); setParams(new URLSearchParams()); searchBox.current?.focus(); };
+  const clearAll = () => { setTerm(""); setParams(new URLSearchParams()); };
 
-  const active = { term: term.trim(), langs: [...langs], org, label, beginner, unassigned };
-  const view = resultsView(status, body !== null, rows.length);
-  const summary = describeSearch(active);
+  /* ── save this search: the question, never the answer ─────────────────
+     Only the name is typed here. The filters are the live URL's own values,
+     normalised, so what lands on the board is exactly what a link would run
+     and nothing about the issues on screen is kept. */
+  const [saveName, setSaveName] = useState("");
+  const [savedNote, setSavedNote] = useState("");
+  const saveThisSearch = () => {
+    const nameErr = searchNameError(saveName);
+    if (nameErr) { setSavedNote(nameErr + "."); return; }
+    const filters = normaliseFilters(params);
+    if (isEmptySearch(filters)) {
+      setSavedNote("Nothing is filtered yet - pick a language, an organization or a word first.");
+      return;
+    }
+    const s = saveSearch(saveName, filters);
+    if (!s) { setSavedNote("That search was not saved - check the name and try again."); return; }
+    setSavedNote(`Saved “${s.name}”. Reopen it from My Issues on your board.`);
+    setSaveName("");
+    toast(`Saved search “${s.name}”`);
+  };
 
   const track = (i: Found) => {
     const meta: IssueMeta = { repo: i.repo, number: i.number, title: i.title, lang: i.lang, stars: i.stars, labels: i.labels, beginner: i.beginner, updated: i.updated };
@@ -234,7 +257,7 @@ export default function IssueFinder() {
         <aside className="sticky top-[86px] max-[980px]:static max-h-[calc(100vh-110px)] overflow-y-auto max-[980px]:max-h-none bg-card border border-line rounded-[22px] p-[22px] shadow-soft grid gap-5">
           <div>
             <span className={labelCls}>Search</span>
-            <input ref={searchBox} value={term} onChange={(e) => onTerm(e.target.value)} placeholder="memory leak, docs, flaky test…"
+            <input value={term} onChange={(e) => onTerm(e.target.value)} placeholder="memory leak, docs, flaky test…"
               aria-label="Search issue titles" autoComplete="off" className={fin} />
           </div>
 
@@ -259,11 +282,14 @@ export default function IssueFinder() {
               <div>
                 <span className={labelCls}>Language</span>
                 <div className="flex flex-wrap gap-[7px]">
-                  {body.facets.langs.map((f) => (
-                    <button key={f.value} className={fchip(langs.has(f.value))} aria-pressed={langs.has(f.value)} onClick={() => toggleLang(f.value)}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
-                    </button>
-                  ))}
+                  {body.facets.langs.map((f) => {
+                    const on = langs.has(f.value.toLowerCase());
+                    return (
+                      <button key={f.value} className={fchip(on)} aria-pressed={on} onClick={() => toggleLang(f.value)}>
+                        {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -272,11 +298,14 @@ export default function IssueFinder() {
               <div>
                 <span className={labelCls}>Organization</span>
                 <div className="flex flex-wrap gap-[7px]">
-                  {body.facets.orgs.map((f) => (
-                    <button key={f.value} className={fchip(org === f.value)} aria-pressed={org === f.value} onClick={() => push({ org: org === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
-                    </button>
-                  ))}
+                  {body.facets.orgs.map((f) => {
+                    const on = org === f.value.toLowerCase();
+                    return (
+                      <button key={f.value} className={fchip(on)} aria-pressed={on} onClick={() => push({ org: on ? "" : f.value.toLowerCase() })}>
+                        {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -285,19 +314,47 @@ export default function IssueFinder() {
               <div>
                 <span className={labelCls}>Label</span>
                 <div className="flex flex-wrap gap-[7px]">
-                  {body.facets.labels.map((f) => (
-                    <button key={f.value} className={fchip(label === f.value)} aria-pressed={label === f.value} onClick={() => push({ label: label === f.value ? "" : f.value })}>
-                      {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
-                    </button>
-                  ))}
+                  {body.facets.labels.map((f) => {
+                    const on = label === f.value.toLowerCase();
+                    return (
+                      <button key={f.value} className={fchip(on)} aria-pressed={on} onClick={() => push({ label: on ? "" : f.value.toLowerCase() })}>
+                        {f.value} <span className="font-mono text-[10px] opacity-70">{fmtCompact(f.count)}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
           </div>
 
+          {skipped.length > 0 && (
+            <p role="status" aria-live="polite" className="text-[12.5px] leading-[1.55] text-honey">
+              This link carries filters the finder no longer has - {skipped.join(", ")} - so they were
+              skipped. Everything else in it is running below.
+            </p>
+          )}
+
           <button className={btn(anyFilter ? "primary" : "outline", "md", "w-full")} onClick={clearAll} disabled={!anyFilter}>
             Reset filters
           </button>
+
+          {/* the named search: one typed word and the filters already chosen.
+              A form so Enter saves it, and the note is a live region so the
+              outcome is announced rather than only painted on screen. */}
+          <div className="pt-4 border-t border-dashed border-line">
+            <span className={labelCls}>Save this search</span>
+            <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); saveThisSearch(); }}>
+              <input value={saveName} onChange={(e) => { setSaveName(e.target.value); setSavedNote(""); }}
+                placeholder="rust, good first issue" aria-label="Name this search"
+                autoComplete="off" maxLength={80} className={fin + " min-w-0 flex-1"} />
+              <button type="submit" className={btn("primary", "sm")} disabled={!anyFilter}>Save</button>
+            </form>
+            <p role="status" aria-live="polite" className="text-[12px] leading-[1.55] mt-2 min-h-[18px] text-dim">
+              {savedNote || (anyFilter
+                ? "Stores the words and the filters, never the issues - reopening re-runs it on the current snapshot."
+                : "Pick a filter first, then name the search to keep it.")}
+            </p>
+          </div>
         </aside>
 
         {/* ── results ── */}
@@ -321,15 +378,6 @@ export default function IssueFinder() {
             </select>
           </div>
 
-          {body && (
-            <div className="mb-4">
-              <SnapshotFreshnessCue
-                generated={body.meta?.generated}
-                serverTime={body.serverTime ?? body.meta?.serverTime}
-              />
-            </div>
-          )}
-
           {status === "error" && (
             <div className="rounded-[22px] border border-dashed border-rule p-10 text-center bg-cream">
               <p className="font-display text-[20px] text-cocoa mb-2">The issue index is not answering right now.</p>
@@ -341,19 +389,9 @@ export default function IssueFinder() {
             </div>
           )}
 
-          {view === "empty" && (
+          {status !== "error" && body && rows.length === 0 && (
             <div className="rounded-[22px] border border-dashed border-line p-10 text-center bg-cream">
-              {/* a polite live region: filtering that lands on zero is announced
-                  without moving focus off the control the visitor just used */}
-              <div role="status" aria-live="polite">
-                <p className="font-display text-[20px] text-cocoa mb-2">Nothing matches all of that.</p>
-                <span className="sr-only">{emptyAnnouncement(active)}</span>
-                {summary.length > 0 && (
-                  <p className="text-cocoa text-[13.5px] max-w-[460px] mx-auto mb-2">
-                    Searched with: {summary.join(", ")}.
-                  </p>
-                )}
-              </div>
+              <p className="font-display text-[20px] text-cocoa mb-2">Nothing matches all of that.</p>
               <p className="text-cocoa text-[13.5px] max-w-[430px] mx-auto">
                 Drop a filter or search a shorter phrase - titles are matched word by word.
                 {" "}{num(CRAWL.beginnerLabelled)} issues in the snapshot carry a beginner label.
@@ -362,7 +400,7 @@ export default function IssueFinder() {
             </div>
           )}
 
-          {view === "skeleton" ? (
+          {status === "loading" && !body ? (
             <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="rounded-[20px] border border-line bg-card/50 p-[22px] animate-pulse">
@@ -406,8 +444,8 @@ export default function IssueFinder() {
           ) : null}
 
           <p className="font-mono text-[10px] text-dim mt-8 leading-[1.7]">
-            Index snapshot {body?.meta?.generated ?? CRAWL.crawledAt} · {num(CRAWL.issues)} issues · {num(CRAWL.reposWithIssues)} repositories · {CRAWL.languages} languages.
-            An issue being open here means GitHub said so on that snapshot date; live thread state on GitHub may differ.
+            Snapshot {body?.meta.generated ?? CRAWL.crawledAt} · {num(CRAWL.issues)} issues · {num(CRAWL.reposWithIssues)} repositories · {CRAWL.languages} languages.
+            An issue being open here means GitHub said so on that date; check the thread before you start.
           </p>
         </section>
       </div>

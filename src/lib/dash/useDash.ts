@@ -4,7 +4,7 @@
    site (saved repos, followed orgs) plus one issue ledger, so every
    /dashboard page hydrates the same picture. When a server session is
    active the repo and org keys also sync through /api/me/saved.     ═ */
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "@/lib/router";
 import { ORGS } from "../../data/orgs";
 import { CRAWL } from "../../data/crawlStats";
@@ -20,7 +20,7 @@ const SHELF = new Map(ISSUE_SIGNALS.map((i) => [i.url, i]));
 const STALE_MS = 90 * 864e5;
 
 export function useDash() {
-  const { user, signIn, signOut, setAuthOpen, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, unfollowAll, toast, setPaletteOpen, serverUser, theme, toggleTheme, boardReady } = useStore();
+  const { user, signIn, signOut, setAuthOpen, saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll, toast, setPaletteOpen, serverUser, theme, toggleTheme, boardReady, searches, saveSearch, renameSearch, removeSearch } = useStore();
   const nav = useNavigate();
   const [gBusy, setGBusy] = useState(false);
 
@@ -101,22 +101,6 @@ export function useDash() {
     orgs: ORGS.length,
     crawledAt: CRAWL.crawledAt,
   };
-
-  const [snapshotMeta, setSnapshotMeta] = useState<{ generated?: string; serverTime?: string } | null>(null);
-  useEffect(() => {
-    let live = true;
-    fetch("/api/issues?per=1", { headers: { accept: "application/json" } })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (!live || !data) return;
-        setSnapshotMeta({
-          generated: data.meta?.generated,
-          serverTime: data.serverTime ?? data.meta?.serverTime,
-        });
-      })
-      .catch(() => {});
-    return () => { live = false; };
-  }, []);
 
   /* ── needs your attention: derived from the board, never invented ─ */
   type Attention = { tone: "warn" | "info"; title: string; body: string; to: string; cta: string };
@@ -201,10 +185,11 @@ export function useDash() {
 
   return {
     user, signIn, signOut, setAuthOpen, toast, serverUser, nav, gBusy, googleIn, theme, toggleTheme, boardReady,
-    saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, unfollowAll, setPaletteOpen,
+    saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll, setPaletteOpen,
     ledger, issues, byStage, stageOf, trackIssue, toggleIssue, setStage, removeIssue, clearIssues,
     savedRepos, orgList, stars, openIssues, langs,
-    index, attention, steps, stepsDone, pct, snapshotMeta,
+    searches, saveSearch, renameSearch, removeSearch,
+    index, attention, steps, stepsDone, pct,
   };
 }
 export type Dash = ReturnType<typeof useDash>;

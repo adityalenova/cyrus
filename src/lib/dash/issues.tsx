@@ -6,12 +6,12 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "@/lib/router";
-import { SnapshotFreshnessCue } from "@/components/SnapshotFreshnessCue";
 import { btn, Chip, Tag } from "../../components/ui";
 import { avatarOf, fmtCompact } from "../util";
 import { ISSUE_SIGNALS } from "../../data/issueSignals";
 import { Card, DashHead, Ic, StatRow } from "./shell";
 import { ArtLedger } from "./art";
+import { SavedSearchesPanel } from "./searches";
 import {
   DP, ISSUE_STAGES, STAGE_CLS, STAGE_LABEL, STAGE_NEXT,
   daysAgo, isStale, type IssueStage, type TrackedIssue,
@@ -211,13 +211,6 @@ export function IssuesSection({ d }: { d: Dash }) {
       <DashHead title="My Issues"
         sub="Every issue you took, held at the stage you left it. Titles and labels come from the crawl; the stages are yours." />
 
-      <div className="mb-4">
-        <SnapshotFreshnessCue
-          generated={d.snapshotMeta?.generated ?? d.index.crawledAt}
-          serverTime={d.snapshotMeta?.serverTime}
-        />
-      </div>
-
       <Card>
         <form className="flex gap-2.5 flex-wrap"
           onSubmit={(e) => { e.preventDefault(); if (d.trackIssue(paste)) setPaste(""); }}>
@@ -279,18 +272,17 @@ export function IssuesSection({ d }: { d: Dash }) {
         </Card>
       )}
 
+      {/* the searches, not the issues: what a contributor keeps re-running
+          on the finder, kept as filters so it re-reads the current crawl */}
+      <SavedSearchesPanel d={d} />
+
       {offered.length > 0 && (
         <Card>
           <div className="flex items-baseline gap-3 flex-wrap mb-4">
             <h2 className="panel-h-lg flex items-center gap-2.5">
               <Ic d={DP.spark} size={15} /> Open right now
             </h2>
-            <SnapshotFreshnessCue
-              compact
-              generated={d.snapshotMeta?.generated ?? d.index.crawledAt}
-              serverTime={d.snapshotMeta?.serverTime}
-              className="ml-auto"
-            />
+            <span className="font-mono text-[10.5px] text-dim ml-auto">crawled {d.index.crawledAt}</span>
           </div>
           <div className="grid gap-2.5">
             {offered.map((s) => (
@@ -317,7 +309,7 @@ export function IssuesSection({ d }: { d: Dash }) {
           </div>
           <p className="text-dim text-[12px] mt-4">
             A sample of the {fmtCompact(d.index.issues)} open issues read from{" "}
-            {fmtCompact(d.index.issueRepos)} repositories in the index snapshot. The whole
+            {fmtCompact(d.index.issueRepos)} repositories on {d.index.crawledAt}. The whole
             snapshot is searchable on the{" "}
             <Link to="/issues" className="text-accent font-semibold hover:underline">issue finder</Link>.
           </p>

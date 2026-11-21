@@ -8,7 +8,7 @@ export type ServerUser = {
   id: string; name: string; login: string | null;
   email: string | null; picture: string | null; provider: string;
 };
-export type SavedRow = { itemType: string; itemId: string; title?: string | null; createdAt?: string };
+export type SavedRow = { itemType: string; itemId: string; title?: string | null; meta?: unknown; createdAt?: string };
 export type EmailStartRes = {
   ok: boolean; sent?: boolean; demo?: boolean; code?: string; challenge?: string | null;
   reason?: string; error?: string; expires_in_seconds?: number;
@@ -48,7 +48,7 @@ async function postJson<T>(url: string, body: unknown, method: "POST" | "PATCH" 
   }
 }
 
-async function fire(url: string, body: unknown, method: "POST" | "DELETE"): Promise<boolean> {
+async function fire(url: string, body: unknown, method: "POST" | "PATCH" | "DELETE"): Promise<boolean> {
   try {
     const r = await fetch(url, { ...JSON_INIT, method, body: JSON.stringify(body) });
     return r.ok;
@@ -72,8 +72,10 @@ export const api = {
     postJson<EmailVerifyRes>("/api/auth/email/verify", { email, code, name, challenge }),
 
   savedList: () => getJson<{ items: SavedRow[] }>("/api/me/saved"),
-  savedAdd: (itemType: string, itemId: string, title?: string) =>
-    fire("/api/me/saved", { itemType, itemId, title }, "POST"),
+  savedAdd: (itemType: string, itemId: string, title?: string, meta?: unknown) =>
+    fire("/api/me/saved", { itemType, itemId, title, meta }, "POST"),
+  savedRename: (itemType: string, itemId: string, title: string) =>
+    fire("/api/me/saved", { itemType, itemId, title }, "PATCH"),
   savedRemove: (itemType: string, itemId: string) =>
     fire("/api/me/saved", { itemType, itemId }, "DELETE"),
 
@@ -86,48 +88,6 @@ export const api = {
   appPatch: (id: string, patch: { status?: string; notes?: unknown }) =>
     postJson<{ application: AppRow }>("/api/me/applications", { id, ...patch }, "PATCH"),
   appDelete: (id: string) => postJson<{ ok: boolean }>("/api/me/applications", { id }, "DELETE"),
-
-  // RBAC endpoints
-  myPermissions: () =>
-    getJson<{
-      authenticated: boolean;
-      userId?: string;
-      roles: Array<{ role: string; orgId: string | null }>;
-      permissionsByOrg: Record<string, string[]>;
-      globalPermissions: string[];
-    }>("/api/me/permissions"),
-  orgMembers: (org: string) =>
-    getJson<{
-      members: Array<{
-        id: string;
-        userId: string;
-        role: string;
-        createdAt: string;
-        user: { id: string; name: string; email: string | null; login: string | null; picture: string | null };
-      }>;
-    }>(`/api/organizations/${encodeURIComponent(org)}/members`),
-  orgAssignRole: (org: string, targetUserId: string, role: string) =>
-    postJson<{ ok: true; userRole: unknown }>(`/api/organizations/${encodeURIComponent(org)}/members`, { targetUserId, role }),
-  orgRevokeRole: (org: string, targetUserId: string) =>
-    postJson<{ ok: true }>(`/api/organizations/${encodeURIComponent(org)}/members`, { targetUserId }, "DELETE"),
-  orgInvitations: (org: string) =>
-    getJson<{
-      invitations: Array<{ id: string; orgId: string; email: string; role: string; expiresAt: string; createdAt: string }>;
-    }>(`/api/organizations/${encodeURIComponent(org)}/invitations`),
-  orgInvite: (org: string, email: string, role: string) =>
-    postJson<{ ok: true; invitation: unknown }>(`/api/organizations/${encodeURIComponent(org)}/invitations`, { email, role }),
-  orgRevokeInvite: (org: string, id: string) =>
-    postJson<{ ok: true }>(`/api/organizations/${encodeURIComponent(org)}/invitations/${encodeURIComponent(id)}`, {}, "DELETE"),
-  acceptInvite: (token: string) =>
-    postJson<{ ok: true; orgId: string; role: string }>(`/api/invitations/${encodeURIComponent(token)}/accept`, {}),
-  orgAuditLogs: (org: string) =>
-    getJson<{ logs: Array<{ id: string; actorId: string | null; targetUserId: string | null; previousRole: string | null; newRole: string | null; action: string; createdAt: string }> }>(
-      `/api/organizations/${encodeURIComponent(org)}/audit-logs`,
-    ),
-  orgAnalytics: (org: string) =>
-    getJson<{ orgId: string; totalMembers: number; rolesDistribution: Record<string, number>; repositoriesCount: number }>(
-      `/api/organizations/${encodeURIComponent(org)}/analytics`,
-    ),
 };
 
 /* What this deploy can do, asked once per page load. `/api/health` answers

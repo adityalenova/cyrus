@@ -10,10 +10,11 @@ import {
 } from "../db/schema";
 
 /* Saved items and applications cover what the site has pages for now:
-   repositories, organizations, programs and issues. Rows written before
-   the rebuild can still carry a retired type ("hackathon", "resource",
-   "artifact"); they read back untouched, they just cannot be created. */
-export const ITEM_TYPES = ["repo", "org", "program", "issue"] as const;
+   repositories, organizations, programs, issues and saved issue-finder
+   searches. Rows written before the rebuild can still carry a retired type
+   ("hackathon", "resource", "artifact"); they read back untouched, they
+   just cannot be created. */
+export const ITEM_TYPES = ["repo", "org", "program", "issue", "search"] as const;
 export type ItemType = (typeof ITEM_TYPES)[number];
 export const APP_KINDS = ["program"] as const;
 export const APP_STATUSES = ["drafting", "roadmap", "drafting_done", "submitted", "interview", "accepted", "rejected"] as const;
@@ -56,6 +57,21 @@ export async function removeSaved(userId: string, itemType: ItemType, itemId: st
     .where(and(eq(savedItems.userId, userId), eq(savedItems.itemType, itemType), eq(savedItems.itemId, itemId)))
     .returning({ id: savedItems.id });
   return rows.length > 0;
+}
+
+/** Rename one saved row. Matched by the same three columns the row is
+ *  unique on, with the user in the predicate, so one account can never
+ *  rename another's search even by naming its id. */
+export async function renameSaved(
+  userId: string, itemType: ItemType, itemId: string, title: string,
+): Promise<SavedItemRow | null> {
+  const db = getDb()!;
+  const rows = await db
+    .update(savedItems)
+    .set({ title })
+    .where(and(eq(savedItems.userId, userId), eq(savedItems.itemType, itemType), eq(savedItems.itemId, itemId)))
+    .returning();
+  return rows[0] ?? null;
 }
 
 /* ── applications ────────────────────────────────────────────── */

@@ -122,6 +122,7 @@ vi.mock("@/lib/db", () => ({
 import { setSession } from "@/lib/server/auth";
 import { GET, POST, DELETE } from "@/app/api/me/saved/route";
 import { trackedIssuesToCsv, type TrackedIssueCsvRow } from "@/lib/dash/csvExport";
+import { hydrateSavedSearch, searchUrl } from "@/lib/savedSearches";
 
 /* ── 2. Test Fixtures & Identity Declarations ──────────────────────────────── */
 
@@ -655,5 +656,85 @@ describe("Cyrus Issue #146 — Fixture Isolation & Cleanup", () => {
   it("test B starts with empty store regardless of test execution order", async () => {
     // beforeEach must have cleared the store
     expect(savedItemsStore.size).toBe(0);
+  });
+});
+
+/* ── Saved searches: the question, stored per account ───────── */
+
+describe("Saved searches persist, scoped and replayable", () => {
+  const SEARCH = {
+    itemType: "search",
+    itemId: "sq-alice-rust",
+    title: "Rust good first issues",
+    meta: { filters: { lang: ["rust"], beginner: true } },
+  };
+
+  it("stores the name and the normalised filters under the session's user", async () => {
+    await setSession({ uid: USER_ALICE.id, name: USER_ALICE.name, provider: USER_ALICE.provider });
+    const res = await POST(req("POST", SEARCH));
+    expect(res.status).toBe(200);
+
+    const row = savedItemsStore.get(`${USER_ALICE.id}:search:${SEARCH.itemId}`);
+    expect(row).toBeDefined();
+    expect(row!.title).toBe("Rust good first issues");
+    expect(row!.meta).toEqual({ filters: { lang: ["rust"], beginner: true } });
+    expect(JSON.stringify(row!.meta)).not.toContain("https://github.com"); // no issue list
+  });
+
+  it("reopens the stored row as exactly the link the finder runs", async () => {
+    await setSession({ uid: USER_ALICE.id, name: USER_ALICE.name, provider: USER_ALICE.provider });
+    await POST(req("POST", { ...SEARCH, meta: { filters: { q: "memory leak", org: "vercel", sort: "stars" } } }));
+
+    const items = await (await GET()).json();
+    const search = hydrateSavedSearch(items.items[0]);
+    expect(search).toMatchObject({ id: SEARCH.itemId, name: "Rust good first issues" });
+    expect(searchUrl(search!.filters)).toBe("/issues?q=memory+leak&org=vercel&sort=stars");
+  });
+
+  it("refuses a search that is not a search this page can run", async () => {
+    await setSession({ uid: USER_ALICE.id, name: USER_ALICE.name, provider: USER_ALICE.provider });
+
+    for (const body of [
+      { itemType: "search", itemId: "sq-1", title: "", meta: SEARCH.meta },
+      { itemType: "search", itemId: "sq-1", title: "x".repeat(81), meta: SEARCH.meta },
+      { itemType: "search", itemId: "sq-1", title: "ok", meta: { filters: { status: "open" } } },
+      { itemType: "search", itemId: "sq-1", title: "ok", meta: { filters: { org: "Vercel" } } },
+      { itemType: "search", itemId: "sq-1", title: "ok", meta: { filters: { lang: Array.from({ length: 30 }, (_, i) => `l${i}`) } } },
+      { itemType: "search", itemId: "sq-1", title: "ok", meta: "rust" },
+    ]) {
+      expect((await POST(req("POST", body))).status).toBe(400);
+    }
+    expect(Array.from(savedItemsStore.values()).filter((r) => r.itemType === "search")).toHaveLength(0);
+  });
+
+  it("keeps two searches of the same filters apart, and one row per id", async () => {
+    await setSession({ uid: USER_ALICE.id, name: USER_ALICE.name, provider: USER_ALICE.provider });
+    expect((await POST(req("POST", SEARCH))).status).toBe(200);
+    expect((await POST(req("POST", SEARCH))).status).toBe(200); // idempotent per id
+    expect(savedItemsStore.size).toBe(1);
+
+    await POST(req("POST", { ...SEARCH, itemId: "sq-alice-rust-again", title: "My rust list" }));
+    expect(savedItemsStore.size).toBe(2);
+  });
+
+  it("User B cannot read, overwrite or delete User A's saved search", async () => {
+    await setSession({ uid: USER_ALICE.id, name: USER_ALICE.name, provider: USER_ALICE.provider });
+    await POST(req("POST", SEARCH));
+    await POST(req("POST", { ...SEARCH, itemId: "sq-alice-private", title: "Alice only" }));
+
+    await setSession({ uid: USER_BOB.id, name: USER_BOB.name, provider: USER_BOB.provider });
+    const bobList = await (await GET()).json();
+    expect(bobList.items).toEqual([]);
+
+    // Bob names Alice's search id and even her user id: her row is untouched
+    const spoof = await POST(req("POST", { ...SEARCH, title: "Hijacked", userId: USER_ALICE.id }));
+    expect(spoof.status).toBe(200);
+    expect(savedItemsStore.get(`${USER_ALICE.id}:search:${SEARCH.itemId}`)!.title).toBe("Rust good first issues");
+    expect(savedItemsStore.has(`${USER_BOB.id}:search:${SEARCH.itemId}`)).toBe(true);
+
+    // and a DELETE can only ever remove the row his own session owns
+    const del = await DELETE(req("DELETE", { itemType: "search", itemId: "sq-alice-private", userId: USER_ALICE.id }));
+    expect((await del.json()).removed).toBe(false);
+    expect(savedItemsStore.has(`${USER_ALICE.id}:search:sq-alice-private`)).toBe(true);
   });
 });
