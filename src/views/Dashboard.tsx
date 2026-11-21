@@ -8,6 +8,7 @@
 import { Link } from "@/lib/router";
 import PdfExport, { ProjectPdfBatch } from "@/components/PdfExport";
 import { btn } from "../components/ui";
+import NotificationBell from "../components/NotificationBell";
 import { fmtCompact } from "../lib/util";
 import { ISSUE_SIGNALS } from "../data/issueSignals";
 import { useDash } from "../lib/dash/useDash";
@@ -67,6 +68,7 @@ function Overview({ d }: { d: Dash }) {
             : `Following ${d.saved.length} repositor${d.saved.length === 1 ? "y" : "ies"} and ${d.savedOrgs.length} organization${d.savedOrgs.length === 1 ? "" : "s"} - nothing tracked yet`}
           action={
             <>
+              <NotificationBell />
               <Link to="/dashboard/issues" className={btn("primary", "sm")}>Track an issue</Link>
               <Link to="/skills" className={btn("outline", "sm")}>Browse catalog</Link>
             </>
