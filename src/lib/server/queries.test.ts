@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 const dbMock = vi.hoisted(() => ({
   select: vi.fn(),
+  update: vi.fn(),
 }));
 
 vi.mock("../db", () => ({
@@ -10,13 +11,13 @@ vi.mock("../db", () => ({
 }));
 
 import {
-  queryRepos, smallJson, validAppKind, validAppStatus, validEmail,
+  queryRepos, renameSaved, smallJson, validAppKind, validAppStatus, validEmail,
   validId, validItemType, validSubmissionKind,
 } from "./queries";
 
 describe("saved-item guards", () => {
-  it("accepts only the four item types the site has pages for", () => {
-    for (const t of ["repo", "org", "program", "issue"]) expect(validItemType(t)).toBe(true);
+  it("accepts the item types the site has pages for, searches included", () => {
+    for (const t of ["repo", "org", "program", "issue", "search"]) expect(validItemType(t)).toBe(true);
     expect(validItemType("wiki")).toBe(false);
     expect(validItemType("hackathon")).toBe(false);
     expect(validItemType(undefined)).toBe(false);
@@ -26,6 +27,44 @@ describe("saved-item guards", () => {
     expect(validId("")).toBe(false);
     expect(validId("x".repeat(201))).toBe(false);
     expect(validId(42 as unknown as string)).toBe(false);
+  });
+});
+
+/* db.update(savedItems).set({ title }).where(pred).returning() */
+describe("renameSaved", () => {
+  const row = { itemId: "sq-1", itemType: "search", title: "Rust, good first" };
+  const wire = (rows: unknown[]) => {
+    const returning = vi.fn().mockResolvedValue(rows);
+    const where = vi.fn().mockReturnValue({ returning });
+    const set = vi.fn().mockReturnValue({ where });
+    dbMock.update.mockReturnValue({ set });
+    return { set, where, returning };
+  };
+
+  /* the condition is a tree of Param nodes; digging out their values is the
+     only way to prove the user id really landed in the SQL predicate */
+  const paramValues = (node: unknown, out: unknown[] = []): unknown[] => {
+    if (!node || typeof node !== "object") return out;
+    const n = node as { value?: unknown; queryChunks?: unknown[] };
+    if ("value" in n) out.push(n.value);
+    for (const c of n.queryChunks ?? []) paramValues(c, out);
+    return out;
+  };
+
+  it("updates the title only, with the session's user in the predicate", async () => {
+    const { set, where, returning } = wire([row]);
+    expect(await renameSaved("u1", "search", "sq-1", "Rust, good first")).toEqual(row);
+    expect(set).toHaveBeenCalledWith({ title: "Rust, good first" });
+    expect(paramValues(where.mock.calls[0][0])).toEqual(expect.arrayContaining(["u1", "search", "sq-1"]));
+    expect(returning).toHaveBeenCalled();
+  });
+
+  it("returns null when nothing matched, so another account's row is simply not renamed", async () => {
+    const { where } = wire([]);
+    expect(await renameSaved("u1", "search", "sq-other", "Taken over")).toBeNull();
+    /* the search id alone is never enough: without u1 in the WHERE clause
+       this UPDATE would rename whichever row happens to carry that id */
+    expect(paramValues(where.mock.calls[0][0])).toContain("u1");
   });
 });
 
