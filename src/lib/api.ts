@@ -86,6 +86,48 @@ export const api = {
   appPatch: (id: string, patch: { status?: string; notes?: unknown }) =>
     postJson<{ application: AppRow }>("/api/me/applications", { id, ...patch }, "PATCH"),
   appDelete: (id: string) => postJson<{ ok: boolean }>("/api/me/applications", { id }, "DELETE"),
+
+  // RBAC endpoints
+  myPermissions: () =>
+    getJson<{
+      authenticated: boolean;
+      userId?: string;
+      roles: Array<{ role: string; orgId: string | null }>;
+      permissionsByOrg: Record<string, string[]>;
+      globalPermissions: string[];
+    }>("/api/me/permissions"),
+  orgMembers: (org: string) =>
+    getJson<{
+      members: Array<{
+        id: string;
+        userId: string;
+        role: string;
+        createdAt: string;
+        user: { id: string; name: string; email: string | null; login: string | null; picture: string | null };
+      }>;
+    }>(`/api/organizations/${encodeURIComponent(org)}/members`),
+  orgAssignRole: (org: string, targetUserId: string, role: string) =>
+    postJson<{ ok: true; userRole: unknown }>(`/api/organizations/${encodeURIComponent(org)}/members`, { targetUserId, role }),
+  orgRevokeRole: (org: string, targetUserId: string) =>
+    postJson<{ ok: true }>(`/api/organizations/${encodeURIComponent(org)}/members`, { targetUserId }, "DELETE"),
+  orgInvitations: (org: string) =>
+    getJson<{
+      invitations: Array<{ id: string; orgId: string; email: string; role: string; expiresAt: string; createdAt: string }>;
+    }>(`/api/organizations/${encodeURIComponent(org)}/invitations`),
+  orgInvite: (org: string, email: string, role: string) =>
+    postJson<{ ok: true; invitation: unknown }>(`/api/organizations/${encodeURIComponent(org)}/invitations`, { email, role }),
+  orgRevokeInvite: (org: string, id: string) =>
+    postJson<{ ok: true }>(`/api/organizations/${encodeURIComponent(org)}/invitations/${encodeURIComponent(id)}`, {}, "DELETE"),
+  acceptInvite: (token: string) =>
+    postJson<{ ok: true; orgId: string; role: string }>(`/api/invitations/${encodeURIComponent(token)}/accept`, {}),
+  orgAuditLogs: (org: string) =>
+    getJson<{ logs: Array<{ id: string; actorId: string | null; targetUserId: string | null; previousRole: string | null; newRole: string | null; action: string; createdAt: string }> }>(
+      `/api/organizations/${encodeURIComponent(org)}/audit-logs`,
+    ),
+  orgAnalytics: (org: string) =>
+    getJson<{ orgId: string; totalMembers: number; rolesDistribution: Record<string, number>; repositoriesCount: number }>(
+      `/api/organizations/${encodeURIComponent(org)}/analytics`,
+    ),
 };
 
 /* What this deploy can do, asked once per page load. `/api/health` answers

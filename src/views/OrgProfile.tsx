@@ -10,6 +10,7 @@ import { useStore } from "../lib/store";
 import { btn, Chip, OrgImg, Tag } from "../components/ui";
 import { sectorOfOrg } from "../lib/orgClasses";
 import NotFound from "./NotFound";
+import RoleManagement from "@/components/RoleManagement";
 
 const W = "max-w-[1240px] mx-auto px-6";
 const GSOC_URL = "https://summerofcode.withgoogle.com";
@@ -421,6 +422,10 @@ export default function OrgProfile() {
             {org.name} has no accepted projects in the five-year archive and no live repository snapshot yet.
           </p>
         )}
+        {/* ── Organization Team & Role Management ── */}
+        <section className="my-8">
+          <RoleManagement orgLogin={org.login} />
+        </section>
       </div>
     </>
   );

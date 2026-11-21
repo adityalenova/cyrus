@@ -9,8 +9,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { getDb } from "./index";
 import {
-  applications, catalogMeta, hackathons, orgRepos, orgs, programProjects,
-  repos, resources, savedItems, submissions, users,
+  applications, catalogMeta, hackathons, orgRepos, orgs, permissions, programProjects,
+  repos, resources, rolePermissions, roles, savedItems, submissions, users,
 } from "./schema";
 import { REPOS } from "../../data/repos";
 import { REAL_REPOS, REAL_STATS } from "../../data/realOrgs";
@@ -32,6 +32,45 @@ function loadEnv() {
     }
   } catch {
     /* no .env file — rely on the real environment */
+  }
+}
+
+export const PREDEFINED_ROLES = [
+  { id: "super_admin", name: "super_admin", description: "Platform super administrator with unrestricted access" },
+  { id: "org_admin", name: "org_admin", description: "Organization administrator with full organization control" },
+  { id: "maintainer", name: "maintainer", description: "Maintainer with project edit, analytics, and moderation privileges" },
+  { id: "contributor", name: "contributor", description: "Contributor with project edit and analytics privileges" },
+  { id: "viewer", name: "viewer", description: "Viewer with read-only analytics access" },
+] as const;
+
+export const PREDEFINED_PERMISSIONS = [
+  { id: "manage_users", name: "manage_users", description: "Manage organization members and role assignments" },
+  { id: "manage_org", name: "manage_org", description: "Manage organization profile, settings, and lifecycle" },
+  { id: "edit_projects", name: "edit_projects", description: "Create, update, and manage organization projects and repositories" },
+  { id: "view_analytics", name: "view_analytics", description: "View organization analytics, metrics, and insights" },
+  { id: "moderate", name: "moderate", description: "Moderate organization content, submissions, and member actions" },
+] as const;
+
+export const PREDEFINED_ROLE_PERMISSIONS: Record<string, string[]> = {
+  super_admin: ["manage_users", "manage_org", "edit_projects", "view_analytics", "moderate"],
+  org_admin: ["manage_users", "manage_org", "edit_projects", "view_analytics", "moderate"],
+  maintainer: ["edit_projects", "view_analytics", "moderate"],
+  contributor: ["edit_projects", "view_analytics"],
+  viewer: ["view_analytics"],
+};
+
+export async function seedRbac(db: NonNullable<ReturnType<typeof getDb>>) {
+  console.log("Seeding RBAC roles and permissions…");
+  for (const r of PREDEFINED_ROLES) {
+    await db.insert(roles).values(r).onConflictDoNothing();
+  }
+  for (const p of PREDEFINED_PERMISSIONS) {
+    await db.insert(permissions).values(p).onConflictDoNothing();
+  }
+  for (const [roleId, permIds] of Object.entries(PREDEFINED_ROLE_PERMISSIONS)) {
+    for (const permissionId of permIds) {
+      await db.insert(rolePermissions).values({ roleId, permissionId }).onConflictDoNothing();
+    }
   }
 }
 
@@ -145,10 +184,14 @@ async function main() {
     { key: "counts", value: counts },
   ]);
 
+  await seedRbac(db);
+
   console.log(`Seeded in ${((Date.now() - t0) / 1000).toFixed(1)}s:`, JSON.stringify(counts));
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (process.argv[1]?.includes("seed.ts")) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
