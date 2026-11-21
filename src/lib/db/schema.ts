@@ -118,6 +118,73 @@ export const submissions = pgTable(
   (t) => [index("submissions_kind_idx").on(t.kind, t.status)],
 );
 
+/* ── discussions ──────────────────────────────────────────────────────
+   A thread is anchored to whatever page it lives on (a catalog repo, a
+   program, an organization) by its frontend id, the same stable string
+   saved_items uses. Replies nest through parent_id; the three-level cap and
+   the ordering are decided in src/lib/discussions.ts, not in SQL, so the
+   read stays one flat query. Vote counters live on the row so a thread list
+   never has to join comment_votes, and the author's own choice is kept
+   there too for the arrow state. moderation columns (flagged / pinned /
+   locked) are plain booleans: the flag is a queue, the rest is a pin. */
+export const discussions = pgTable(
+  "discussions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    projectId: text("project_id").notNull(), // owner/name | program id | org login
+    projectKind: text("project_kind").notNull().default("repo"), // repo | program | org
+    title: text("title").notNull(),
+    authorId: uuid("author_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    authorName: text("author_name").notNull().default(""),
+    authorLogin: text("author_login"),
+    replies: integer("replies").notNull().default(0),
+    pinned: boolean("pinned").notNull().default(false),
+    locked: boolean("locked").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    lastCommentAt: timestamp("last_comment_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("discussions_project_idx").on(t.projectKind, t.projectId, t.lastCommentAt),
+    index("discussions_author_idx").on(t.authorId),
+  ],
+);
+
+export const comments = pgTable(
+  "comments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    discussionId: uuid("discussion_id").notNull().references(() => discussions.id, { onDelete: "cascade" }),
+    parentId: uuid("parent_id"), // null on the opening post; no FK so a deleted parent cannot take the branch with it
+    authorId: uuid("author_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    authorName: text("author_name").notNull().default(""),
+    authorLogin: text("author_login"),
+    body: text("body").notNull(),
+    upvotes: integer("upvotes").notNull().default(0),
+    downvotes: integer("downvotes").notNull().default(0),
+    flagged: boolean("flagged").notNull().default(false),
+    flagReason: text("flag_reason"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("comments_discussion_idx").on(t.discussionId, t.createdAt),
+    index("comments_parent_idx").on(t.parentId),
+    index("comments_author_idx").on(t.authorId),
+  ],
+);
+
+/** one row per (comment, reader): the latest value wins, so a vote flips in place */
+export const commentVotes = pgTable(
+  "comment_votes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    commentId: uuid("comment_id").notNull().references(() => comments.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    value: integer("value").notNull(), // 1 | -1
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("comment_votes_unique_idx").on(t.commentId, t.userId)],
+);
+
 /* ── catalog ────────────────────────────────────────────────────────── */
 
 export const repos = pgTable(
@@ -429,6 +496,9 @@ export type EmailCodeRow = typeof emailCodes.$inferSelect;
 export type SavedItemRow = typeof savedItems.$inferSelect;
 export type ApplicationRow = typeof applications.$inferSelect;
 export type SubmissionRow = typeof submissions.$inferSelect;
+export type DiscussionRow = typeof discussions.$inferSelect;
+export type CommentRow = typeof comments.$inferSelect;
+export type CommentVoteRow = typeof commentVotes.$inferSelect;
 export type RepoRow = typeof repos.$inferSelect;
 export type OrgRow = typeof orgs.$inferSelect;
 export type HackathonRow = typeof hackathons.$inferSelect;
