@@ -1,4 +1,5 @@
 "use client"
+import PdfExport from "@/components/PdfExport";
 /* ══ ProgramDetail.tsx — one open source program, deep ══════ */
 import { useMemo } from "react";
 import { Link, useParams } from "@/lib/router";
@@ -213,6 +214,7 @@ export default function ProgramDetail() {
       <div className={`${W} pt-9 pb-10 grid grid-cols-[1fr_310px] gap-7 items-start max-[980px]:grid-cols-1`}>
         {/* ── main column ── */}
         <div className="grid gap-7 min-w-0">
+          <PdfExport request={{ kind: "programs", ids: [p.id] }} label="Export program PDF" />
           <section className="bg-card border border-line rounded-[20px] p-6 shadow-soft">
             <h2 className="font-mono text-[10.5px] tracking-[.14em] uppercase text-accent mb-3.5">About the program</h2>
             {d.about.map((para) => (

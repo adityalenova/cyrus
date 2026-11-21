@@ -11,6 +11,7 @@ import type { Repo } from "../lib/types";
 import { useStore } from "../lib/store";
 import { Avatar, btn, Chip, OrgImg, Tag, Word } from "../components/ui";
 import NotFound from "./NotFound";
+import PdfExport from "@/components/PdfExport";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -170,6 +171,7 @@ export default function RepoDetail() {
               </div>
             </div>
             <div className="ml-auto flex gap-2.5 items-center flex-wrap">
+              <PdfExport request={{ kind: "projects", ids: [repo.repo] }} />
               <button onClick={() => { const added = toggleSaved(repo.repo); toast(added ? "Saved to your dashboard" : "Removed from saved"); }}
                 className={btn(on ? "primary" : "outline", "md")}>{on ? "★ Saved" : "☆ Save"}</button>
               {repo.cat !== "tools" && (
