@@ -17,6 +17,8 @@ import { DemandSection } from "./demand";
 import { TOOL_SECTIONS } from "./tools";
 import type { Dash } from "./useDash";
 import { BookmarksSection } from "./bookmarks";
+import BadgesPage from "@/views/BadgesPage";
+import StreaksPage from "@/views/StreaksPage";
 
 export { AttentionList, IssuesSection } from "./issues";
 export { ReposSection } from "./repos";
@@ -25,6 +27,8 @@ export { SettingsSection } from "./settings";
 /* the board's own tool pages, in the order the sidebar shows them */
 const OWN: Record<string, (p: { d: Dash }) => React.ReactNode> = {
   bookmarks: BookmarksSection,
+  badges: () => <BadgesPage />,
+  streaks: () => <StreaksPage />,
   calendar: CalendarSection,
   drafts: DraftsSection,
   analyser: AnalyserSection,
