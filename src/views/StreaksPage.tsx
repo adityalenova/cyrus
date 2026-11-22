@@ -236,7 +236,7 @@ export default function StreaksPage() {
               All Streak Milestones
             </h2>
             <p className="text-xs text-dim mt-0.5">
-              Unlock distinct golden credentials at 7, 30, 50, 100, 150, 500, and 1,000 active days.
+              Unlock distinct golden credentials at 7, 30, 50, 100, 150, 500, and 1000 active days.
             </p>
           </div>
         </div>

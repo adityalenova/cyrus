@@ -517,7 +517,7 @@ ${data.postProgramPlan}
                   to="/mentorship"
                   className="inline-block mt-2 font-semibold text-emerald-700 dark:text-emerald-300 hover:underline"
                 >
-                  Browse 6,199 verified mentors →
+                  Browse verified mentors in directory →
                 </Link>
               </div>
             </div>

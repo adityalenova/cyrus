@@ -345,7 +345,7 @@ function BoardPreview() {
         <div className="md:aspect-[16/9] overflow-hidden rounded-[10px] border border-line bg-paper flex flex-col text-left">
           {/* app top bar */}
           <div className="shrink-0 h-[40px] md:h-[44px] flex items-center gap-2.5 px-3 md:px-3.5 border-b border-line bg-card">
-            <Logo size={20} />
+            <Logo size={26} />
             <span className="font-display font-extrabold text-[12.5px] md:text-[13px] tracking-[-.02em] shrink-0">
               cyrus<span className="text-accent">.ai</span>
             </span>

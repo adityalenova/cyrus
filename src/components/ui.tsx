@@ -17,11 +17,11 @@ import type { Level } from "../lib/types";
    per-petal unfurl on top of that - the earlier batch had three gestures stacked
    and the turn got lost among them. Reduced motion is a CSS media query, so
    nothing here needs to know about it. */
-export function Logo({ size = 30, tone: _tone = "ink", className = "" }:
+export function Logo({ size = 36, tone: _tone = "ink", className = "" }:
   { size?: number; tone?: "ink" | "steel"; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center justify-center shrink-0 select-none ghost-float ${className}`}
+      className={`inline-flex items-center justify-center shrink-0 select-none ghost-shine ${className}`}
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
@@ -30,7 +30,7 @@ export function Logo({ size = 30, tone: _tone = "ink", className = "" }:
         alt="Cyrus Ghost Mascot"
         width={size}
         height={size}
-        className="w-full h-full object-contain filter drop-shadow-sm transition-transform hover:scale-110 duration-200"
+        className="w-full h-full object-contain filter drop-shadow-sm transition-transform duration-200"
       />
     </span>
   );
