@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Shell from "@/components/Shell";
 import { Link } from "@/lib/router";
 
 interface ProgramSpec {
@@ -147,7 +146,7 @@ export default function ProgramCompare() {
   }, [filterStudentOnly]);
 
   return (
-    <Shell>
+    <div className="min-h-screen bg-canvas text-ink">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-hairline mb-8">
@@ -332,6 +331,6 @@ export default function ProgramCompare() {
           </p>
         </div>
       </div>
-    </Shell>
+    </div>
   );
 }
