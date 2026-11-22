@@ -1,7 +1,8 @@
 "use client"
 /* == settings.tsx - Settings ====================================
-   Session, appearance, and full control over what the board remembers.
-   No notification toggles: nothing sends them, so nothing pretends to. == */
+   Session, appearance, notification choices, and full control over what the
+   board remembers. The notification card says so when the deploy cannot send
+   mail, instead of showing switches that do nothing. == */
 import { Link } from "@/lib/router";
 import { Avatar, btn } from "../../components/ui";
 import { useState } from "react";
@@ -9,6 +10,7 @@ import { fmtCompact } from "../util";
 import { listByKind, OWNERSHIP_COPY, removalNotice, type TrackedEntry } from "./dataControls";
 import { Card, DashHead, Ic, Toggle } from "./shell";
 import { DP } from "./shared";
+import { NotificationPreferences } from "./notificationPrefs";
 import type { Dash } from "./useDash";
 
 export function SettingsSection({ d }: { d: Dash }) {
@@ -99,6 +101,8 @@ export function SettingsSection({ d }: { d: Dash }) {
           <Toggle on={d.theme === "dark"} flip={d.toggleTheme} />
         </div>
       </Card>
+
+      <NotificationPreferences />
 
       <Card>
         <h2 className="panel-h-lg mb-1">What the board holds</h2>

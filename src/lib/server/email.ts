@@ -179,7 +179,7 @@ export const __spent = spent;
 /* ── sending via Resend (fetch only) ────────────────────────────────── */
 export type SendResult = { sent: true } | { sent: false; demo: true; code: string } | { sent: false; error: string };
 
-const TEST_FROM = "cyrus.ai <onboarding@resend.dev>";
+export const TEST_FROM = "cyrus.ai <onboarding@resend.dev>";
 
 /** "missing_key" = demo mode, "unverified_from" = key but no sender Resend will
    deliver from (EMAIL_FROM unset, or still the shared testing address),
@@ -199,7 +199,7 @@ export function emailStatus(): EmailStatus {
    (Resend can echo the recipient or the account owner) and the result is
    capped. The raw body never leaves this function, and a body that is not
    JSON falls back to a generic line instead of throwing. */
-async function resendReason(r: Response): Promise<string> {
+export async function resendReason(r: Response): Promise<string> {
   const generic = `resend rejected the request (${r.status})`;
   try {
     const j = (await r.json()) as { name?: unknown; message?: unknown } | null;

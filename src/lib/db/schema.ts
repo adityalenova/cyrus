@@ -139,6 +139,38 @@ export const notifications = pgTable(
   ],
 );
 
+/* One row per user: which channel each notification category uses, how often
+   email is batched, and when (in the user's own timezone) a digest goes out.
+   A user with no row has the defaults from lib/notificationPrefs.ts, so the
+   row is only written the first time someone changes something. */
+export const notificationPreferences = pgTable("notification_preferences", {
+  userId: uuid("user_id").primaryKey().references(() => users.id, { onDelete: "cascade" }),
+  categories: jsonb("categories").notNull().default({}), // { [category]: "email" | "in_app" | "off" }
+  frequency: text("frequency").notNull().default("daily"), // immediate | daily | weekly
+  timezone: text("timezone").notNull().default("UTC"), // IANA name, e.g. Asia/Kolkata
+  digestHour: integer("digest_hour").notNull().default(8), // local hour, 0-23
+  unsubscribedAll: boolean("unsubscribed_all").notNull().default(false),
+  lastDigestAt: timestamp("last_digest_at", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/* Email-channel notifications waiting for the next digest. A row is sent
+   exactly once: the digest run stamps sent_at when Resend accepts the batch. */
+export const notificationOutbox = pgTable(
+  "notification_outbox",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    category: text("category").notNull(),
+    title: text("title").notNull().default(""),
+    body: text("body").notNull().default(""),
+    href: text("href").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+  },
+  (t) => [index("notif_outbox_pending_idx").on(t.userId, t.sentAt)],
+);
+
 /* ── catalog ────────────────────────────────────────────────────────── */
 
 export const repos = pgTable(
@@ -451,6 +483,8 @@ export type SavedItemRow = typeof savedItems.$inferSelect;
 export type ApplicationRow = typeof applications.$inferSelect;
 export type SubmissionRow = typeof submissions.$inferSelect;
 export type NotificationRow = typeof notifications.$inferSelect;
+export type NotificationPreferencesRow = typeof notificationPreferences.$inferSelect;
+export type NotificationOutboxRow = typeof notificationOutbox.$inferSelect;
 export type RepoRow = typeof repos.$inferSelect;
 export type OrgRow = typeof orgs.$inferSelect;
 export type HackathonRow = typeof hackathons.$inferSelect;
