@@ -17,6 +17,7 @@ const LINKS: { to: string; label: string; short?: string }[] = [
   { to: "/programs", label: "Programs" },
   { to: "/organizations", label: "Organizations", short: "Orgs" },
   { to: "/projects", label: "Projects" },
+  { to: "/proposal-studio", label: "Proposal Studio", short: "Proposals" },
   { to: "/mentorship", label: "Mentorship", short: "Mentors" },
   { to: "/issues", label: "Issues" },
   { to: "/skills", label: "Skills" },
