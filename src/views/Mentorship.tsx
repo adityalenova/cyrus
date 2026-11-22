@@ -631,7 +631,7 @@ export default function MentorshipView() {
       <div className={W}>
         {/* Header matching screenshot */}
         <div className="mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 mb-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono text-emerald-700 bg-emerald-500/10 border border-emerald-300/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50 mb-4 shadow-xs">
             <span>Automated Matching Engine</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-ink tracking-tight mb-2">
@@ -1085,7 +1085,7 @@ export default function MentorshipView() {
                               key={skill}
                               className={`px-2 py-0.5 rounded text-[11px] font-medium border ${
                                 isMatched
-                                  ? "bg-emerald-950/40 text-emerald-400 border-emerald-800/60 font-semibold"
+                                  ? "bg-emerald-500/10 text-emerald-700 border-emerald-300/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60 font-semibold"
                                   : "bg-sand/30 text-ink border-line/60"
                               }`}
                             >
@@ -1145,7 +1145,7 @@ export default function MentorshipView() {
             </div>
 
             {regMessage && (
-              <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-sm font-medium">
+              <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 text-sm font-medium">
                 {regMessage}
               </div>
             )}
@@ -1402,7 +1402,7 @@ export default function MentorshipView() {
                                         href={sess.meetingUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-emerald-400 hover:underline font-semibold"
+                                        className="text-emerald-600 dark:text-emerald-400 hover:underline font-semibold"
                                       >
                                         Join Video Call ↗
                                       </a>
@@ -1444,7 +1444,7 @@ export default function MentorshipView() {
               </div>
 
               {requestSuccess ? (
-                <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-sm font-semibold text-center">
+                <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 text-sm font-semibold text-center">
                   Mentorship request sent! Redirecting to your dashboard...
                 </div>
               ) : (
@@ -1570,7 +1570,7 @@ export default function MentorshipView() {
               </div>
 
               {feedbackSuccess ? (
-                <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 text-sm font-semibold text-center">
+                <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 text-sm font-semibold text-center">
                   {feedbackSuccess}
                 </div>
               ) : (
