@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import type { Db } from "../db";
 import * as schema from "../db/schema";
 import { setSession } from "./auth";
-import { updateBookmarkCollection } from "@/app/bookmarks/actions";
+import { updateBookmarkCollection } from "@/app/[locale]/bookmarks/actions";
 import { GET as privateGET } from "@/app/api/me/bookmark-collections/route";
 import { GET as publicGET } from "@/app/api/bookmark-collections/[token]/route";
 import { POST as saveBookmark, DELETE as removeBookmark } from "@/app/api/me/saved/route";

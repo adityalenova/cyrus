@@ -1,11 +1,13 @@
 /* ══ router.tsx — react-router compat surface over next/navigation
    Pages were ported from the Vite SPA; this shim lets them keep their
    imports (Link to=, useNavigate, useParams, useLocation, useSearchParams)
-   while the app runs on the Next.js App Router. ═══════════════════════ */
+   while the app runs on the Next.js App Router. Link, usePathname and useRouter
+   come from i18n/navigation, so every link keeps the visitor's language and
+   a pathname is always the path without the /es-style prefix. ═══════════════════════ */
 "use client";
 
-import NextLink from "next/link";
-import { usePathname, useRouter, useParams as useNextParams } from "next/navigation";
+import { useParams as useNextParams } from "next/navigation";
+import { Link as IntlLink, usePathname, useRouter } from "@/i18n/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 
 type LinkProps = {
@@ -21,9 +23,9 @@ type LinkProps = {
 
 export function Link({ to, children, end: _end, ...rest }: LinkProps) {
   return (
-    <NextLink href={to} {...rest}>
+    <IntlLink href={to} {...rest}>
       {children}
-    </NextLink>
+    </IntlLink>
   );
 }
 

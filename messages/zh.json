@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "browse": "\u6d4f\u89c8",
+    "platform": "\u5e73\u53f0",
+    "signIn": "\u767b\u5f55",
+    "openMenu": "\u6253\u5f00\u83dc\u5355",
+    "closeMenu": "\u5173\u95ed\u83dc\u5355",
+    "siteMenu": "\u7f51\u7ad9\u83dc\u5355",
+    "links": {
+      "programs": "\u9879\u76ee\u8ba1\u5212",
+      "organizations": "\u7ec4\u7ec7",
+      "projects": "\u9879\u76ee",
+      "proposalStudio": "\u63d0\u6848\u5de5\u4f5c\u5ba4",
+      "mentorship": "\u5bfc\u5e08\u8f85\u5bfc",
+      "issues": "\u8bae\u9898",
+      "skills": "\u6280\u80fd",
+      "sponsors": "\u8d5e\u52a9\u5546",
+      "leaderboard": "\u6392\u884c\u699c",
+      "about": "\u5173\u4e8e"
+    },
+    "short": {
+      "organizations": "\u7ec4\u7ec7",
+      "proposalStudio": "\u63d0\u6848",
+      "mentorship": "\u5bfc\u5e08"
+    },
+    "platformItems": {
+      "features": {
+        "title": "\u529f\u80fd",
+        "blurb": "\u8d21\u732e\u8005\u7684\u5b8c\u6574\u5de5\u4f5c\u6d41\u7a0b\u3002"
+      },
+      "trust": {
+        "title": "\u4fe1\u4efb\u4e2d\u5fc3",
+        "blurb": "\u6570\u636e\u6765\u6e90\u3001\u5feb\u7167\u3001\u9a8c\u8bc1\u3002"
+      },
+      "how": {
+        "title": "\u5de5\u4f5c\u539f\u7406",
+        "blurb": "\u4ece\u7a7a\u767d\u6807\u7b7e\u9875\u5230\u5408\u5e76 PR \u7684\u4e09\u4e2a\u6b65\u9aa4\u3002"
+      }
+    },
+    "language": "\u8bed\u8a00"
+  },
+  "language": {
+    "label": "\u8bed\u8a00"
+  }
+}

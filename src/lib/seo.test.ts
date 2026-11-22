@@ -13,7 +13,9 @@ function routeFiles(dir: string, prefix = ""): { file: string; route: string }[]
   const out: { file: string; route: string }[] = [];
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
-    if (e.isDirectory()) out.push(...routeFiles(p, `${prefix}/${e.name}`));
+    /* [locale] is the language prefix, not part of the route; [...rest] is the
+       localized 404 and is never indexed */
+    if (e.isDirectory()) out.push(...(e.name === "[...rest]" ? [] : routeFiles(p, e.name === "[locale]" ? prefix : `${prefix}/${e.name}`)));
     else if (e.name === "page.tsx") out.push({ file: p, route: prefix || "/" });
   }
   return out;

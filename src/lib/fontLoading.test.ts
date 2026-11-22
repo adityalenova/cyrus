@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const layout = readFileSync(join(__dirname, "..", "app", "layout.tsx"), "utf8");
+const layout = readFileSync(join(__dirname, "..", "app", "[locale]", "layout.tsx"), "utf8");
 const css = readFileSync(join(__dirname, "..", "app", "globals.css"), "utf8");
 
 const tokenLine = (token: string) =>

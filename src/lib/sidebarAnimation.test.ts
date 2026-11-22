@@ -62,7 +62,7 @@ describe("Mobile sidebar animation direction (#116)", () => {
 
   it("hamburger button renders for non-desktop viewports", () => {
     expect(NAV_SRC).toContain("lg:hidden");
-    expect(NAV_SRC).toContain("Open menu");
-    expect(NAV_SRC).toContain("Close menu");
+    expect(NAV_SRC).toContain(`t("openMenu")`);
+    expect(NAV_SRC).toContain(`t("closeMenu")`);
   });
 });
