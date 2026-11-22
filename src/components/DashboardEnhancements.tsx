@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "@/lib/router";
+import { FlameIcon, CheckTickIcon } from "@/views/StreaksPage";
 
 interface Props {
   user: { name: string; email?: string | null; login?: string | null };
@@ -128,28 +129,31 @@ export default function DashboardEnhancements({ user }: Props) {
 
   return (
     <div className="space-y-8 my-8">
-      {/* 1. Streaks & Daily Milestones Band */}
+      {/* 1. Streaks & Daily Milestones Band (7-day week overview) */}
       <div className="p-6 rounded-2xl border border-hairline bg-surface/50 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 grid place-items-center text-2xl shadow-inner">
-            🔥
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/30 grid place-items-center shadow-inner">
+            <FlameIcon size={28} />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold text-ink">{streakDays}-Day Active Streak</span>
               {streakFreezeActive && (
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-800/50">
-                  ❄️ Freeze Active
+                  ❄️ Freeze Shield Active
                 </span>
               )}
             </div>
             <p className="text-xs text-dim mt-0.5">
-              Keep checking issues and contributing daily to unlock the Streak Master badge!
+              Current weekly habit rhythm.{" "}
+              <Link to="/streaks" className="text-amber-600 dark:text-amber-400 font-semibold hover:underline">
+                View all streak milestones (30, 50, 100, 500, 1000 days) →
+              </Link>
             </p>
           </div>
         </div>
 
-        {/* 7-Day Dot Heatmap */}
+        {/* 7-Day Dot Heatmap with Custom SVG Ticks */}
         <div className="flex items-center gap-2">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, idx) => {
             const active = idx < streakDays;
@@ -157,13 +161,17 @@ export default function DashboardEnhancements({ user }: Props) {
               <div key={day} className="flex flex-col items-center gap-1">
                 <span className="text-[10px] font-mono text-dim">{day}</span>
                 <div
-                  className={`w-7 h-7 rounded-lg grid place-items-center text-xs font-bold transition-all ${
+                  className={`w-8 h-8 rounded-xl grid place-items-center transition-all ${
                     active
-                      ? "bg-amber-500 text-white shadow-sm shadow-amber-500/20 scale-105"
+                      ? "bg-gradient-to-tr from-amber-500 to-amber-400 text-white shadow-sm shadow-amber-500/30 scale-105"
                       : "bg-surface border border-hairline text-dim"
                   }`}
                 >
-                  {active ? "✓" : "·"}
+                  {active ? (
+                    <CheckTickIcon size={16} className="text-white" />
+                  ) : (
+                    <span className="text-xs text-dim">·</span>
+                  )}
                 </div>
               </div>
             );
@@ -326,9 +334,12 @@ export default function DashboardEnhancements({ user }: Props) {
                 Unlock badges through verified PRs, proposal drafts, and mentorship reviews.
               </p>
             </div>
-            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-              4 / 6 Unlocked
-            </span>
+            <Link
+              to="/badges"
+              className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold hover:underline"
+            >
+              View All 20 Badges →
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
