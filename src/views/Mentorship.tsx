@@ -679,7 +679,7 @@ export default function MentorshipView() {
             >
               <span>My Mentorships & Sessions</span>
               {mentorships.length > 0 && (
-                <span className="ml-2 px-1.5 py-0.5 text-xs bg-emerald-950/40 text-emerald-400 border border-emerald-800/50 rounded-full font-bold">
+                <span className="ml-2 px-1.5 py-0.5 text-xs bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/50 rounded-full font-bold">
                   {mentorships.length}
                 </span>
               )}
@@ -726,7 +726,7 @@ export default function MentorshipView() {
                     {desiredSkills.map((skill) => (
                       <span
                         key={skill}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950/30 text-emerald-300 border border-emerald-800/50"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/50"
                       >
                         {skill}
                         <button
@@ -809,7 +809,7 @@ export default function MentorshipView() {
                   {interests.map((item) => (
                     <span
                       key={item}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-950/20 text-amber-300 border border-amber-800/40"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/15 text-amber-800 dark:bg-amber-950/30 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/50"
                     >
                       {item}
                       <button
@@ -929,7 +929,7 @@ export default function MentorshipView() {
                       onClick={() => setSelectedProgram(pf.id)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                         selectedProgram === pf.id
-                          ? "bg-emerald-950/40 text-emerald-400 border border-emerald-800/60 font-semibold"
+                          ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/60 font-semibold"
                           : "bg-sand/30 text-cocoa border border-line hover:text-ink"
                       }`}
                     >
@@ -965,9 +965,9 @@ export default function MentorshipView() {
                   const ratingDisplay = mentor.reviewCount > 0 ? (mentor.rating / 10).toFixed(1) : "New";
                   const scoreBadgeStyle =
                     score >= 80
-                      ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                      ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/60"
                       : score >= 60
-                      ? "bg-amber-950/40 text-amber-300 border-amber-800/60"
+                      ? "bg-amber-500/15 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/60"
                       : "bg-zinc-800/40 text-zinc-400 border-zinc-700/60";
 
                   return (
@@ -987,7 +987,7 @@ export default function MentorshipView() {
                             <span
                               className={`px-2 py-0.5 rounded text-[11px] font-medium border ${
                                 available
-                                  ? "bg-emerald-950/30 text-emerald-400 border-emerald-800/50"
+                                  ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/50"
                                   : "bg-red-950/30 text-red-400 border-red-800/50"
                               }`}
                             >
@@ -1111,7 +1111,7 @@ export default function MentorshipView() {
                     <button
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="px-3.5 py-1.5 rounded-lg border border-emerald-800/40 bg-emerald-950/20 text-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-950/40 cursor-pointer font-semibold transition-colors"
+                      className="px-3.5 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-800/50 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer font-semibold transition-colors"
                     >
                       Previous
                     </button>
@@ -1123,7 +1123,7 @@ export default function MentorshipView() {
                     <button
                       onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                       disabled={page >= totalPages}
-                      className="px-3.5 py-1.5 rounded-lg border border-emerald-800/40 bg-emerald-950/20 text-emerald-400 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-950/40 cursor-pointer font-semibold transition-colors"
+                      className="px-3.5 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-800/50 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer font-semibold transition-colors"
                     >
                       Next
                     </button>
@@ -1310,9 +1310,9 @@ export default function MentorshipView() {
                             <span
                               className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
                                 isAccepted
-                                  ? "bg-emerald-950/40 text-emerald-300 border border-emerald-800/60"
+                                  ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-800/60"
                                   : isPending
-                                  ? "bg-amber-950/40 text-amber-300 border border-amber-800/60"
+                                  ? "bg-amber-500/15 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/60"
                                   : "bg-red-950/40 text-red-300 border border-red-800/60"
                               }`}
                             >
@@ -1358,7 +1358,7 @@ export default function MentorshipView() {
                             </button>
                             <button
                               onClick={() => setRatingTargetMentorship(m)}
-                              className="px-3.5 py-1.5 bg-emerald-950/30 border border-emerald-700/50 text-emerald-300 hover:bg-emerald-900/40 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+                              className="px-3.5 py-1.5 border border-emerald-300 dark:border-emerald-700/50 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
                             >
                               {m.feedback?.mentorRating ? "Edit Review" : "Leave Review"}
                             </button>
@@ -1386,7 +1386,7 @@ export default function MentorshipView() {
                                     <span
                                       className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                                         sess.status === "completed"
-                                          ? "bg-emerald-950/40 text-emerald-300"
+                                          ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                                           : "bg-sand text-ink"
                                       }`}
                                     >
