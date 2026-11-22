@@ -16,6 +16,7 @@ import type { Dash } from "../lib/dash/useDash";
 import { Card, DashGate, DashHead, DashShell, Ic, StatRow } from "../lib/dash/shell";
 import { ArtLedger, ArtShelf, FeatureMark, StageGlyph } from "../lib/dash/art";
 import { AttentionList } from "../lib/dash/issues";
+import DashboardEnhancements from "@/components/DashboardEnhancements";
 import { DP, FEATURES, ISSUE_STAGES, STAGE_LABEL, greet } from "../lib/dash/shared";
 
 export default function Dashboard() {
@@ -96,6 +97,7 @@ function Overview({ d }: { d: Dash }) {
       </section>
 
       <div className="reveal" style={rise(2)}>
+        <DashboardEnhancements user={user} />
         <AttentionList d={d} />
       </div>
 
