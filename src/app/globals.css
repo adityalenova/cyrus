@@ -1207,27 +1207,31 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 *   moving, and two one-shot gestures stacked on it only made it busy. */
 
 .mark-spin {
-
   transform-box: view-box;
-
   transform-origin: 50px 50px;
-
   animation: markSpin 14s linear infinite;
-
 }
 
 @keyframes markSpin { to { transform: rotate(360deg); } }
 
+.ghost-float {
+  display: inline-block;
+  animation: ghostFloat 3.5s ease-in-out infinite;
+}
 
+@keyframes ghostFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(1.5deg);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-
   /* a mark that turns forever is exactly the animation a reduced-motion*
-
 *     visitor is asking not to have: it stops, and sits at its drawn angle. */
-
-  .mark-spin { animation: none; }
-
+  .mark-spin, .ghost-float { animation: none; }
 }
 
 

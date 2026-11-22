@@ -1,11 +1,12 @@
 <p align="center">
-  <img src="docs/readme/hero.svg" alt="cyrus.ai - the open-source contribution platform: real issues, program archives and organization intel" width="100%"/>
+  <img src="public/ghost-logo.png" alt="Cyrus Ghost Mascot" width="130" height="120"/>
 </p>
 
 <h1 align="center">cyrus.ai</h1>
 
 <p align="center">
-  <b>The open-source contribution platform.</b> <!--stat:issues-->40,017<!--/stat--> real open issues, an <!--stat:archive-->8,754<!--/stat-->-project archive of mentored open-source programs, <!--stat:orgs-->364<!--/stat--> organization profiles and a <!--stat:repos-->1,528<!--/stat-->-repo agent-skills catalog - one warm, fast, self-refreshing site on Next.js 16, with <b>real sign-in</b> and a <b>server backend on Neon Postgres</b>.
+  <b>The open-source contribution platform. Meet Cyrus, your developer companion. 👻✨</b><br/>
+  <!--stat:issues-->40,017<!--/stat--> real open issues, an <!--stat:archive-->8,754<!--/stat-->-project archive of mentored open-source programs, <!--stat:orgs-->364<!--/stat--> organization profiles and a <!--stat:repos-->1,528<!--/stat-->-repo agent-skills catalog - one warm, fast, self-refreshing site on Next.js 16, with <b>real sign-in</b> and a <b>server backend on Neon Postgres</b>.
 </p>
 
 <p align="center">
