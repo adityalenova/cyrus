@@ -1,0 +1,15 @@
+# feat(export): Add multi-format resume and LinkedIn credential export
+
+**Issue:** #524
+**Labels:** NSOC, Level 3
+
+## Overview
+Scaffold and design specification for resume-export.
+
+## Status
+- [x] Architecture & feature specification
+- [x] Initial interface and module scaffold
+- [ ] Production integration
+
+## Implementation Details
+Planned implementation for Cyrus open source contribution platform.
