@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { ReactNode, ImgHTMLAttributes } from "react";
 import { tileBG, initials, hash, LEVEL_LABEL } from "../lib/util";
-import { PETALS } from "../lib/mark";
 import type { Level } from "../lib/types";
 
 /* Seven petals around one centre, traced from the brand artwork (src/lib/mark.ts
@@ -18,33 +17,22 @@ import type { Level } from "../lib/types";
    per-petal unfurl on top of that - the earlier batch had three gestures stacked
    and the turn got lost among them. Reduced motion is a CSS media query, so
    nothing here needs to know about it. */
-export function Logo({ size = 30, tone = "ink" }:
-  { size?: number; tone?: "ink" | "steel" }) {
-  /* The mark never asks here whether the visitor wants motion: that is
-     MotionConfig's `reducedMotion="user"` in Shell, and the CSS media query
-     in globals.css for the turn. Asking here used to make the server's HTML
-     and the client's first render disagree about the logo's own transform - a
-     hydration mismatch on every page, for every reduced-motion visitor. */
-  const steel = "cyrus-mark-steel";
+export function Logo({ size = 30, tone: _tone = "ink", className = "" }:
+  { size?: number; tone?: "ink" | "steel"; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
-      {tone === "steel" && (
-        <defs>
-          <linearGradient id={steel} x1="16" y1="4" x2="84" y2="98" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#fbfcfd" />
-            <stop offset=".4" stopColor="#c9cfd7" />
-            <stop offset=".7" stopColor="#8d959e" />
-            <stop offset="1" stopColor="#e8ebef" />
-          </linearGradient>
-        </defs>
-      )}
-      {/* One turn, one group: the petals are static inside it. */}
-      <g className="mark-spin">
-        {PETALS.map((d, i) => (
-          <path key={i} d={d} fill={tone === "steel" ? `url(#${steel})` : "currentColor"} />
-        ))}
-      </g>
-    </svg>
+    <span
+      className={`inline-flex items-center justify-center shrink-0 select-none ghost-float ${className}`}
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      <img
+        src="/ghost-logo.png"
+        alt="Cyrus Ghost Mascot"
+        width={size}
+        height={size}
+        className="w-full h-full object-contain filter drop-shadow-sm transition-transform hover:scale-110 duration-200"
+      />
+    </span>
   );
 }
 
