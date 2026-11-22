@@ -49,27 +49,34 @@ export default function DashboardEnhancements({ user }: Props) {
   const contributorSteps = [
     {
       id: 1,
+      title: "Complete Interactive Onboarding Wizard",
+      desc: "Configure your profile basics, select languages, domains, and get recommended starter projects.",
+      link: "/onboarding",
+      linkText: "Start Wizard",
+    },
+    {
+      id: 2,
       title: "Discover Target Repositories & Follow Organizations",
       desc: "Explore 364+ organizations, filter by tech stack (Rust, Go, TypeScript), and star projects.",
       link: "/organizations",
       linkText: "Explore Orgs",
     },
     {
-      id: 2,
+      id: 3,
       title: "Select a Starter Issue & Pin to Board",
       desc: "Find beginner-friendly good-first-issues from 40,000+ open GitHub issues.",
       link: "/issues",
       linkText: "Browse Issues",
     },
     {
-      id: 3,
+      id: 4,
       title: "Connect with a Verified Mentor",
       desc: "Schedule a session or request 1-on-1 mentorship with a seasoned open-source fellow.",
       link: "/mentorship",
       linkText: "Find Mentors",
     },
     {
-      id: 4,
+      id: 5,
       title: "Draft Proposal in Proposal Studio",
       desc: "Use our structured workspace to craft and score your GSoC or LFX application.",
       link: "/proposal-studio",

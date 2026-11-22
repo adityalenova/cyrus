@@ -103,6 +103,9 @@ export default function Onboarding() {
 
   const save = () => {
     setSaved({ ...draft, step: 0 });
+    try {
+      localStorage.setItem("cyrus.onboarding.completed", "true");
+    } catch {}
     toast(`Profile saved for ${draft.name.trim()} - ${reach} projects within reach.`);
     write(goTo(draft, LAST_STEP));
   };
@@ -322,9 +325,19 @@ export default function Onboarding() {
                 </div>
 
                 {saved && !open && (
-                  <p className="card-desc">
-                    {saved.name === draft.name ? "This replaces the profile saved earlier." : ""}
-                  </p>
+                  <div className="space-y-3 pt-2">
+                    <p className="card-desc">
+                      {saved.name === draft.name ? "This profile is saved and synchronized with your Cyrus workspace." : ""}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Link to="/dashboard" className={btn("primary", "md")}>
+                        Go to My Dashboard →
+                      </Link>
+                      <Link to="/projects" className={btn("outline", "md")}>
+                        Explore Matching Projects ({fmtCompact(reach)}) →
+                      </Link>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
