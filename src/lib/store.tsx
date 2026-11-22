@@ -20,6 +20,9 @@ interface Store {
   toggleSaved: (id: string) => boolean;
   savedOrgs: string[];
   toggleSavedOrg: (login: string) => boolean;
+  savedPrograms: string[];
+  toggleSavedProgram: (id: string) => boolean;
+  flushBookmarks: () => Promise<void>;
   /** drop every followed repository and organization, locally and on the server */
   unfollowAll: () => void;
   /** named issue-finder searches, newest first; browser-held, mirrored when signed in */
@@ -55,6 +58,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [userStored, setUser, userReady] = useStored<User | null>("agenthub.user", null);
   const [savedStored, setSaved, savedReady] = useStored<string[]>("agenthub.saved", []);
   const [savedOrgsStored, setSavedOrgs, orgsReady] = useStored<string[]>("agenthub.savedorgs", []);
+  const [savedProgramsStored, setSavedPrograms, programsReady] = useStored<string[]>("agenthub.savedprograms", []);
   const [searchesStored, setSearches, searchesReady] = useStored<SearchStore>(SEARCHES_KEY, {});
   const [downloadsStored, setDownloads, dlReady] = useStored<Record<string, number>>("agenthub.downloads", {});
   const [toastMsg, setToastMsg] = useState<{ msg: string; k: number } | null>(null);
@@ -74,6 +78,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const user = userReady ? userStored : null;
   const saved = savedReady ? savedStored : [];
   const savedOrgs = orgsReady ? savedOrgsStored : [];
+  const savedPrograms = programsReady ? savedProgramsStored : [];
   const downloads = dlReady ? downloadsStored : {};
   /* read through the tolerant decoder: an entry the key holds that is not a
      search - an older shape, a hand-edited row - is dropped, not rendered */
@@ -194,6 +199,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return added;
   }, [savedOrgsStored, setSavedOrgs, serverUser]);
 
+  const toggleSavedProgram = useCallback((id: string) => {
+    const added = !savedProgramsStored.includes(id);
+    setSavedPrograms(added ? [...savedProgramsStored, id] : savedProgramsStored.filter((x) => x !== id));
+    if (serverUser) void (added ? api.savedAdd("program", id, id) : api.savedRemove("program", id));
+    return added;
+  }, [savedProgramsStored, setSavedPrograms, serverUser]);
+
+  const flushBookmarks = useCallback(async () => {
+    await refreshSession();
+  }, [refreshSession]);
+
   const unfollowAll = useCallback(() => {
     if (serverUser) {
       for (const id of savedRef.current) void api.savedRemove("repo", id);
@@ -260,7 +276,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={{
-      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, unfollowAll,
+      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, flushBookmarks, unfollowAll,
       searches, saveSearch, renameSearch, removeSearch,
       downloads, countDownload,
       toast: (m: string) => toast(m), authOpen, setAuthOpen, paletteOpen, setPaletteOpen,

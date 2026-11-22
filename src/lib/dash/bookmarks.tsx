@@ -46,7 +46,7 @@ export function BookmarksSection() {
     const values: Bookmark[] = [
       ...saved.map(itemId => ({ itemType: "repo", itemId })),
       ...savedOrgs.map(itemId => ({ itemType: "org", itemId })),
-      ...savedPrograms.map(itemId => ({ itemType: "program", itemId, title: PROGRAMS.find(program => program.id === itemId)?.name })),
+      ...savedPrograms.map((itemId: string) => ({ itemType: "program" as const, itemId, title: PROGRAMS.find((program: any) => program.id === itemId)?.name })),
     ];
     return [...values.map(item => ({ ...item, ...known.get(bookmarkKey(item)) })), ...items.filter(item => item.itemType === "issue")];
   }, [items, saved, savedOrgs, savedPrograms]);
