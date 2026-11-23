@@ -18,6 +18,9 @@ interface Store {
   signOut: () => void;
   saved: string[];
   toggleSaved: (id: string) => boolean;
+  /** drop exactly these followed repositories in one write, and answer the
+      ids still followed afterwards (any that remain failed to be removed) */
+  removeSavedRepos: (ids: string[]) => string[];
   savedOrgs: string[];
   toggleSavedOrg: (login: string) => boolean;
   savedPrograms: string[];
@@ -192,6 +195,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return added;
   }, [savedStored, setSaved, serverUser]);
 
+  /* One write for a whole selection. Removal is a filter over what this
+     browser holds, so N ids land in a single state update; calling
+     toggleSaved N times in a row would read the same render's list each
+     time and keep only the last removal. The answer is the ids still
+     followed afterwards, which is how a caller reports a failed row
+     instead of assuming every removal landed. */
+  const removeSavedRepos = useCallback((ids: string[]) => {
+    const drop = new Set(ids);
+    const next = savedStored.filter((x) => !drop.has(x));
+    setSaved(next);
+    if (serverUser) for (const id of ids) void api.savedRemove("repo", id);
+    return ids.filter((id) => next.includes(id));
+  }, [savedStored, setSaved, serverUser]);
+
   const toggleSavedOrg = useCallback((login: string) => {
     const added = !savedOrgsStored.includes(login);
     setSavedOrgs(added ? [...savedOrgsStored, login] : savedOrgsStored.filter((x) => x !== login));
@@ -276,7 +293,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={{
-      user, signIn, signOut, saved, toggleSaved, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, flushBookmarks, unfollowAll,
+      user, signIn, signOut, saved, toggleSaved, removeSavedRepos, savedOrgs, toggleSavedOrg, savedPrograms, toggleSavedProgram, flushBookmarks, unfollowAll,
       searches, saveSearch, renameSearch, removeSearch,
       downloads, countDownload,
       toast: (m: string) => toast(m), authOpen, setAuthOpen, paletteOpen, setPaletteOpen,
