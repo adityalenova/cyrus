@@ -1,8 +1,7 @@
 "use client";
 /* ══ MobileDrawer.tsx — accessible mobile navigation drawer ═════════ */
 import { useEffect, useRef } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 interface NavItem {
   href: string;

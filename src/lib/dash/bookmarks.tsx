@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { updateBookmarkCollection } from "@/app/bookmarks/actions";
+import { updateBookmarkCollection } from "@/app/[locale]/bookmarks/actions";
 import { bookmarkKey, filterBookmarks, type Bookmark, type BookmarkCollection, type CollectionChange } from "../bookmarks";
 import { BookmarkLink } from "../../components/BookmarkLink";
 import { api } from "../api";

@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "browse": "EXPLORAR",
+    "platform": "PLATAFORMA",
+    "signIn": "Entrar",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "siteMenu": "Menu do site",
+    "links": {
+      "programs": "Programas",
+      "organizations": "Organiza\u00e7\u00f5es",
+      "projects": "Projetos",
+      "proposalStudio": "Est\u00fadio de propostas",
+      "mentorship": "Mentoria",
+      "issues": "Issues",
+      "skills": "Habilidades",
+      "sponsors": "Patrocinadores",
+      "leaderboard": "Classifica\u00e7\u00e3o",
+      "about": "Sobre"
+    },
+    "short": {
+      "organizations": "Orgs",
+      "proposalStudio": "Propostas",
+      "mentorship": "Mentores"
+    },
+    "platformItems": {
+      "features": {
+        "title": "Recursos",
+        "blurb": "Todo o fluxo de trabalho do contribuidor."
+      },
+      "trust": {
+        "title": "Central de confian\u00e7a",
+        "blurb": "Fontes de dados, instant\u00e2neos, verifica\u00e7\u00e3o."
+      },
+      "how": {
+        "title": "Como funciona",
+        "blurb": "Tr\u00eas passos, de abas vazias a um PR mesclado."
+      }
+    },
+    "language": "IDIOMA"
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}

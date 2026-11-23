@@ -1,7 +1,6 @@
 "use client";
 /* ══ Breadcrumbs.tsx — auto-generated breadcrumb navigation ═════════ */
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { Link, usePathname } from "@/i18n/navigation";
 
 const LABEL_MAP: Record<string, string> = {
   programs: "Programs",

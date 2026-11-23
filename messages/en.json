@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "browse": "BROWSE",
+    "platform": "PLATFORM",
+    "signIn": "Sign in",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "siteMenu": "Site menu",
+    "links": {
+      "programs": "Programs",
+      "organizations": "Organizations",
+      "projects": "Projects",
+      "proposalStudio": "Proposal Studio",
+      "mentorship": "Mentorship",
+      "issues": "Issues",
+      "skills": "Skills",
+      "sponsors": "Sponsors",
+      "leaderboard": "Leaderboard",
+      "about": "About"
+    },
+    "short": {
+      "organizations": "Orgs",
+      "proposalStudio": "Proposals",
+      "mentorship": "Mentors"
+    },
+    "platformItems": {
+      "features": {
+        "title": "Features",
+        "blurb": "The whole contributor workflow."
+      },
+      "trust": {
+        "title": "Trust centre",
+        "blurb": "Data sources, snapshots, verification."
+      },
+      "how": {
+        "title": "How it works",
+        "blurb": "Three steps from empty tabs to merged PR."
+      }
+    },
+    "language": "LANGUAGE"
+  },
+  "language": {
+    "label": "Language"
+  }
+}

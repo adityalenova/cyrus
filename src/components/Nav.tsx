@@ -4,7 +4,9 @@
    hamburger to the RIGHT of the Sign in button that opens a warm slide-in
    sheet with every page and the full Platform section.                ═ */
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Link, NavLink, useLocation } from "@/lib/router";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { Logo, Brand, Avatar, btn } from "./ui";
 import { TONES } from "./plat";
 import { useStore } from "../lib/store";
@@ -13,24 +15,24 @@ import { useStore } from "../lib/store";
    first (the programs that fund them), then who runs them, then the work.
    "Home" is not a link - the wordmark at the left of the strip already is one,
    and spending a slot on it pushed the real destinations into an overflow. */
-const LINKS: { to: string; label: string; short?: string }[] = [
-  { to: "/programs", label: "Programs" },
-  { to: "/organizations", label: "Organizations", short: "Orgs" },
-  { to: "/projects", label: "Projects" },
-  { to: "/proposal-studio", label: "Proposal Studio", short: "Proposals" },
-  { to: "/mentorship", label: "Mentorship", short: "Mentors" },
-  { to: "/issues", label: "Issues" },
-  { to: "/skills", label: "Skills" },
-  { to: "/sponsors", label: "Sponsors" },
-  { to: "/leaderboard", label: "Leaderboard" },
-  { to: "/about", label: "About" },
+const LINKS: { to: string; key: string; short?: boolean }[] = [
+  { to: "/programs", key: "programs" },
+  { to: "/organizations", key: "organizations", short: true },
+  { to: "/projects", key: "projects" },
+  { to: "/proposal-studio", key: "proposalStudio", short: true },
+  { to: "/mentorship", key: "mentorship", short: true },
+  { to: "/issues", key: "issues" },
+  { to: "/skills", key: "skills" },
+  { to: "/sponsors", key: "sponsors" },
+  { to: "/leaderboard", key: "leaderboard" },
+  { to: "/about", key: "about" },
 ];
 
 /* Platform menu entries: slug, label, blurb, icon path, tone class from the plat kit */
-const PLAT: [string, string, string, string, string][] = [
-  ["features", "Features", "The whole contributor workflow.", "M12 3 3 8l9 5 9-5-9-5ZM3 16l9 5 9-5M3 12l9 5 9-5", "rust"],
-  ["trust", "Trust centre", "Data sources, snapshots, verification.", "M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z", "leaf"],
-  ["how", "How it works", "Three steps from empty tabs to merged PR.", "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3.5 2", "honey"],
+const PLAT: [string, string, string][] = [
+  ["features", "M12 3 3 8l9 5 9-5-9-5ZM3 16l9 5 9-5M3 12l9 5 9-5", "rust"],
+  ["trust", "M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z", "leaf"],
+  ["how", "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3.5 2", "honey"],
 ];
 
 /* pill size bases. The row is measured, not guessed: at 1024px the pill strip
@@ -42,6 +44,7 @@ const PILL = "px-2.5 py-[7px] rounded-full text-[12px] font-semibold whitespace-
 const pillCls = (on: boolean) => on ? "bg-coffee text-foam" : "text-cocoa hover:bg-card hover:text-ink";
 
 export default function Nav() {
+  const t = useTranslations("nav");
   const { user, signOut, saved, savedOrgs, setAuthOpen } = useStore();
   const [pop, setPop] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -107,14 +110,15 @@ export default function Nav() {
                 <NavLink key={l.to} to={l.to}
                   className={`${PILL} ${pillCls(active(l.to))}`}>
                   {l.short ? (
-                    <><span className="hidden xl:inline">{l.label}</span><span className="xl:hidden">{l.short}</span></>
-                  ) : l.label}
+                    <><span className="hidden xl:inline">{t(`links.${l.key}`)}</span><span className="xl:hidden">{t(`short.${l.key}`)}</span></>
+                  ) : t(`links.${l.key}`)}
                 </NavLink>
               ))}
               <PlatformMenu />
             </div>
 
             <div className="ml-auto flex items-center gap-3.5 max-[1179px]:gap-2.5 max-[700px]:gap-2">
+              <div className="max-[700px]:hidden"><LanguageSwitcher /></div>
               <ThemeToggle />
               <span className="w-px h-6 bg-line shrink-0 max-[1179px]:hidden" aria-hidden />
               {user ? (
@@ -144,7 +148,7 @@ export default function Nav() {
               )}
               {/* hamburger: phone + tablet only, always the rightmost control */}
               <button ref={openerRef} onClick={(e) => { e.stopPropagation(); setMenu(!menu); }}
-                aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu}
+                aria-label={menu ? t("closeMenu") : t("openMenu")} aria-expanded={menu}
                 className="lg:hidden relative w-[38px] h-[38px] rounded-full grid place-items-center border border-line bg-card/60 text-ink transition-colors duration-200 hover:bg-peach shrink-0 cursor-pointer">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   strokeWidth="2.1" strokeLinecap="round" aria-hidden>
@@ -171,40 +175,44 @@ export default function Nav() {
             <div onClick={() => setMenu(false)} aria-hidden
               className="lg:hidden fixed inset-0 z-[80] bg-ink/45 backdrop-blur-[3px]"
               style={{ animation: "fadeIn .25s ease both" }} />
-            <aside ref={sheetRef} role="dialog" aria-modal="true" aria-label="Site menu" className="lg:hidden fixed top-0 left-0 bottom-0 z-[85] w-[min(86vw,340px)]
+            <aside ref={sheetRef} role="dialog" aria-modal="true" aria-label={t("siteMenu")} className="lg:hidden fixed top-0 left-0 bottom-0 z-[85] w-[min(86vw,340px)]
             bg-paper border-r border-line rounded-r-[28px] shadow-lift flex flex-col
             max-[1023px]:rounded-none max-[1023px]:border-r-0"
               style={{ animation: "sheetIn .34s cubic-bezier(.32,.9,.35,1) both" }}>
               <div className="flex items-center justify-between px-5 h-[62px] shrink-0">
                 <Link to="/" className="flex items-center gap-2.5 min-h-[36px]"><Logo size={36} /><Brand /></Link>
-                <button onClick={() => setMenu(false)} aria-label="Close menu"
+                <button onClick={() => setMenu(false)} aria-label={t("closeMenu")}
                   className="w-[34px] h-[34px] rounded-full grid place-items-center border border-line text-cocoa hover:bg-card hover:text-ink transition-colors cursor-pointer">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><path d="M5 5l14 14M19 5 5 19" /></svg>
                 </button>
               </div>
               <div className="flex-1 overflow-y-auto px-3.5 pb-4">
-                <p className="px-2.5 pt-1 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">BROWSE</p>
+                <p className="px-2.5 pt-1 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">{t("browse")}</p>
                 <div className="grid gap-0.5">
                   {LINKS.map((l) => (
                     <NavLink key={l.to} to={l.to} end={l.to === "/"}
                       className={`px-3.5 py-2.5 rounded-[14px] text-[14.5px] font-semibold transition-colors ${pillCls(active(l.to))}`}>
-                      {l.label}
+                      {t(`links.${l.key}`)}
                     </NavLink>
                   ))}
                 </div>
-                <p className="px-2.5 pt-4 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">PLATFORM</p>
+                <p className="px-2.5 pt-4 pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">{t("platform")}</p>
                 <div className="grid gap-0.5">
-                  {PLAT.map(([slug, label, desc, d, tone]) => (
+                  {PLAT.map(([slug, d, tone]) => (
                     <Link key={slug} to={`/platform/${slug}`}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-[14px] hover:bg-peach transition-colors">
                       <span className={`w-[34px] h-[34px] rounded-[10px] border grid place-items-center shrink-0 ${TONES[tone]}`}><MenuIcon d={d} /></span>
                       <span className="min-w-0">
-                        <b className="block text-[13.5px] font-bold text-ink leading-tight">{label}</b>
-                        <span className="block text-[11px] text-dim mt-0.5 truncate">{desc}</span>
+                        <b className="block text-[13.5px] font-bold text-ink leading-tight">{t(`platformItems.${slug}.title`)}</b>
+                        <span className="block text-[11px] text-dim mt-0.5 truncate">{t(`platformItems.${slug}.blurb`)}</span>
                       </span>
                     </Link>
                   ))}
                 </div>
+              </div>
+              <div className="shrink-0 px-5 pt-3 pb-1 border-t border-liness min-[701px]:hidden">
+                <p className="pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">{t("language")}</p>
+                <LanguageSwitcher inline />
               </div>
               <div className="shrink-0 px-5 py-4 border-t border-liness">
                 {user ? (
@@ -217,7 +225,7 @@ export default function Nav() {
                     <Link to="/dashboard" className={btn("dark", "sm")}>Dashboard</Link>
                   </div>
                 ) : (
-                  <button className={btn("dark", "lg", "!w-full")} onClick={() => { setMenu(false); setAuthOpen(true); }}>Sign in</button>
+                  <button className={btn("dark", "lg", "!w-full")} onClick={() => { setMenu(false); setAuthOpen(true); }}>{t("signIn")}</button>
                 )}
               </div>
             </aside>
@@ -229,13 +237,15 @@ export default function Nav() {
   );
 }
 
-export function SignInButton({ label = "Sign in", size = "md" as const, variant = "dark" as const, onClick, className = "" }: { label?: string; size?: "sm" | "md" | "lg"; variant?: "dark" | "primary" | "outline"; onClick?: () => void; className?: string }) {
+export function SignInButton({ label, size = "md" as const, variant = "dark" as const, onClick, className = "" }: { label?: string; size?: "sm" | "md" | "lg"; variant?: "dark" | "primary" | "outline"; onClick?: () => void; className?: string }) {
   const { setAuthOpen } = useStore();
-  return <button className={btn(variant, size, className)} onClick={onClick ?? (() => setAuthOpen(true))}>{label}</button>;
+  const t = useTranslations("nav");
+  return <button className={btn(variant, size, className)} onClick={onClick ?? (() => setAuthOpen(true))}>{label ?? t("signIn")}</button>;
 }
 
 /* ── Platform dropdown (desktop row): caret pill + card panel ── */
 function PlatformMenu() {
+  const t = useTranslations("nav");
   const [pop, setPop] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const loc = useLocation();
@@ -253,20 +263,20 @@ function PlatformMenu() {
     <div className="relative" ref={boxRef}>
       <button onClick={() => setPop((open) => !open)} aria-expanded={pop}
         className={`${PILL} flex items-center gap-1.5 ${pillCls(on)}`}>
-        Platform
+        {t("platform")}
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden
           className={`transition-transform duration-200 ${pop ? "rotate-180" : ""}`}><path d="m5 9 7 7 7-7" /></svg>
       </button>
       {pop && (
         <div className="absolute left-0 top-[42px] w-[340px] bg-card border border-line rounded-[18px] shadow-lift p-2 z-[70]">
-          {PLAT.map(([slug, label, desc, d, tone]) => (
+          {PLAT.map(([slug, d, tone]) => (
             <Link key={slug} to={`/platform/${slug}`}
               onClick={() => setPop(false)}
               className="flex items-center gap-3 px-3 py-2.5 rounded-[12px] hover:bg-peach transition-colors">
               <span className={`w-[36px] h-[36px] rounded-[11px] border grid place-items-center shrink-0 ${TONES[tone]}`}><MenuIcon d={d} /></span>
               <span className="min-w-0">
-                <b className="block text-[13.5px] font-bold text-ink leading-tight">{label}</b>
-                <span className="block text-[11.5px] text-dim mt-0.5 truncate">{desc}</span>
+                <b className="block text-[13.5px] font-bold text-ink leading-tight">{t(`platformItems.${slug}.title`)}</b>
+                <span className="block text-[11.5px] text-dim mt-0.5 truncate">{t(`platformItems.${slug}.blurb`)}</span>
               </span>
             </Link>
           ))}

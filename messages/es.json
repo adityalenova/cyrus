@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "browse": "EXPLORAR",
+    "platform": "PLATAFORMA",
+    "signIn": "Iniciar sesi\u00f3n",
+    "openMenu": "Abrir men\u00fa",
+    "closeMenu": "Cerrar men\u00fa",
+    "siteMenu": "Men\u00fa del sitio",
+    "links": {
+      "programs": "Programas",
+      "organizations": "Organizaciones",
+      "projects": "Proyectos",
+      "proposalStudio": "Estudio de propuestas",
+      "mentorship": "Mentor\u00eda",
+      "issues": "Issues",
+      "skills": "Habilidades",
+      "sponsors": "Patrocinadores",
+      "leaderboard": "Clasificaci\u00f3n",
+      "about": "Acerca de"
+    },
+    "short": {
+      "organizations": "Orgs",
+      "proposalStudio": "Propuestas",
+      "mentorship": "Mentores"
+    },
+    "platformItems": {
+      "features": {
+        "title": "Funciones",
+        "blurb": "Todo el flujo de trabajo del colaborador."
+      },
+      "trust": {
+        "title": "Centro de confianza",
+        "blurb": "Fuentes de datos, instant\u00e1neas, verificaci\u00f3n."
+      },
+      "how": {
+        "title": "C\u00f3mo funciona",
+        "blurb": "Tres pasos, de pesta\u00f1as vac\u00edas a un PR fusionado."
+      }
+    },
+    "language": "IDIOMA"
+  },
+  "language": {
+    "label": "Idioma"
+  }
+}
