@@ -16,7 +16,7 @@
    activity is last-push age against the row's own snapshot date. Mentors are
    not in the repository catalog at all, so that row is honest "Not published"
    everywhere instead of borrowing a program-project name from /compare.
-   ══════════════════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════════════════════ */
 import { CRAWL } from "../../data/crawlStats";
 import { PROGRAM_DETAILS } from "../../data/programDetails";
 import { PROGRAM_REPOS } from "../../data/programRepos";
@@ -52,7 +52,7 @@ const DETAIL_ID_BY_PROGRAM: Record<ProgramName, string> = {
 const SHELF_PROGRAMS = new Map<string, ProgramName[]>();
 for (const r of PROGRAM_REPOS) SHELF_PROGRAMS.set(r.repo.toLowerCase(), r.programs);
 
-/* ── one repository, as the catalog states it ────────────────────── */
+/* ── one repository, as the catalog states it ────────────────────────── */
 export type RepoFacts = {
   /** canonical `owner/name`, as the catalog spells it */
   key: string;
@@ -115,7 +115,7 @@ export function factsOf(repo: Repo): RepoFacts {
   };
 }
 
-/* ── the table's rows ────────────────────────────────────────────── */
+/* ── the table's rows ────────────────────────────────────────────────── */
 export type FieldId =
   | "owner" | "category" | "stars" | "forks" | "issues" | "lang" | "license"
   | "difficulty" | "stack" | "programStack" | "mentors" | "updated" | "activity";
@@ -254,7 +254,7 @@ export function buildMatrix(rows: readonly RepoFacts[], fields: readonly Field[]
 export const sharedRows = (matrix: readonly MatrixRow[]): MatrixRow[] => matrix.filter((r) => r.kind === "same");
 export const differingRows = (matrix: readonly MatrixRow[]): MatrixRow[] => matrix.filter((r) => r.kind === "differs");
 
-/* ── selection: ?repos=owner/name,owner/name ─────────────────────── */
+/* ── selection: ?repos=owner/name,owner/name ─────────────────────────── */
 /**
  * Normalise one repository reference: a GitHub URL, a trailing slash or .git,
  * or stray whitespace all fold to `owner/name`; anything that is not exactly
@@ -349,7 +349,7 @@ export function resolveFacts(keys: readonly string[], catalog: readonly Repo[] =
   return { rows, missing };
 }
 
-/* ── the picker ──────────────────────────────────────────────────── */
+/* ── the picker ──────────────────────────────────────────────────────── */
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 /**
@@ -380,7 +380,7 @@ export function searchRepos(term: string, selected: readonly string[] = [], limi
   return scored.slice(0, limit).map((s) => factsOf(s.r));
 }
 
-/* ── saved comparisons ───────────────────────────────────────────── */
+/* ── saved comparisons ───────────────────────────────────────────────── */
 export type SavedComparison = { id: string; name: string; repos: string[]; savedAt: string };
 
 export const SAVED_NAME_MAX = 60;

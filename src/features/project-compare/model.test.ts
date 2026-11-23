@@ -1,4 +1,4 @@
-/* ══ model.test.ts — repository comparison's promises ══════════════
+/* ══ model.test.ts — repository comparison's promises ══════════════════
    The URL round-trip, the three-column cap, the difference condition, and the
    line between a missing value and a real zero. Fixtures are built through
    factsOf() so the tests exercise the same normalisation the page does.      ═ */
