@@ -197,7 +197,7 @@ export default function IssueFinder() {
   const sort = (SORTS.some(([v]) => v === sortRaw) ? sortRaw : "relevance") as Sort;
   const skipped = useMemo(() => unknownFilterKeys(params), [params]);
 
-  /* ── what assistive technology hears ──────────────────────────
+  /* ── what assistive technology hears ──────────────────────────────
      The result count is painted above the grid; this is its spoken half.
      The label describes the search the count belongs to - the URL's own
      values, not the text box, which runs 300 ms ahead of them. */
