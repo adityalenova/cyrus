@@ -1,5 +1,5 @@
 "use client"
-/* ══ OrgAnalytics.tsx — the analytics dashboard ════════════════════
+/* ══ OrgAnalytics.tsx — the analytics dashboard ════════════════════════
    Issue #187. Two real sources, each panel says which one it reads:
 
    · "your recorded events in this browser, since <date>" — the tracker
@@ -173,7 +173,7 @@ const REPO_COLUMNS: CsvColumn<RepoCsvRow>[] = [
   { header: "beginner-labelled", accessor: (r) => r.beginnerLabelled },
 ];
 
-/* ── small panels ─────────────────────────────────────────── */
+/* ── small panels ─────────────────────────────────────────────────── */
 
 const Provenance = ({ children }: { children: React.ReactNode }) => (
   <p className="font-mono text-[9.5px] uppercase tracking-[.14em] text-dim">{children}</p>
@@ -239,7 +239,7 @@ function RepoTable({ rows }: { rows: ReturnType<typeof repoAggregates> }) {
   );
 }
 
-/* ── the page ─────────────────────────────────────────────── */
+/* ── the page ─────────────────────────────────────────────────────── */
 
 export default function OrgAnalytics() {
   const [range, setRange] = useState<RangeDays>(30);
