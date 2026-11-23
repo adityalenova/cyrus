@@ -111,7 +111,7 @@ export function comparableIds(order: string[] = []): string[] {
   return [...first, ...rest];
 }
 
-/* ── selection: the URL is the whole state ─────────────────────── */
+/* ── selection: the URL is the whole state ─────────────────────────── */
 
 function allowedIds(allowed: readonly string[]): Set<string> {
   return new Set(allowed);
