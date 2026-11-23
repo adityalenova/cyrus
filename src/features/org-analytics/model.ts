@@ -16,7 +16,7 @@
    Pure by design: every function below takes parsed input. The browser
    reads localStorage in storage.ts, the tests call these directly.     ═ */
 
-/* ── recorded visitor events ──────────────────────────────────── */
+/* ── recorded visitor events ──────────────────────────────────────── */
 
 export type EventSource = "tracker" | "ledger" | "search";
 
@@ -156,7 +156,7 @@ export function historyStart(events: RecordedEvent[]): string | null {
   return min === null ? null : new Date(min).toISOString();
 }
 
-/* ── windows and buckets ──────────────────────────────────────── */
+/* ── windows and buckets ──────────────────────────────────────────── */
 
 /** The UTC days of a range, oldest first, ending today (inclusive). */
 export function windowDays(range: RangeDays, now: Date = new Date()): string[] {
@@ -391,7 +391,7 @@ export function beginnerShare(rows: SnapshotIssue[]): number | null {
 export const percent = (value: number | null, digits = 1): string =>
   value === null ? "—" : `${(value * 100).toFixed(digits)}%`;
 
-/* ── CSV shapes ───────────────────────────────────────────── */
+/* ── CSV shapes ───────────────────────────────────────────────────── */
 
 /** One row per day of the selected range, zero days included, so an export
     matches the chart the visitor is looking at. */

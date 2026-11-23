@@ -1,4 +1,4 @@
-/* ══ model.test.ts — the dashboard's arithmetic ════════════════════
+/* ══ model.test.ts — the dashboard's arithmetic ════════════════════════
    Issue #187. Two things must never be invented: a time series (it is
    bucketed from stored timestamps only) and a snapshot trend (there is no
    function here that could draw one). These tests pin the bucketing, the
@@ -221,7 +221,7 @@ describe("store parsing", () => {
   });
 });
 
-/* ── crawl snapshot ───────────────────────────────────────── */
+/* ── crawl snapshot ───────────────────────────────────────────────── */
 
 const issue = (partial: Partial<SnapshotIssue> & { repo: string }): SnapshotIssue => ({
   title: "t", url: "https://github.com/x/y/issues/1", number: 1, stars: 10,
