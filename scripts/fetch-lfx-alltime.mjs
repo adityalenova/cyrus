@@ -24,6 +24,7 @@
 import { readFileSync, writeFileSync, mkdirSync, renameSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { normalizeRepoUrl } from "../src/lib/repoLink.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RAW_DIR = join(ROOT, "data");
@@ -63,13 +64,18 @@ const termYears = (p) => {
 
 const cleanName = (s) => String(s ?? "").replace(/\s+/g, " ").trim();
 
+/** the repository LFX links to, keeping its casing; null when it names none */
+const repoOf = (u) => {
+  const link = normalizeRepoUrl(String(u ?? ""));
+  return link ? `${link.owner}/${link.name}` : null;
+};
+
 const slim = (p) => ({
   id: p.projectId,
   name: cleanName(p.name),
   lfid: p.lfid || null,
   org: cleanName(p.lfProjectName) || null,
-  repo: p.repoLink && /^https?:\/\/github\.com\/[^/]+\/[^/?#]+/i.test(p.repoLink)
-    ? p.repoLink.match(/^https?:\/\/github\.com\/([^/]+)\/([^/?#]+)/i).slice(1).join("/") : null,
+  repo: repoOf(p.repoLink),
   industry: cleanName(p.industry) || null,
   years: termYears(p),
   created: String(p.createdOn ?? "").slice(0, 4) || null,
