@@ -6,7 +6,10 @@ import { PROGRAM_REPOS } from "../data/programRepos";
 import type { Level, Repo } from "./types";
 import { ORGS } from "../data/orgs";
 
-/** Full catalog: agent catalog repos (REPOS) plus program projects (PROGRAM_REPOS). */
+/** The browsable catalog: every agent-catalog repo (REPOS) followed by every
+    program project (PROGRAM_REPOS), so it is exactly
+    REPOS.length + PROGRAM_REPOS.length long. No count is written down here on
+    purpose — a refresh changes both inputs. */
 export const CATALOG: Repo[] = [...REPOS, ...PROGRAM_REPOS];
 
 /** 1500 -> "1.5k": rounded, for star counts and table cells (siteStats.ts fmtFull is exact) */
