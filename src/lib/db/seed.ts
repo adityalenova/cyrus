@@ -35,6 +35,8 @@ function loadEnv() {
   }
 }
 
+/** The five access-control roles the app ships with, keyed by the id stored
+ *  in `roles.id` / `user_roles.role_id`. */
 export const PREDEFINED_ROLES = [
   { id: "super_admin", name: "super_admin", description: "Platform super administrator with unrestricted access" },
   { id: "org_admin", name: "org_admin", description: "Organization administrator with full organization control" },
@@ -43,6 +45,8 @@ export const PREDEFINED_ROLES = [
   { id: "viewer", name: "viewer", description: "Viewer with read-only analytics access" },
 ] as const;
 
+/** The five permissions the roles are built from, keyed by the id stored in
+ *  `permissions.id` / `role_permissions.permission_id`. */
 export const PREDEFINED_PERMISSIONS = [
   { id: "manage_users", name: "manage_users", description: "Manage organization members and role assignments" },
   { id: "manage_org", name: "manage_org", description: "Manage organization profile, settings, and lifecycle" },
@@ -51,6 +55,8 @@ export const PREDEFINED_PERMISSIONS = [
   { id: "moderate", name: "moderate", description: "Moderate organization content, submissions, and member actions" },
 ] as const;
 
+/** Role id → the permission ids granted to it; `role_permissions` rows are
+ *  derived from this map and nothing else. */
 export const PREDEFINED_ROLE_PERMISSIONS: Record<string, string[]> = {
   super_admin: ["manage_users", "manage_org", "edit_projects", "view_analytics", "moderate"],
   org_admin: ["manage_users", "manage_org", "edit_projects", "view_analytics", "moderate"],
@@ -59,6 +65,25 @@ export const PREDEFINED_ROLE_PERMISSIONS: Record<string, string[]> = {
   viewer: ["view_analytics"],
 };
 
+/**
+ * Write the predefined roles, permissions and role→permission grants.
+ *
+ * Idempotent: every insert uses `onConflictDoNothing()`, so a second run adds
+ * nothing and an existing role keeps its row. `main()` calls this once after
+ * the catalog tables are loaded; it is exported so `rbac.integration.test.ts`
+ * and repair scripts can seed only the access-control tables without touching
+ * the catalog.
+ *
+ * @param db - a connected Drizzle client, i.e. `getDb()` after the null check.
+ * @returns a promise that resolves once `roles`, `permissions` and
+ *   `role_permissions` have been written.
+ * @throws rejects if any statement fails (unreachable database, bad
+ *   credentials); the rows written before the failure stay written, so a retry
+ *   is safe but a partial failure is not rolled back.
+ * @example
+ * const db = getDb();
+ * if (db) await seedRbac(db);
+ */
 export async function seedRbac(db: NonNullable<ReturnType<typeof getDb>>) {
   console.log("Seeding RBAC roles and permissions…");
   for (const r of PREDEFINED_ROLES) {
