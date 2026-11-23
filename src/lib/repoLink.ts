@@ -27,7 +27,7 @@
    - Only github.com (and its www) is accepted. A lookalike host, a
      percent-encoded path, a non-ASCII or zero-width character, or a
      userinfo trick is rejected rather than repaired.
-   ══════════════════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════════════════════ */
 
 /** hosts that serve a GitHub repository path */
 const GITHUB_HOSTS = new Set(["github.com", "www.github.com"]);
