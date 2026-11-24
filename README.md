@@ -172,7 +172,7 @@ Every figure in this table is the figure the site itself computes. `src/lib/site
 - **Light + dark, same soul.** A hand-tuned coffee-and-honey palette with a dainty sun/moon toggle; every colour is a CSS custom property, so both themes share one source of truth and no component carries a hex literal.
 - **Filters where the question is.** Each program's organization explorer filters by year, stack and sector at the top of the list and stays there - it does not follow the page down over the cards.
 - **Honest empty states.** A program that publishes no participant list, no mentor names or no project table says so on its page and shows nothing, rather than filling the gap with a lookalike.
-- **Self-refreshing data.** `npm run refresh` re-pulls the GSoC archive; `npm run orgs` regenerates organization intel from live GitHub; `npm run issues` re-crawls the issue snapshot. Refresh stamps this README with the newest repository `updated` date in `src/data/repos.ts`, not the refresh date - so the snapshot badge cannot drift from the data.
+- **Self-refreshing data.** `npm run refresh` runs every credential-free builder - the GSoC archive, the issue snapshot, the program roster and the mentor index - and then records in this README which of those datasets it actually rebuilt (see *How the data is built*). A step that needs a credential says which environment variable is missing instead of disappearing, and a builder that fails aborts the run before the README is stamped, so the line cannot claim a rebuild that did not happen. `npm run orgs` regenerates organization intel from live GitHub; `npm run issues` re-crawls the issue snapshot.
 
 ## How the data is built
 
@@ -188,6 +188,10 @@ Contribo organization feed ┘    program-roster.json ────────�
 ```
 
 Each source keeps its own file and its own provenance note inside it, so a reader of the JSON can tell an organizer's published archive from a topic listing, and a wishlist from a mentored project. Where two sources describe the same organization, the merge is by GitHub login first and normalized name second, and the count of unresolved names stays visible in the file rather than being quietly dropped.
+
+<!--refresh:datasets-->
+**Dataset rebuild** - issue snapshot 2026-10-21; program roster 2026-10-25; mentor index 2026-10-25. Each date is the day that dataset was last rebuilt by `npm run refresh`; a dataset that is not listed was not rebuilt by any recorded run.
+<!--/refresh:datasets-->
 
 ## Pages
 
@@ -225,7 +229,7 @@ npm run dev                 # http://localhost:5330
 npm run build               # next build
 npm test                    # vitest: 101 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
-npm run refresh             # re-pull the GSoC archive + stamp this README's snapshot date
+npm run refresh             # rebuild every credential-free dataset + record what was rebuilt here
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
 npm run issues              # re-crawl the 40k-issue snapshot
 npm run refresh:all         # refresh, program shards, mentors, orgs, org stats (needs network and gh auth)
@@ -377,7 +381,7 @@ public/data/      issues.json.gz · gsoc-projects.json · otherProjects.json ·
                   program-projects/ · program-roster.json · mentor-index.json ·
                   contribo-orgs.json · sponsors.json · lf-orgs.json
 scripts/
-├── refresh.mjs                 GSoC archive re-pull + README snapshot stamp
+├── refresh.mjs                 credential-free builders + the README dataset-rebuild line
 ├── readme-stats.mjs            README and hero figures, rewritten from the data (--check in CI)
 ├── build-issue-index.mjs       GitHub Search API -> the 40k-issue snapshot
 ├── build-crawl-data.mjs        catalog crawl -> repos.ts + crawlStats.ts
