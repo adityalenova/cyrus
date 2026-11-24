@@ -13,7 +13,7 @@ body:
     attributes:
       label: What happened
       description: What you expected and what you saw instead.
-      placeholder: The hackathon filter returns nothing for "AI".
+      placeholder: The TypeScript language filter on the Issue Finder returns nothing.
     validations:
       required: true
   - type: input
@@ -21,7 +21,7 @@ body:
     attributes:
       label: URL
       description: The page or endpoint involved.
-      placeholder: https://cyrus-agent.vercel.app/issues
+      placeholder: "https://cyrus-agent.vercel.app/issues?q=memory+leak&lang=typescript"
     validations:
       required: true
   - type: textarea
@@ -29,8 +29,8 @@ body:
     attributes:
       label: Steps to reproduce
       placeholder: |
-        1. Open /issues
-        2. Search or filter the issues
+        1. Open https://cyrus-agent.vercel.app/issues
+        2. Choose TypeScript under Language, then search for "memory leak"
   - type: textarea
     id: env
     attributes:
