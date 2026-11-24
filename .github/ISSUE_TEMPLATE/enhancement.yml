@@ -13,7 +13,7 @@ body:
     id: proposal
     attributes:
       label: What you would add
-      description: Concrete behaviour, not a category. "The hero search should accept a stack and rank hackathons by overlap" beats "better search".
+      description: Concrete behaviour, not a category. "The /skills search should accept a stack and rank results by overlap" beats "better search".
     validations:
       required: true
   - type: textarea
