@@ -7,6 +7,18 @@ import type { Level } from "../lib/types";
 
 export interface ProgramYear { year: number; n: number }
 
+/* The application window as the organizer's published copy states it.
+   `label` and `period` are quoted from that copy, not rewritten into a
+   calendar: a program that names a stage but publishes no dates carries the
+   stage and omits `period`, and the comparison prints "Not published" for the
+   date instead of guessing one. */
+export interface ApplicationWindow {
+  label: string;
+  period?: string;
+  note?: string;
+  source: string;
+}
+
 export interface ProgramDetailData {
   level: Level;
   duration: string;
@@ -15,6 +27,10 @@ export interface ProgramDetailData {
   /* only set where the organizer states a rule; when they publish none the
      field is absent and the surfaces read "Not published", never "no rule" */
   eligibility?: string;
+  /* only set where the published copy states an application or registration
+     window; the comparison reads this instead of inferring dates from the
+     program's season */
+  applicationWindow?: ApplicationWindow;
   tags: string[];
   about: string[];
   howItWorks: [string, string][];
@@ -56,6 +72,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 1 - global flagship",
     difficulty: "Competitive - org mentors score every proposal",
     eligibility: "18+ and legally able to work in your country; students and non-students alike",
+    applicationWindow: {
+      label: "Proposal window",
+      period: "late Mar - early Apr",
+      source: "Program path: \"Proposal window (late Mar - early Apr)\"",
+    },
     tags: ["Stipended", "Mentored", "Remote", "Portfolio-grade", "Google-backed"],
     about: [
       "Google Summer of Code is the program that turned open-source contributing into a summer rite of passage. Since 2005 Google has paid thousands of contributors per year to ship real features into hundreds of open projects, with a mentor from the host organization guiding the work from proposal to final evaluation.",
@@ -96,6 +117,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 1 - needs-based",
     difficulty: "Application plus a sample contribution; no prior experience required",
     eligibility: "Members of groups underrepresented in tech; no degree or prior OSS work needed",
+    applicationWindow: {
+      label: "Apply with essays",
+      period: "Nov / May",
+      source: "Program path: \"Apply with essays (Nov / May)\"",
+    },
     tags: ["Stipended", "Full-time", "Remote", "Newcomer-first", "Needs-based"],
     about: [
       "Outreachy is the most generous entry point in open source: a six-month, fully paid internship with a real community, run by the Diversity Outreach team at the Software Freedom Conservancy. It exists specifically for people groups excluded from tech - and it works, with thousands of alumni now maintainers, staff engineers and PhDs.",
@@ -136,6 +162,12 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 2 - foundation-backed",
     difficulty: "Application to one of three open term calls per year",
     eligibility: "Open worldwide; mentees must be able to work ~30 hrs/week for one term",
+    /* the record names the step but publishes no application dates, so the
+       comparison shows the step and marks the date unpublished */
+    applicationWindow: {
+      label: "Apply to one scope",
+      source: "Program path: \"Apply to one scope\"",
+    },
     tags: ["Stipended", "Mentored", "Remote", "Linux Foundation", "Rolling terms"],
     about: [
       "LFX Mentorship is the Linux Foundation's successor to its Core Infrastructure project grants: paid, mentored, twelve-week scopes posted directly by foundation projects like Kubernetes, PyTorch, Envoy and CNCF natives. Each scope is a concrete, pre-negotiated piece of work - you apply to the job listing, not to a vague idea.",
@@ -175,6 +207,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 2 - regional + EU focus",
     difficulty: "Light - a written proposal and community contact",
     eligibility: "Open worldwide, with a deliberate push for European students and career starters",
+    applicationWindow: {
+      label: "Apply",
+      period: "Feb",
+      source: "Program path: \"Apply (Feb)\"",
+    },
     tags: ["Paid", "Mentored", "Remote", "Eclipse ecosystem", "EU-friendly"],
     about: [
       "Eclipse Summer of Code is the Eclipse Foundation's answer to GSoC, and one of the friendiest first programs in open source. Participants spend twelve weeks over the spring on a mentored project across the Eclipse stack - from the JDT language tooling and Theia IDE to Jakarta EE and Eclipse SDV for software-defined vehicles.",
@@ -214,6 +251,8 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 2 - professional track",
     difficulty: "Application with code samples; tracks have separate bars",
     eligibility: "Open worldwide; the paid track requires the full batch commitment",
+    /* no application dates are published for the batches, so this record
+       carries none and the comparison prints "Not published" */
     tags: ["Paid", "Remote", "Batch-based", "Internship alternative", "Partner orgs"],
     about: [
       "Major League Hacking's Fellowship is built for people who want the internship experience without the internship scramble. Small remote cohorts work in teams on real production open-source projects contributed by MLH's partner organizations, with professional mentors running sprint rituals instead of classroom assignments.",
@@ -253,6 +292,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 3 - community-led",
     difficulty: "Very light - register and start contributing",
     eligibility: "Open to anyone, anywhere; students especially welcome",
+    applicationWindow: {
+      label: "Register",
+      period: "Jul - Aug",
+      source: "Program path: \"Register (Jul - Aug)\"",
+    },
     tags: ["Beginner-friendly", "Remote", "Open to all", "Leaderboard", "India-rooted"],
     about: [
       "GirlScript Summer of Code is the largest women-led open-source program in India and, for many contributors, literally the first pull request they ever merge. For three months, hundreds of student-built and community-run repositories post issues that are tagged and tracked on a public leaderboard.",
@@ -291,6 +335,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 3 - single ecosystem",
     difficulty: "Light - a proposal to one KDE project",
     eligibility: "Open worldwide; no enrollment requirement",
+    applicationWindow: {
+      label: "Registration",
+      period: "Dec",
+      source: "Program path: \"Registration (Dec)\"",
+    },
     tags: ["Prize-backed", "Mentored", "Remote", "Desktop Linux", "Design-friendly"],
     about: [
       "Season of KDE is the KDE community's winter mentoring program: one ecosystem - Plasma, KDE apps, the framework libraries, documentation, marketing and design - opening its doors for a season instead of a summer. Because it runs January to March, it is the natural companion to GSoC applications that get written in the same winter.",
@@ -369,6 +418,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 2 - single ecosystem, globally known",
     difficulty: "Focused - one proposal into a Bitcoin org's project list",
     eligibility: "Open worldwide; strong C++/Rust/Python or web skills expected",
+    applicationWindow: {
+      label: "Application",
+      period: "Feb - Mar",
+      source: "Program path: \"Application (Feb - Mar)\"",
+    },
     tags: ["Stipended", "Mentored", "Remote", "Bitcoin", "Lightning"],
     about: [
       "Summer of Bitcoin is the crypto ecosystem's answer to GSoC: a mentored summer where contributors build Bitcoin Core, Lightning, wallets, explorers and infrastructure, each matched to a mentor from an org like Block, Bitcoin Optee or mempool.space. It relaunched in 2020 and has grown cohort by cohort since.",
@@ -407,6 +461,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 3 - community-run sprint",
     difficulty: "None - register, pick repos, ship issues",
     eligibility: "Open to developers worldwide via nsoc.in",
+    applicationWindow: {
+      label: "Registration",
+      period: "spring",
+      source: "Program path: \"Registration (spring)\"",
+    },
     tags: ["Free", "Leaderboard", "Mentored", "India-led", "Cert-backed"],
     about: [
       "Nexus Spring of Code hands you live repositories for 45 days: partner orgs on GitHub queue up real issues, participants claim them through the program desk, and a leaderboard tracks merged work week by week. It reads like a season-long Hacktoberfest with matching built in.",
@@ -482,6 +541,11 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 2 - nationally run fellowship",
     difficulty: "Screening tasks decide the shortlist",
     eligibility: "Students applying through the FOSSEE registration desk at IIT Bombay",
+    applicationWindow: {
+      label: "Registration",
+      period: "early in the year",
+      source: "Program path: \"Registration (early in the year)\"",
+    },
     tags: ["Mentored", "IIT Bombay", "FLOSS tracks", "Unpaid", "Screening tasks"],
     about: [
       "The FOSSEE Summer Fellowship is run by FOSSEE at IIT Bombay, the centre that maintains the free and open-source software tooling the institute teaches with. Fellows work inside those tracks - Scilab, Python, Oxide and the surrounding documentation and packaging layers - against a brief set by the track maintainers rather than a project they propose themselves.",
