@@ -1,5 +1,5 @@
 name: Data correction
-description: Report incorrect program or hackathon information with a reliable source
+description: Report incorrect program or organization information with a reliable source
 body:
   - type: markdown
     attributes:
@@ -28,9 +28,9 @@ body:
   - type: input
     id: page-url
     attributes:
-      label: Where does it appear on cyrus.ai?
+      label: Where does it appear on cyrus-agent.vercel.app?
       description: Link to the page displaying the incorrect information.
-      placeholder: https://cyrus-agent.vercel.app/issues
+      placeholder: https://cyrus-agent.vercel.app/programs
     validations:
       required: true
 
