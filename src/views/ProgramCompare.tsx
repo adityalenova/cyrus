@@ -1,7 +1,26 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Link } from "@/lib/router";
+/* ══ ProgramCompare.tsx — regional stipends, eligibility and windows ══
+   The stipend cards below the picker are unchanged: they multiply the
+   organizer's published stipend by a purchasing-power factor for the chosen
+   country. The comparison itself now has a second half, fed by
+   PROGRAM_DETAILS through src/features/program-windows - the eligibility
+   sentence and the application window each program actually publishes, with
+   "Not published" where a record states nothing.
+
+   The whole selection lives in `?p=` (e.g. ?p=gsoc,lfx,outreachy) so a
+   comparison survives being pasted into a chat. There is no second copy of
+   it in React state.                                              ══ */
+import { useMemo, useState } from "react";
+import { Link, useSearchParams } from "@/lib/router";
+import ProgramWindowsPanel from "@/features/program-windows/ProgramWindowsPanel";
+import {
+  DEFAULT_SELECTION,
+  selectionFromSearch,
+  selectionToParam,
+  toggleProgram,
+} from "@/features/program-windows/model";
+import { PROGRAMS } from "../data/orgs";
 
 interface ProgramSpec {
   id: string;
@@ -112,8 +131,9 @@ const PROGRAMS_DATA: ProgramSpec[] = [
   },
 ];
 
-const PPP_MULTIPLIERS: Record<string, { label: string; factor: number; flag: string; currency: string }> = {
-  US: { label: "United States (1.00x Base)", factor: 1.0, flag: "🇺🇸", currency: "USD" },
+const W = "max-w-[1240px] mx-auto px-6";
+
+const PPP_MULTIPLIERS: Record<string, { label: string; factor: number; flag: string; currency: string }> = {  US: { label: "United States (1.00x Base)", factor: 1.0, flag: "🇺🇸", currency: "USD" },
   IN: { label: "India (PPP Adjusted ~0.55x)", factor: 0.55, flag: "🇮🇳", currency: "USD (~INR)" },
   NG: { label: "Nigeria (PPP Adjusted ~0.45x)", factor: 0.45, flag: "🇳🇬", currency: "USD" },
   BR: { label: "Brazil (PPP Adjusted ~0.60x)", factor: 0.6, flag: "🇧🇷", currency: "USD" },
@@ -124,30 +144,37 @@ const PPP_MULTIPLIERS: Record<string, { label: string; factor: number; flag: str
 export default function ProgramCompare() {
   const [selectedCountry, setSelectedCountry] = useState("IN");
   const [filterStudentOnly, setFilterStudentOnly] = useState<boolean | null>(null);
-  const [selectedPrograms, setSelectedPrograms] = useState<string[]>(["gsoc", "lfx", "outreachy"]);
+  const [params, setParams] = useSearchParams();
+  /* the URL is the selection; a missing ?p= opens the default three, an empty
+     ?p= stays empty because that is what the reader chose */
+  const selectedPrograms = useMemo(() => selectionFromSearch(params.toString()), [params]);
+  const writeSelection = (next: string[]) => setParams({ p: selectionToParam(next) });
+  const toggle = (id: string) => writeSelection(toggleProgram(selectedPrograms, id));
 
   const ppp = PPP_MULTIPLIERS[selectedCountry] ?? PPP_MULTIPLIERS.US;
 
-  const toggleProgram = (id: string) => {
-    if (selectedPrograms.includes(id)) {
-      if (selectedPrograms.length > 1) {
-        setSelectedPrograms(selectedPrograms.filter((p) => p !== id));
-      }
-    } else {
-      setSelectedPrograms([...selectedPrograms, id]);
-    }
-  };
+  /* only these programs have a stipend table on this page; the eligibility
+     panel can still select the rest, so an empty grid is a normal state */
+  const cardList = useMemo(
+    () => PROGRAMS_DATA.filter((p) =>
+      selectedPrograms.includes(p.id) &&
+      (filterStudentOnly === null || p.studentRequired === filterStudentOnly),
+    ),
+    [selectedPrograms, filterStudentOnly],
+  );
 
-  const activeList = useMemo(() => {
-    return PROGRAMS_DATA.filter((p) => {
-      if (filterStudentOnly !== null && p.studentRequired !== filterStudentOnly) return false;
-      return true;
-    });
-  }, [filterStudentOnly]);
+  const programOptions = useMemo(
+    () => PROGRAMS.map((p) => ({ id: p.id, name: p.name })),
+    [],
+  );
+
+  const label = selectedPrograms.length > 0
+    ? `${selectedPrograms.length} selected: ${selectedPrograms.join(", ")}`
+    : "no programs selected";
 
   return (
     <div className="min-h-screen bg-canvas text-ink">
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className={`${W} py-8`}>
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-hairline mb-8">
           <div>
@@ -190,48 +217,43 @@ export default function ProgramCompare() {
           </div>
         </div>
 
-        {/* Filters and Selection Bar */}
+        {/* Stipend-card filter. Program selection lives in the picker inside
+            the eligibility panel below, so one URL selection drives both
+            halves of the page. */}
         <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl border border-hairline bg-surface/40 mb-8">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold text-dim mr-2">Compare:</span>
-            {activeList.map((p) => {
-              const active = selectedPrograms.includes(p.id);
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => toggleProgram(p.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                    active
-                      ? "bg-emerald-600 text-white shadow-sm font-semibold"
-                      : "bg-surface border border-hairline text-dim hover:text-ink hover:border-emerald-500/50"
-                  }`}
-                >
-                  {p.name.split(" ")[0]} {active ? "✓" : "+"}
-                </button>
-              );
-            })}
+          <div>
+            <p className="text-xs font-semibold text-dim">Stipend cards</p>
+            <p role="status" aria-live="polite" className="font-mono text-[10.5px] uppercase tracking-[.1em] text-dim mt-1">
+              {label}
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-xs" role="group" aria-label="Filter stipend cards by student requirement">
             <button
+              type="button"
+              aria-pressed={filterStudentOnly === null}
               onClick={() => setFilterStudentOnly(null)}
-              className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-md transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 ${
                 filterStudentOnly === null ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold" : "text-dim hover:text-ink"
               }`}
             >
               All Programs
             </button>
             <button
+              type="button"
+              aria-pressed={filterStudentOnly === false}
               onClick={() => setFilterStudentOnly(false)}
-              className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-md transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 ${
                 filterStudentOnly === false ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold" : "text-dim hover:text-ink"
               }`}
             >
               Non-Students Allowed
             </button>
             <button
+              type="button"
+              aria-pressed={filterStudentOnly === true}
               onClick={() => setFilterStudentOnly(true)}
-              className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
+              className={`px-3 py-1 rounded-md transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 ${
                 filterStudentOnly === true ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold" : "text-dim hover:text-ink"
               }`}
             >
@@ -240,9 +262,18 @@ export default function ProgramCompare() {
           </div>
         </div>
 
+        {/* ── published eligibility + application windows ── */}
+        <ProgramWindowsPanel
+          selection={selectedPrograms}
+          onToggle={toggle}
+          onReset={() => writeSelection(DEFAULT_SELECTION)}
+          programs={programOptions}
+        />
+
         {/* Side-by-Side Comparison Grid */}
+        <h2 className="panel-h-lg mb-4">Regional stipend cards</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {PROGRAMS_DATA.filter((p) => selectedPrograms.includes(p.id)).map((p) => {
+          {cardList.map((p) => {
             const minStipend = Math.round(p.baseStipendUSD.min * ppp.factor);
             const maxStipend = Math.round(p.baseStipendUSD.max * ppp.factor);
 
@@ -319,6 +350,12 @@ export default function ProgramCompare() {
             );
           })}
         </div>
+        {cardList.length === 0 && (
+          <p className="text-xs text-dim mb-12">
+            No selected program has a stipend card on this page under that filter. The comparative
+            programs are still shown above; clear the filter or add one of the stipended programs.
+          </p>
+        )}
 
         {/* Timeline Clash Warning Box */}
         <div className="p-6 rounded-2xl border border-hairline bg-surface/50 space-y-3">
