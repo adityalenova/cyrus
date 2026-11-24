@@ -136,7 +136,7 @@ Light and dark share one token set - the same coffee-and-honey palette, roasted 
 | Sponsors directory | **82 funded repositories**, found in the top 260 by stars | `.github/FUNDING.yml`, read repository by repository |
 | Program pages | **<!--stat:programs-->13<!--/stat-->** deep dives, each with its own organization explorer and archive | `src/data/programDetails.ts` |
 | Dashboard | 12 screens - overview, issues, repositories, calendar, demand radar, analyser, drafts, matcher, mentors, compare, git-start, settings | the datasets above, in the browser |
-| Surface | **<!--stat:pages-->36<!--/stat-->** page routes + **<!--stat:handlers-->41<!--/stat-->** route handlers (<!--stat:api-->40<!--/stat--> API + `/llms.txt`) | `src/app/` (App Router) |
+| Surface | **<!--stat:pages-->37<!--/stat-->** page routes + **<!--stat:handlers-->41<!--/stat-->** route handlers (<!--stat:api-->40<!--/stat--> API + `/llms.txt`) | `src/app/` (App Router) |
 
 Every figure in this table is the figure the site itself computes. `src/lib/siteStats.ts` derives the chrome's counts from the data modules, and `siteStats.test.ts` asserts the two archive totals against the JSON files on disk - a refresh that changes a file fails the test until the module and this table catch up.
 
@@ -227,7 +227,7 @@ npm run dev                 # http://localhost:5330
 
 ```bash
 npm run build               # next build
-npm test                    # vitest: 102 files, unit + data-integrity suites
+npm test                    # vitest: 104 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
 npm run refresh             # rebuild every credential-free dataset + record what was rebuilt here
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
@@ -358,7 +358,7 @@ flowchart LR
         SOC[Program archives + FUNDING.yml + LF gateway] --> D4[public/data/*.json]
     end
     subgraph app [Next.js 16 - App Router, React 19]
-        D1 & D2 & D3 & D4 --> PAGES[2,036 prerendered pages across 36 routes: Home, /issues,<br/>/projects, /programs, /programs/:id/organizations,<br/>/skills, /organizations - 364 generated org profiles,<br/>/organizations/stats, /sponsors, /leaderboard,<br/>/dashboard/*, /platform/*, /repo/:id ...]
+        D1 & D2 & D3 & D4 --> PAGES[2,036 prerendered pages across 37 routes: Home, /issues,<br/>/projects, /programs, /programs/:id/organizations,<br/>/skills, /organizations - 364 generated org profiles,<br/>/organizations/stats, /sponsors, /leaderboard,<br/>/dashboard/*, /platform/*, /repo/:id ...]
         API[40 API handlers + /llms.txt: auth, me, issues,<br/>catalog, submissions, health]
     end
     PAGES --> V[(Vercel<br/>cyrus-agent.vercel.app)]
@@ -369,7 +369,7 @@ Catalog pages render from typed, checked-in snapshots, so the first paint needs 
 
 ```
 src/
-├── app/          App Router: 36 pages + 41 route handlers (40 API + llms.txt)
+├── app/          App Router: 37 pages + 41 route handlers (40 API + llms.txt)
 ├── views/        21 page components (Home, IssueFinder, Programs, ProgramOrgs, ...)
 ├── components/   chrome, cards, the auth modal and its sign-in plate, hero, UI primitives
 ├── lib/          store, router shim, google.ts (OIDC), github.ts (PKCE),
@@ -421,7 +421,7 @@ A `vercel.json` pins the Next.js preset, so importing the repository is all it t
 | Visualization | hand-rolled canvas + SVG | catalog charts, program bars, sparklines - no chart library |
 | Motion | Framer Motion | section reveals and the hero, both behind `prefers-reduced-motion` |
 | Email | Resend | one-tap sign-in codes; only the hash of a code is stored |
-| Tests | Vitest | <!--stat:testFiles-->102<!--/stat--> files, <!--stat:tests-->1056<!--/stat--> tests - unit, API-route and data-integrity suites |
+| Tests | Vitest | <!--stat:testFiles-->104<!--/stat--> files, <!--stat:tests-->1096<!--/stat--> tests - unit, API-route and data-integrity suites |
 | Hosting | Vercel | `vercel.json` pins the Next.js preset |
 
 ## Contribute & support
