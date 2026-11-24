@@ -13,7 +13,7 @@ import PdfExport from "@/components/PdfExport";
    scripts/contribo-summary.mjs. The card's number and the page behind it are
    computed by the same code, so they cannot drift.                        ═ */
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "@/lib/router";
+import { Link, useSearchParams } from "@/lib/router";
 import { PROGRAMS } from "../data/orgs";
 import { avatarOf, fmtCompact } from "../lib/util";
 import { useRosterIndex } from "../lib/programRoster";
@@ -26,6 +26,16 @@ import { stipendText, windowText } from "../lib/programFields";
 import { btn, Chip, OrgImg, Word } from "../components/ui";
 import type { Program } from "../lib/types";
 import { useStore } from "../lib/store";
+import EligibilityFilters from "../features/eligibility-filters/EligibilityFilters";
+import {
+  facetsActive,
+  filterCatalog,
+  queryToParams,
+  readQuery,
+  reasonOf,
+  type CatalogQuery,
+  type Match,
+} from "../features/eligibility-filters/model";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -39,14 +49,17 @@ const BIG_ARCHIVE_LABEL: Record<string, string> = {
   gsoc: "GSoC", lfx: "LFX", outreachy: "Outreachy", sob: "Summer of Bitcoin",
 };
 
-const STATUS_FILTERS: [string, string][] = [
-  ["all", "Everything"], ["live", "Live now"], ["upcoming", "Opening soon"], ["closed", "Closed this cycle"],
-];
-
 const STATUS_PILL: Record<Program["status"], string> = {
   live: "text-leaf border-leaf/40 bg-leaf/8",
   upcoming: "text-honey border-honey/45 bg-honey/8",
   closed: "text-dim border-line bg-cream",
+};
+
+/* the eligibility badge, only rendered while a facet filter is applied */
+const MATCH_BADGE: Record<Match, { label: string; cls: string }> = {
+  eligible: { label: "Matches filters", cls: "text-leaf border-leaf/40 bg-leaf/8" },
+  ineligible: { label: "Not eligible", cls: "text-rust border-accent/35 bg-peach" },
+  unknown: { label: "Unknown", cls: "text-dim border-line bg-cream" },
 };
 
 const EVIDENCE_WORD: Record<Evidence, string> = {
@@ -57,7 +70,9 @@ const EVIDENCE_WORD: Record<Evidence, string> = {
 /* ── one program card ─────────────────────────────────────────── */
 type RosterSlot = { orgs: number; projects: number; source: Evidence };
 
-function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSummary }) {
+function ProgCard({ p, s, arc, match, eligibilityReason }: {
+  p: Program; s?: ProgramStats; arc?: ArchiveSummary; match?: Match; eligibilityReason?: string;
+}) {
   const { user, savedPrograms, toggleSavedProgram, setAuthOpen } = useStore();
   const saved = savedPrograms.includes(p.id);
   const archived = arc?.filter;
@@ -82,6 +97,14 @@ function ProgCard({ p, s, arc }: { p: Program; s?: ProgramStats; arc?: ArchiveSu
             page and in its organization explorer. */}
         <div className="flex gap-1.5 flex-wrap">
           <Chip tone="green">{stipendText(p.pay)}</Chip>
+          {match && (
+            <span
+              className={`inline-flex items-center font-mono text-[9.5px] font-bold uppercase tracking-[.09em] px-2.5 py-1 rounded-full border ${MATCH_BADGE[match].cls}`}
+            >
+              {MATCH_BADGE[match].label}
+              {eligibilityReason && <span className="sr-only">. {eligibilityReason}</span>}
+            </span>
+          )}
         </div>
         <p className="font-mono text-[10px] tracking-[.09em] uppercase text-dim">{windowText(p.window)}</p>
         <div className="flex items-center gap-3 mt-auto pt-3 border-t border-liness">
@@ -212,7 +235,16 @@ function ArchiveBand({ grid, loading, roster, idx, stats, arcs }: {
 }
 
 export default function Programs() {
-  const [status, setStatus] = useState("all");
+  /* every filter - status, student, country - is the query string, so the
+     catalog can be linked to in a filtered state and the back button steps
+     through the filters the reader actually applied */
+  const [params, setParams] = useSearchParams();
+  const query = useMemo(() => readQuery(params.toString()), [params]);
+  const update = (patch: Partial<CatalogQuery>) =>
+    setParams(queryToParams({ ...query, ...patch }));
+  const { rows, counts } = useMemo(() => filterCatalog(PROGRAMS, query), [query]);
+  const eligibilityActive = facetsActive(query);
+
   const [grid, setGrid] = useState<YearGrid | null>(null);
   const rst = useRosterIndex();
   const cs = useProgramStats();
@@ -247,11 +279,6 @@ export default function Programs() {
     return () => { go = false; };
   }, []);
 
-  const list = useMemo(
-    () => PROGRAMS.filter((p) => status === "all" || p.status === status),
-    [status],
-  );
-
   return (
     <div className={`${W} pt-14 pb-16`}>
       <p className="font-mono text-[10.5px] tracking-[.14em] uppercase text-dim">
@@ -265,29 +292,33 @@ export default function Programs() {
         calendar, then open a program for its organizations, its projects and its windows.
       </p>
 
-      {/* status filter */}
-      <div className="flex gap-2 flex-wrap mt-7" role="group" aria-label="Filter programs by status">
-        {STATUS_FILTERS.map(([v, l]) => (
-          <button key={v} onClick={() => setStatus(v)}
-            className={`font-mono text-[10.5px] font-bold uppercase tracking-[.1em] px-3.5 py-2 rounded-full border transition-colors cursor-pointer ${
-              status === v ? "bg-coffee text-foam border-coffee" : "bg-card text-cocoa border-line hover:border-accent/50 hover:text-accent"
-            }`}>
-            {l}
-          </button>
-        ))}
-      </div>
+      {/* status + eligibility facets; the panel owns all three filters */}
+      <EligibilityFilters query={query} counts={counts} onChange={update} />
+
       {!rst.ready && (
         <p className="font-mono text-[10.5px] uppercase tracking-[.11em] text-dim mt-3">Loading the participation record…</p>
       )}
-      <div className="mt-4"><PdfExport request={{ kind: "programs", status: status as "all" | "live" | "upcoming" | "closed" }} label="Export filtered programs" /></div>
+      <div className="mt-4"><PdfExport request={{ kind: "programs", status: query.status }} label="Export filtered programs" /></div>
 
       {/* the cards */}
       <h2 className="sr-only">Programs</h2>
       <div className="grid grid-cols-3 gap-5 mt-7 max-[1100px]:grid-cols-2 max-[680px]:grid-cols-1">
-        {list.map((p) => <ProgCard key={p.id} p={p} s={cs.byId[p.id]} arc={arc.summaries[p.id]} />)}
+        {rows.map(({ program: p, result }) => (
+          <ProgCard
+            key={p.id}
+            p={p}
+            s={cs.byId[p.id]}
+            arc={arc.summaries[p.id]}
+            match={eligibilityActive ? result.overall : undefined}
+            eligibilityReason={eligibilityActive ? reasonOf(result) : undefined}
+          />
+        ))}
       </div>
-      {list.length === 0 && (
-        <p className="text-cocoa text-[14px] mt-10">Nothing in that bucket this cycle - try "Everything".</p>
+      {rows.length === 0 && (
+        <p role="status" className="text-cocoa text-[14px] mt-10">
+          No program matches these filters. Programs whose records mark them ineligible are hidden, so
+          clearing the eligibility filter is the way back to the full calendar.
+        </p>
       )}
 
       {/* five-year archive */}

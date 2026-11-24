@@ -7,6 +7,21 @@ import type { Level } from "../lib/types";
 
 export interface ProgramYear { year: number; n: number }
 
+/* Structured facets for the two questions the catalog can filter on.
+   These are NOT a second eligibility claim: every value is a mechanical
+   reading of the `eligibility` sentence in the same record, and a facet is
+   present only when that sentence states it. `countries` is left absent
+   unless an organizer publishes a country list - an absent list means
+   "Unknown" in the UI, never "open to everyone". */
+export type StudentStatus = "required" | "optional" | "unknown";
+
+export interface EligibilityFacets {
+  studentStatus?: StudentStatus;
+  countries?: string[];
+  residencyNote?: string;
+  source?: string;
+}
+
 /* The application window as the organizer's published copy states it.
    `label` and `period` are quoted from that copy, not rewritten into a
    calendar: a program that names a stage but publishes no dates carries the
@@ -27,6 +42,9 @@ export interface ProgramDetailData {
   /* only set where the organizer states a rule; when they publish none the
      field is absent and the surfaces read "Not published", never "no rule" */
   eligibility?: string;
+  /* only set where the published eligibility sentence states a structured
+     fact; everything absent reads "Unknown" on the catalog filters */
+  eligibilityFacets?: EligibilityFacets;
   /* only set where the published copy states an application or registration
      window; the comparison reads this instead of inferring dates from the
      program's season */
@@ -72,6 +90,14 @@ export const PROGRAM_DETAILS: Record<string, ProgramDetailData> = {
     tier: "Tier 1 - global flagship",
     difficulty: "Competitive - org mentors score every proposal",
     eligibility: "18+ and legally able to work in your country; students and non-students alike",
+    /* the three facts above, read straight off that sentence. No country list:
+       the sentence names "your country" as the place you must be able to work,
+       it does not name a set of countries. */
+    eligibilityFacets: {
+      studentStatus: "optional",
+      residencyNote: "18+ and legally able to work in your country",
+      source: "this record's eligibility sentence: \"18+ and legally able to work in your country; students and non-students alike\"",
+    },
     applicationWindow: {
       label: "Proposal window",
       period: "late Mar - early Apr",
