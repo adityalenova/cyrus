@@ -178,7 +178,7 @@ Every figure in this table is the figure the site itself computes. `src/lib/site
 
 ```
 GitHub REST + Search API ──┬─▶ src/data/repos.ts ─────────────┐
-                           ├─▶ src/data/orgs.ts ─────────────┤
+                           ├─▶ src/data/orgs.ts ──────────────┤
                            ├─▶ public/data/issues.json.gz ────┼─▶ typed snapshots, checked in
 Programs' own archives ────┤    gsoc-projects.json            │      ↓
                            │    otherProjects.json            ├─▶ 2,036 prerendered pages
