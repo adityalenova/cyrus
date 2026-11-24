@@ -136,7 +136,7 @@ Light and dark share one token set - the same coffee-and-honey palette, roasted 
 | Sponsors directory | **82 funded repositories**, found in the top 260 by stars | `.github/FUNDING.yml`, read repository by repository |
 | Program pages | **<!--stat:programs-->13<!--/stat-->** deep dives, each with its own organization explorer and archive | `src/data/programDetails.ts` |
 | Dashboard | 12 screens - overview, issues, repositories, calendar, demand radar, analyser, drafts, matcher, mentors, compare, git-start, settings | the datasets above, in the browser |
-| Surface | **<!--stat:pages-->35<!--/stat-->** page routes + **<!--stat:handlers-->41<!--/stat-->** route handlers (<!--stat:api-->40<!--/stat--> API + `/llms.txt`) | `src/app/` (App Router) |
+| Surface | **<!--stat:pages-->36<!--/stat-->** page routes + **<!--stat:handlers-->41<!--/stat-->** route handlers (<!--stat:api-->40<!--/stat--> API + `/llms.txt`) | `src/app/` (App Router) |
 
 Every figure in this table is the figure the site itself computes. `src/lib/siteStats.ts` derives the chrome's counts from the data modules, and `siteStats.test.ts` asserts the two archive totals against the JSON files on disk - a refresh that changes a file fails the test until the module and this table catch up.
 
@@ -172,7 +172,7 @@ Every figure in this table is the figure the site itself computes. `src/lib/site
 - **Light + dark, same soul.** A hand-tuned coffee-and-honey palette with a dainty sun/moon toggle; every colour is a CSS custom property, so both themes share one source of truth and no component carries a hex literal.
 - **Filters where the question is.** Each program's organization explorer filters by year, stack and sector at the top of the list and stays there - it does not follow the page down over the cards.
 - **Honest empty states.** A program that publishes no participant list, no mentor names or no project table says so on its page and shows nothing, rather than filling the gap with a lookalike.
-- **Self-refreshing data.** `npm run refresh` re-pulls the GSoC archive; `npm run orgs` regenerates organization intel from live GitHub; `npm run issues` re-crawls the issue snapshot. Refresh stamps this README with the newest repository `updated` date in `src/data/repos.ts`, not the refresh date - so the snapshot badge cannot drift from the data.
+- **Self-refreshing data.** `npm run refresh` runs every credential-free builder - the GSoC archive, the issue snapshot, the program roster and the mentor index - and then records in this README which of those datasets it actually rebuilt (see *How the data is built*). A step that needs a credential says which environment variable is missing instead of disappearing, and a builder that fails aborts the run before the README is stamped, so the line cannot claim a rebuild that did not happen. `npm run orgs` regenerates organization intel from live GitHub; `npm run issues` re-crawls the issue snapshot.
 
 ## How the data is built
 
@@ -188,6 +188,10 @@ Contribo organization feed ┘    program-roster.json ────────�
 ```
 
 Each source keeps its own file and its own provenance note inside it, so a reader of the JSON can tell an organizer's published archive from a topic listing, and a wishlist from a mentored project. Where two sources describe the same organization, the merge is by GitHub login first and normalized name second, and the count of unresolved names stays visible in the file rather than being quietly dropped.
+
+<!--refresh:datasets-->
+**Dataset rebuild** - issue snapshot 2026-10-21; program roster 2026-10-25; mentor index 2026-10-25. Each date is the day that dataset was last rebuilt by `npm run refresh`; a dataset that is not listed was not rebuilt by any recorded run.
+<!--/refresh:datasets-->
 
 ## Pages
 
@@ -225,7 +229,7 @@ npm run dev                 # http://localhost:5330
 npm run build               # next build
 npm test                    # vitest: 102 files, unit + data-integrity suites
 npm run check               # tsc --noEmit + next build
-npm run refresh             # re-pull the GSoC archive + stamp this README's snapshot date
+npm run refresh             # rebuild every credential-free dataset + record what was rebuilt here
 npm run orgs                # regenerate src/data/orgs.ts from live GitHub
 npm run issues              # re-crawl the 40k-issue snapshot
 npm run refresh:all         # refresh, program shards, mentors, orgs, org stats (needs network and gh auth)
@@ -354,7 +358,7 @@ flowchart LR
         SOC[Program archives + FUNDING.yml + LF gateway] --> D4[public/data/*.json]
     end
     subgraph app [Next.js 16 - App Router, React 19]
-        D1 & D2 & D3 & D4 --> PAGES[2,036 prerendered pages across 35 routes: Home, /issues,<br/>/projects, /programs, /programs/:id/organizations,<br/>/skills, /organizations - 364 generated org profiles,<br/>/organizations/stats, /sponsors, /leaderboard,<br/>/dashboard/*, /platform/*, /repo/:id ...]
+        D1 & D2 & D3 & D4 --> PAGES[2,036 prerendered pages across 36 routes: Home, /issues,<br/>/projects, /programs, /programs/:id/organizations,<br/>/skills, /organizations - 364 generated org profiles,<br/>/organizations/stats, /sponsors, /leaderboard,<br/>/dashboard/*, /platform/*, /repo/:id ...]
         API[40 API handlers + /llms.txt: auth, me, issues,<br/>catalog, submissions, health]
     end
     PAGES --> V[(Vercel<br/>cyrus-agent.vercel.app)]
@@ -365,7 +369,7 @@ Catalog pages render from typed, checked-in snapshots, so the first paint needs 
 
 ```
 src/
-├── app/          App Router: 35 pages + 41 route handlers (40 API + llms.txt)
+├── app/          App Router: 36 pages + 41 route handlers (40 API + llms.txt)
 ├── views/        21 page components (Home, IssueFinder, Programs, ProgramOrgs, ...)
 ├── components/   chrome, cards, the auth modal and its sign-in plate, hero, UI primitives
 ├── lib/          store, router shim, google.ts (OIDC), github.ts (PKCE),
@@ -377,7 +381,7 @@ public/data/      issues.json.gz · gsoc-projects.json · otherProjects.json ·
                   program-projects/ · program-roster.json · mentor-index.json ·
                   contribo-orgs.json · sponsors.json · lf-orgs.json
 scripts/
-├── refresh.mjs                 GSoC archive re-pull + README snapshot stamp
+├── refresh.mjs                 credential-free builders + the README dataset-rebuild line
 ├── readme-stats.mjs            README and hero figures, rewritten from the data (--check in CI)
 ├── build-issue-index.mjs       GitHub Search API -> the 40k-issue snapshot
 ├── build-crawl-data.mjs        catalog crawl -> repos.ts + crawlStats.ts
@@ -417,7 +421,7 @@ A `vercel.json` pins the Next.js preset, so importing the repository is all it t
 | Visualization | hand-rolled canvas + SVG | catalog charts, program bars, sparklines - no chart library |
 | Motion | Framer Motion | section reveals and the hero, both behind `prefers-reduced-motion` |
 | Email | Resend | one-tap sign-in codes; only the hash of a code is stored |
-| Tests | Vitest | <!--stat:testFiles-->102<!--/stat--> files, <!--stat:tests-->1059<!--/stat--> tests - unit, API-route and data-integrity suites |
+| Tests | Vitest | <!--stat:testFiles-->102<!--/stat--> files, <!--stat:tests-->1056<!--/stat--> tests - unit, API-route and data-integrity suites |
 | Hosting | Vercel | `vercel.json` pins the Next.js preset |
 
 ## Contribute & support
