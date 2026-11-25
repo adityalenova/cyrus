@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { labelScore, descriptionScore, codeBlockScore, linkScore, commentScore, computeComplexity, toDifficulty, timeEstimate } from "./model";
+import { labelScore, descriptionScore, codeBlockScore, computeComplexity, toDifficulty, timeEstimate } from "./model";
 
 describe("issue-complexity-estimator/model", () => {
   it("scores labels by complexity", () => {

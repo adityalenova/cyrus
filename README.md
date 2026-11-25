@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/ghost-logo.png" alt="Cyrus Ghost Mascot" width="130" height="120"/>
+  <img src="public/favicon.svg" alt="Cyrus Open-Source Logo" width="128" height="128"/>
 </p>
 
 <h1 align="center">cyrus.ai</h1>

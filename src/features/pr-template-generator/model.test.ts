@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateTemplate, baseSections, toMarkdown, CHANGE_LABELS, CHANGE_EMOJI } from "./model";
+import { generateTemplate, baseSections, CHANGE_LABELS, CHANGE_EMOJI } from "./model";
 
 describe("pr-template-generator/model", () => {
   it("generates bugfix template with root cause section", () => {

@@ -109,7 +109,7 @@ export default function AuthCanvas() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: easeSilk, delay: 0.05 }}>
             <span aria-hidden className="auth-halo" />
-            <Logo tone="steel" />
+            <Logo size={132} tone="steel" />
           </motion.div>
         </div>
       </div>
