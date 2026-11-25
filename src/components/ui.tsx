@@ -17,12 +17,13 @@ import type { Level } from "../lib/types";
    per-petal unfurl on top of that - the earlier batch had three gestures stacked
    and the turn got lost among them. Reduced motion is a CSS media query, so
    nothing here needs to know about it. */
-export function Logo({ size = 38, tone: _tone = "ink", className = "" }:
+export function Logo({ size = 38, tone = "ink", className = "" }:
   { size?: number; tone?: "ink" | "steel"; className?: string }) {
+  const fg = tone === "steel" ? "#f8fafc" : "currentColor";
   return (
     <span
       className={`inline-flex items-center justify-center shrink-0 select-none os-logo-fox ${className}`}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, color: fg }}
       aria-hidden="true"
     >
       <svg
@@ -33,25 +34,17 @@ export function Logo({ size = 38, tone: _tone = "ink", className = "" }:
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
       >
-        {/* Colored low-poly geometric fox emblem (GitLab-inspired faceted craft) */}
-        {/* Left & Right pointed ears (crimson-coral) */}
-        <polygon points="10 9 23 24 12 31" fill="#e24329" />
-        <polygon points="54 9 41 24 52 31" fill="#e24329" />
-        {/* Outer ear flanks (warm amber) */}
-        <polygon points="10 9 12 31 5 28" fill="#fca326" />
-        <polygon points="54 9 52 31 59 28" fill="#fca326" />
-        {/* Forehead diamond (deep coral) */}
-        <polygon points="23 24 41 24 32 39" fill="#e24329" />
-        {/* Upper cheeks (vibrant fox orange) */}
-        <polygon points="5 28 23 24 32 39 14 42" fill="#fc6d26" />
-        <polygon points="59 28 41 24 32 39 50 42" fill="#fc6d26" />
-        {/* Lower cheek highlights (warm amber) */}
-        <polygon points="14 42 32 39 32 55" fill="#fca326" />
-        <polygon points="50 42 32 39 32 55" fill="#fc6d26" />
-        {/* Crisp nose & subtle eye facets */}
-        <polygon points="21 31 26 33 23 35" fill="#1e1b18" fillOpacity="0.82" />
-        <polygon points="43 31 38 33 41 35" fill="#1e1b18" fillOpacity="0.82" />
-        <polygon points="32 47 36 51 32 55 28 51" fill="#1e1b18" fillOpacity="0.9" />
+        {/* Monochrome faceted geometric fox emblem (light/dark adaptive) */}
+        <polygon points="10 10 23 24 13 31" fill={fg} fillOpacity="0.92" />
+        <polygon points="54 10 41 24 51 31" fill={fg} fillOpacity="0.92" />
+        <polygon points="10 10 13 31 6 28" fill={fg} fillOpacity="0.62" />
+        <polygon points="54 10 51 31 58 28" fill={fg} fillOpacity="0.62" />
+        <polygon points="23 24 41 24 32 37" fill={fg} fillOpacity="0.78" />
+        <polygon points="6 28 23 24 32 37 16 42" fill={fg} fillOpacity="0.52" />
+        <polygon points="58 28 41 24 32 37 48 42" fill={fg} fillOpacity="0.52" />
+        <polygon points="16 42 32 37 32 55" fill={fg} fillOpacity="0.88" />
+        <polygon points="48 42 32 37 32 55" fill={fg} fillOpacity="0.72" />
+        <polygon points="32 45 36 49 32 55 28 49" fill={fg} fillOpacity="1" />
       </svg>
     </span>
   );
