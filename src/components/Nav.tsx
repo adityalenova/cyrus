@@ -6,7 +6,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, NavLink, useLocation } from "@/lib/router";
-import LanguageSwitcher from "./LanguageSwitcher";
 import { Logo, Brand, Avatar, btn } from "./ui";
 import { TONES } from "./plat";
 import { useStore } from "../lib/store";
@@ -118,7 +117,6 @@ export default function Nav() {
             </div>
 
             <div className="ml-auto flex items-center gap-3.5 max-[1179px]:gap-2.5 max-[700px]:gap-2">
-              <div className="max-[700px]:hidden"><LanguageSwitcher /></div>
               <ThemeToggle />
               <span className="w-px h-6 bg-line shrink-0 max-[1179px]:hidden" aria-hidden />
               {user ? (
@@ -209,10 +207,6 @@ export default function Nav() {
                     </Link>
                   ))}
                 </div>
-              </div>
-              <div className="shrink-0 px-5 pt-3 pb-1 border-t border-liness min-[701px]:hidden">
-                <p className="pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">{t("language")}</p>
-                <LanguageSwitcher inline />
               </div>
               <div className="shrink-0 px-5 py-4 border-t border-liness">
                 {user ? (
