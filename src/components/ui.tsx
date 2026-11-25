@@ -19,13 +19,11 @@ import type { Level } from "../lib/types";
    nothing here needs to know about it. */
 export function Logo({ size = 38, tone = "ink", className = "" }:
   { size?: number; tone?: "ink" | "steel"; className?: string }) {
-  const uid = tone === "steel" ? "os-steel" : "os-ink";
   const fg = tone === "steel" ? "#f8fafc" : "currentColor";
-  const plateFill = tone === "steel" ? "rgba(255,255,255,0.06)" : "var(--color-card, rgba(15,23,42,0.05))";
   return (
     <span
-      className={`inline-flex items-center justify-center shrink-0 select-none os-logo-flow ${className}`}
-      style={{ width: size, height: size }}
+      className={`inline-flex items-center justify-center shrink-0 select-none os-logo-fox ${className}`}
+      style={{ width: size, height: size, color: fg }}
       aria-hidden="true"
     >
       <svg
@@ -34,69 +32,25 @@ export function Logo({ size = 38, tone = "ink", className = "" }:
         viewBox="0 0 64 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full overflow-visible"
+        className="w-full h-full"
       >
-        <defs>
-          <linearGradient id={`${uid}-grad-a`} x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#10b981" />
-            <stop offset="35%" stopColor="#06b6d4" />
-            <stop offset="70%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#f59e0b" />
-          </linearGradient>
-          <linearGradient id={`${uid}-grad-b`} x1="60" y1="4" x2="4" y2="60" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#34d399" />
-            <stop offset="50%" stopColor="#38bdf8" />
-            <stop offset="100%" stopColor="#a78bfa" />
-          </linearGradient>
-        </defs>
-
-        {/* Subtle inner plate for contrast in both light & dark themes */}
-        <circle cx="32" cy="32" r="24" fill={plateFill} />
-
-        {/* Flowing open-source outer orbital lines */}
-        <circle
-          cx="32"
-          cy="32"
-          r="27"
-          stroke={`url(#${uid}-grad-a)`}
-          strokeWidth="2.75"
-          strokeLinecap="round"
-          strokeDasharray="46 16 24 16"
-          className="os-flow-line-1"
-        />
-        <circle
-          cx="32"
-          cy="32"
-          r="22.5"
-          stroke={`url(#${uid}-grad-b)`}
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeDasharray="28 18 14 18"
-          strokeOpacity="0.85"
-          className="os-flow-line-2"
-        />
-
-        {/* Open-source Git Merge / Branch Emblem */}
-        {/* Main trunk */}
-        <path
-          d="M23 19v26"
-          stroke={fg}
-          strokeWidth="3.2"
-          strokeLinecap="round"
-        />
-        {/* PR / Fork branch curving into main trunk */}
-        <path
-          d="M41 25c0 8-6 10-12 10h-6"
-          stroke={`url(#${uid}-grad-a)`}
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="os-flow-branch"
-        />
-        {/* Commit / Merge Nodes */}
-        <circle cx="23" cy="19" r="3.6" fill={fg} />
-        <circle cx="23" cy="45" r="3.6" fill={fg} />
-        <circle cx="41" cy="22" r="4" fill="#10b981" stroke={fg} strokeWidth="2" />
+        {/* Geometric origami fox emblem (monochrome faceted, light/dark adaptive) */}
+        {/* Left & Right outer ears */}
+        <polygon points="10 10 23 24 13 31" fill={fg} fillOpacity="0.92" />
+        <polygon points="54 10 41 24 51 31" fill={fg} fillOpacity="0.92" />
+        {/* Inner ear facets */}
+        <polygon points="10 10 13 31 6 28" fill={fg} fillOpacity="0.62" />
+        <polygon points="54 10 51 31 58 28" fill={fg} fillOpacity="0.62" />
+        {/* Forehead bridge */}
+        <polygon points="23 24 41 24 32 37" fill={fg} fillOpacity="0.78" />
+        {/* Left & Right cheeks */}
+        <polygon points="6 28 23 24 32 37 16 42" fill={fg} fillOpacity="0.52" />
+        <polygon points="58 28 41 24 32 37 48 42" fill={fg} fillOpacity="0.52" />
+        {/* Lower snout / chin */}
+        <polygon points="16 42 32 37 32 55" fill={fg} fillOpacity="0.88" />
+        <polygon points="48 42 32 37 32 55" fill={fg} fillOpacity="0.72" />
+        {/* Subtle nose diamond */}
+        <polygon points="32 45 36 49 32 55 28 49" fill={fg} fillOpacity="1" />
       </svg>
     </span>
   );
