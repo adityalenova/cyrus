@@ -133,8 +133,9 @@ export default function UserActivity({ login }: { login: string }) {
             {status === "ok" ? (events.length ? summaryOf(events) : "no recent public activity") : "reading the GitHub event feed…"}
           </p>
         </div>
+        <Link to={`/users/${encodeURIComponent(login)}/feed`} className={btn("ghost", "sm") + " ml-auto"}>Event feed →</Link>
         <a href={`https://github.com/${encodeURIComponent(login)}`} target="_blank" rel="noreferrer"
-          className={btn("outline", "sm") + " ml-auto"}>GitHub profile ↗</a>
+          className={btn("outline", "sm")}>GitHub profile ↗</a>
       </div>
 
       <div className="grid lg:grid-cols-[1fr_360px] gap-6 mt-8">
