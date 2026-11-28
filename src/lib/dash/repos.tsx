@@ -11,14 +11,26 @@ import { ORGS } from "../../data/orgs";
 import { Card, DashHead, Ic, StatRow } from "./shell";
 import { ArtShelf } from "./art";
 import { DP, norm } from "./shared";
+import { useStore } from "../store";
+import { matchStoredId } from "../../features/repo-bulk/model";
+import { RepoBulkCheckbox, RepoBulkPanel, useRepoBulk } from "../../features/repo-bulk/BulkPanel";
 import type { Dash } from "./useDash";
 
 export function ReposSection({ d }: { d: Dash }) {
   const [q, setQ] = useState("");
+  const { removeSavedRepos } = useStore();
   const rows = useMemo(() => {
     const s = norm(q);
     return d.savedRepos.filter((r) => !s || norm(`${r.repo} ${r.desc} ${r.lang} ${r.tags.join(" ")}`).includes(s));
   }, [d.savedRepos, q]);
+
+  /* The store follows ids; the cards show catalog rows. Bulk removal works on
+     the ids, and only on the rows still visible under the filter. */
+  const bulkRows = useMemo(
+    () => rows.map((r) => ({ id: matchStoredId(d.saved, r.repo), label: r.repo })),
+    [rows, d.saved],
+  );
+  const bulk = useRepoBulk(bulkRows, removeSavedRepos);
 
   const tiles: [string, string][] = [
     [fmtCompact(d.savedRepos.length), "followed"],
@@ -53,12 +65,15 @@ export function ReposSection({ d }: { d: Dash }) {
         <span className="font-mono text-[11px] text-dim shrink-0">{rows.length} of {d.savedRepos.length}</span>
       </div>
 
+      <RepoBulkPanel bulk={bulk} />
+
       {rows.length ? (
         <div className="grid grid-cols-2 gap-3.5 max-[900px]:grid-cols-1">
-          {rows.map((r) => (
+          {rows.map((r, i) => (
             <article key={r.repo}
               className="bg-card border border-line rounded-[18px] p-5 shadow-soft hover:border-accent/45 transition-colors">
               <div className="flex items-start gap-3">
+                <RepoBulkCheckbox bulk={bulk} id={bulkRows[i].id} label={r.repo} />
                 <span className="w-[34px] h-[34px] grid place-items-center rounded-[10px] bg-white border border-line overflow-hidden shrink-0">
                   <img src={avatarOf(r.repo.split("/")[0], 68)} alt="" loading="lazy"
                     className="w-[22px] h-[22px] object-contain" />
