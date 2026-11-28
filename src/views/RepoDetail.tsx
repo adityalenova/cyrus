@@ -10,6 +10,7 @@ import { avatarOf, byStars, CAT_META, fmtCompact, hash, LANG_COLORS, repoById, r
 import type { Repo } from "../lib/types";
 import { useStore } from "../lib/store";
 import { Avatar, btn, Chip, OrgImg, Tag, Word } from "../components/ui";
+import DiscussionPanel from "../components/DiscussionPanel";
 import NotFound from "./NotFound";
 import PdfExport from "@/components/PdfExport";
 
@@ -273,6 +274,8 @@ export default function RepoDetail() {
               {pulse.map((p) => <span key={p.lbl}><i className="inline-block w-[9px] h-[9px] rounded-[3px] mr-1.5 not-italic" style={{ background: p.c }} />{p.lbl}</span>)}
             </div>
           </Panel>
+
+          <DiscussionPanel kind="repo" id={repo.repo} />
         </div>
 
         {/* ── sidebar ── */}
