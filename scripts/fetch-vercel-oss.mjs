@@ -34,6 +34,7 @@ import {
   OUT_DIR, READ_AT, OFFLINE, clean, readJson, writeJson, makeRow, shard,
   ghRepo, mapLimit, getPage, saveGhCache, ROOT,
 } from "./lib/shard.mjs";
+import { repoKey } from "../src/lib/repoLink.ts";
 
 const URL_PAGE = "https://vercel.com/open-source-program";
 const OUT = join(OUT_DIR, "vercel-oss.json");
@@ -68,9 +69,10 @@ export function parseCohorts(html) {
   /* de-dupe on repository, keeping the first cohort that names it */
   const seen = new Map();
   for (const f of found) {
-    const key = f.repo.toLowerCase().replace(/\/+$/, "");
+    const key = repoKey(f.repo);
+    if (!key) continue;
     if (!/^(winter|spring|summer|fall) \d{4}$/.test(f.cohort) && !COHORT.test(f.cohort)) continue;
-    if (!seen.has(key)) seen.set(key, { ...f, repo: key.replace(/^https:\/\/github\.com\//, "") });
+    if (!seen.has(key)) seen.set(key, { ...f, repo: key });
   }
   return [...seen.values()];
 }

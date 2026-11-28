@@ -23,6 +23,7 @@
 import { writeFileSync, renameSync, mkdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { repoKey } from "../src/lib/repoLink.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public/data/gssoc-archive.json");
@@ -43,13 +44,8 @@ const get = async (path, tries = 4) => {
   return null;
 };
 
-const REPO = /^https?:\/\/github\.com\/([^/]+)\/([^/?#]+)/i;
-const ownerRepo = (p) => {
-  const seed = clean(p.owner_repo).toLowerCase();
-  if (/^[a-z0-9_.-]+\/[a-z0-9_.-]+$/.test(seed)) return seed;
-  const m = clean(p.repo_url).match(REPO);
-  return m ? `${m[1].toLowerCase()}/${m[2].toLowerCase()}` : null;
-};
+/* the board carries both an "owner/repo" seed and a repository URL; the seed wins */
+const ownerRepo = (p) => repoKey(clean(p.owner_repo)) ?? repoKey(clean(p.repo_url));
 
 const projects = (await get("/projects"))?.projects ?? [];
 await sleep(300);

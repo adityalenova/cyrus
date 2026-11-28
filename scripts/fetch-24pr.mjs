@@ -20,6 +20,7 @@
 import { writeFileSync, mkdirSync, renameSync, existsSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { normalizeRepoUrl } from "../src/lib/repoLink.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RAW_DIR = join(ROOT, "data");
@@ -68,11 +69,6 @@ async function pages(path, size, cap = 400) {
   return rows;
 }
 
-const repoOf = (u) => {
-  const m = /^https?:\/\/(?:www\.)?github\.com\/([^/\s]+)\/([^/\s#?]+)/i.exec(String(u ?? ""));
-  return m ? { owner: m[1], repo: `${m[1]}/${m[2].replace(/\.git$/i, "")}` } : null;
-};
-
 const main = async () => {
   /* the raw pull is kept, so a re-derive of the rollups costs no requests */
   const cached = process.argv.includes("rebuild") && existsSync(RAW)
@@ -91,8 +87,8 @@ const main = async () => {
     for (const p of cached.projects) addRepo(p.owner, p.repo, p.lang, p.title);
   } else {
     for (const p of rawProjects) {
-      const r = repoOf(p.github_url);
-      if (r) addRepo(r.owner, r.repo, p.main_language, p.description);
+      const r = normalizeRepoUrl(String(p.github_url ?? ""));
+      if (r) addRepo(r.owner, `${r.owner}/${r.name}`, p.main_language, p.description);
     }
   }
   const projects = [...byRepo.values()];
