@@ -20,6 +20,8 @@ import { useIssueLedger, type IssueMeta } from "../lib/issueLedger";
 import { isEmptySearch, normaliseFilters, searchNameError, unknownFilterKeys } from "../lib/savedSearches";
 import type { Sort } from "../lib/server/issueIndex";
 import { btn, Chip, LevelChip, OrgImg, Tag, Word } from "../components/ui";
+import { queryLabel } from "../features/issue-finder-live/model";
+import { useResultAnnouncement } from "../features/issue-finder-live/useAnnouncement";
 
 const W = "max-w-[1240px] mx-auto px-6";
 
@@ -194,6 +196,20 @@ export default function IssueFinder() {
   const sortRaw = (params.get("sort") ?? "").trim().toLowerCase();
   const sort = (SORTS.some(([v]) => v === sortRaw) ? sortRaw : "relevance") as Sort;
   const skipped = useMemo(() => unknownFilterKeys(params), [params]);
+
+  /* ── what assistive technology hears ──────────────────────────────
+     The result count is painted above the grid; this is its spoken half.
+     The label describes the search the count belongs to - the URL's own
+     values, not the text box, which runs 300 ms ahead of them. */
+  const spokenQuery = useMemo(
+    () => queryLabel({ term: params.get("q"), org, label, beginner, unassigned }),
+    [params, org, label, beginner, unassigned],
+  );
+  const announcement = useResultAnnouncement({
+    phase: status,
+    count: body?.total ?? null,
+    query: spokenQuery,
+  });
 
   const toggleLang = (v: string) => {
     const key = v.toLowerCase();
@@ -377,6 +393,13 @@ export default function IssueFinder() {
               {SORTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
             </select>
           </div>
+
+          {/* the spoken half of the count above: mounted from the first render
+              so the region exists before its text, never focusable, and it
+              only changes once a filter has settled (400 ms) */}
+          <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+            {announcement}
+          </p>
 
           {status === "error" && (
             <div className="rounded-[22px] border border-dashed border-rule p-10 text-center bg-cream">
