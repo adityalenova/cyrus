@@ -18,6 +18,8 @@ import {
 } from "./shared";
 import type { Dash } from "./useDash";
 import { trackedIssuesCsvBlob } from "./csvExport";
+import { selectEmptyState } from "../../features/my-issues-empty/model";
+import { MyIssuesEmptyState } from "../../features/my-issues-empty/EmptyState";
 
 const ROW = "flex items-start gap-3.5 px-4 py-3.5 rounded-[14px] border transition-colors";
 
@@ -256,6 +258,13 @@ export function IssuesSection({ d }: { d: Dash }) {
 
       {shown.length ? (
         <div className="grid gap-2.5">{shown.map((i) => <IssueRow key={i.url} d={d} issue={i} />)}</div>
+      ) : d.issues.length === 0 ? (
+        /* nothing has ever been tracked: the first-run door. The ledger lives in
+           this browser, so there is no request to fail here - the state machine
+           keeps loading and failure separate anyway (see features/my-issues-empty). */
+        <MyIssuesEmptyState
+          state={selectEmptyState({ ready: d.boardReady, error: null, count: d.issues.length })}
+        />
       ) : (
         <Card className="text-center py-10">
           <div className="flex justify-center mb-4 text-dim">
