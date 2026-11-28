@@ -153,6 +153,8 @@ function rail(d: Dash): { label: string; items: { icon: string; text: string; to
         { icon: DP.issue, text: "My Issues", to: "/dashboard/issues", count: String(d.issues.length) },
         { icon: DP.repo, text: "My Repositories", to: "/dashboard/repos", count: String(d.saved.length) },
         { icon: DP.bookmark, text: "My Bookmarks", to: "/dashboard/bookmarks" },
+        { icon: DP.pulse, text: "Streaks & Rhythm", to: "/dashboard/streaks" },
+        { icon: DP.star, text: "Badges & Honors", to: "/dashboard/badges" },
       ],
     },
     {
@@ -225,7 +227,7 @@ export function DashShell({ dash, active, children }: { dash: Dash; active: stri
             <Ic d={DP.collapse} size={16} />
           </button>
           <Link to="/dashboard" className="flex items-center gap-2.5 shrink-0 min-w-0">
-            <Logo size={34} />
+            <Logo size={38} />
             <span className="font-display font-extrabold text-[17px] tracking-[-.02em]">cyrus<span className="text-accent">.ai</span></span>
           </Link>
           <span className="hidden md:inline-flex items-center gap-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[.14em] text-dim border border-line rounded-full px-2.5 py-1">

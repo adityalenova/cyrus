@@ -6,7 +6,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, NavLink, useLocation } from "@/lib/router";
-import LanguageSwitcher from "./LanguageSwitcher";
 import { Logo, Brand, Avatar, btn } from "./ui";
 import { TONES } from "./plat";
 import { useStore } from "../lib/store";
@@ -101,7 +100,7 @@ export default function Nav() {
           <div className="flex items-center gap-4 h-[62px] pl-4 pr-4 max-[1179px]:gap-3 max-[1023px]:h-[54px] max-[700px]:gap-2.5 max-[700px]:pl-2.5 max-[700px]:pr-2.5">
             {/* min-h keeps the mark's own link a 36px thumb target now that the
                 logo itself is 28px; the a11y suite measures this strip. */}
-            <Link to="/" className="flex items-center gap-3 shrink-0 min-h-[36px] max-[700px]:gap-2.5"><Logo size={36} /><Brand /></Link>
+            <Link to="/" className="flex items-center gap-3 shrink-0 min-h-[36px] max-[700px]:gap-2.5"><Logo size={42} /><Brand /></Link>
             {/* desktop strip: single tightened row, lg+ only. Below 1280 the
                 one label that will not spare the pixels keeps its short form;
                 from xl the full name comes back. */}
@@ -118,7 +117,6 @@ export default function Nav() {
             </div>
 
             <div className="ml-auto flex items-center gap-3.5 max-[1179px]:gap-2.5 max-[700px]:gap-2">
-              <div className="max-[700px]:hidden"><LanguageSwitcher /></div>
               <ThemeToggle />
               <span className="w-px h-6 bg-line shrink-0 max-[1179px]:hidden" aria-hidden />
               {user ? (
@@ -180,7 +178,7 @@ export default function Nav() {
             max-[1023px]:rounded-none max-[1023px]:border-r-0"
               style={{ animation: "sheetIn .34s cubic-bezier(.32,.9,.35,1) both" }}>
               <div className="flex items-center justify-between px-5 h-[62px] shrink-0">
-                <Link to="/" className="flex items-center gap-2.5 min-h-[36px]"><Logo size={36} /><Brand /></Link>
+                <Link to="/" className="flex items-center gap-2.5 min-h-[36px]"><Logo size={42} /><Brand /></Link>
                 <button onClick={() => setMenu(false)} aria-label={t("closeMenu")}
                   className="w-[34px] h-[34px] rounded-full grid place-items-center border border-line text-cocoa hover:bg-card hover:text-ink transition-colors cursor-pointer">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round"><path d="M5 5l14 14M19 5 5 19" /></svg>
@@ -209,10 +207,6 @@ export default function Nav() {
                     </Link>
                   ))}
                 </div>
-              </div>
-              <div className="shrink-0 px-5 pt-3 pb-1 border-t border-liness min-[701px]:hidden">
-                <p className="pb-2 font-mono text-[10px] font-semibold tracking-[.14em] text-dim">{t("language")}</p>
-                <LanguageSwitcher inline />
               </div>
               <div className="shrink-0 px-5 py-4 border-t border-liness">
                 {user ? (

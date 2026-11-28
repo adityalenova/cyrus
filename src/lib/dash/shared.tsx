@@ -75,7 +75,7 @@ export const greet = () => {
 export type FeatureId = "issues" | "repos" | "bookmarks" | "badges" | "streaks" | "calendar" | "matcher" | "mentors" | "compare" | "gitstart" | "drafts" | "analyser" | "demand" | "settings";
 export const FEATURES: { id: FeatureId; title: string; icon: string; desc: string }[] = [
   { id: "bookmarks", title: "My Bookmarks", icon: "bookmark", desc: "Organize saved projects, programs and organizations into private or shared collections." },
-  { id: "badges", title: "Badges & Honors", icon: "star", desc: "Explore 20 collectible open-source contributor badges and velocity milestones." },
+  { id: "badges", title: "Badges & Honors", icon: "star", desc: "Explore 30 collectible open-source contributor badges and velocity milestones." },
   { id: "streaks", title: "Streaks & Rhythm", icon: "pulse", desc: "7, 30, 50, 100, 150, 500, and 1000 days streak milestones and habit tracking." },
   { id: "issues", title: "My Issues", icon: "issue", desc: "Every issue you took, held at the stage you left it: saved, interested, working, done." },
   { id: "repos", title: "My Repositories", icon: "repo", desc: "The repositories you follow, with the stars, open issues and last update that decide where you contribute." },

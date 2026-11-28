@@ -43,6 +43,13 @@
       "when": 1795332506297,
       "tag": "0005_notification_preferences",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795869747035,
+      "tag": "0006_sloppy_punisher",
+      "breakpoints": true
     }
   ]
 }

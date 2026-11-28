@@ -17,21 +17,35 @@ import type { Level } from "../lib/types";
    per-petal unfurl on top of that - the earlier batch had three gestures stacked
    and the turn got lost among them. Reduced motion is a CSS media query, so
    nothing here needs to know about it. */
-export function Logo({ size = 36, tone: _tone = "ink", className = "" }:
+export function Logo({ size = 38, tone = "ink", className = "" }:
   { size?: number; tone?: "ink" | "steel"; className?: string }) {
+  const fg = tone === "steel" ? "#f8fafc" : "currentColor";
   return (
     <span
-      className={`inline-flex items-center justify-center shrink-0 select-none ghost-shine ${className}`}
-      style={{ width: size, height: size }}
+      className={`inline-flex items-center justify-center shrink-0 select-none os-logo-fox ${className}`}
+      style={{ width: size, height: size, color: fg }}
       aria-hidden="true"
     >
-      <img
-        src="/ghost-logo.png"
-        alt="Cyrus Ghost Mascot"
+      <svg
         width={size}
         height={size}
-        className="w-full h-full object-contain filter drop-shadow-sm transition-transform duration-200"
-      />
+        viewBox="0 0 64 64"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full"
+      >
+        {/* Monochrome faceted geometric fox emblem (light/dark adaptive) */}
+        <polygon points="10 10 23 24 13 31" fill={fg} fillOpacity="0.92" />
+        <polygon points="54 10 41 24 51 31" fill={fg} fillOpacity="0.92" />
+        <polygon points="10 10 13 31 6 28" fill={fg} fillOpacity="0.62" />
+        <polygon points="54 10 51 31 58 28" fill={fg} fillOpacity="0.62" />
+        <polygon points="23 24 41 24 32 37" fill={fg} fillOpacity="0.78" />
+        <polygon points="6 28 23 24 32 37 16 42" fill={fg} fillOpacity="0.52" />
+        <polygon points="58 28 41 24 32 37 48 42" fill={fg} fillOpacity="0.52" />
+        <polygon points="16 42 32 37 32 55" fill={fg} fillOpacity="0.88" />
+        <polygon points="48 42 32 37 32 55" fill={fg} fillOpacity="0.72" />
+        <polygon points="32 45 36 49 32 55 28 49" fill={fg} fillOpacity="1" />
+      </svg>
     </span>
   );
 }
